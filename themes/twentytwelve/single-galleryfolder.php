@@ -1,0 +1,33 @@
+<?php
+/**
+ * The Template for displaying all single posts.
+ *
+ * @package Eazyest Gallery
+ * @subpackage Twenty_Twelve
+ * @since Eazyest Gallery 2.0.0 (r440)
+ */
+
+get_header(); ?>
+
+	<div id="primary" class="site-content">
+		<div id="content" role="main">
+
+			<?php while ( have_posts() ) : the_post(); ?>
+
+				<?php ezg_get_template_part( 'content-single', 'galleryfolder' ); ?>
+
+				<nav class="nav-single">
+					<h3 class="assistive-text"><?php _e( 'Folder navigation', 'eazyest-gallery' ); ?></h3>
+					<span class="nav-previous"><?php previous_post_link( '%link', '<span class="meta-nav">' . _x( '&larr;', 'Previous folder link', 'eazyest-gallery' ) . '</span> %title' ); ?></span>
+					<span class="nav-next"><?php next_post_link( '%link', '%title <span class="meta-nav">' . _x( '&rarr;', 'Next folder link', 'eazyest-gallery' ) . '</span>' ); ?></span>
+				</nav><!-- .nav-single -->
+
+				<?php comments_template( '', true ); ?>
+
+			<?php endwhile; // end of the loop. ?>
+
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+<?php get_sidebar(); ?>
+<?php get_footer(); ?>
