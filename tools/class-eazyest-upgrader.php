@@ -9,10 +9,10 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * 
  * @package Eazyest Gallery
  * @subpackage Upgrader
- * @author Marcel brinkkemper
+ * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r3)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -372,7 +372,7 @@ class Eazyest_Gallery_Upgrader {
 		<?php wp_nonce_field( 'gallery-folder', 'gallery-folder', false ); ?>
 		<input type="text" id="gallery_folder" name="gallery_folder" size="60" class="regular-text code" value="<?php echo $gallery_folder ?>" />	
 		<div class="error below-h2<?php echo $exist_class; ?>" style="width: 50%;"><p><?php _e( 'This folder does not exist on your server', 'eazyest-gallery' ); ?></p></div>	
-		<div class="error below-h2<?php echo $dangerous_class; ?>" style="width: 50%;"><p><?php _e( 'This folder cannot be used for your gallery', 'eazyest-gallery' ); ?></p></div>
+		<div class="error below-h2<?php echo $dangerous_class; ?>" style="width: 50%;"><p><?php _e( 'You cannot use this folder for your gallery', 'eazyest-gallery' ); ?></p></div>
 		<?php
 	}
 	
@@ -524,9 +524,9 @@ class Eazyest_Gallery_Upgrader {
 			<form id="upgrade-form" action="admin.php" method="post">
 				<input type="hidden" name="action" id="" value="skip_gallery_update"  />
 				<?php wp_nonce_field( 'eazyest-gallery-update' ); ?>
-				<h3><?php _e( 'Upgrade from a previous version',                                                                                 'eazyest-gallery' )?></h3>
-				<p><?php  _e( 'The new version of Eazyest Gallery uses custom post types and stores all information in the WordPress database.', 'eazyest-gallery' ) ?></p>
-				<p><?php  _e( 'Please convert your gallery to custom post types.',                                                               'eazyest-gallery' ) ?></p>
+				<h3><?php _e( 'Upgrade from Lazyest Gallery',                                                                 'eazyest-gallery' )?></h3>
+				<p><?php  _e( 'Eazyest Gallery uses custom post types and stores all information in the WordPress database.', 'eazyest-gallery' ) ?></p>
+				<p><?php  _e( 'You have to convert your gallery to custom post types.',                                       'eazyest-gallery' ) ?></p>
 				<?php foreach( $this->sections() as $section => $parts ) : ?>
 				<?php $this->display_section( $section ); ?>
 				<?php endforeach; ?>
@@ -539,7 +539,7 @@ class Eazyest_Gallery_Upgrader {
 					<p id="folder-counter" class="hidden-upgrader"><span class="spinner"></span><?php printf( __( 'Converting folder %s of %s', 'eazyest-gallery' ), '<span id="current-folder"></span>', '<span id="all-folders"></span>' ); ?></p>
 					<p id="upgrade_page" class="hidden-upgrader"><?php _e( 'Converting your Gallery Page', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-settings" class="hidden-upgrader"><?php _e( 'Updating your settings', 'eazyest-gallery' ); ?></p>
-					<p id="upgrade-cleanup" class="hidden-upgrader"><?php _e( 'Cleanup', 'eazyest-gallery' ); ?></p>
+					<p id="upgrade-cleanup" class="hidden-upgrader"><?php _e( 'Cleanup and Remove Lazyest Gallery plugin', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-success"  class="hidden-upgrader"><?php _e( 'Successfully upgraded Eazyest Gallery', 'eazyest-gallery' ); ?> <a href="<?php echo $settings_page ?>"><?php _e( 'Please check your Settings', 'eazyest-gallery' ) ?></a></p>				
 				</div>
 				<div class="submit" id="skip">
