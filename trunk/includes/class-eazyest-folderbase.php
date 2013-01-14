@@ -475,6 +475,9 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function clear_dir( $directory ) {
+		if ( empty( $directory ) )
+			return;
+			
 		$directory = trailingslashit( $directory );
 		if ( file_exists( $directory ) ) {
 			if ( $handle = opendir( $directory ) ) {

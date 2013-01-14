@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r3)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -65,7 +65,7 @@ class Eazyest_Upgrade_Engine {
 		$this->ajax_actions();
 	}
 	
-		// AJAX actions --------------------------------------------------------------
+	// AJAX actions --------------------------------------------------------------
 	/**
 	 * Eazyest_Upgrade_Engine::ajax_actions()
 	 * Action called by AJAX admin-ajax.php requests
@@ -331,6 +331,7 @@ class Eazyest_Upgrade_Engine {
 		$options['gallery_secure'] = LG_SECURE_VERSION;
 		$options['new_install']    = false;		
 		update_option( 'eazyest-gallery', $options );
+		delete_option( 'lazyest-gallery' );
 		
 		if ( $fields_options = get_option( 'eazyest-fields' ) )
 			eazyest_extra_fields()->enable();
@@ -380,6 +381,12 @@ class Eazyest_Upgrade_Engine {
 		return false !== $wpdb->query( "DELETE FROM $wpdb->commentmeta WHERE meta_key = 'lazyest'" );
 	}
 	
+	function remove_lazyest_gallery() {
+		$delete_directory = dirname( eazyest_gallery()->plugin_dir ) . '/lazyest-gallery';
+		if ( is_dir( $delete_directory ) )
+			eazyest_folderbase()->clear_dir( $delete_directory );
+	}
+	
 	/**
 	 * Eazyest_Upgrade_Engine::skip_gallery_update()
 	 * Skip update but do remove unused table, commentmeta, and roles
@@ -394,7 +401,7 @@ class Eazyest_Upgrade_Engine {
 		check_admin_referer( 'eazyest-gallery-update' );
 		$this->update_options();
 		$this->remove_roles();		
-		$upgraded = $this->drop_table() && $this->remove_commentmeta() ? 1 : 0;
+		$upgraded = $this->drop_table() && $this->remove_commentmeta() ? true : false;
 		
 		if ( $upgraded )
 			$redirect = add_query_arg( array( 'page' => 'eazyest-gallery-tools', 'gallery-upgraded' => $upgraded ), admin_url( 'tools.php' ) );
@@ -487,7 +494,8 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::move_comments()
-	 * Move comments from gallery page/folder/image to custom post type galleryfolder or to attachment
+	 * Move comments from gallery page/folder/image to custom post type galleryfolder or to attachment.
+	 * 
 	 * @param integer $xml_id id used in captions.xml file
 	 * @param integer $wpdb_id post_id for post/attachment
 	 * @return integer number of comments moved
@@ -513,7 +521,7 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::do_upgrade_folder()
-	 * Create custom post type galleryfolder and parse xml values to custom post type fields
+	 * Create custom post type galleryfolder and parse xml values to custom post type fields.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses get_transient()
@@ -583,7 +591,7 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::get_upgrade_images()
-	 * Get array of image names that should be updated for a particular gallery folder
+	 * Get array of image names that should be updated for a particular gallery folder.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @param string $gallery_path
@@ -605,7 +613,7 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::read_images_data()
-	 * Read image attributes from captions.xml file and return array of iamges data
+	 * Read image attributes from captions.xml file and return array of iamges data.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @param mixed $xml_file
@@ -683,7 +691,7 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::delete_cache()
-	 * Remove cached thumbs and slides for a folder
+	 * Remove cached thumbs and slides for a folder.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses get_transient()
@@ -698,7 +706,7 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::remove_xml()
-	 * Remove captions.xml file for this folder
+	 * Remove captions.xml file for this folder.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses get_post_meta()
@@ -714,7 +722,7 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::do_upgrade_images()
-	 * Upgrade xml values to attachment post fields and metadata
+	 * Upgrade xml values to attachment post fields and metadata.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses get_transient()
