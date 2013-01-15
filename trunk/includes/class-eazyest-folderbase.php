@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r11)
+ * @version 0.1.0 (r12)
  * @access public
  */
 
@@ -128,7 +128,7 @@ class Eazyest_FolderBase {
 		// filters related to folders
 		add_filter( 'pre_get_posts',                   array( $this, 'pre_get_posts'                ),  10    );
 		// filters related to attachments and images
-		add_filter( 'image_downsize',                  array( $this, 'image_downsize'               ),  20, 3 );
+		add_filter( 'image_downsize',                  array( $this, 'image_downsize'               ),   5, 3 );
 		add_filter( 'get_attached_file',               array( $this, 'get_attached_file'            ),  20, 2 );
 		add_filter( 'wp_get_attachment_url',           array( $this, 'get_attachment_url'           ),  20, 2 );
 		add_filter( 'wp_generate_attachment_metadata', array( $this, 'generate_attachment_metadata' ),  20, 2 );
@@ -1176,9 +1176,8 @@ class Eazyest_FolderBase {
 		$filename = get_post_meta( $post_id, '_wp_attached_file', true );
 		$parent_id = $attachment->post_parent;
 		
-		if ( $parent_id ) {
-			
-			if ( eazyest_gallery()->post_type == get_post_type( $parent_id ) ) {				
+		if ( $parent_id ) {			
+			if ( $this->is_gallery_image( $post_id ) ) {				
 				$gallery_path = get_metadata( 'post', $parent_id, 'gallery_path', true );
 				$path = $gallery_path . '/' . basename( $file );
 				if ( ! strpos( $file, $path )  ){
@@ -1202,13 +1201,8 @@ class Eazyest_FolderBase {
 	 * @return string
 	 */
 	public function get_attachment_url( $url, $post_id ) {
-		$attachment = get_post( $post_id );
-		$parent_id = $attachment->post_parent;
-		
-		if ( $parent_id ) {
-			if ( eazyest_gallery()->post_type == get_post_type( $parent_id ) )
-				$url = $attachment->guid;
-		}		
+		if ( $this->is_gallery_image( $post_id ) )
+			$url = $attachment->guid;
 		return $url;	
 	}
 	
@@ -1501,8 +1495,7 @@ class Eazyest_FolderBase {
 	 * @return array
 	 */
 	public function image_downsize( $resize, $post_id, $size ) {
-		$attachment = get_post( $post_id );			
-		if ( false !== strpos( eazyest_gallery()->address(), eazyest_gallery()->address() ) ) {
+		if ( $this->is_gallery_image( $post_id ) ) {
 			$resize = $this->resize_image( $post_id, $size );
 		}	
 		return $resize;
@@ -1690,6 +1683,24 @@ class Eazyest_FolderBase {
 	
 	// image select functions ----------------------------------------------------
 	/**
+	 * Eazyest_FolderBase::is_gallery_image()
+	 * Test if attachment resides in eazyest gallery.
+	 * 
+	 * @since 0.1.0 (r12)
+	 * @uses get_post()
+	 * @param int $attachment_id
+	 * @return bool
+	 */
+	function is_gallery_image( $attachment_id ) {
+		$attachment = get_post( $attachment_id );
+		
+		if ( empty( $attachment ) )
+			return false;
+		
+		return false !== strpos( $attachment->guid, eazyest_gallery()->address );	
+	}
+	
+	/**
 	 * Eazyest_FolderBase::featured_image()
 	 * Returns the ID for the featured image
 	 * If no featured image is selected in edit > galleryfolder, the first image in the folder is selected.
@@ -1764,7 +1775,7 @@ class Eazyest_FolderBase {
 				$childlist = implode( ',', $children );
 				$post_ids = "IN ($childlist)";
 			} 				
-		}
+		}	
 		global $wpdb;
 		$results = $wpdb->get_results( "
 			SELECT ID FROM $wpdb->posts 
@@ -1775,7 +1786,6 @@ class Eazyest_FolderBase {
 			LIMIT $number;", 
 			ARRAY_A 
 		);
-		
 		if ( empty( $results ) )
 			return array( 0 );
 		
