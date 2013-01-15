@@ -45,7 +45,7 @@
 		
 		$( '.media-button-insert' ).live( 'click', function(){
 			var data = {
-				action : 'lazyest_gallery_upload',
+				action : 'eazyest_gallery_upload',
 				_wpnonce : $( '#_wpnonce' ).val(),
 				post     : $( '#post_ID' ).val(),
 			};

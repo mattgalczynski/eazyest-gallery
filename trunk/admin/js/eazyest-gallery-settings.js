@@ -13,7 +13,7 @@
 						}, function(directory){
 							var data = {
 								dir    : directory,
-								action : 'lazyest_gallery_select_dir',
+								action : 'eazyest_gallery_select_dir',
 								_wpnonce : $('#file-tree-nonce').val()
 							}
 							$.post( fileTreeSettings.script, data, function(response){
