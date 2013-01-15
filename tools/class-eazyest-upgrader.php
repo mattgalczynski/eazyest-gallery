@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r3)
+ * @version 0.1.0 (r5)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -230,7 +230,7 @@ class Eazyest_Gallery_Upgrader {
 		if ( $this->should_upgrade() ) {
 				if ( 'tools_page_eazyest-gallery-tools' != get_current_screen()->id ){			
 				$message  = __( 'Eazyest Gallery cannot run together with Lazyest Gallery.' );
-				$linktext = __( 'Please upgrade your to Eazyest Gallery' );
+				$linktext = __( 'Please upgrade to Eazyest Gallery' );
 				$url      = add_query_arg( array( 'page' => 'eazyest-gallery-tools', 'tab' => 'upgrade' ), admin_url( 'tools.php' ) );
 				?>
 				<div id="eazyest-gallery-upgrade-notice" class="error"><p><?php echo $message ?> <a href="<?php echo $url; ?>" title="<?php echo esc_attr( $linktext ); ?>"><?php echo $linktext ?></a></p></div>

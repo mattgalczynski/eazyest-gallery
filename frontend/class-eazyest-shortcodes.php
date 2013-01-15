@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r5)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -35,7 +35,6 @@ class Eazyest_Shortcodes {
 	 * @return void
 	 */
 	function init() {
-		$this->actions();
 		$this->shortcodes();
 	}
 	
