@@ -232,11 +232,11 @@ class Eazyest_Slideshow {
 			<?php wp_nonce_field( 'eazyest-ajax-slideshow-' . $show, 'eazyest-slideshow-nonce-' . $show  ); ?>
 			<?php if ( $query->have_posts() ) : $query->the_post(); ?>
 			<div id="eazyest-ajax-slideshow-<?php echo $show ?>" class="gallery eazyest-gallery eazyest-ajax-slideshow">
-				<<?php lzg_itemtag(); ?> class="gallery-item">
-					<<?php lzg_icontag();?> class="gallery-icon">
+				<<?php ezg_itemtag(); ?> class="gallery-item">
+					<<?php ezg_icontag();?> class="gallery-icon">
 						<?php echo wp_get_attachment_link( $post->ID, $size, true ); ?>
-					</<?php lzg_icontag();?>>
-				</<?php lzg_itemtag(); ?>>
+					</<?php ezg_icontag();?>>
+				</<?php ezg_itemtag(); ?>>
 			</div>
 		</form>
 		<?php endif; ?>
@@ -262,8 +262,8 @@ class Eazyest_Slideshow {
 	  	$query_args['offset'] = isset( $_POST['offset'] ) ? intval( $_POST['offset'] ) : 0;
 	  }
 	  $query = new WP_Query( $query_args );
-	  $itemtag = lzg_itemtag();
-	  $icontag = lzg_icontag();
+	  $itemtag = ezg_itemtag();
+	  $icontag = ezg_icontag();
 	  $link    = wp_get_attachment_link( $post->ID, $size, true );
 	  $item = '';
 	  if ( $query->have_posts() ) { 

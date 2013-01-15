@@ -43,13 +43,13 @@ function _ezg_deprecated_function( $function, $version, $replacement = null ) {
  * 
  * @since lazyest-gallery 0.8
  * @deprecated 2.0.0
- * @deprecated use lzg_list_folders()
- * @see lzg_list_folders() in eazyest-gallery/frontend/template-tags.php
+ * @deprecated use ezg_list_folders()
+ * @see ezg_list_folders() in eazyest-gallery/frontend/template-tags.php
  * @param string $title
  * @return void
  */
 function lg_list_folders( $title = '' ) {
-	_ezg_deprecated_function( __FUNCTION__, '2.0.0', 'lzg_list_folders()' );
+	_ezg_deprecated_function( __FUNCTION__, '2.0.0', 'ezg_list_folders()' );
 	
 	if ( ! empty( $title ) ) :
 		?>
@@ -58,7 +58,7 @@ function lg_list_folders( $title = '' ) {
 	endif;
 	
 	$title = '';
-	lzg_list_folders( $title, 'echo' );	
+	ezg_list_folders( $title, 'echo' );	
 }
 
 /**
@@ -66,8 +66,8 @@ function lg_list_folders( $title = '' ) {
  * 
  * @since lazyest-gallery 0.8
  * @deprecated 2.0.0
- * @deprecated use lzg_random_image()
- * @see lzg_random_image() in eazyest-gallery/frontend/template-tags.php
+ * @deprecated use ezg_random_image()
+ * @see ezg_random_image() in eazyest-gallery/frontend/template-tags.php
  * @param string $title
  * @param string $count
  * @param string $folder
@@ -75,7 +75,7 @@ function lg_list_folders( $title = '' ) {
  * @return void
  */
 function lg_random_image(  $title = '', $count = '1', $folder = '', $sub = true ) {
-	_ezg_deprecated_function( __FUNCTION__, '2.0.0', 'lzg_random_image()' );
+	_ezg_deprecated_function( __FUNCTION__, '2.0.0', 'ezg_random_image()' );
 	$arg = array(
 		'number'     => intval( $count ),
 		'columns'    => eazyest_gallery()->get_option( 'thumbs_columns' ),
@@ -87,5 +87,5 @@ function lg_random_image(  $title = '', $count = '1', $folder = '', $sub = true 
 	<?php if ( ! empty( $title ) ) : ?>
 	<h2><?php echo esc_html( $title ); ?></h2>
 	<?php	endif;
-	lzg_random_image( $args );
+	ezg_random_image( $args );
 }

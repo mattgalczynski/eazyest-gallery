@@ -69,7 +69,7 @@ class Eazyest_Widget_Recent_Images extends WP_Widget {
 		<?php echo $before_widget; ?>
 		<?php if ( $title ) echo $before_title . $title . $after_title; ?>
 		<div class="eazyest-recent-images">
-			<?php lzg_recent_images( array( 'id' => $post_id, 'number' => $number, 'title' => '', 'subfolders' => $subfolders ) ); ?>
+			<?php ezg_recent_images( array( 'id' => $post_id, 'number' => $number, 'title' => '', 'subfolders' => $subfolders ) ); ?>
 		</div>
 		<?php echo $after_widget; ?>
 		<?php
@@ -184,7 +184,7 @@ class Eazyest_Widget_Recent_Folders extends WP_Widget {
 		<?php echo $before_widget; ?>
 		<?php if ( $title ) echo $before_title . $title . $after_title; ?>
 		<div class="eazyest-recent-folders">
-			<?php lzg_recent_folders( array( 'number' => $number, 'title' => '', 'subfolders' => $subfolders ) ); ?>
+			<?php ezg_recent_folders( array( 'number' => $number, 'title' => '', 'subfolders' => $subfolders ) ); ?>
 		</div>
 		<?php echo $after_widget; ?>
 		<?php
@@ -267,7 +267,7 @@ class Eazyest_Widget_Random_Images extends WP_Widget {
 		<?php echo $before_widget; ?>
 		<?php if ( $title ) echo $before_title . $title . $after_title; ?>
 		<div class="eazyest-random-images">
-			<?php lzg_random_images( array( 'id' => $post_id, 'number' => $number, 'title' => '', 'subfolders' => $subfolders ) ); ?>
+			<?php ezg_random_images( array( 'id' => $post_id, 'number' => $number, 'title' => '', 'subfolders' => $subfolders ) ); ?>
 		</div>
 		<?php echo $after_widget; ?>
 		<?php
