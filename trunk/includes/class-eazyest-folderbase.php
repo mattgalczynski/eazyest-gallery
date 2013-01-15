@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r10)
  * @access public
  */
 
@@ -1502,16 +1502,9 @@ class Eazyest_FolderBase {
 	 */
 	public function image_downsize( $resize, $post_id, $size ) {
 		$attachment = get_post( $post_id );		
-		$filename = get_post_meta( $post_id, '_wp_attached_file', true );
-		$parent_id = $attachment->post_parent;
-		if ( empty( $parent_id ) || $parent_id == '0' ) {
-			$parent_id = $this->get_parent( $filename );
-		}			
-		if ( $parent_id ) {
-			if ( eazyest_gallery()->post_type == get_post_type( $parent_id ) ) {
-				$resize = $this->resize_image( $post_id, $size );
-			}				
-		}		
+		if ( strpos( eazyest_gallery()->address(), $attachment->guid ) ) {
+			$resize = $this->resize_image( $post_id, $size );
+		}	
 		return $resize;
 	}
 	
