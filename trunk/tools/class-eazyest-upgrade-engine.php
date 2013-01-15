@@ -508,14 +508,19 @@ class Eazyest_Upgrade_Engine {
 	private function move_comments( $xml_id, $wpdb_id ) {
 		$comment_count = 0;
 		global $wpdb;
-		$comments_meta = $wpdb->query( "SELECT * FROM $wpdb->commentmeta WHERE meta_key = 'lazyest' AND meta_value = $xml_id;", ARRAY_A );
-		if ( ! empty( $comments ) ) {
+		$comments_meta = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $wpdb->commentmeta WHERE meta_key = 'lazyest' AND meta_value = %d", $xml_id ), ARRAY_A  );
+		if ( ! empty( $comments_meta ) ) {
 			foreach( $comments_meta as $comment_meta ) {
 				$comment = get_comment( $comment_meta['comment_id'], ARRAY_A );
-				if ( 1 == $_POST['allow_comments'] ){
-					$comment['comment_post_ID'] = $wpdb_id;
-					if ( wp_update_comment( $comment ) )
+				if ( $_POST['allow_comments'] ){
+					$gallery_id = $comment['comment_post_ID'];
+					$comment['comment_post_ID'] = $wpdb_id;					
+					if ( $wpdb->update(  $wpdb->comments, $comment, array( 'comment_ID' => $comment['comment_ID'] ) ) ) {
 						$comment_count++;
+						$page = get_post( $gallery_id, ARRAY_A );
+						$page['comment_count'] = $page['comment_count'] -1;
+						wp_update_post( $page );
+					}
 				}	else {
 					wp_delete_comment( $comment_meta['comment_id'], true );
 				}
@@ -776,6 +781,8 @@ class Eazyest_Upgrade_Engine {
 					$attachment['menu_order']    = 0 < $image['menu_order']         ? $image['menu_order']  : 0;
 					$attachment['post_date']     = $datetime;
 					$attachment['post_date_gmt'] = get_gmt_from_date( $datetime ); 
+					if ( 'TRUE' == eazyest_gallery()->get_option( 'allow_comments' ) )
+						$attachment['comment_count'] = $this->move_comments( $image['id'], $attachment_id );		
 					wp_update_post( $attachment  );
 					if ( ! empty( $image['extra_fields'] ) ) {
 						foreach( $image['extra_fields'] as $field => $value )
