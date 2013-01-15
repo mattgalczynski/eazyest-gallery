@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r4)
+ * @version 0.1.0 (r8)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -515,11 +515,9 @@ class Eazyest_Upgrade_Engine {
 				if ( $_POST['allow_comments'] ){
 					$gallery_id = $comment['comment_post_ID'];
 					$comment['comment_post_ID'] = $wpdb_id;					
-					if ( $wpdb->update(  $wpdb->comments, $comment, array( 'comment_ID' => $comment['comment_ID'] ) ) ) {
+					if ( false !== $wpdb->update(  $wpdb->comments, $comment, array( 'comment_ID' => $comment['comment_ID'] ) ) ) {
 						$comment_count++;
-						$page = get_post( $gallery_id, ARRAY_A );
-						$page['comment_count'] = $page['comment_count'] -1;
-						wp_update_post( $page );
+						wp_update_comment_count( $gallery_id );
 					}
 				}	else {
 					wp_delete_comment( $comment_meta['comment_id'], true );
@@ -585,11 +583,12 @@ class Eazyest_Upgrade_Engine {
 				$folder['post_date']     = $datetime;
 				$folder['post_date_gmt'] = get_gmt_from_date( $datetime );
 				$folder['post_parent']   = $post_parent;
-				// move comments to this folder
-				if ( 'TRUE' == eazyest_gallery()->get_option( 'allow_comments' ) )
-					$folder['comment_count'] = $this->move_comments( $folder_data['id'], $folder_id );					
-				wp_update_post( $folder );			  
-				
+				// move comments to this folder					
+				wp_update_post( $folder );		
+				if ( 'TRUE' == eazyest_gallery()->get_option( 'allow_comments' ) ) {
+					if ( $this->move_comments( $folder_data['id'], $folder_id ) )
+						wp_update_comment_count( $folder_id );	
+				}			
 				if ( ! empty( $folder_data['extra_fields']) ) {
 					foreach( $folder_data['extra_fields'] as $field => $value )
 						eazyest_extra_fields()->update_post_field( $folder_id, $field, $value );
@@ -781,9 +780,11 @@ class Eazyest_Upgrade_Engine {
 					$attachment['menu_order']    = 0 < $image['menu_order']         ? $image['menu_order']  : 0;
 					$attachment['post_date']     = $datetime;
 					$attachment['post_date_gmt'] = get_gmt_from_date( $datetime ); 
-					if ( 'TRUE' == eazyest_gallery()->get_option( 'allow_comments' ) )
-						$attachment['comment_count'] = $this->move_comments( $image['id'], $attachment_id );		
 					wp_update_post( $attachment  );
+					if ( 'TRUE' == eazyest_gallery()->get_option( 'allow_comments' ) ) {
+						if ( $this->move_comments( $image['id'], $attachment_id ) )
+							wp_update_comment_count($attachment_id );	
+					}
 					if ( ! empty( $image['extra_fields'] ) ) {
 						foreach( $image['extra_fields'] as $field => $value )
 							eazyest_extra_fields()->update_post_field( $attachment_id, $field, $value );
