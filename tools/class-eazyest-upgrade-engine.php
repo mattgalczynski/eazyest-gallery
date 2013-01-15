@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r8)
+ * @version 0.1.0 (r9)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -512,18 +512,19 @@ class Eazyest_Upgrade_Engine {
 		if ( ! empty( $comments_meta ) ) {
 			foreach( $comments_meta as $comment_meta ) {
 				$comment = get_comment( $comment_meta['comment_id'], ARRAY_A );
-				if ( $_POST['allow_comments'] ){
+				if ( $_POST['allow_comments'] ) {
 					$gallery_id = $comment['comment_post_ID'];
 					$comment['comment_post_ID'] = $wpdb_id;					
 					if ( false !== $wpdb->update(  $wpdb->comments, $comment, array( 'comment_ID' => $comment['comment_ID'] ) ) ) {
 						$comment_count++;
-						wp_update_comment_count( $gallery_id );
 					}
 				}	else {
 					wp_delete_comment( $comment_meta['comment_id'], true );
 				}
-			}			
-		}
+			}
+			if ( $comment_count )
+				wp_update_comment_count( $gallery_id );							
+		}		
 		return $comment_count;
 	}
 	
