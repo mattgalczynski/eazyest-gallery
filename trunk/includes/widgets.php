@@ -22,6 +22,88 @@ if ( !defined( 'ABSPATH' ) ) exit;
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 if ( is_plugin_active( 'eazyest-widgets/eazyest-widgets.php' ) )
 	deactivate_plugins( 'eazyest-widgets/eazyest-widgets.php' );
+	
+
+
+/**
+ * Eazyest_Widgets
+ * Registerd all widgets for Eazyest Gallery.
+ * 
+ * @package Eazyest Gallery
+ * @subpackage Widgets
+ * @author Marcel Brinkkemper
+ * @copyright 2013 Brimosoft
+ * @version 0.1.0 (r15))
+ * @access public
+ */
+class Eazyest_Widgets {
+	
+	 /**
+   * @staticvar Eazyest_Widgets $instance single object in memory
+   */ 
+  private static $instance;
+  
+  /**
+   * Eazyest_Widgets::__construct()
+   * 
+   * @return void
+   */
+  function __construct() {}
+  
+  /**
+   * Eazyest_Widgets::init()
+   * Initialize.
+   * @return void
+   */
+  private function init() {
+  	$this->actions();
+  }
+  
+  /**
+   * Eazyest_Widgets::instance()
+   * 
+   * @return object Eazyest_Widgets
+   */
+  public static function instance() {
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = new Eazyest_Widgets;
+			self::$instance->init();
+		}
+		return self::$instance;  	
+  }
+  
+  /**
+   * Eazyest_Widgets::actions()
+   * Add Actions.
+   * 
+   * @since 0.1.0 (r2)
+   * @uses add_action() for 'widget_init'
+   * @return void
+   */
+  function actions() {
+  	add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+  }
+  
+  /**
+   * Eazyest_Widgets::register_widgets()
+   * Regietsr the widgets in the WordPress Widgets API.
+   * 
+	 * @since 0.1.0 (r2)
+	 * @uses register_widget() 
+   * @return void
+   */
+  function register_widgets() {
+  	$widgets = array(
+			'Random_Images',
+			'Random_Slideshow',
+			'Recent_Folders',
+			'Recent_Images',
+			'Recent_slideshow' 
+		);
+		foreach( $widgets as $widget )
+			register_widget( "Eazyest_Widget_$widget" );
+  }  
+} // Eazyest_Widgets
 
 /**
  * Eazyest_Widget_Recent_Images
@@ -481,7 +563,7 @@ class Eazyest_Widget_Recent_Slideshow extends WP_Widget {
 		<?php echo $before_widget; ?>
 		<?php if ( $title ) echo $before_title . $title . $after_title; ?>
 		<div class="eazyest-recent-slidehow">		
-			<? eazyest_slideshow()->slideshow( array( 'id' => $post_id, 'title' => '', 'subfolders' => $subfolders, 'ajax' => true, 'orderby' => 'post_date', 'order' => 'DESC', 'number' => $number ) ); ?>
+			<?php eazyest_slideshow()->slideshow( array( 'id' => $post_id, 'title' => '', 'subfolders' => $subfolders, 'ajax' => true, 'orderby' => 'post_date', 'order' => 'DESC', 'number' => $number ) ); ?>
 		</div>
 		<?php 
 		echo $after_widget; 
@@ -549,76 +631,83 @@ class Eazyest_Widget_Recent_Slideshow extends WP_Widget {
 	 
 } // Eazyest_Widget_Recent_Slideshow
 
-class Eazyest_Widgets {
+/**
+ * Eazyest_Widget_List_Folders
+ * 
+ * @since 0.1.0 (r15)
+ * @access public
+ */
+class Eazyest_Widget_List_Folders extends WP_Widget {
 	
-	 /**
-   * @staticvar Eazyest_Widgets $instance single object in memory
-   */ 
-  private static $instance;
-  
-  /**
-   * Eazyest_Widgets::__construct()
-   * 
-   * @return void
-   */
-  function __construct() {}
-  
-  /**
-   * Eazyest_Widgets::init()
-   * Initialize.
-   * @return void
-   */
-  private function init() {
-  	$this->actions();
-  }
-  
-  /**
-   * Eazyest_Widgets::instance()
-   * 
-   * @return object Eazyest_Widgets
-   */
-  public static function instance() {
-		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Eazyest_Widgets;
-			self::$instance->init();
-		}
-		return self::$instance;  	
-  }
-  
-  /**
-   * Eazyest_Widgets::actions()
-   * Add Actions.
-   * 
-   * @since 0.1.0 (r2)
-   * @uses add_action() for 'widget_init'
-   * @return void
-   */
-  function actions() {
-  	add_action( 'widgets_init', array( $this, 'register_widgets' ) );
-  }
-  
-  /**
-   * Eazyest_Widgets::register_widgets()
-   * Regietsr the widgets in the WordPress Widgets API.
-   * 
-	 * @since 0.1.0 (r2)
-	 * @uses register_widget() 
-   * @return void
-   */
-  function register_widgets() {
-  	$widgets = array(
-			'Random_Images',
-			'Random_Slideshow',
-			'Recent_Folders',
-			'Recent_Images',
-			'Recent_slideshow' 
+	/**
+	 * Eazyest_Widget_List_Folders::__construct()
+	 * 
+	 * @since 0.1.0 (r15)
+	 * @return void
+	 */
+	function __construct() {
+		$widget_ops = array( 
+			'classname'   =>     'widget_eazyest_list_folders', 
+			'description' => __( 'Show a list of all your Eazyest Gallery folders', 'eazyest-gallery' ) 
 		);
-		foreach( $widgets as $widget )
-			register_widget( "Eazyest_Widget_$widget" );
-  }
-  
-  
-} // Eazyest_Widgets
+			
+		parent::__construct( 'eazyest_last_image', __( 'LZG List Folders', 'eazyest-gallery' ), $widget_ops );
+	}
+	
+	/**
+	 * Eazyest_Widget_List_Folders::widget()
+	 * 
+	 * @since 0.1.0 (r15)
+	 * @param array $args
+	 * @param array $instance
+	 * @return void
+	 */
+	function widget( $args, $instance ) {
+		global $lg_gallery;	
+		extract( $args );
+		$title = apply_filters( 'widget_title', empty($instance['title']) ? __( 'Gallery folders List', 'eazyest-gallery' ) : $instance['title'], $instance, $this->id_base ); 		
+		?>		
+		<?php echo $before_widget; ?>
+		<?php if ( $title ) echo $before_title . $title . $after_title; ?>
+		<div class="eazyest-list-folders">		
+			<?php ezg_list_folders() ?>
+		</div>
+		<?php 
+		echo $after_widget; 
+	}
+	
+	/**
+	 * Eazyest_Widget_List_Folders::form()
+	 * 
+	 * @since 0.1.0 (r15)
+	 * @param array $instance
+	 * @return void
+	 */
+	function form( $instance ) {
+		$title   = isset( $instance['title']   )       ? esc_attr( $instance['title']  ) : '';
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'eazyest-gallery' ); ?></label>
+			<input id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" class="widefat" value="<?php echo $title; ?>" />
+		</p>
+		<?php
+	}	
+	
+	/**
+	 * Eazyest_Widget_List_Folders::update()
+	 * 
+	 * @since 0.1.0 (r15)
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return
+	 */
+	function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+		$instance['title']  = strip_tags( $new_instance['title'] );
+		return $instance;
+	}
+	
+} // Eazyest_Widget_List_Folders
 	
 /**
  * eazyest_widgets()
