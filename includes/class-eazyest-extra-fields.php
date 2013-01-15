@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 2.0 (r443)
+ * @version 0.1.0 (r12)
  * @access public
  */
 class Eazyest_Extra_Fields {
@@ -352,8 +352,7 @@ class Eazyest_Extra_Fields {
 	function attachment_meta_box( $post_type ) {
 		if ( 'attachment' == $post_type && count( $this->fields ) && $this->enabled()  ) {
 			$post_id = isset( $_REQUEST['post'] ) ? intval( $_REQUEST['post'] ) : 0;
-			$attachment =  get_post( $post_id );
-			if ( eazyest_gallery()->post_type == get_post_type( $attachment->post_parent ) ) {			
+			if ( eazyest_folderbase()->is_gallery_image( $post_id ) ) {			
 					foreach( $this->fields as $field ) {
 					if ( 'image' == $field['target']  && $field['edit'] ) {
 						add_meta_box(

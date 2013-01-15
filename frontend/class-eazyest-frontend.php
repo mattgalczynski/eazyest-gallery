@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r6)
+ * @version 0.1.0 (r12)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -490,7 +490,8 @@ class Eazyest_Frontend {
 		}
 		// random image is selected
 		if ( 'random_image' == $option ) {
-			$id = eazyest_folderbase()->random_images( $post_id, 1, eazyest_gallery()->get_option( 'random_subfolder' ) );
+			$ids = eazyest_folderbase()->random_images( $post_id, 1, eazyest_gallery()->get_option( 'random_subfolder' ) );
+			$id = $ids[0];
 		}	
 		if ( ! $id )
 			$id = null;
@@ -549,7 +550,7 @@ class Eazyest_Frontend {
 			if ( 'icon' == $option )
 				$src = $icon;
 			else {		
-				if ( ! empty( $thumbnail_id ) ) {
+				if ( ! empty( $thumbnail_id ) ) {	
 					$wp_src = wp_get_attachment_image_src( $thumbnail_id, 'thumbnail' );
 					$src = $wp_src[0];
 				} else {
@@ -1186,10 +1187,9 @@ class Eazyest_Frontend {
 		if ( is_admin() )
 			return $link;
 			
-		$attachment = get_post( $post_id );
-		$post_type = eazyest_gallery()->post_type;	
-		// bail if parent is not a folder
-		if ( $post_type != get_post_type( $attachment->post_parent ) )
+		$attachment = get_post( $post_id );	
+		// bail if parent is not a folder		
+		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
 			return $link;
 		// displaying a thumbnail click link according to settings
 		if ( is_singular( 'attachment' ) )		
@@ -1241,12 +1241,11 @@ class Eazyest_Frontend {
 			return $link;
 			
 		$attachment = get_post( $post_id );
-		$post_type = eazyest_gallery()->post_type;
 		// bail if parent is not a folder	
-		if ( $post_type != get_post_type( $attachment->post_parent ) )
-			return $link;		
-				
+		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
+			return $link;						
 		
+		$post_type = eazyest_gallery()->post_type;
 		$class_attr = $rel_attr = array();
 		$option = '';
 		if ( is_singular( $post_type ) || is_attachment() || defined( 'LAZYEST_GALLERY_SHORTCODE' ) ) {
