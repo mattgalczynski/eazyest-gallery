@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r10)
+ * @version 0.1.0 (r11)
  * @access public
  */
 
@@ -1501,8 +1501,8 @@ class Eazyest_FolderBase {
 	 * @return array
 	 */
 	public function image_downsize( $resize, $post_id, $size ) {
-		$attachment = get_post( $post_id );		
-		if ( strpos( eazyest_gallery()->address(), $attachment->guid ) ) {
+		$attachment = get_post( $post_id );			
+		if ( false !== strpos( eazyest_gallery()->address(), eazyest_gallery()->address() ) ) {
 			$resize = $this->resize_image( $post_id, $size );
 		}	
 		return $resize;
