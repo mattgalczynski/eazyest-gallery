@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r12)
+ * @version 0.1.0 (r13)
  * @access public
  */
 
@@ -1201,8 +1201,10 @@ class Eazyest_FolderBase {
 	 * @return string
 	 */
 	public function get_attachment_url( $url, $post_id ) {
-		if ( $this->is_gallery_image( $post_id ) )
+		if ( $this->is_gallery_image( $post_id ) ) {
+			$attachment = get_post( $post_id );
 			$url = $attachment->guid;
+		}
 		return $url;	
 	}
 	

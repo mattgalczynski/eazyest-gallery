@@ -7,14 +7,14 @@
  * Date: January 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-alpha-r12
+ * Version: 0.1.0-alpha-r13
  * License: GNU General Public License, version 3
  */
  
 /**
  * Eazyest Gallery is easy gallery management software for WordPress.
  * 
- * @version 0.1.0 (r12)  
+ * @version 0.1.0 (r13)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
