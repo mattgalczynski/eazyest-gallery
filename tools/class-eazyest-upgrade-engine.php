@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r3)
+ * @version 0.1.0 (r4)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -193,7 +193,7 @@ class Eazyest_Upgrade_Engine {
 	 */
 	function update_settings() {
 		check_ajax_referer( 'eazyest-gallery-update' );	
-		$options = get_option( 'eazyest-gallery' );	
+		$options = get_option( 'lazyest-gallery' );	
 		if ( $options['gallery_folder'] != $_POST['gallery_folder'] ) {
 			eazyest_gallery()->change_option( 'gallery_folder', $_POST['gallery_folder'] );
 			$temproot = str_replace('\\', '/', trailingslashit( $this->get_absolute_path( ABSPATH . $gallery_folder ) ) );
@@ -265,6 +265,11 @@ class Eazyest_Upgrade_Engine {
 	 * @return void
 	 */
 	function update_options() {
+		// deactivate lazyest-gallery
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		if ( is_plugin_active( 'lazyest-gallery/lazyest-gallery.php') )
+			deactivate_plugins( 'lazyest-gallery/lazyest-gallery.php' );
+			
 		// get the old options
 		$old_options  = get_option( 'lazyest-gallery' );	
   	$options = eazyest_gallery()->defaults();
@@ -328,7 +333,7 @@ class Eazyest_Upgrade_Engine {
 			$options['gallery_slug'] = $gallery_slug;
 			delete_transient( 'eazyest-gallery-slug' );
 		}
-		$options['gallery_secure'] = LG_SECURE_VERSION;
+		$options['gallery_secure'] = EZG_SECURE_VERSION;
 		$options['new_install']    = false;		
 		update_option( 'eazyest-gallery', $options );
 		delete_option( 'lazyest-gallery' );
