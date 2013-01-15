@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r6)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -124,11 +124,11 @@ class Eazyest_Frontend {
 		add_action( 'wp_head', array( $this, 'setup_tags' ), 1 );
 		
 		// gallery output actions
-		add_action( 'eazyest_gallery_after_folder_icon',         'lzg_folder_icon_caption',       5 );
-		add_action( 'eazyest_gallery_after_folder_icon_caption', 'lzg_folder_attachments_count',  5 );
-		add_action( 'eazyest_gallery_before_folder_content',     'lzg_breadcrumb',                5 );
-		add_action( 'eazyest_gallery_before_folder_content',     'lzg_thumbnails',               10 );
-		add_action( 'eazyest_gallery_after_folder_content',      'lzg_subfolders',                5 ); 
+		add_action( 'eazyest_gallery_after_folder_icon',         'ezg_folder_icon_caption',       5 );
+		add_action( 'eazyest_gallery_after_folder_icon_caption', 'ezg_folder_attachments_count',  5 );
+		add_action( 'eazyest_gallery_before_folder_content',     'ezg_breadcrumb',                5 );
+		add_action( 'eazyest_gallery_before_folder_content',     'ezg_thumbnails',               10 );
+		add_action( 'eazyest_gallery_after_folder_content',      'ezg_subfolders',                5 ); 
 	}
 
 	/**
@@ -1056,9 +1056,9 @@ class Eazyest_Frontend {
 		$ids = '';
 		// TODO: add code when extra fields or description in thumbnail view
 		if ( ! is_single() ) {
-			$selector = lzg_selector( true, false );
+			$selector = ezg_selector( true, false );
 			$html = $this->gallery_style( $selector, $columns );
-			$html .= '<div id="' . lzg_selector( false, false ) . '" class="gallery eazyest-gallery gallery-size-thumbnail"><' . 
+			$html .= '<div id="' . ezg_selector( false, false ) . '" class="gallery eazyest-gallery gallery-size-thumbnail"><' . 
 				$this->itemtag() . ' class="gallery-item"><' . 
 				$this->icontag . ' class="gallery-icon">' . 
 				$this->post_thumbnail_html( '', $post_id ) . '</' . 
@@ -1129,26 +1129,26 @@ class Eazyest_Frontend {
 		if ( ! defined( 'DOING_GALLERYFOLDERS' ) )
 			define( 'DOING_GALLERYFOLDERS', true );
 		?>
-			<?php	echo $this->gallery_style( lzg_selector( true, false ), eazyest_gallery()->get_option( 'folders_columns' ) ); ?>
-			<div id="<?php lzg_selector( false ) ?>" class="<?php lzg_gallery_class( 'archive' ); ?>">
+			<?php	echo $this->gallery_style( ezg_selector( true, false ), eazyest_gallery()->get_option( 'folders_columns' ) ); ?>
+			<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
 				<h3 class="subfolders"><?php _e( 'Subfolders', 'eazyest-gallery' ); ?></h3>
 					<?php $i = 0; ?>
 					<?php  /* Start the Loop */ 
 								while ( $query->have_posts() ) : $query->the_post(); ?>								
-									<<?php lzg_itemtag(); ?> class="gallery-item folder-item">
+									<<?php ezg_itemtag(); ?> class="gallery-item folder-item">
 							
 									<?php do_action( 'eazyest_gallery_before_folder_icon' ); ?>
 								
-									<<?php lzg_icontag(); ?> class="gallery-icon folder-icon">
+									<<?php ezg_icontag(); ?> class="gallery-icon folder-icon">
 										<a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'View folder &#8220;%s&#8221;', 'eazyest-gallery' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark">
-											<?php lzg_folder_thumbnail(); ?> 
+											<?php ezg_folder_thumbnail(); ?> 
 										</a>
-									</<?php lzg_icontag(); ?>>
+									</<?php ezg_icontag(); ?>>
 								
 								<?php do_action( 'eazyest_gallery_after_folder_icon' ); ?>
 								
-							</<?php lzg_itemtag(); ?>>
-						<?php lzg_folders_break( ++$i ); ?>	
+							</<?php ezg_itemtag(); ?>>
+						<?php ezg_folders_break( ++$i ); ?>	
 					<?php endwhile; ?>
 					<br style="clear: both;"/>
 					<?php do_action( 'eazyest_gallery_end_of_subfolders' ); ?>			
