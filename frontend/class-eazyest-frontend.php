@@ -67,7 +67,7 @@ class Eazyest_Frontend {
 	 * @since 0.1.0 (r2)
 	 */
 	public function __set( $key, $value ) { 
-		if ( in_array( $key, 'folder_columns', 'thumbs_columns' ) )
+		if ( in_array( $key, array( 'folder_columns', 'thumbs_columns' ) ) )
 			$value = absint( $value );
 		$this->data[$key] = $value; 
 	}
