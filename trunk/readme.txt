@@ -6,9 +6,10 @@ Tested up to: 3.5
 Requires at least: 3.5
 Stable tag: trunk
 
-Eazyest Gallery offers a multitude of options for your WordPress blog by featuring a smart back end management site.
+Eazyest Gallery is an easy gallery management plugin featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
 
 == Description ==
+Eazyest Gallery 0.1.0 is not finsihed software. Please use this version for test purposes only.
 
 Eazyest Gallery is the successor of [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/)
 
