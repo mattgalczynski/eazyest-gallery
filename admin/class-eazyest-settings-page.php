@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r19)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -158,7 +158,7 @@ class Eazyest_Settings_Page {
 	function admin_enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-filetree',          eazyest_gallery()->plugin_url . "admin/js/jquery.filetree.$j",          array( 'jquery' ),          '1.01-lzg',   true );
-		wp_register_script( 'eazyest-gallery-settings', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-settings.$j", array( 'jquery-filetree' ), '2.0.0-r404', true );
+		wp_register_script( 'eazyest-gallery-settings', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-settings.$j", array( 'jquery-filetree' ), '0.1.0-r2', true );
 		
 		wp_localize_script( 'eazyest-gallery-settings', 'fileTreeSettings', $this->filetree_args() );
 	}

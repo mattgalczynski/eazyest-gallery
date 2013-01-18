@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r9)
+ * @version 0.1.0 (r19)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -279,7 +279,7 @@ class Eazyest_Upgrade_Engine {
 			delete_transient( 'eazyest-gallery-folder' );
 		}
 		
-  	// convert only settings used since 2.0.0
+  	// convert only settings used since eazyest-gallery
 		foreach( $options as $setting => $value ) {
 			switch( $setting ) {
 				case 'show_credits' :				
@@ -375,7 +375,7 @@ class Eazyest_Upgrade_Engine {
 	
 	/**
 	 * Eazyest_Upgrade_Engine::remove_commentmeta()
-	 * Remove coment meta values used before 2.0.0
+	 * Remove coment meta values used before eazyest-gallery
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses wpdb

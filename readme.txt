@@ -4,12 +4,12 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5
 Requires at least: 3.5
-Stable tag: trunk
+Stable tag: 0.1.0-alpha
 
 Eazyest Gallery is an easy gallery management plugin featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
 
 == Description ==
-Eazyest Gallery 0.1.0 is not finsihed software. Please use this version for test purposes only.
+Eazyest Gallery 0.1.0 is not finished software. Please use this version for test purposes only.
 
 Eazyest Gallery is the successor of [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/)
 

@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r19)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -80,7 +80,7 @@ class Eazyest_Slideshow {
 		if ( ! wp_script_is( 'camera-slide', 'registered' ) )			
 			wp_register_script( 'camera-slide', eazyest_gallery()->plugin_url . "/frontend/js/camera.$j", array( 'jquery', 'jquery-easing' ), '1.3.3', true );
 			
-		wp_register_script( 'eazyest-slideshow',  eazyest_gallery()->plugin_url . "/frontend/js/eazyest-slideshow.$j", array( 'jquery' ), '2.0.0-r445', true );
+		wp_register_script( 'eazyest-slideshow',  eazyest_gallery()->plugin_url . "/frontend/js/eazyest-slideshow.$j", array( 'jquery' ), '0.1.0-r2', true );
 	}
 	
 	/**
@@ -110,7 +110,7 @@ class Eazyest_Slideshow {
 		// slideshow runs only for single posts or pages
 		if ( ! is_single() )
 			return;
-		wp_enqueue_style( 'eazyest-slideshow', eazyest_gallery()->plugin_url . '/frontend/css/camera.css', '2.0.0-r440' );		
+		wp_enqueue_style( 'eazyest-slideshow', eazyest_gallery()->plugin_url . '/frontend/css/camera.css', '0.1.0-r2' );		
 	}
 	
 	/**

@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r5)
+ * @version 0.1.0 (r19)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -445,7 +445,7 @@ class Eazyest_Shortcodes {
 	 * Compatibility for <code>[lg_gallery]</code> shortcodes 
 	 * @see Eazyest_Shortcodes::gallery_shortcode()
 	 * 
-	 * @deprecated 2.0.0
+	 * @deprecated 0.1.0
 	 * @since lazyest-gallery 0.11.0
 	 * @param array $attr
 	 * @return string
@@ -460,7 +460,7 @@ class Eazyest_Shortcodes {
 	 * Support for the <code>[lg_folder]</code> shortcode
 	 * 
 	 * @see Eazyest_Shortcodes::folder_shortcode()
-	 * @deprecated 2.0.0
+	 * @deprecated 0.1.0
 	 * @deprecated use the [eazyest_folder] shortcode
 	 * 
 	 * @since lazyest-gallery 0.11.0
@@ -476,7 +476,7 @@ class Eazyest_Shortcodes {
 	 * Eazyest_Shortcodes::lg_image_shortcode()
 	 * Support for the <code>[lg_image]</code> shortcode
 	 * 
-	 * @deprecated 2.0.0
+	 * @deprecated 0.1.0
 	 * @deprecated Use the WordPress Media Manager to insert images in your posts
 	 * 
 	 * @since lazyest-gallery 0.11.0 
@@ -581,7 +581,7 @@ class Eazyest_Shortcodes {
 	/**
 	 * Eazyest_Shortcodes::lg_slideshow_shortcode()
 	 * Support for the <code>[lg_slideshow]</code> shortcode
-	 * @deprecated 2.0.0
+	 * @deprecated 0.1.0
 	 * @deprecated use Eazyest_Shortcodes::slideshow_shortcode()
 	 * 
 	 * @since lazyest-gallery 0.12.0
