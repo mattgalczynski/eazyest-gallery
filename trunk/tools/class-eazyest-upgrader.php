@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r5)
+ * @version 0.1.0 (r19)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -136,13 +136,13 @@ class Eazyest_Gallery_Upgrader {
 	function enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
 		if ( $this->should_upgrade() ) {	
-			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '2.0.0-r424', true );			
+			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r2', true );			
 			wp_localize_script( 'eazyest-gallery-upgrader', 'eazyestUpgraderSettings', $this->script_settings() );
 		} else {				
 			$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 			if ( ! in_array( 'eazyest_gallery_upgrader', $dismissed  ) ) {
 				wp_enqueue_style( 'wp-pointer' );			
-				wp_enqueue_script( 'eazyest-gallery-pointer',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-menu-pointer.$j", array( 'jquery', 'wp-pointer' ), '2.0.0-r424', true );			
+				wp_enqueue_script( 'eazyest-gallery-pointer',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-menu-pointer.$j", array( 'jquery', 'wp-pointer' ), '0.1.0-r2', true );			
 				wp_localize_script( 'eazyest-gallery-pointer', 'eazyestUpgraderPointer', $this->pointer_settings() );
 			}
 		}

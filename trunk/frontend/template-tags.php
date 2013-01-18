@@ -1,7 +1,7 @@
 <?php
 /**
  * Template tags to use in your WordPress theme templates or plugins
- * Notice: the function prefix has changed from <code>lg_</code> to <code>ezg_</code> since Eazyest Gallery 2.0.0
+ * Notice: the function prefix has changed from <code>lg_</code> to <code>ezg_</code> since Eazyest Gallery 0.1.0
  * 
  * @package Eazyest Gallery
  * @subpackage Frontend/Template Tags

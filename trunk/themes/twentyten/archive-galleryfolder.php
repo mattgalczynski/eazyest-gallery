@@ -6,7 +6,7 @@
  *
  * @package Eazyest Gallery
  * @subpackage Twenty_Ten
- * @since Eazyest Gallery 2.0.0 (r440)
+ * @since 0.1.0 (r2)
  */
 
 get_header(); ?>

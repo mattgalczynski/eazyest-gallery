@@ -6,7 +6,7 @@
  *
  * @package Eazyest Gallery
  * @subpackage Twenty_Twelve
- * @since Eazyest Gallery 2.0.0 (r440)
+ * @since Eazyest Gallery 0.1.0 (r2)
  */
 
 get_header(); ?>
@@ -29,7 +29,7 @@ get_header(); ?>
 					/* Include the post format-specific template for the content. If you want to overload
 					 * this in a child theme then include a file called called content-galleryfolder.php
 					 */
-					get_template_part( 'content', 'galleryfolder' );
+					ezg_get_template_part( 'content', 'galleryfolder' );
 				
 				ezg_folders_break( ++$i ); 
 				endwhile; ?>				
