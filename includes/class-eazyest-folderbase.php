@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r20)
+ * @version 0.1.0 (r21)
  * @access public
  */
 
@@ -675,6 +675,7 @@ class Eazyest_FolderBase {
 	 * 
 	 * @since lazyest-gallery 1.1.0
 	 * @uses trailingslashit()
+	 * @uses untrailingslashit()
 	 * @param string $directory
 	 * @return bool
 	 */
@@ -694,9 +695,10 @@ class Eazyest_FolderBase {
 		}
 		
 		// check if gallery is not WordPress wp-content
-		$content_dir = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
-		if ( $directory == $content_dir )
-			return true;
+		if ( strlen( $directory ) > 11 ) {
+			if ( 'wp-content' == basename( untrailingslashit( $directory ) ) )
+				return true;
+		}
 			
 		// check if WordPress is not in a gallery subirectory
 		$subdirs = $this->get_folder_paths( $directory );
