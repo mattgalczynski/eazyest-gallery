@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2012 Brimosoft
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r20)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -268,8 +268,8 @@ class Eazyest_Admin {
    * @return Eazyest_Ajax object
    */
   function ajax() {		
-		require_once( eazyest_gallery()->plugin_dir . 'admin/class-eazyest-ajax.php' );
-		return Eazyest_Ajax::instance();
+		require_once( eazyest_gallery()->plugin_dir . 'admin/class-eazyest-admin-ajax.php' );
+		return Eazyest_Admin_Ajax::instance();
   }
   
   

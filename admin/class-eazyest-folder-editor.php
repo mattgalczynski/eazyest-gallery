@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012
  * @version 0.1.0 (r19)
- * @since 0.1.0 (r2)
+ * @since 0.1.0 (r20)
  * @access public
  */
  
@@ -65,7 +65,7 @@ class Eazyest_Folder_Editor {
 	 *  'no_action'      : take no action
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses aplly_filters()
+	 * @uses apply_filters()
 	 * @uses add_action()
 	 * @return void
 	 */
@@ -74,19 +74,20 @@ class Eazyest_Folder_Editor {
 		$before_list_items_action = apply_filters( 'eazyest_gallery_before_list_items_action', 'collect_images' ); 
 		
 		$manage_action = "manage_{$type}_posts_custom_column";
-  	add_action( 'admin_init',            array( $this, 'collect_folders_action' ) );
-  	add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts'  ) );
-  	add_action( 'admin_head',            array( $this, 'admin_style'            ) );
+  	add_action( 'admin_init',                        array( $this, 'collect_folders_action'  )        );
+  	add_action( 'admin_enqueue_scripts',             array( $this, 'register_scripts'        ), 10    );
+  	add_action( 'admin_enqueue_scripts',             array( $this, 'enqueue_scripts'         ), 20    );
+  	add_action( 'admin_head',                        array( $this, 'admin_style'             )        );
   	
-  	add_action( 'admin_action_save_gallery',      array( $this, 'save_gallery'    ) );
-  	add_action( 'admin_action_move_folder',       array( $this, 'move_folder'     ) );
-  	add_action( 'admin_action_delete',            array( $this, 'delete_action'   ) );
-  	add_action( 'admin_action_editpost',          array( $this, 'do_bulk_actions' ) );
-  	add_action( 'admin_action_folder_action',     array( $this, 'do_bulk_actions' ) );
-  	add_action( 'admin_action_attachment_action', array( $this, 'do_bulk_actions' ) );
-  	add_action( 'admin_action_untrash_folders',   array( $this, 'untrash_folders' ) );
+  	add_action( 'admin_action_save_gallery',         array( $this, 'save_gallery'            )        );
+  	add_action( 'admin_action_move_folder',          array( $this, 'move_folder'             )        );
+  	add_action( 'admin_action_delete',               array( $this, 'delete_action'           )        );
+  	add_action( 'admin_action_editpost',             array( $this, 'do_bulk_actions'         )        );
+  	add_action( 'admin_action_folder_action',        array( $this, 'do_bulk_actions'         )        );
+  	add_action( 'admin_action_attachment_action',    array( $this, 'do_bulk_actions'         )        );
+  	add_action( 'admin_action_untrash_folders',      array( $this, 'untrash_folders'         )        );
   	
-  	add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+  	add_action( 'admin_notices',                     array( $this, 'admin_notices'           )        );
   	
   	add_action( 'edit_form_after_title',             array( $this, 'media_buttons'           )        );
   	add_action( 'edit_form_after_editor',            array( $this, 'list_table_attachments'  ),  1, 1 );
@@ -130,18 +131,47 @@ class Eazyest_Folder_Editor {
 	}
 	
 	/**
-	 * Eazyest_Folder_Editor::admin_enqueue_scripts()
-	 * Register scripts for later use
+	 * Eazyest_Folder_Editor::register_scripts()
+	 * Register scripts for later use.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses wp_register_script()
 	 * @return void
 	 */
-	function admin_enqueue_scripts() {
+	function register_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
-		wp_register_script( 'jquery-tablednd',       eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",       array( 'jquery' ),          '0.7',        true );
-		wp_register_script( 'eazyest-gallery-admin', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j", array( 'jquery-tablednd' ), '0.1.0-r2', true );
-	}	
+		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',       true );
+		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r2',  true );
+		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r20', true );
+	}
+	
+	/**
+	 * Eazyest_Folder_Editor::enqueue_scripts()
+	 * Enqueue scripts to collect new ftp-uploaded folders.
+	 * 
+	 * Applies filter <code>'eazyest_gallery_ajax_collect'</code> bool
+	 * 
+	 * @since 0.1.0 (r20)
+	 * @uses apply_filters()
+	 * @uses wp_enqueue_srcipt()
+	 * @return void
+	 */
+	function enqueue_scripts() {
+		if ( $this->bail() )
+			return;
+		if ( apply_filters( 'eazyest_gallery_ajax_collect', true ) && ! isset( $_REQUEST['collect-refresh'] ) ) {
+			wp_localize_script( 'eazyest-gallery-collect', 'eazyestGalleryCollect', $this->localize_collect_script() );
+			wp_enqueue_script( 'eazyest-gallery-collect' );
+		}
+	}
+	
+	function localize_collect_script() {
+		return array(
+			'pagenow'     => 'edit-' . eazyest_gallery()->post_type,
+			'collecting'  => __( 'Searching for new folders and images', 'eazyest-gallery' ),
+			'_wpnonce'    => wp_create_nonce( 'collect-folders' )
+		);
+	}
 	
 	/**
 	 * Eazyest_Folder_Editor::bail()
@@ -541,6 +571,11 @@ class Eazyest_Folder_Editor {
 			}
 			.media-menu-item:empty {
 				display: none;
+			}
+			.collect-folders {
+				background: url(images/wpspin_light.gif) no-repeat;
+				background-size: 16px 16px;
+				padding-left: 18px;
 			}
 		</style>
 		<?php	

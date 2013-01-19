@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r13)
+ * @version 0.1.0 (r20)
  * @access public
  */
 
@@ -1411,14 +1411,18 @@ class Eazyest_FolderBase {
 	 * Delete an attachment by filename path/image.ext
 	 * 
 	 * @since 0.1.0 (r2)
+	 * @uses $wpdb
 	 * @uses wp_delete_attachment()
 	 * @param string $image_name
 	 * @return void
 	 */
 	function delete_attachment_by_filename( $image_name ) {
 		global $wpdb;
-		$ids = $wpdb->get_col( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_wp_attached_file' AND meta_value=%s", $image_name ) );
-		$attachment_id = $ids[0];
+		$guid = eazyest_gallery()->address . $image_name;
+		$ids = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $guid ), ARRAY_A );
+		if ( empty( $ids ) )
+			return false;
+		$attachment_id = $ids[0]['ID'];
 		return wp_delete_attachment( $attachment_id, true );	
 	}
 	
@@ -1427,6 +1431,7 @@ class Eazyest_FolderBase {
 	 * Delete attachments from WordPress database when original image has been (ftp) erased 
 	 * 
 	 * @since 0.1.0 (r2)
+	 * @uses get_post_meta()
 	 * @param integer $post_id
 	 * @return void
 	 */
@@ -1435,7 +1440,7 @@ class Eazyest_FolderBase {
 		$this->get_folder_images( $post_id );
 		$deleted = 0;		
 		if ( ! empty( $this->posted_images['images'] ) ) {			
-			$gallery_path = get_metadata( 'post', $post_id, 'gallery_path', true );
+			$gallery_path = get_post_meta( $post_id, 'gallery_path', true );
 			foreach( $this->posted_images['images'] as $key => $image_name  ) {
 				if ( ! in_array( $image_name, $this->folder_images['images'] ) ) {
 					if ( $this->delete_attachment_by_filename( $gallery_path . '/' . $image_name ) ) {
@@ -1499,7 +1504,7 @@ class Eazyest_FolderBase {
 	public function image_downsize( $resize, $post_id, $size ) {
 		if ( $this->is_gallery_image( $post_id ) ) {
 			$resize = $this->resize_image( $post_id, $size );
-		}	
+		}		
 		return $resize;
 	}
 	
@@ -1698,7 +1703,6 @@ class Eazyest_FolderBase {
 		
 		if ( empty( $attachment ) )
 			return false;
-		
 		return false !== strpos( $attachment->guid, eazyest_gallery()->address );	
 	}
 	
