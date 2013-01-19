@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r21)
+ * @version 0.1.0 (r22)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -177,7 +177,7 @@ class Eazyest_Admin_Ajax {
 		if ( eazyest_folderbase()->is_dangerous( $root ) || ! file_exists( $root ) ) {
 			if ( eazyest_folderbase()->is_dangerous( $root ) ){
 				$response['result'] = 1;
-				$response['folder'] = eazyest_gallery()->get_option( 'gallery_folder' );
+				$response['folder'] = eazyest_gallery()->gallery_folder;
 			} else {
 				$response['result'] = 2;
 			}				
@@ -204,7 +204,7 @@ class Eazyest_Admin_Ajax {
 				wp_mkdir_p( $root );
 			if ( ! file_exists( $root ) ) {
 				$response['result'] = 1;
-				$response['folder'] = eazyest_gallery()->get_option( 'gallery_folder' );
+				$response['folder'] = eazyest_gallery()->gallery_folder;
 			}	
 		}
 		wp_send_json( $response );

@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r21)
+ * @version 0.1.0 (r22)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -401,9 +401,9 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function gallery_folder() {
-		$gallery_folder = eazyest_gallery()->get_option( 'gallery_folder' );
-		$gallery_secure = eazyest_gallery()->get_option( 'gallery_secure' );
-		$new_install    = eazyest_gallery()->get_option( 'new_install'    );
+		$gallery_folder = eazyest_gallery()->gallery_folder;
+		$gallery_secure = eazyest_gallery()->gallery_secure;
+		$new_install    = eazyest_gallery()->new_install;
 		?><div style="position:relative">
 			<?php wp_nonce_field( 'file-tree-nonce',      'file-tree-nonce',       false ) ?>
 			<?php wp_nonce_field( 'gallery-folder-nonce', 'gallery-folder-nonce',  false ); ?>
@@ -434,7 +434,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function donate() {		
-		$show_credits = eazyest_gallery()->get_option( 'show_credits' );
+		$show_credits = eazyest_gallery()->show_credits;
 		$vife_stars   = eazyest_gallery()->plugin_url . 'admin/images/5-stars.png';		
 		?> 
 		<p>
@@ -461,7 +461,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function folders_page() {
-		$folders_page = eazyest_gallery()->get_option( 'folders_page' );
+		$folders_page = eazyest_gallery()->folders_page;
 		?>
 		<input id="folders_page" name="eazyest-gallery[folders_page]" type="number" min="0" step="1" class="small-text" value="<?php echo $folders_page; ?>" />
 		<label for="folders_page"><?php _e( 'per page', 'eazyest-gallery' ) ?></label>
@@ -476,7 +476,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function folders_columns() {
-		$folders_columns = eazyest_gallery()->get_option ( 'folders_columns' );
+		$folders_columns = eazyest_gallery()->folders_columns;
 		?>
 		<input id="folders_columns" name="eazyest-gallery[folders_columns]" type="number" min="0" step="1" class="small-text" value="<?php echo $folders_columns; ?>" />
 		<label for="folders_columns"><?php _e( 'columns', 'eazyest-gallery' ) ?></label>
@@ -510,7 +510,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function sort_folders() {
-		$sort_folders = eazyest_gallery()->get_option( 'sort_folders' );
+		$sort_folders = eazyest_gallery()->sort_folders;
 		$options = $this->sort_options(); 
 		?>
 		<select id="sort_folders" name="eazyest-gallery[sort_folders]">
@@ -529,7 +529,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function count_subfolders() {
-		$count_subfolders = eazyest_gallery()->get_option( 'count_subfolders' );
+		$count_subfolders = eazyest_gallery()->count_subfolders;
 		$options = array(
 			'none'     => __( 'Show number of images in folder only',                      'eazyest-gallery' ),
 			'include'  => __( 'Show number of images in folder including subfolders',      'eazyest-gallery' ),
@@ -553,8 +553,8 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function folder_image() {
-		$folder_image     = eazyest_gallery()->get_option( 'folder_image'     );
-		$random_subfolder = eazyest_gallery()->get_option( 'random_subfolder' );
+		$folder_image     = eazyest_gallery()->folder_image;
+		$random_subfolder = eazyest_gallery()->random_subfolder;
 		$options = array(
 			'featured_image' => __( 'Featured image',        'eazyest-gallery' ),
 			'first_image'    => __( 'First image in folder', 'eazyest-gallery' ),
@@ -584,7 +584,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function thumbs_page() {
-		$thumbs_page = eazyest_gallery()->get_option( 'thumbs_page' );
+		$thumbs_page = eazyest_gallery()->thumbs_page;
 		?>
 		<input id="thumbs_page" name="eazyest-gallery[thumbs_page]" type="number" min="0" step="1" class="small-text" value="<?php echo $thumbs_page; ?>" />
 		<label for="thumbs_page"><?php _e( 'per page', 'eazyest-gallery' ) ?></label>
@@ -599,7 +599,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function thumbs_columns() {
-		$thumbs_columns = eazyest_gallery()->get_option ( 'thumbs_columns' );
+		$thumbs_columns = eazyest_gallery()->thumbs_columns;
 		?>
 		<input id="thumbs_columns" name="eazyest-gallery[thumbs_columns]" type="number" min="0" step="1" class="small-text" value="<?php echo $thumbs_columns; ?>" />
 		<label for="thumbs_columns"><?php _e( 'columns', 'eazyest-gallery' ) ?></label>
@@ -614,7 +614,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function thumb_caption() {
-		$thumb_caption = eazyest_gallery()->get_option( 'thumb_caption' );
+		$thumb_caption = eazyest_gallery()->thumb_caption;
 		?>
 		<input type="checkbox" id="thumb_caption" name="eazyest-gallery[thumb_caption]" <?php checked( $thumb_caption ) ?> />
 		<label for="thumb_caption"><?php _e( 'Show captions in thumbnail view', 'eazyest-gallery' ) ?> </label>
@@ -629,7 +629,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function sort_thumbnails() {
-		$sort_thumbnails = eazyest_gallery()->get_option( 'sort_thumbnails' );
+		$sort_thumbnails = eazyest_gallery()->sort_thumbnails;
 		$options = $this->sort_options(); 
 		?>
 		<select id="sort_thumbnails" name="eazyest-gallery[sort_thumbnails]">
@@ -660,8 +660,8 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function on_thumb_click() {
-		$on_thumb_click = eazyest_gallery()->get_option( 'on_thumb_click' );
-		$thumb_popup    = eazyest_gallery()->get_option( 'thumb_popup'    );
+		$on_thumb_click = eazyest_gallery()->on_thumb_click;
+		$thumb_popup    = eazyest_gallery()->thumb_popup;
 		$options = array(
 			'nothing'    => __( 'Nothing',                'eazyest-gallery' ),
 			'attachment' => __( 'Show attachment page',   'eazyest-gallery' ),
@@ -697,8 +697,8 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function on_slide_click() {
-		$on_slide_click = eazyest_gallery()->get_option( 'on_slide_click' );
-		$slide_popup    = eazyest_gallery()->get_option( 'slide_popup'    );
+		$on_slide_click = eazyest_gallery()->on_slide_click;
+		$slide_popup    = eazyest_gallery()->slide_popup;
 		$options = array(
 			'nothing'    => __( 'Nothing',              'eazyest-gallery' ),
 			'full'       => __( 'Show full size image', 'eazyest-gallery' ),			
@@ -729,7 +729,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function listed_as() {
-		$listed_as = eazyest_gallery()->get_option( 'listed_as' );
+		$listed_as = eazyest_gallery()->listed_as;
 		?>
 		<input type="text" id="listed_as" name="eazyest-gallery[listed_as]" value="<?php echo $listed_as; ?>" />
 		<?php
@@ -744,7 +744,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function gallery_slug() {
-		$gallery_slug = eazyest_gallery()->get_option( 'gallery_slug' );?>
+		$gallery_slug = eazyest_gallery()->gallery_slug;?>
 		<input type="text" id="gallery_slug" class="regular-text code" name="eazyest-gallery[gallery_slug]" value="<?php echo $gallery_slug; ?>" />
 		<?php
 	}
@@ -768,7 +768,7 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function viewer_level() {
-		$viewer_level = eazyest_gallery()->get_option( 'viewer_level' );
+		$viewer_level = eazyest_gallery()->viewer_level;
 		$options = array(
 			'everyone' => $this->everyone()
 		);
