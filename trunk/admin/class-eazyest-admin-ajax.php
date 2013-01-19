@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r20)
+ * @version 0.1.0 (r21)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -43,7 +43,7 @@ class Eazyest_Admin_Ajax {
 	 * create Eazyest_Akax instance
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @return object Eazyest_Admin_Ajax
+	 * @return self object Eazyest_Admin_Ajax
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
@@ -62,18 +62,20 @@ class Eazyest_Admin_Ajax {
 	 * @return void
 	 */
 	function actions() {
+		// admin actions
 		$actions = array( 
 			'upload', 
 			'filetree', 
 			'select_dir', 
-			'gallery_folder_change',
-			'collect_folders'
+			'folder_change',
+			'collect_folders',
+			'create_folder',
 		);
 		foreach( $actions as $action ) {
 			add_action( "wp_ajax_eazyest_gallery_$action", array( $this, $action ) );
 		}
 	}
-	
+  // Admin actions ------------------------------------------------------------
 	/**
 	 * Eazyest_Ajax::upload()
 	 * Refresh the attachment list table after imaage uploads
@@ -109,7 +111,7 @@ class Eazyest_Admin_Ajax {
 	 */
 	function filetree() {		
 		$content_dir = str_replace( '\\', '/', WP_CONTENT_DIR );
-		if ( check_ajax_referer( 'filetree' ) ) {
+		if ( check_ajax_referer( 'file-tree-nonce' ) ) {
 			$dir = urldecode( $_POST['dir'] );
 			if( file_exists( $dir ) ) {
 				$files = scandir( $dir );
@@ -121,12 +123,9 @@ class Eazyest_Admin_Ajax {
 					foreach( $files as $file ) {
 						$file = str_replace( '\\', '/', $file );
 						if( file_exists( $dir . $file ) ) {
-							if ( eazyest_folderbase()->valid_dir( $dir . $file ) ){
-								if ( ( $dir . $file == $content_dir ) || ( ! eazyest_folderbase()->is_dangerous( $dir . $file ) ) ) {									
-									echo "<li class='directory collapsed'><a href='#' rel='" . htmlentities( $dir . $file ) . "/'>" . htmlentities( $file ) . "</a></li>";
-								}
-								
-							}
+							if ( eazyest_folderbase()->valid_dir( $dir . $file ) ) {									
+								echo "<li class='directory collapsed'><a href='#' rel='" . htmlentities( $dir . $file ) . "/'>" . htmlentities( $file ) . "</a></li>";
+							}								
 						}
 					}				
 					echo "</ul>";	
@@ -142,14 +141,20 @@ class Eazyest_Admin_Ajax {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses check_ajax_referer()
+	 * @uses wp_die()
 	 * @return void
 	 */
 	function select_dir() {
-		if ( check_ajax_referer( 'filetree' ) ) {
+		if ( check_ajax_referer( 'file-tree-nonce' ) ) {
 			$dir = urldecode( $_POST['dir'] );
 			if ( file_exists( $dir ) ) {
 				$abspath = str_replace( '\\', '/', ABSPATH );
-				echo eazyest_gallery()->get_relative_path( $abspath, $dir );
+				$rel_dir = eazyest_gallery()->get_relative_path( $abspath, $dir );
+				eazyest_gallery()->change_option( 'gallery_folder', $rel_dir );
+				if ( ! eazyest_folderbase()->is_dangerous( eazyest_gallery()->root() ) )
+					echo $rel_dir;
+				else 
+					echo "!";	
 			}
 		}
 		wp_die();
@@ -157,21 +162,52 @@ class Eazyest_Admin_Ajax {
 	
 	/**
 	 * Eazyest_Ajax::gallery_folder_change()
-	 * Echo 1 if gallery folder path exists.
+	 * Check if gallery folder path exists or is on a dangerous path.
 	 * 
 	 * @since 0.1.0 (r2)
+	 * @uses check_ajax_referer()
+	 * @uses trailingslashit()
+	 * @uses wp_send_json() to send array of results
 	 * @return void
 	 */
-	function gallery_folder_change() {
-		check_ajax_referer( 'gallery-folder' );
-		eazyest_gallery()->change_option( 'gallery_folder', $_POST['gallery_folder'] );
-		$result = 0;
-		if ( eazyest_folderbase()->is_dangerous( eazyest_gallery()->root() ) )
-			$result = 1;
-		if ( eazyest_gallery()->right_path() )
-			$result = $result + 10;
-		echo str_pad( strval( $result ), 2, '0', STR_PAD_LEFT );	
-		wp_die();	
+	function folder_change() {
+		check_ajax_referer( 'gallery-folder-nonce' );
+		$root = str_replace( '\\', '/', trailingslashit( eazyest_gallery()->get_absolute_path( ABSPATH . $_POST['gallery_folder'] ) ) );
+		$response = array( 'result' => 0, 'folder' => $_POST['gallery_folder'] );
+		if ( eazyest_folderbase()->is_dangerous( $root ) || ! file_exists( $root ) ) {
+			if ( eazyest_folderbase()->is_dangerous( $root ) ){
+				$response['result'] = 1;
+				$response['folder'] = eazyest_gallery()->get_option( 'gallery_folder' );
+			} else {
+				$response['result'] = 2;
+			}				
+		}
+		wp_send_json( $response );
+	}
+	
+	/**
+	 * Eazyest_Admin_Ajax::create_folder()
+	 * Create new gallery folder on Ajax request
+	 * 
+	 * @since 0.1.0 (r21)
+	 * @uses check_ajax_referer()
+	 * @uses trailingslashit()
+	 * @uses wp_send_json() to send array of results
+	 * @return void
+	 */
+	function create_folder() {
+		check_ajax_referer( 'gallery-folder-nonce' );		
+		$root = str_replace( '\\', '/', trailingslashit( eazyest_gallery()->get_absolute_path( ABSPATH . $_POST['gallery_folder'] ) ) );
+		$response = array( 'result' => 0, 'folder' => $_POST['gallery_folder'] );
+		if ( ! eazyest_folderbase()->is_dangerous( $root ) ) {
+			if ( ! file_exists( $root ) )
+				wp_mkdir_p( $root );
+			if ( ! file_exists( $root ) ) {
+				$response['result'] = 1;
+				$response['folder'] = eazyest_gallery()->get_option( 'gallery_folder' );
+			}	
+		}
+		wp_send_json( $response );
 	}
 	
 	/**
@@ -185,7 +221,7 @@ class Eazyest_Admin_Ajax {
 	 * @return void
 	 */
 	function collect_folders() {
-		check_ajax_referer( 'collect-folders' );
+		// check_ajax_referer( 'collect-folders' );
 		$subaction = isset( $_POST['subaction'] ) ? $_POST['subaction'] : 'start';
 		$results = array( 'images' => array( 'added' => 0, 'deleted' => 0 ), 'folders' => array() );
 		if ( 'start' == $subaction ) {

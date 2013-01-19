@@ -8,10 +8,10 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Admin Settings Page for LAzyest Gallery
  * 
  * @package Eazyest Gallery
- * @subpackage Settings
+ * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r19)
+ * @version 0.1.0 (r21)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -142,6 +142,13 @@ class Eazyest_Settings_Page {
 		.jquery-filetree li.wait { 
 			background: url(<?php echo $spinner_gif ?>) left top no-repeat; 
 		}
+		#eazyest-ajax-response {
+			color: #cc0000;
+		}
+		#eazyest-ajax-response code {
+			color:  #ff0000;
+			font-size:12px;
+		}
 		</style>
 		<?php
 	}
@@ -157,8 +164,8 @@ class Eazyest_Settings_Page {
 	 */
 	function admin_enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
-		wp_register_script( 'jquery-filetree',          eazyest_gallery()->plugin_url . "admin/js/jquery.filetree.$j",          array( 'jquery' ),          '1.01-lzg',   true );
-		wp_register_script( 'eazyest-gallery-settings', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-settings.$j", array( 'jquery-filetree' ), '0.1.0-r2', true );
+		wp_register_script( 'jquery-filetree',          eazyest_gallery()->plugin_url . "admin/js/jquery.filetree.$j",          array( 'jquery' ),          '1.01-ezg',  true );
+		wp_register_script( 'eazyest-gallery-settings', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-settings.$j", array( 'jquery-filetree' ), '0.1.0-r21', true );
 		
 		wp_localize_script( 'eazyest-gallery-settings', 'fileTreeSettings', $this->filetree_args() );
 	}
@@ -173,9 +180,12 @@ class Eazyest_Settings_Page {
 	 */
 	function filetree_args() {	
 		return array(
-			'root'        => eazyest_gallery()->common_root(),
-			'script'      => admin_url( 'admin-ajax.php' ),
-			'loadMessage' => __( 'Loading..', 'eazyest-gallery' ) 
+			'root'             => eazyest_gallery()->common_root(),
+			'script'           => admin_url( 'admin-ajax.php' ),
+			'loadMessage'      => __( 'Loading..',                               'eazyest-gallery' ),
+			'errorMessage'     => __( 'You cannot use %s for a gallery folder.', 'eazyest-gallery' ),
+			'notExistsMessage' => __( 'This folder does not exist yet.',         'eazyest-gallery' ),
+			'notCreateMessage' => __( 'Could not create folder %s.',             'eazyest-gallery' ), 
 		);	
 	}
 	
@@ -395,12 +405,14 @@ class Eazyest_Settings_Page {
 		$gallery_secure = eazyest_gallery()->get_option( 'gallery_secure' );
 		$new_install    = eazyest_gallery()->get_option( 'new_install'    );
 		?><div style="position:relative">
-			<?php wp_nonce_field( 'filetree',       'file-tree-nonce', false ) ?>
-			<?php wp_nonce_field( 'gallery-folder', 'gallery-folder',  false ); ?>
+			<?php wp_nonce_field( 'file-tree-nonce',      'file-tree-nonce',       false ) ?>
+			<?php wp_nonce_field( 'gallery-folder-nonce', 'gallery-folder-nonce',  false ); ?>
 			<input type="hidden" name="eazyest-gallery[gallery_secure]" value="<?php echo $gallery_secure; ?>" />			
 			<input type="hidden" name="eazyest-gallery[new_install]" value="<?php echo $new_install; ?>" />
 			<input type="text" name="eazyest-gallery[gallery_folder]" id="gallery_folder" size="60" class="regular-text code" value="<?php echo $gallery_folder ?>" />
 			<a id="folder-select" class="button button-small open" href="#"><strong>&#8744;</strong></a><div id="file-tree"></div>
+			<div id="eazyest-ajax-response" class="hidden"></div>
+			<a id="create-folder" class="button hidden" href="#"><?php _e( 'Create folder', 'eazyest-gallery' ); ?></a>
 		</div>	
 		<?php
 		wp_enqueue_script( 'eazyest-gallery-settings' );
@@ -440,7 +452,7 @@ class Eazyest_Settings_Page {
 		<?php
 	}
 	
-	// Folder options --------------------
+	// Folder options ------------------------------------------------------------
 	/**
 	 * Eazyest_Settings_Page::folders_page()
 	 * Output settings field markup
@@ -799,7 +811,7 @@ class Eazyest_Settings_Page {
 				'content' => "\n<p>" .          __( 'This screen provides access to all of the Eazyest Gallery settings.',                 'eazyest-gallery' ) . "</p>" .
 				             "\n<p>" .          __( 'Please see the additional help tabs for more information on each indiviual section.', 'eazyest-gallery' ) . "</p>" .
 										 /* translators %s <a href=> %s </a> */				    		             
-    		             "\n<p>" . sprintf( __( 'For Image sizes, please refer to %sWordPress Media Settings%s.',                    'eazyest-gallery' ), "<a href='$options_media'>", "</a>" ) . "</p>"
+    		             "\n<p>" . sprintf( __( 'For Image sizes, please refer to %sWordPress Media Settings%s.',                      'eazyest-gallery' ), "<a href='$options_media'>", "</a>" ) . "</p>"
 			),
 			'main' => array(
 				'id'      => 'main-settings',

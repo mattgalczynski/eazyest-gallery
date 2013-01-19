@@ -2,7 +2,7 @@
 	
 	$(document).ready(function(){
 	
-	// filetree dropdown ---------------------------------------------------------  
+		// filetree dropdown ---------------------------------------------------------  
 		$('#folder-select').click(function(){
 				if ($(this).hasClass('open') ) {
 					if ( ! $(this).hasClass('loaded') ) {
@@ -12,11 +12,12 @@
 							loadMessage : fileTreeSettings.loadMessage	
 						}, function(directory){
 							var data = {
-								dir    : directory,
 								action : 'eazyest_gallery_select_dir',
-								_wpnonce : $('#file-tree-nonce').val()
+								_wpnonce : $('#file-tree-nonce').val(),
+								dir    : directory
 							}
 							$.post( fileTreeSettings.script, data, function(response){
+								if ( '!' != response )
 								$('#gallery_folder').val(response);
 							});
 						})
@@ -34,12 +35,62 @@
 			return false;
 		});
 		
+		// close filetree dropdown on click
 		$('#wpcontent').click(function(){
 			$('#file-tree').hide();
 			$('#folder-select').addClass('open');
 		});
 		
-	// folder image select -------------------------------------------------------		
+		// gallery_folder changed, check if gallery folder is ok
+		$('#gallery_folder').change( function(){
+			var data = {
+				action         : 'eazyest_gallery_folder_change',
+				_wpnonce       : $('#gallery-folder-nonce').val(), 
+				gallery_folder : $('#gallery_folder').val()
+			};
+			$.post( ajaxurl, data, function(response){
+				if ( 0 == response.result ) {
+					$('#eazyest-ajax-response').hide();
+					$('#create-folder').hide();
+				} else {
+					if ( 1 == response.result ) { 
+						// folder on a dangerous path, restore value from settings
+						$('#eazyest-ajax-response').html(fileTreeSettings.errorMessage.replace('%s', '<code>'+$('#gallery_folder').val()+'</code>')).show('fast', function(){							
+							$('#gallery_folder').val(response.folder);
+						});
+					} else {						
+						// file does not exist
+						$('#eazyest-ajax-response').html(fileTreeSettings.notExistsMessage).show('fast', function(){
+							$('#create-folder').show();
+						});
+					}
+				}
+			});
+			return false;
+		});
+		
+		// create-folder button clicked
+		$('#create-folder').click(function(){
+			var data = {
+				action : 'eazyest_gallery_create_folder',
+				_wpnonce : $('#gallery-folder-nonce').val(), 
+				gallery_folder : $('#gallery_folder').val()
+			};
+			$.post(ajaxurl, data, function(response){
+				if ( 0 == response.result ) {
+					$('#eazyest-ajax-response').hide();
+					$('#create-folder').hide();
+				} else {
+					// could not create folder, restore value from settings
+					$('#eazyest-ajax-response').html(fileTreeSettings.notCreateMessage.replace('%s', '<code>'+$('#gallery_folder').val()+'</code>')).show('fast', function(){							
+						$('#gallery_folder').val(response.folder);
+					});
+				}
+			});
+			return false;
+		});
+		
+		// folder image select -------------------------------------------------------		
 		function showRandomSubFolder() {			
 			if ( $('#folder_image').val() == 'random_image' )
 				$('#random-subfolder').css('visibility','visible');
@@ -53,7 +104,7 @@
 			showRandomSubFolder();
 		});
 		
-	// thumbnail popup select ----------------------------------------------------
+		// thumbnail popup select ----------------------------------------------------
 		function showThumbnailPopup( aField, aPopup ) {
 			var options = new Array('medium', 'large', 'full');
 			var value = $(aField).val();
@@ -73,6 +124,6 @@
 			showThumbnailPopup( '#on_slide_click', '#slide-popup' );
 		});
 		
-	});
+	}); // (document).ready
 		
 })(jQuery)
