@@ -11,13 +11,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r20)
  * @access public
  */
-class Eazyest_Ajax {
+class Eazyest_Admin_Ajax {
 	
 	/**
-	 * @staticvar Eazyest_Ajax $instance The single object in memory
+	 * @staticvar Eazyest_Admin_Ajax $instance The single object in memory
 	 */
 	private static $instance;
 	
@@ -43,11 +43,11 @@ class Eazyest_Ajax {
 	 * create Eazyest_Akax instance
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @return Eazyest_Ajax object
+	 * @return object Eazyest_Admin_Ajax
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Eazyest_Ajax;
+			self::$instance = new Eazyest_Admin_Ajax;
 			self::$instance->init();
 		}
 		return self::$instance;		
@@ -62,7 +62,13 @@ class Eazyest_Ajax {
 	 * @return void
 	 */
 	function actions() {
-		$actions = array( 'upload', 'filetree', 'select_dir', 'gallery_folder_change' );
+		$actions = array( 
+			'upload', 
+			'filetree', 
+			'select_dir', 
+			'gallery_folder_change',
+			'collect_folders'
+		);
 		foreach( $actions as $action ) {
 			add_action( "wp_ajax_eazyest_gallery_$action", array( $this, $action ) );
 		}
@@ -151,7 +157,9 @@ class Eazyest_Ajax {
 	
 	/**
 	 * Eazyest_Ajax::gallery_folder_change()
-	 * Echo 1 if gallery folder path exists
+	 * Echo 1 if gallery folder path exists.
+	 * 
+	 * @since 0.1.0 (r2)
 	 * @return void
 	 */
 	function gallery_folder_change() {
@@ -164,6 +172,55 @@ class Eazyest_Ajax {
 			$result = $result + 10;
 		echo str_pad( strval( $result ), 2, '0', STR_PAD_LEFT );	
 		wp_die();	
+	}
+	
+	/**
+	 * Eazyest_Admin_Ajax::collect_folders()
+	 * Checks for new or deleted images per folder on AJAX call.
+	 * 
+	 * @since 0.1.0 (r20)
+	 * @uses check_ajax_referer()
+	 * @use set_transient() to store intemediate results
+	 * @uses get_transient() to retrieve intermediate results 
+	 * @return void
+	 */
+	function collect_folders() {
+		check_ajax_referer( 'collect-folders' );
+		$subaction = isset( $_POST['subaction'] ) ? $_POST['subaction'] : 'start';
+		$results = array( 'images' => array( 'added' => 0, 'deleted' => 0 ), 'folders' => array() );
+		if ( 'start' == $subaction ) {
+			global $wpdb;
+			$results['folders']  = $wpdb->get_results( $wpdb->prepare(  "SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status = 'publish'", eazyest_gallery()->post_type  ), ARRAY_A );
+		} else if ( 'next' == $subaction ) {
+			$results = get_transient( 'eazyest-gallery-ajax-collect' );
+		} else {
+			echo __( 'Cheating huh?', 'eazyest-gallery' );
+		}
+		if ( count( $results['folders'] ) ) {
+			$folder = reset( $results['folders'] );
+			$new_images = eazyest_folderbase()->get_new_images( $folder['ID'] );
+			if ( 0 != $new_images ) {
+				if ( 0 > $new_images )
+					$results['images']['deleted'] = $results['images']['deleted'] - $new_images;
+				else	 				
+					$results['images']['added'] = $results['images']['added'] + $new_images;
+			}
+			eazyest_folderbase()->collect_images( $folder['ID'] );
+			array_shift( $results['folders'] );
+			set_transient( 'eazyest-gallery-ajax-collect', $results );
+		}
+		if ( count( $results['folders'] ) ) {
+			echo 'next';
+		} else {
+			if ( $results['images']['added'] || $results['images']['deleted'] ) {
+				$message = sprintf( _n( '%d Image added.', '%d Images added.', $results['images']['added'], 'eazyest-gallery' ), $results['images']['added'] ) . '<br />';
+				$message .= sprintf( _n( '%d Image deleted.', '%d Images deleted.', $results['images']['deleted'], 'eazyest-gallery' ), $results['images']['deleted'] );
+				echo $message;
+			} else {
+				echo __( 'No images added nor deleted', 'eazyest-gallery' );
+			}
+		}
+		wp_die();		 
 	}
 	
 } // Eazyest_Ajax
