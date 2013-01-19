@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r12)
+ * @version 0.1.0 (r22)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -51,10 +51,10 @@ class Eazyest_Frontend {
 	public function __get( $key ) { 
 		switch( $key ) {
 			case 'folder_columns' :
-				$columns = isset( $this->data['folder_columns'] ) ? $this->data['folder_columns'] : eazyest_gallery()->get_option( 'folders_columns' );
+				$columns = isset( $this->data['folder_columns'] ) ? $this->data['folder_columns'] : eazyest_gallery()->folders_columns;
 				return intval( $columns );
 			case 'thumbnail_columns' :	
-				$columns = isset( $this->data['thumbnail_columns'] ) ? $this->data['thumbnail_columns'] : eazyest_gallery()->get_option( 'thumbs_columns' );
+				$columns = isset( $this->data['thumbnail_columns'] ) ? $this->data['thumbnail_columns'] : eazyest_gallery()->thumbs_columns;
 				return intval( $columns ); 
 			default :	
 				return isset( $this->data[$key] ) ? $this->data[$key] : null;
@@ -203,7 +203,7 @@ class Eazyest_Frontend {
  			$post_type = eazyest_gallery()->post_type;
  		if ( is_post_type_archive( $post_type ) && $post_type == $query->get( 'post_type' ) ) {
  			$query->set( 'post_parent', 0 );
- 			$posts_per_page = eazyest_gallery()->get_option( 'folders_page' );
+ 			$posts_per_page = eazyest_gallery()->folders_page;
  			if ( 0 == $posts_per_page )
  				$posts_per_page = -1;
  			$query->set( 'posts_per_page', $posts_per_page );
@@ -479,7 +479,7 @@ class Eazyest_Frontend {
 			return $id;
 	
 		global $wpdb;
-		$option = eazyest_gallery()->get_option( 'folder_image' );
+		$option = eazyest_gallery()->folder_image;
 		// featured image is selected
 		if ( 'featured_image' == $option ) {
 			$id = eazyest_folderbase()->featured_image( $post_id );
@@ -490,7 +490,7 @@ class Eazyest_Frontend {
 		}
 		// random image is selected
 		if ( 'random_image' == $option ) {
-			$ids = eazyest_folderbase()->random_images( $post_id, 1, eazyest_gallery()->get_option( 'random_subfolder' ) );
+			$ids = eazyest_folderbase()->random_images( $post_id, 1, eazyest_gallery()->random_subfolder );
 			$id = $ids[0];
 		}	
 		if ( ! $id )
@@ -543,7 +543,7 @@ class Eazyest_Frontend {
 		global $post;		
 		$post_id = 0 != $post_id ? $post_id : $post->ID;
 		$thumbnail_id = $this->post_thumbnail_id( null, $post_id, '_thumbnail_id' );
-		$option = eazyest_gallery()->get_option( 'folder_image' );
+		$option = eazyest_gallery()->folder_image;
 		$src = '';
 		$icon = apply_filters( 'eazyest_gallery_folder_icon', eazyest_gallery()->plugin_url . 'frontend/images/folder-icon.png' );
 		if ( 'none' != $option ) {
@@ -791,7 +791,7 @@ class Eazyest_Frontend {
 	 * @return void
 	 */
 	function folder_attachments_count( $post_id = 0 ) {
-		$option = eazyest_gallery()->get_option( 'count_subfolders' );
+		$option = eazyest_gallery()->count_subfolders;
 		
 		// bail if no attachment count
 		if ( 'nothing' == $option )
@@ -839,7 +839,7 @@ class Eazyest_Frontend {
 			}  			
 		}
 		/* translators: %1s = number; %2s = images (text) */
-		$images_string   = sprintf( __( '%1s %2s', 'eazyest-gallery' ), $foldercount, eazyest_gallery()->get_option( 'listed_as' ) );
+		$images_string   = sprintf( __( '%1s %2s', 'eazyest-gallery' ), $foldercount, eazyest_gallery()->listed_as );
 		if ( 'separate' == $option )
 			/* translators: number of images in subfolders */
 			$children_string = sprintf( __( '%s in subfolders', 'eazyest-gallery' ), $children_count );
@@ -1045,10 +1045,10 @@ class Eazyest_Frontend {
 		if ( $post_id == 0 )
 			$post_id = get_the_ID();
 			
-		list( $orderby, $order ) = explode( '-', eazyest_gallery()->get_option( 'sort_thumbnails' ) );
+		list( $orderby, $order ) = explode( '-', eazyest_gallery()->sort_thumbnails );
 		$orderby = $orderby == 'post_id' ? 'ID' : $orderby;
 		
-		$columns = $this->thumbnail_columns = eazyest_gallery()->get_option( 'thumbs_columns' );
+		$columns = $this->thumbnail_columns = eazyest_gallery()->thumbs_columns;
 		
 		$itemtag    = $this->itemtag();
 		$icontag    = $this->icontag();
@@ -1071,13 +1071,13 @@ class Eazyest_Frontend {
 			}	else
 				return $html;
 		} else {
-			if ( eazyest_gallery()->get_option( 'thumb_description') || eazyest_extra_fields()->enabled() )
+			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// use a gallery with filtered captions if thumb_description or eazyest_fields enabled 
 				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 ); // priority 2000 to override other plugins
 				
 			$gallery = do_shortcode( "[gallery id='$post_id' order='$order' orderby='$orderby' columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag']" );
 				
-			if ( eazyest_gallery()->get_option( 'thumb_description') || eazyest_extra_fields()->enabled() )
+			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// remove filter for other shortcodes in post
 				remove_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 );
 						
@@ -1130,7 +1130,7 @@ class Eazyest_Frontend {
 		if ( ! defined( 'DOING_GALLERYFOLDERS' ) )
 			define( 'DOING_GALLERYFOLDERS', true );
 		?>
-			<?php	echo $this->gallery_style( ezg_selector( true, false ), eazyest_gallery()->get_option( 'folders_columns' ) ); ?>
+			<?php	echo $this->gallery_style( ezg_selector( true, false ), eazyest_gallery()->folders_columns ); ?>
 			<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
 				<h3 class="subfolders"><?php _e( 'Subfolders', 'eazyest-gallery' ); ?></h3>
 					<?php $i = 0; ?>
@@ -1193,9 +1193,9 @@ class Eazyest_Frontend {
 			return $link;
 		// displaying a thumbnail click link according to settings
 		if ( is_singular( 'attachment' ) )		
-			$option = eazyest_gallery()->get_option( 'on_slide_click' );
+			$option = eazyest_gallery()->on_slide_click;
 		else
-			$option = eazyest_gallery()->get_option( 'on_thumb_click' );
+			$option = eazyest_gallery()->on_thumb_click;
 		switch(  $option ) {
 			case 'nothing' :
 				$link = 'javascript:void(0)';
@@ -1249,15 +1249,15 @@ class Eazyest_Frontend {
 		$class_attr = $rel_attr = array();
 		$option = '';
 		if ( is_singular( $post_type ) || is_attachment() || defined( 'LAZYEST_GALLERY_SHORTCODE' ) ) {
-			$option = ( is_singular( 'attachment' ) ) ? eazyest_gallery()->get_option( 'on_slide_click' ) : eazyest_gallery()->get_option( 'on_thumb_click' );
+			$option = ( is_singular( 'attachment' ) ) ? eazyest_gallery()->on_slide_click : eazyest_gallery()->on_thumb_click;
 			if ( ( is_singular( 'attachment' ) ) && 'nothing' != $option ) {
 				$class_attr = apply_filters( 'eazyest_gallery_on_attachment_click_class', $class_attr );
 				$rel_attr   = apply_filters( 'eazyest_gallery_on_attachment_click_rel',   $rel_attr   );
-				$popup = eazyest_gallery()->get_option( 'slide_popup' );
+				$popup = eazyest_gallery()->slide_popup;
 			} else	if ( ! in_array( $option, array( 'attachment', 'nothing' ) ) ) {
 				$class_attr  = apply_filters( 'eazyest_gallery_on_thumb_click_class', $class_attr );
 				$rel_attr    = apply_filters( 'eazyest_gallery_on_thumb_click_rel',   $rel_attr   );
-				$popup = eazyest_gallery()->get_option( 'thumb_popup' );
+				$popup = eazyest_gallery()->thumb_popup;
 			}
 			if( ! empty( $popup ) ) {
 				$rel = "{$popup}[gallery-{$attachment->post_parent}]";

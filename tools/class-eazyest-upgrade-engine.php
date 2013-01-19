@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r19)
+ * @version 0.1.0 (r22)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -100,7 +100,7 @@ class Eazyest_Upgrade_Engine {
 	 */
 	function get_upgrade_folders() {
 		check_ajax_referer( 'eazyest-gallery-update' );
-		eazyest_gallery()->change_option( 'gallery_folder', $_POST['gallery_folder'] );
+		eazyest_gallery()->gallery_folder = $_POST['gallery_folder'];
 		$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' ); 
 		if ( ! $upgrade_folders ){
 			$upgrade_folders = eazyest_folderbase()->get_folder_paths();
@@ -129,7 +129,7 @@ class Eazyest_Upgrade_Engine {
 	 */
 	function upgrade_folder() {
 		check_ajax_referer( 'eazyest-gallery-update' );
-		eazyest_gallery()->change_option( 'gallery_folder', $_POST['gallery_folder'] );
+		eazyest_gallery()->gallery_folder = $_POST['gallery_folder'];
 		define( 'LAZYEST_GALLERY_UPGRADING', true );
 		$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' );
 		if ( ! $upgrade_folders )
@@ -195,7 +195,7 @@ class Eazyest_Upgrade_Engine {
 		check_ajax_referer( 'eazyest-gallery-update' );	
 		$options = get_option( 'lazyest-gallery' );	
 		if ( $options['gallery_folder'] != $_POST['gallery_folder'] ) {
-			eazyest_gallery()->change_option( 'gallery_folder', $_POST['gallery_folder'] );
+			eazyest_gallery()->gallery_folder = $_POST['gallery_folder'];
 			$temproot = str_replace('\\', '/', trailingslashit( $this->get_absolute_path( ABSPATH . $gallery_folder ) ) );
 			if ( $temproot == eazyest_gallery()->root() )
 				set_transient( 'eazyest-gallery-folder', $_POST['gallery_folder'] );
@@ -586,7 +586,7 @@ class Eazyest_Upgrade_Engine {
 				$folder['post_parent']   = $post_parent;
 				// move comments to this folder					
 				wp_update_post( $folder );		
-				if ( 'TRUE' == eazyest_gallery()->get_option( 'allow_comments' ) ) {
+				if ( 'TRUE' == eazyest_gallery()-> allow_comments  ) {
 					if ( $this->move_comments( $folder_data['id'], $folder_id ) )
 						wp_update_comment_count( $folder_id );	
 				}			
@@ -710,8 +710,8 @@ class Eazyest_Upgrade_Engine {
 	private function delete_cache() {	
 		$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' );
 		$gallery_path = $upgrade_folders[0];
-		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . eazyest_gallery()->get_option( 'thumb_folder' ) );
-		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . eazyest_gallery()->get_option( 'slide_folder' ) );
+		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . eazyest_gallery()->thumb_folder );
+		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . eazyest_gallery()->slide_folder );
 	}
 	
 	/**
@@ -782,7 +782,7 @@ class Eazyest_Upgrade_Engine {
 					$attachment['post_date']     = $datetime;
 					$attachment['post_date_gmt'] = get_gmt_from_date( $datetime ); 
 					wp_update_post( $attachment  );
-					if ( 'TRUE' == eazyest_gallery()->get_option( 'allow_comments' ) ) {
+					if ( 'TRUE' == eazyest_gallery()->allow_comments ) {
 						if ( $this->move_comments( $image['id'], $attachment_id ) )
 							wp_update_comment_count($attachment_id );	
 					}

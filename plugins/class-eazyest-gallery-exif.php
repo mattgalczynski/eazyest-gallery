@@ -34,7 +34,7 @@ class Eazyest_Gallery_Exif {
 	}
 	
 	function enable_exif() {
-		$enable_exif = eazyest_gallery()->get_option( 'enable_exif' );
+		$enable_exif = eazyest_gallery()-> enable_exif ;
 		?>
 		<input type="checkbox" id="enable_exif" name="eazyest-gallery[enable_exif]" <?php checked( $enable_exif ) ?> />
 		<label for="enable_exif"><?php _e( 'Show Exif information on the attachment page', 'eazyest-gallery' ) ?> </label>

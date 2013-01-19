@@ -7,14 +7,14 @@
  * Date: January 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-alpha-r21
+ * Version: 0.1.0-alpha-r22
  * License: GNU General Public License, version 3
  */
  
 /**
  * Eazyest Gallery is easy gallery management software for WordPress.
  * 
- * @version 0.1.0 (r21)  
+ * @version 0.1.0 (r22)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -61,12 +61,6 @@ class Eazyest_Gallery {
 	 * @var array $data overloaded variables
 	 */ 
 	private $data;
-
-	/**
-	 *
-	 * @var array $options Holding all the eazyest-gallery options
-	 */
-	private $options = array();
 	
 	/**
 	 * @staticvar Eazyest_Gallery $instance The single Eazyest Gallery object in memory
@@ -202,11 +196,9 @@ class Eazyest_Gallery {
 			$options = $this->defaults();
 			
 			//set options to default
-			add_option( 'eazyest-gallery', $options ); 
-			$this->options = get_option( 'eazyest-gallery' );		
-		} else {
-			$this->options = $options;	
-		}	
+			add_option( 'eazyest-gallery', $options ); 		
+		}
+		$this->data = $options;
 	}
 	
 	/**
@@ -256,7 +248,7 @@ class Eazyest_Gallery {
 	}
 	
 	function plugins() {
-		if ( $this->get_option( 'enable_exif' ) ) {
+		if ( $this->enable_exif ) {
 			include( $this->plugin_dir . '/plugins/class-eazyest-gallery-exif.php' );
 			eazyest_gallery_exif();
 		}
@@ -329,7 +321,7 @@ class Eazyest_Gallery {
 	 * @return string
 	 */
 	function gallery_slug() {
-		return $this->get_option( 'gallery_slug' );
+		return $this->gallery_slug;
 	}
 	
 	/**
@@ -353,7 +345,7 @@ class Eazyest_Gallery {
 	 * @return string
 	 */
 	function gallery_title() {
-		$title = $this->get_option( 'gallery_title' );
+		$title = $this->gallery_title;
 		return empty( $title ) ? apply_filters( 'eazyest_gallery_title', __( 'Gallery', 'eazyest-gallery' ) ) : $title;
 	}	
 	
@@ -367,7 +359,7 @@ class Eazyest_Gallery {
 	 * @return void
 	 */
 	private function set_gallery_folder() {
-		$gallery_folder = $this->get_option( 'gallery_folder' );
+		$gallery_folder = $this->gallery_folder;
   	$this->root = str_replace( '\\', '/', trailingslashit( $this->get_absolute_path( ABSPATH . $gallery_folder ) ) );
   	$this->address = trailingslashit( $this->_resolve_href( trailingslashit( get_option( 'siteurl' ) ), $gallery_folder ) ) ;
 	}
@@ -475,59 +467,6 @@ class Eazyest_Gallery {
 	  require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	  $plugin_data = get_plugin_data( $this->plugin_file );
 	  return $plugin_data['Version'];
-	}
-
-	/**
-	 * Eazyest_Gallery::get_option()
-	 * retrieves an option from the options array
-	 * 
-	 * @since lazyest-gallery 0.16.0
-	 * @param string $option
-	 * @return mixed option value or false on fail
-	 * 
-	 */
-	function get_option( $option ) {
-		return isset( $this->options[$option] ) ? $this->options[$option] : false;
-	}
-
-	/**
-	 * Eazyest_Gallery::change_option()
-	 * Changes an option but does not save it
-	 * 
-	 * @since lazyest-gallery 0.16.0
-	 * @param mixed $option
-	 * @param mixed $value
-	 * @return void
-	 */
-	function change_option( $option, $value ) {
-		$this->options[$option] = $value;
-	}
-
-	/**
-	 * Eazyest_Gallery::update_option()
-	 * Changes and saves an option
-	 * 
-	 * @since lazyest-gallery 0.16.0
-	 * @uses update_option()
-	 * @param mixed $option
-	 * @param mixed $value
-	 * @return void
-	 */
-	function update_option( $option, $value ) {
-		$this->change_option( $option, $value );
-		update_option( 'eazyest-gallery', $this->options );
-	}
-
-	/**
-	 * Eazyest_Gallery::store_options()
-	 * Saves the options to the WP DB
-	 * 
-	 * @since lazyest-gallery 0.16.0
-	 * @uses update_option()
-	 * @return void
-	 */
-	function store_options() {
-		update_option( 'eazyest-gallery', $this->options );
 	}
 
 	/**
@@ -741,7 +680,8 @@ class Eazyest_Gallery {
 	 * @return string
 	 */
 	function sort_by( $item = 'folders' ) {
-		$sort_by = $this->get_option( "sort_{$item}" ); 
+		$sorter = "sort_{$item}";
+		$sort_by = $this->{$sorter}; 
 		return false != $sort_by ? $sort_by : 'post_date-DESC';
 	}
 } // Eazyest_Gallery class

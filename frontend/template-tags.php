@@ -90,7 +90,7 @@ function ezg_gallery_style() {
 		return;
 		
 	$selector = ezg_selector( true, false );
-	echo eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->get_option( 'folders_columns' ) );
+	echo eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );
 }
 
 /**
@@ -265,9 +265,9 @@ function ezg_random_images( $attr = array() ) {
 	  'folder'     => '',
 		'id'         => 0,
 		'number'     => 1,
-		'columns'    => eazyest_gallery()->get_option( 'thumbs_columns' ),
+		'columns'    => eazyest_gallery()->thumbs_columns,
 		'title'      => '',
-		'subfolders' => eazyest_gallery()->get_option( 'random_subfolder' ),
+		'subfolders' => eazyest_gallery()->random_subfolder,
 		'size'       => 'thumbnail'
 	), $attr ) );
 	$post_number = max( 1, absint( $number ) );	
@@ -329,7 +329,7 @@ function ezg_recent_images( $attr = array() ) {
 	  'folder'     => '',
 		'id'         => 0,
 		'number'     => 1,
-		'columns'    => eazyest_gallery()->get_option( 'thumbs_columns' ),
+		'columns'    => eazyest_gallery()-> thumbs_columns ,
 		'title'      => '',
 		'subfolders' => 0,
 		'size'       => 'thumbnail'
@@ -374,7 +374,7 @@ function ezg_recent_images( $attr = array() ) {
 function lgz_recent_folders( $attr = array() ) {
 	extract( shortcode_atts( array(
 		'number'     => 1,
-		'columns'    => eazyest_gallery()->get_option( 'thumbs_columns' ),
+		'columns'    => eazyest_gallery()-> thumbs_columns,
 		'title'      => '', 
 	), $attr ) );
 	

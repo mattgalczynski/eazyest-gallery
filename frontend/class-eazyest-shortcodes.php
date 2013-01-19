@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r19)
+ * @version 0.1.0 (r22)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -153,7 +153,7 @@ class Eazyest_Shortcodes {
 			'itemtag'    => 'dl',
 			'icontag'    => 'dt',
 			'captiontag' => 'dd',
-			'columns'    => eazyest_gallery()->get_option( 'folders_columns' ),
+			'columns'    => eazyest_gallery()->folders_columns,
 			'size'       => 'thumbnail',
 			'include'    => '',
 			'exclude'    => '',
@@ -176,7 +176,7 @@ class Eazyest_Shortcodes {
 			'post_parent'    => $id,
 			'order'          => $order,
 			'orderby'        => $orderby,
-			'posts_per_page' => eazyest_gallery()->get_option( 'folders_page' )
+			'posts_per_page' => eazyest_gallery()->folders_page,
 		);
 		
 		if ( ! empty( $include ) ) {
@@ -201,7 +201,7 @@ class Eazyest_Shortcodes {
 	
 		$gallery_style = $gallery_div = '';
 		if ( apply_filters( 'use_default_gallery_style', true ) )
-			$gallery_style = eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->get_option( 'folders_columns' ) );
+			$gallery_style = eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );
 		$classes = eazyest_frontend()->gallery_class( 'archive' );
 		$gallery_div = "<div id='$selector' class='$classes'>";
 		
@@ -343,7 +343,7 @@ class Eazyest_Shortcodes {
 			'itemtag'    => 'dl',
 			'icontag'    => 'dt',
 			'captiontag' => 'dd',
-			'columns'    => eazyest_gallery()->get_option( 'thumbs_columns' ),
+			'columns'    => eazyest_gallery()->thumbs_columns,
 			'size'       => 'thumbnail'
 		), $attr ) );
 	
@@ -355,8 +355,8 @@ class Eazyest_Shortcodes {
 			if ( ! in_array( $orderby, array( 'none', 'menu_order' ) ) )
 				$orderby = 'post_' . $orderby;
 		}
-		eazyest_gallery()->change_option( 'sort_thumbnails', "$orderby-$order" );
-		eazyest_gallery()->change_option( 'thumbs_columns',  $columns          );
+		eazyest_gallery()->sort_thumbnails = "$orderby-$order";
+		eazyest_gallery()->thumbs_columnsm =  $columns;
 		eazyest_frontend()->itemtag    = $itemtag;
 		eazyest_frontend()->icontag    = $icontag;
 		eazyest_frontend()->captiontag = $captiontag;

@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2012 Brimosoft
- * @version 0.1.0 (r20)
+ * @version 0.1.0 (r22)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -179,7 +179,7 @@ class Eazyest_Admin {
 					$options[$setting]	= esc_html( $options[$setting] );
 					break;
 				case 'gallery_slug' :
-					if ( $options[$setting] != eazyest_gallery()->get_option( 'gallery_slug' ) ) {
+					if ( $options[$setting] != eazyest_gallery()->gallery_slug ) {
 						set_transient( 'eazyest-gallery-flush-rewrite-rules', true, 0 );
 					}
 					$options[$setting]	= sanitize_title( $options[$setting] );

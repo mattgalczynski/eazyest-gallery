@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r2) 
+ * @version 0.1.0 (r22) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public
@@ -148,13 +148,13 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	function get_sortable_columns() {
-		$option = explode( '-', eazyest_gallery()->get_option( 'sort_thumbnails' ) );
+		$option = explode( '-', eazyest_gallery()->sort_thumbnails );
 		
 		$sort_field = $option[0];
 		$sort_order = $option[1];
 		$file_asc = $date_asc = $content_asc = false;
 		
-		$option = explode( '-', eazyest_gallery()->get_option( 'sort_thumbnails' ) );
+		$option = explode( '-', eazyest_gallery()->sort_thumbnails );
 		
 		$sort_field = $option[0];
 		$sort_order = $option[1] == 'ASC';

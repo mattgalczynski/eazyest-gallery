@@ -78,7 +78,7 @@ function lg_random_image(  $title = '', $count = '1', $folder = '', $sub = true 
 	_ezg_deprecated_function( __FUNCTION__, 'eazyest-gallery 0.1.0', 'ezg_random_image()' );
 	$arg = array(
 		'number'     => intval( $count ),
-		'columns'    => eazyest_gallery()->get_option( 'thumbs_columns' ),
+		'columns'    => eazyest_gallery()->thumbs_columns,
 		'title'      => '',
 		'subfolders' => $sub ? 1 : 0,
 		'size'       => 'thumbnail'
