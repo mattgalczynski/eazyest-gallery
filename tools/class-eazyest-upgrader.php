@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r22)
+ * @version 0.1.0 (r23)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -229,7 +229,7 @@ class Eazyest_Gallery_Upgrader {
 	function admin_notices() {
 		if ( $this->should_upgrade() ) {
 				if ( 'tools_page_eazyest-gallery-tools' != get_current_screen()->id ){			
-				$message  = __( 'Eazyest Gallery cannot run together with Lazyest Gallery.' );
+				$message  = __( 'Eazyest Gallery found Lazyest Gallery settings in your database' );
 				$linktext = __( 'Please upgrade to Eazyest Gallery' );
 				$url      = add_query_arg( array( 'page' => 'eazyest-gallery-tools', 'tab' => 'upgrade' ), admin_url( 'tools.php' ) );
 				?>
