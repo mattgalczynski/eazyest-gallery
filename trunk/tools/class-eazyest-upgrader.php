@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r23)
+ * @version 0.1.0 (r26)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -73,7 +73,7 @@ class Eazyest_Gallery_Upgrader {
 		if ( $option = get_option( 'lazyest-gallery' ) )
 			return true;
 		else
-			return version_compare( eazyest_gallery()->gallery_secure, EZG_SECURE_VERSION, '<' );	 
+			return false;	 
 	}
 	
 	/**
