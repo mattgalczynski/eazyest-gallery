@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r22)
+ * @version 0.1.0 (r27)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -233,7 +233,6 @@ class Eazyest_Upgrade_Engine {
 	 * @return string
 	 */
 	function update_sort( $setting ) {
-		$sort = 'post_name_ASC';
 		switch( $setting ) {
 			case 'MANUAL' :
 				return 'menu_order-ASC';
@@ -290,12 +289,11 @@ class Eazyest_Upgrade_Engine {
 				case 'gallery_folder' :
 					$options[$setting] = str_replace( '\\', '/', $old_options[$setting] );
 					break;
-				case 'sort_folders' :
-					$option[$setting] = $this->update_sort( $old_options['sort_folders'] );
+				case 'sort_folders' :				
+					$options[$setting] = $this->update_sort( $old_options['sort_folders'] );
 					break;
-				case 'sort_thumbnails' :
-				if ( isset( $old_options['sort_alphabetically'] ) )
-					$option[$setting] = $this->update_sort( $old_options['sort_alphabetically'] );
+				case 'sort_thumbnails' :				
+					$options[$setting] = $this->update_sort( $old_options['sort_alphabetically'] );
 					break;
 				case 'on_thumb_click' :
 					$value = $old_options[ $setting];
@@ -334,7 +332,7 @@ class Eazyest_Upgrade_Engine {
 			delete_transient( 'eazyest-gallery-slug' );
 		}
 		$options['gallery_secure'] = EZG_SECURE_VERSION;
-		$options['new_install']    = false;		
+		$options['new_install']    = false;	
 		update_option( 'eazyest-gallery', $options );
 		delete_option( 'lazyest-gallery' );
 		
