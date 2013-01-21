@@ -391,7 +391,7 @@ class Eazyest_FolderBase {
 				foreach( $fields as $field => $value ) {
 					$attachment->$field = sanitize_text_field( $value );
 					if ( $reordered )
-						$attachment->menu_order = array_search( $attachment['ID'], $_POST['gallery-order-media'] );
+						$attachment->menu_order = array_search( $attachment->ID, explode( ' ', $_POST['gallery-order-media'] ) );
 				}
 				if ( empty( $attachment->post_title ) ) {
 					$pathinfo = pathinfo( $attachment->guid );
@@ -1355,7 +1355,7 @@ class Eazyest_FolderBase {
      'post_status' => 'inherit'
   	); 	
   	$attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
-  	$attach_data = get_post_meta( $attach_id, _wp_attachment_metadata, true );
+  	$attach_data = get_post_meta( $attach_id, '_wp_attachment_metadata', true );
   	// you must first include the image.php file
   	// for the function wp_read_image_metadataa() to work
   	require_once(ABSPATH . 'wp-admin/includes/image.php');

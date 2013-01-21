@@ -7,8 +7,8 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012
- * @version 0.1.0 (r19)
- * @since 0.1.0 (r20)
+ * @version 0.1.0 (r29)
+ * @since 0.1.0 (r2)
  * @access public
  */
  
@@ -141,7 +141,7 @@ class Eazyest_Folder_Editor {
 	function register_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',       true );
-		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r2',  true );
+		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r29', true );
 		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r20', true );
 	}
 	

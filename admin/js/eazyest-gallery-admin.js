@@ -36,12 +36,13 @@
 			});	// $( dTable ).tableDnD					
 		}
 		
-		if ( $( '.column-galleryfolder_drag' ).length ) {	
-			
-			doDragTable( '.wp-list-table.pages' );
-			doDragTable( '.wp-list-table.media' );
-			
-		} // $( '.column-galleryfolder_drag' ).length
+		if ( $( '.column-galleryfolder_drag' ).length ) {			
+			doDragTable( '.wp-list-table.pages' );			
+		}
+		
+		if ( $( '.column-media_drag' ).length ) {
+			doDragTable( '.wp-list-table.media' );			
+		}
 		
 		$( '.media-button-insert' ).live( 'click', function(){
 			var data = {
