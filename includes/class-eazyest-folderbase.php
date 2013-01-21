@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r21)
+ * @version 0.1.0 (r28)
  * @access public
  */
 
@@ -1331,9 +1331,9 @@ class Eazyest_FolderBase {
 	 * @uses wp_check_filetype()
 	 * @uses wp_upload_dir()
 	 * @uses trailingslashit()
-	 * @uses wp_insert_attachment()
-	 * @uses wp_generate_attachment_metadata()
-	 * @uses wp_update_attachment_metadata()
+	 * @uses wp_insert_attachment() to store attachemnt in database
+	 * @uses wp_read_image_metadata() to get exif and iptc data
+	 * @uses wp_update_attachment_metadata() to store exif and iptc data
 	 * @param int $post_id
 	 * @param string $filename
 	 * @param string $title
@@ -1355,11 +1355,14 @@ class Eazyest_FolderBase {
      'post_status' => 'inherit'
   	); 	
   	$attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
+  	$attach_data = get_post_meta( $attach_id, _wp_attachment_metadata, true );
   	// you must first include the image.php file
-  	// for the function wp_generate_attachment_metadata() to work
+  	// for the function wp_read_image_metadataa() to work
   	require_once(ABSPATH . 'wp-admin/includes/image.php');
-  	$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-  	wp_update_attachment_metadata( $attach_id, $attach_data );
+  	$image_meta = wp_read_image_metadata( $attachment['guid'] );
+		if ( $image_meta )
+			$attach_data['image_meta'] = $image_meta;
+		wp_update_attachment_metadata( $attach_id, $attach_data );
   	return $attach_id;
 	}
 	
