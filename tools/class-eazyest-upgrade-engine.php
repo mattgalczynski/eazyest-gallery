@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r27)
+ * @version 0.1.0 (r31)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -296,7 +296,6 @@ class Eazyest_Upgrade_Engine {
 					$options[$setting] = $this->update_sort( $old_options['sort_alphabetically'] );
 					break;
 				case 'on_thumb_click' :
-					$value = $old_options[ $setting];
 					switch( $old_options[$setting] ) {
 						case 'fullimg' : 
 							$value = 'full'; 
@@ -322,7 +321,27 @@ class Eazyest_Upgrade_Engine {
 							break;									
 					}
 					$options[$setting] = $value;
-				 break;
+					break;
+				case 'on_slide_click' :
+					switch( $old_options['setting'] ) {
+						case 'nothing' :
+							$value = 'none';
+							break; 
+						case 'fullimg' :
+							$value = 'full';
+							$options['slide_popup'] = 'none';
+							break; 
+						case 'lightbox' :
+							$value = 'full';
+							$options['slide_popup'] = 'lightbox';
+							break;
+						case 'thickbox' :
+							$value = 'full';
+							$options['slide_popup'] = 'thickbox';
+							break;
+					}
+					$options[$setting] = $value;
+					break;	
 				default :
 					$options[$setting] = isset( $old_options[$setting] ) ? $old_options[$setting] : $options[$setting];		
 			}	

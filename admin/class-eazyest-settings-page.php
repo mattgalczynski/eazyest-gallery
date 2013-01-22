@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r22)
+ * @version 0.1.0 (r31)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -700,8 +700,9 @@ class Eazyest_Settings_Page {
 		$on_slide_click = eazyest_gallery()->on_slide_click;
 		$slide_popup    = eazyest_gallery()->slide_popup;
 		$options = array(
-			'nothing'    => __( 'Nothing',              'eazyest-gallery' ),
-			'full'       => __( 'Show full size image', 'eazyest-gallery' ),			
+			'default' => __( 'Theme default',        'eazyest-gallery' ),
+			'full'    => __( 'Show full size image', 'eazyest-gallery' ),
+			'nothing' => __( 'Nothing',              'eazyest-gallery' ),			
 		);
 		$popups = $this->popup_options();
 		$popups = apply_filters( 'eazyest_gallery_attachment_popup', $popups );
