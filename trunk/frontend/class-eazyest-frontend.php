@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r22)
+ * @version 0.1.0 (r31)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -114,7 +114,16 @@ class Eazyest_Frontend {
 	
 	/**
 	 * Eazyest_Frontend::actions()
-	 * Hook WordPress actions
+	 * Hook WordPress actions.
+	 * These are the actions called in the gallery templates.
+	 * @example if you want to remove parts:
+	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_breadcrumb', 5);
+	 * @example remove_action('eazyest_gallery_after_folder_icon', 'ezg_folder_icon_caption', 5);
+	 * @example remove_action('eazyest_gallery_after_folder_icon_caption', 'ezg_folder_attachments_count', 5);
+	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_breadcrumb', 5);
+	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_thumbnails', 10);
+	 * @example remove_action('eazyest_gallery_after_folder_content', 'ezg_subfolders', 5);
+	 * @example remove_action('eazyest_gallery_before_attachment', 'ezg_breadcrumb', 5); 
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses add_action()
@@ -128,7 +137,8 @@ class Eazyest_Frontend {
 		add_action( 'eazyest_gallery_after_folder_icon_caption', 'ezg_folder_attachments_count',  5 );
 		add_action( 'eazyest_gallery_before_folder_content',     'ezg_breadcrumb',                5 );
 		add_action( 'eazyest_gallery_before_folder_content',     'ezg_thumbnails',               10 );
-		add_action( 'eazyest_gallery_after_folder_content',      'ezg_subfolders',                5 ); 
+		add_action( 'eazyest_gallery_after_folder_content',      'ezg_subfolders',                5 );
+		add_action( 'eazyest_gallery_before_attachment',         'ezg_breadcrumb',                5 ); 
 	}
 
 	/**
@@ -275,15 +285,18 @@ class Eazyest_Frontend {
 	 * @param string $template
 	 * @return string
 	 */
-	function template_include( $template ) {		
+	function template_include( $template ) {
+		// this theme supports eazyest-gallery no need to check templates
 		if ( current_theme_supports( 'eazyest-gallery' ) )
-			return;
+			return $template;
 		$post_type = eazyest_gallery()->post_type;
 		$template_name = '';
 		if ( is_post_type_archive( $post_type ) )
 			$template_name =  "/archive-galleryfolder.php";
-		if ( is_single() && $post_type == get_post_type() )
+		if ( is_singular( $post_type ) )
 			$template_name = "/single-galleryfolder.php";
+		if ( is_singular( 'attachment' ) )
+			$template_name = "/eazyest-image.php";	
 		if (  '' != $template_name ) {		
 			if ( file_exists( STYLESHEETPATH . $template_name ) ) {
 				$template = STYLESHEETPATH . $template_name;
@@ -296,7 +309,7 @@ class Eazyest_Frontend {
 						include( $theme_dir . '/functions.php' );
 				}
 			} 
-		}
+		}		
 		return $template;		
 	}
 	
@@ -1187,15 +1200,20 @@ class Eazyest_Frontend {
 		if ( is_admin() )
 			return $link;
 			
-		$attachment = get_post( $post_id );	
-		// bail if parent is not a folder		
-		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
+		$attachment = get_post( $post_id );
+		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )	
+			// bail if not in gallery		
 			return $link;
+		
 		// displaying a thumbnail click link according to settings
-		if ( is_singular( 'attachment' ) )		
+		if ( is_singular( 'attachment' ) ) {
+			if ( $post_id != $GLOBALS['post']->ID )
+				// do not change other attachments links on an attachment page
+				return $link;
 			$option = eazyest_gallery()->on_slide_click;
-		else
+		}	else {
 			$option = eazyest_gallery()->on_thumb_click;
+		}
 		switch(  $option ) {
 			case 'nothing' :
 				$link = 'javascript:void(0)';
@@ -1205,7 +1223,9 @@ class Eazyest_Frontend {
 			case 'full'   :
 				$wp_src = wp_get_attachment_image_src( $attachment->ID, $option );
 				$link   = $wp_src[0];
-				break;				
+				break;
+			default :
+				$link = $link;									
 		}
 		if ( is_singular( 'attachment' ) )
 			$link = apply_filters( 'eazyest_gallery_on_slide_click_link', $link, $option );
@@ -1244,7 +1264,6 @@ class Eazyest_Frontend {
 		// bail if parent is not a folder	
 		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
 			return $link;						
-		
 		$post_type = eazyest_gallery()->post_type;
 		$class_attr = $rel_attr = array();
 		$option = '';
@@ -1280,13 +1299,23 @@ class Eazyest_Frontend {
 					$rel_attr[] = $rel;
 			}
 		} 	
-		if ( count( $rel_attr ) ){			
-			$rel_pattern   = "<a rel='" . implode( ' ', $rel_attr ) . "' ";
-			$link = str_replace( '<a ', $rel_pattern, $link );
+		if ( count( $rel_attr ) ){
+			if ( strpos( $link, 'rel="' ) ) {
+				$rel_pattern = 'rel="' . implode( ' ', $rel_attr ) . ' ';
+				str_replace( 'rel="', $rel_pattern, $link ); 
+			} else { 
+				$rel_pattern   = "<a rel='" . implode( ' ', $rel_attr ) . "' ";
+				$link = str_replace( '<a ', $rel_pattern, $link );
+			}
 		}		
-		if ( count( $class_attr ) ){
-			$class_pattern = "<a class='" . implode( ' ', $class_attr ) . "' ";
-			$link = str_replace( '<a ', $class_pattern, $link );
+		if ( count( $class_attr ) ) {
+			if ( strpos( $link, 'class="' ) ) {
+				$class_pattern = 'class="' . implode( ' ', $class_attr ) . ' '; 
+				$link = str_replace( 'class="', $class_pattern, $link );
+			} else {
+				$class_pattern = "<a class='" . implode( ' ', $class_attr ) . "' ";
+				$link = str_replace( '<a ', $class_pattern, $link );
+			}
 		}	 
 				
 		return $link;
