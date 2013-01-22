@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012
- * @version 0.1.0 (r29)
+ * @version 0.1.0 (r30)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -898,7 +898,7 @@ class Eazyest_Folder_Editor {
   function media_send_to_editor( $html, $id, $attachment ) {
   	
   	if ( eazyest_folderbase()->refered_by_folder() )
-  		$html = '';
+  		$html = null;
   		
   	return $html;
   }
