@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r31)
+ * @version 0.1.0 (r33)
  * @access public
  */
 
@@ -164,23 +164,25 @@ class Eazyest_FolderBase {
 			'search_items'       => __( 'Search Folders',            'eazyest-gallery' ),
 			'not_found'          => __( 'No folders found',          'eazyest-gallery' ),
 			'not_found_in_trash' => __( 'No folders found in Trash', 'eazyest-gallery' ),
-			'parent_item_colon'  => __( 'Parent Folder:',            'eazyest-gallery' )
+			'parent_item_colon'  => __( 'Parent Folder:',            'eazyest-gallery' ),
 		);		
 		
 		$post_type['rewrite'] = array(
 			'slug'       => eazyest_gallery()->gallery_slug(),
-			'with_front' => true
+			'with_front' => true,
+			'feeds'      => true,
 		);		
 		
 		$post_type['supports'] = array(
 			'title',
 			'editor',
 			'author',
+			'custom-fields',
 			'categories',
 			'thumbnail',
 			'comments',
 			'revisions',
-			'page-attributes'			
+			'page-attributes',		
 		);
 		
 		register_post_type(
@@ -199,7 +201,7 @@ class Eazyest_FolderBase {
 				'query_var'           => true,
 				'menu_icon'           => eazyest_gallery()->plugin_url . '/admin/images/file-manager-menu.png',
 				'taxonomies'          => array('post_tag'),
-				'has_archive'         => true 
+				'has_archive'         => true,
 			)
 		);
 		
