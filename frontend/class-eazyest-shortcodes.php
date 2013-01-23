@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r22)
+ * @version 0.1.0 (r32)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -200,12 +200,12 @@ class Eazyest_Shortcodes {
 		$selector = "gallery-{$instance}";
 	
 		$gallery_style = $gallery_div = '';
-		if ( apply_filters( 'use_default_gallery_style', true ) )
+		if ( apply_filters( 'use_default_lazyest_gallery_style', true ) )
 			$gallery_style = eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );
 		$classes = eazyest_frontend()->gallery_class( 'archive' );
 		$gallery_div = "<div id='$selector' class='$classes'>";
 		
-		$output =  apply_filters( 'eazyest_folder_shortcode_title', '<h3>' . eazyest_gallery()->gallery_title() . '</h3>' );
+		$output =  apply_filters( 'eazyest_gallery_shortcode_title', '<h3>' . eazyest_gallery()->gallery_title() . '</h3>' );
 		$output .= apply_filters( 'gallery_style', $gallery_style . "\n\t\t" . $gallery_div );
 		
 		if ( ! defined( 'DOING_GALLERYFOLDERS' ) )
@@ -266,13 +266,14 @@ class Eazyest_Shortcodes {
 		if ( $nextpage ) {
 			$nextpage_link = "<a href='" . get_pagenum_link( $nextpage ) . "'>" . __( 'Next folders page', 'eazyest-gallery' ) . "</a> <span class='meta-nav'>&rarr;</span>";
 		}
-		$output .= "
-			<nav id='nav-below'>
-				<h3 class='assistive-text'>" . __( 'Folder navigation', 'eazyest-gallery' ) . "</h3>
-				<div class='nav-previous alignleft'>$prevpage_link</div>
-				<div class='nav-next alignright'>$nextpage_link</div>
-			</nav>
-		";
+		if ( ! empty( $nextpage_link ) || ! empty( $prevpage_link ) )
+			$output .= "
+				<nav id='nav-below'>
+					<h3 class='assistive-text'>" . __( 'Folder navigation', 'eazyest-gallery' ) . "</h3>
+					<div class='nav-previous alignleft'>$prevpage_link</div>
+					<div class='nav-next alignright'>$nextpage_link</div>
+				</nav>
+			";
 						
 		return $output;			
 	}
