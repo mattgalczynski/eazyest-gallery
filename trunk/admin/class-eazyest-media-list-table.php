@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r22) 
+ * @version 0.1.0 (r34) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public
@@ -122,16 +122,14 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		}
 		$querystr = "
 			SELECT *
-			FROM {$wpdb->posts}, {$wpdb->postmeta}
-			WHERE {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id
-			AND {$wpdb->posts}.post_parent = {$post->ID}
-			AND {$wpdb->postmeta}.meta_key = '_wp_attached_file'
-			AND {$wpdb->posts}.post_type = 'attachment'
-			AND ( {$wpdb->posts}.post_status = 'publish' OR post_status = 'inherit' )
+			FROM {$wpdb->posts}
+			WHERE post_parent = {$post->ID}
+			AND post_type = 'attachment' 
+			AND post_status IN ('inherit', 'publish') 
+			AND post_mime_type REGEXP 'image'
 			ORDER BY {$sort_field} {$sort_order}
 		";				
 		$this->items = $wpdb->get_results( $querystr, OBJECT );
-		
 		$total_items = count( $this->items );
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,
