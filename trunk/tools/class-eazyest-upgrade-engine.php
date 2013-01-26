@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r31)
+ * @version 0.1.0 (r35)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -323,7 +323,7 @@ class Eazyest_Upgrade_Engine {
 					$options[$setting] = $value;
 					break;
 				case 'on_slide_click' :
-					switch( $old_options['setting'] ) {
+					switch( $old_options[$setting] ) {
 						case 'nothing' :
 							$value = 'none';
 							break; 
