@@ -8,11 +8,11 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Checks if Eazyest Gallery needs a major update and adds upgrader page to tools menu
  * 
  * @package Eazyest Gallery
- * @subpackage Upgrader
+ * @subpackage Tools/Upgrader
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r26)
+ * @version 0.1.0 (r35)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -136,7 +136,7 @@ class Eazyest_Gallery_Upgrader {
 	function enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
 		if ( $this->should_upgrade() ) {	
-			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r2', true );			
+			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r35', true );			
 			wp_localize_script( 'eazyest-gallery-upgrader', 'eazyestUpgraderSettings', $this->script_settings() );
 		} else {				
 			$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
