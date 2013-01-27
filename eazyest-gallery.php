@@ -7,14 +7,14 @@
  * Date: January 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-alpha-3-r36
+ * Version: 0.1.0-alpha-3-r37
  * License: GNU General Public License, version 3
  */
  
 /**
  * Eazyest Gallery is easy gallery management software for WordPress.
  * 
- * @version 0.1.0 (r36)  
+ * @version 0.1.0 (r37)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -224,9 +224,11 @@ class Eazyest_Gallery {
 	 */
 	function actions() {
 		// WordPress actions
-		add_action( 'init'                         , array( $this, 'initialized'  ), 10 );
-		add_action( 'activate_'   . $this->basename, array( $this, 'activation'   )     );
-		add_action( 'deactivate_' . $this->basename, array( $this, 'deactivation' )     );
+		$basename = $this->plugin_basename;	
+		add_action( 'init',                 array( $this, 'initialized'        ) );
+		add_action( "activate_$basename",   array( $this, 'activation'         ) );
+		add_action( "deactivate_$basename", array( $this, 'deactivation'       ) );
+		add_action( 'activated_plugin',     array( $this, 'deactivate_lazyest' ) );
 		
 		// Eazyest Gallery initialization actions
 		
@@ -271,12 +273,40 @@ class Eazyest_Gallery {
 	 * Do Eazyest Gallery Activation action
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses do_action()
+	 * @uses do_action( 'eazyest_gallery_activation' )
+	 * @uses get_option() te get active_plugins
+	 * @uses deactivate_plugins() 
+	 * @uses flush_rewrite_rules()
 	 * @return void
 	 */
 	function activation() {
-		do_action( 'eazyest_gallery_activation' );
+		do_action( 'eazyest_gallery_activation' );		
 		flush_rewrite_rules();
+	}
+	
+	/**
+	 * Eazyest_Gallery::deactivate_lazyest()
+	 * Deactivate lazyest plugins except lazyest-stylesheet because they are not compatible with eazyest-gallery and will break the blog.
+	 * 
+	 * @since 0.1.0 (r37)
+	 * @uses get_option()
+	 * @uses deactivate_plugins()
+	 * @param string $plugin plugin basename
+	 * @return void
+	 */
+	function deactivate_lazyest( $plugin ) {
+		if ( $plugin != $this->plugin_basename )
+			return;
+			
+		$deactivates = array();
+		if ( $active_plugins = get_option( 'active_plugins' ) ) {
+			foreach( (array) $active_plugins as $plugin ) {
+				if ( ( false !== strpos( $plugin, 'lazyest' ) ) && ( false === strpos( $plugin, 'stylesheet' ) ) )
+					$deactivates[] = $plugin;
+			}		
+			if ( ! empty( $deactivates ) )
+				deactivate_plugins( $deactivates );
+		}	
 	}
 	
 	/**
