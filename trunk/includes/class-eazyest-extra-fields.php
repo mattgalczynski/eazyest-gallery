@@ -191,7 +191,7 @@ class Eazyest_Extra_Fields {
 	 * @return void
 	 */
 	function update_post_field( $post_id, $field, $value, $prev_value = null ) {
-		update_post_meta( $post_id, "eazyest-field_{$field}", $value, $prev_value );
+		update_post_meta( $post_id, "_eazyest-field_{$field}", $value, $prev_value );
 	}
 	
 	/**
@@ -205,7 +205,7 @@ class Eazyest_Extra_Fields {
 	 * @return mixed field value
 	 */
 	function get_post_field( $post_id, $field ) {
-		return get_post_meta( $post_id, "eazyest-field_{$field}", true );
+		return get_post_meta( $post_id, "_eazyest-field_{$field}", true );
 	}
 	
 	// Edit Folder screen --------------------------------------------------------

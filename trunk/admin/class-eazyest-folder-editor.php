@@ -769,7 +769,7 @@ class Eazyest_Folder_Editor {
 	 */
 	function get_folder_path_display( $post_id, $for = 'table' ) {
 		global $post;
-  	$gallery_path = get_post_meta( $post_id, 'gallery_path', true );
+  	$gallery_path = get_post_meta( $post_id, '_gallery_path', true );
 		$display = __( 'Not Saved', 'eazyest-gallery' );
 		
 		if ( ! empty( $gallery_path ) ) {
@@ -856,7 +856,7 @@ class Eazyest_Folder_Editor {
   function media_buttons() {
   	global $post;
   	if ( $post->post_type == eazyest_gallery()->post_type ) {
-  		$gallery_path = get_post_meta( $post->ID, 'gallery_path', true );
+  		$gallery_path = get_post_meta( $post->ID, '_gallery_path', true );
   		if ( '' == $gallery_path ) 
 				remove_all_actions( 'media_buttons' );	
   	}  		
@@ -917,7 +917,7 @@ class Eazyest_Folder_Editor {
   	
   	global $post;
   	$folder = $post;
-  	$gallery_path = get_post_meta( $post->ID, 'gallery_path', true );
+  	$gallery_path = get_post_meta( $post->ID, '_gallery_path', true );
   	$path[] = $this->get_folder_path_display( $folder->ID, 'meta' ); 		  	
   	while ( 0 < $folder->post_parent ) {
   		$folder = get_post( $folder->post_parent );
@@ -1048,7 +1048,7 @@ class Eazyest_Folder_Editor {
 		  $post_type = get_post_type( get_post( $post_id )->post_parent );			
 		// if it is galleryfolder, change upload_dir
   	if ( eazyest_gallery()->post_type == $post_type ) {
-			$gallery_path = get_post_meta( $post_id, 'gallery_path', true );
+			$gallery_path = get_post_meta( $post_id, '_gallery_path', true );
 			$upload['path']    = untrailingslashit( eazyest_gallery()->root()  . $gallery_path );
 			$upload['url']     = untrailingslashit( eazyest_gallery()->address() . $gallery_path );
 			$upload['subdir']  = untrailingslashit( $gallery_path );
