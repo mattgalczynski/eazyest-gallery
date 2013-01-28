@@ -193,7 +193,7 @@ class Eazyest_Widget_Recent_Images extends WP_Widget {
 		$folders = get_posts( array( 'post_type' => eazyest_gallery()->post_type ) );
 		if ( ! empty( $folders ) ) {
 			foreach( $folders as $folder ) {
-				$gallery_path = get_post_meta( $folder->ID, 'gallery_path', true );
+				$gallery_path = get_post_meta( $folder->ID, '_gallery_path', true );
 				$post_title = esc_html( $folder->post_title );
 				$options .= "<option value'$folder->ID'";
 				if ( $post_id == $folder->ID )
@@ -391,7 +391,7 @@ class Eazyest_Widget_Random_Images extends WP_Widget {
 		$folders = get_posts( array( 'post_type' => eazyest_gallery()->post_type ) );
 		if ( ! empty( $folders ) ) {
 			foreach( $folders as $folder ) {
-				$gallery_path = get_post_meta( $folder->ID, 'gallery_path', true );
+				$gallery_path = get_post_meta( $folder->ID, '_gallery_path', true );
 				$post_title = esc_html( $folder->post_title );
 				$options .= "<option value'$folder->ID'";
 				if ( $post_id == $folder->ID )
@@ -492,7 +492,7 @@ class Eazyest_Widget_Random_Slideshow extends WP_Widget {
 		$folders = get_posts( array( 'post_type' => eazyest_gallery()->post_type ) );
 		if ( ! empty( $folders ) ) {
 			foreach( $folders as $folder ) {
-				$gallery_path = get_post_meta( $folder->ID, 'gallery_path', true );
+				$gallery_path = get_post_meta( $folder->ID, '_gallery_path', true );
 				$post_title = esc_html( $folder->post_title );
 				$options .= "<option value'$folder->ID'";
 				if ( $post_id == $folder->ID )
@@ -591,7 +591,7 @@ class Eazyest_Widget_Recent_Slideshow extends WP_Widget {
 		$folders = get_posts( array( 'post_type' => eazyest_gallery()->post_type ) );
 		if ( ! empty( $folders ) ) {
 			foreach( $folders as $folder ) {
-				$gallery_path = get_post_meta( $folder->ID, 'gallery_path', true );
+				$gallery_path = get_post_meta( $folder->ID, '_gallery_path', true );
 				$post_title = esc_html( $folder->post_title );
 				$options .= "<option value'$folder->ID'";
 				if ( $post_id == $folder->ID )

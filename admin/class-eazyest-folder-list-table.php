@@ -210,7 +210,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 			FROM {$wpdb->posts}, {$wpdb->postmeta}
 			WHERE {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id
 			AND {$wpdb->posts}.post_parent = {$post->ID}
-			AND {$wpdb->postmeta}.meta_key = 'gallery_path'
+			AND {$wpdb->postmeta}.meta_key = '_gallery_path'
 			AND {$wpdb->posts}.post_type = '{$post_type}'
 			AND ( {$wpdb->posts}.post_status = 'publish' OR {$wpdb->posts}.post_status = 'inherit' )
 			ORDER BY {$sort_field} {$sort_order}

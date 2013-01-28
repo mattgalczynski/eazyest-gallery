@@ -568,7 +568,7 @@ class Eazyest_Upgrade_Engine {
 				$folder_title = str_replace( array( '-', '_'), ' ', $folder_title );			
 			$folder_id = eazyest_folderbase()->insert_folder( $raw_path );
 			if ( $folder_id ) {
-				$gallery_path = get_post_meta( $folder_id, 'gallery_path', true );
+				$gallery_path = get_post_meta( $folder_id, '_gallery_path', true );
 				
 				// change folders array to support renamed folder
 				foreach( $upgrade_folders as $key => $upgrade_folder ) {
@@ -584,7 +584,7 @@ class Eazyest_Upgrade_Engine {
 				if ( strpos( $gallery_path, '/') ) {
 					$parent_dir = dirname( $gallery_path );
 					global $wpdb;
-					$parent_ids = $wpdb->get_col( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'gallery_path' AND meta_value = '$parent_dir'" );
+					$parent_ids = $wpdb->get_col( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_gallery_path' AND meta_value = '$parent_dir'" );
 					$post_parent = $parent_ids[0];
 				}
 				// read existing edits
@@ -743,7 +743,7 @@ class Eazyest_Upgrade_Engine {
 	 * @return void
 	 */
 	private function remove_xml( $folder_id ) {
-		$gallery_path = get_post_meta( $folder_id, 'gallery_path', true );
+		$gallery_path = get_post_meta( $folder_id, '_gallery_path', true );
 		$captions_xml = eazyest_gallery()->root() . $gallery_path . '/captions.xml';
 		if ( file_exists( $captions_xml ) )
 			unlink( $captions_xml );
@@ -769,7 +769,7 @@ class Eazyest_Upgrade_Engine {
 			$gallery_path = $upgrade_folders[0];
 			$folder_id = eazyest_folderbase()->get_folder_by_path( $gallery_path );	
 		} else {						
-			$gallery_path = get_post_meta( $folder_id, 'gallery_path', true );
+			$gallery_path = get_post_meta( $folder_id, '_gallery_path', true );
 		}	
 		// get image names in folder	
 		$upgrade_images = get_transient( 'eazyest-gallery-upgrade-images' );

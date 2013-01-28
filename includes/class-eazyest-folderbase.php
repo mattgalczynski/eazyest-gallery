@@ -127,6 +127,7 @@ class Eazyest_FolderBase {
 	function filters() {
 		// filters related to folders
 		add_filter( 'pre_get_posts',                   array( $this, 'pre_get_posts'                ),  10    );
+		add_filter( 'is_protected_meta',               array( $this, 'is_protected_meta'            ),  10, 2 );
 		// filters related to attachments and images
 		add_filter( 'image_downsize',                  array( $this, 'image_downsize'               ),   5, 3 );
 		add_filter( 'get_attached_file',               array( $this, 'get_attached_file'            ),  20, 2 );
@@ -212,6 +213,10 @@ class Eazyest_FolderBase {
 			flush_rewrite_rules();
 			delete_transient( 'eazyest-gallery-flush-rewrite-rules' );
 		}		
+	}
+	
+	function is_protected_meta( $protected, $meta_key ) {
+		return '_gallery_path' == $meta_key ? true : $protected;
 	}
 	
 	/**
@@ -343,7 +348,7 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function save_gallery_path( $post_id ) {
-		$gallery_path = isset( $_POST['gallery_path'] ) ? $_POST['gallery_path'] : '';
+		$gallery_path = isset( $_POST['_gallery_path'] ) ? $_POST['_gallery_path'] : '';
 		 
 		// when gallery path is not set, construct one		
 		if ( '' == $gallery_path ) {			
@@ -363,7 +368,7 @@ class Eazyest_FolderBase {
 			 
 			// possibly append to post parent
 			if ( isset( $_POST['post_parent'] ) ) {
-				$parent_path = get_post_meta( $_POST['post_parent'], 'gallery_path', true );
+				$parent_path = get_post_meta( $_POST['post_parent'], '_gallery_path', true );
 				$gallery_path = '' == $parent_path ? $gallery_path : trailingslashit( $parent_path ) . $gallery_path; 
 			}
 			
@@ -373,7 +378,7 @@ class Eazyest_FolderBase {
 				wp_mkdir_p( $new_directory );
 			if ( file_exists( $new_directory ) ) {
 				// only save when gallery path exists
-				update_post_meta( $post_id, 'gallery_path', $gallery_path ); 			
+				update_post_meta( $post_id, '_gallery_path', $gallery_path ); 			
 			}			
 		}	
 	}
@@ -446,14 +451,14 @@ class Eazyest_FolderBase {
 	 */
 	function goto_parent( $sub_id ) {
 		$sub = get_post( $sub_id );
-		$sub_path    = get_post_meta( $sub->ID,          'gallery_path', true );
-		$parent_path = get_post_meta( $sub->post_parent, 'gallery_path', true );		
+		$sub_path    = get_post_meta( $sub->ID,          '_gallery_path', true );
+		$parent_path = get_post_meta( $sub->post_parent, '_gallery_path', true );		
 		$new_path = $parent_path . '/' . basename( $sub_path );
 		
 		// rename path in filesystem
 		if ( rename( eazyest_gallery()->root() . $sub_path, eazyest_gallery()->root() . $new_path ) ) {
 			// change metadata
-			update_post_meta( $sub->ID, 'gallery_path', $new_path, $sub_path );
+			update_post_meta( $sub->ID, '_gallery_path', $new_path, $sub_path );
 			// check attachments
 			$attachments = get_children(  array( 'post_parent' => $sub_id, 'post_type' => 'attachment' )  );
 			if ( ! empty( $attachments ) ) {
@@ -538,7 +543,7 @@ class Eazyest_FolderBase {
 					} 
 				}
 			}
-			$gallery_path = get_post_meta( 'gallery_path', $post_id );
+			$gallery_path = get_post_meta( '_gallery_path', $post_id );
 			$delete_dir = eazyest_gallery()->root() . $gallery_path;
 			$this->clear_dir( $gallery_path ); 	
 		}
@@ -554,7 +559,7 @@ class Eazyest_FolderBase {
 	 * @return array
 	 */
 	public function get_subdirectories( $post_id ) {
-		$directory = get_post_meta( $post_id, 'gallery_path', true );
+		$directory = get_post_meta( $post_id, '_gallery_path', true );
 		$paths = $this->get_folder_paths();
 		foreach( $paths as $key => $path ) {
 			if ( false === strpos( $path, $directory ) || strlen( $path ) == strlen( $directory ) )
@@ -613,7 +618,7 @@ class Eazyest_FolderBase {
 			$query .= "
 							AND $wpdb->posts.post_parent={$post_id}";							 
 		$query .= "				 
-							AND {$wpdb->postmeta}.meta_key='gallery_path'";
+							AND {$wpdb->postmeta}.meta_key='_gallery_path'";
 		$this->posted_paths = array( 'post_id' => $post_id, 'folders' => $wpdb->get_col( $query ) );
 		return $this->posted_paths['folders'];
 	}
@@ -773,7 +778,7 @@ class Eazyest_FolderBase {
 			if ( $this->folder_paths['post_id'] == $post_id )
 				return ( $this->folder_paths['folders'] );
 		}
-		$gallery_path = get_metadata( 'post', $post_id, 'gallery_path', true );
+		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
 		$root = ( empty( $gallery_path ) ) ? '' : eazyest_gallery()->root() . $gallery_path;
 				
 		unset( $this->folder_paths );
@@ -793,7 +798,7 @@ class Eazyest_FolderBase {
 	function get_folder_by_path( $folder_path ) {		
 		$folder = array();
 		global $wpdb;
-		$folder = $wpdb->get_col( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key=%s AND meta_value=%s", 'gallery_path', $folder_path ) );
+		$folder = $wpdb->get_col( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key=%s AND meta_value=%s", '_gallery_path', $folder_path ) );
 		return count( $folder ) ? $folder[0] : 0;
 	}	
 	
@@ -988,7 +993,7 @@ class Eazyest_FolderBase {
 		
 		$post_id = wp_insert_post( $folder );
 		if ( $post_id ) {			
-			update_post_meta( $post_id, 'gallery_path', untrailingslashit( $folder_path ) );
+			update_post_meta( $post_id, '_gallery_path', untrailingslashit( $folder_path ) );
 			do_action( 'eazyest_gallery_insert_folder', $post_id );
 		}
 		return $post_id;	
@@ -1184,7 +1189,7 @@ class Eazyest_FolderBase {
 		
 		if ( $parent_id ) {			
 			if ( $this->is_gallery_image( $post_id ) ) {				
-				$gallery_path = trailingslashit( get_metadata( 'post', $parent_id, 'gallery_path', true ) );
+				$gallery_path = trailingslashit( get_metadata( 'post', $parent_id, '_gallery_path', true ) );
 				if ( basename( $file ) != basename( $attachment->guid ) )
 					$gallery_path .= '_temp/';
 				$path = $gallery_path . basename( $file );								
@@ -1250,7 +1255,7 @@ class Eazyest_FolderBase {
 			if ( $this->folder_images['post_id'] == $post_id )
 				return ( $this->folder_images['images'] );
 		}
-		$gallery_path = get_metadata( 'post', $post_id, 'gallery_path', true );
+		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
 		if ( empty( $gallery_path ) )
 			return array();
 		
@@ -1286,7 +1291,7 @@ class Eazyest_FolderBase {
 	function sanitize_filename( $filename, $post_id = 0 ) {
 		$sanitized = sanitize_file_name( $filename ) ;
 		if ( $post_id ) {
-			$gallery_path = get_metadata( 'post', $post_id, 'gallery_path', true );
+			$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
 			$folder_path = eazyest_gallery()->root() . $gallery_path;
 			if ( $sanitized != $filename ) {
 				// filename changed after sanitizing
@@ -1351,7 +1356,7 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function insert_image( $post_id, $filename, $title ) {
-		$gallery_path = get_metadata( 'post', $post_id, 'gallery_path', true );
+		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
 		$wp_filetype = wp_check_filetype( basename( $filename ), null );
   	$wp_upload_dir = wp_upload_dir(); 
 		$title = preg_replace( '/\.[^.]+$/', '', basename( $title ) );
@@ -1401,7 +1406,7 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function add_images( $post_id ) {		
-		$gallery_path = get_metadata( 'post', $post_id, 'gallery_path', true );
+		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
 		$this->get_posted_images( $post_id );
 		$this->get_folder_images( $post_id );
 		$added = 0;
@@ -1453,7 +1458,7 @@ class Eazyest_FolderBase {
 		$this->get_folder_images( $post_id );
 		$deleted = 0;		
 		if ( ! empty( $this->posted_images['images'] ) ) {			
-			$gallery_path = get_post_meta( $post_id, 'gallery_path', true );
+			$gallery_path = get_post_meta( $post_id, '_gallery_path', true );
 			foreach( $this->posted_images['images'] as $key => $image_name  ) {
 				if ( ! in_array( $image_name, $this->folder_images['images'] ) ) {
 					if ( $this->delete_attachment_by_filename( $gallery_path . '/' . $image_name ) ) {
@@ -1868,7 +1873,7 @@ class Eazyest_FolderBase {
 			return $result;	
 		if ( basename( $filename ) != basename( get_post( $post_id )->guid ) ) {
 			// probably a temporary name
-			$gallery_path = get_post_meta( get_post( $post_id )->post_parent, 'gallery_path', 'true' );
+			$gallery_path = get_post_meta( get_post( $post_id )->post_parent, '_gallery_path', 'true' );
 			$dirname = eazyest_gallery()->root() . $gallery_path . '/_temp';
 			if ( ! file_exists( $dirname ) )
 				wp_mkdir_p( $dirname );
