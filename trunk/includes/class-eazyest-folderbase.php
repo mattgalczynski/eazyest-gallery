@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r42)
+ * @version 0.1.0 (r44)
  * @access public
  */
 
@@ -257,6 +257,10 @@ class Eazyest_FolderBase {
 				$query->set( 'order',   $option[1] );
 			}			
 		}
+		
+		// if manually sorted, subfolders show inline
+		if ( is_admin() && 'menu_order-ASC' == eazyest_gallery()->sort_by() && empty( $query->query_vars['post_parent'] ) )		
+			$query->set( 'post_parent', 0 );
 		
 		// show only images attached to folder if query-attachments
 		if ( isset( $_REQUEST['action'] ) && 'query-attachments' == $_REQUEST['action'] ) {
