@@ -413,9 +413,15 @@ function lgz_recent_folders( $attr = array() ) {
 	$GLOBALS['post'] = $global_post;
 }
 
-/**
- * Include support for deprecated tags.
- * 
- * @since 0.1.0 (r2)
- */
-include( eazyest_gallery()->plugin_dir . '/frontend/deprecated-tags.php' );
+ /**
+  * ezg_include_deprecated()
+	* Include support for deprecated tags.
+	* Load file after init to prevent 'function already defined' errors
+	* 
+  * @since 0.1.0 (r37) 
+  * @return void
+  */
+ function ezg_include_deprecated() {
+	include( eazyest_gallery()->plugin_dir . '/frontend/deprecated-tags.php' );
+}
+add_action( 'init', 'ezg_include_deprecated' );
