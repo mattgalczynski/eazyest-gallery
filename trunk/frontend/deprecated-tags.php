@@ -38,28 +38,34 @@ function _ezg_deprecated_function( $function, $version, $replacement = null ) {
 
 // deprecated template tags ---------------------------------------------------
 
-/**
- * lg_list_folders()
- * 
- * @since lazyest-gallery 0.8
- * @deprecated 0.1.0
- * @deprecated use ezg_list_folders()
- * @see ezg_list_folders() in eazyest-gallery/frontend/template-tags.php
- * @param string $title
- * @return void
- */
-function lg_list_folders( $title = '' ) {
-	_ezg_deprecated_function( __FUNCTION__, 'eazyest-gallery 2.0.0', 'ezg_list_folders()' );
-	
-	if ( ! empty( $title ) ) :
-		?>
-		<h2><?php echo esc_html( $title ); ?></h2>
-		<?php
-	endif;
-	
-	$title = '';
-	ezg_list_folders( $title, 'echo' );	
-}
+if ( ! function_exists( 'lg_list_folders' ) ) {
+
+	/**
+	 * lg_list_folders()
+	 * 
+	 * @since lazyest-gallery 0.8
+	 * @deprecated 0.1.0
+	 * @deprecated use ezg_list_folders()
+	 * @see ezg_list_folders() in eazyest-gallery/frontend/template-tags.php
+	 * @param string $title
+	 * @return void
+	 */ 
+	function lg_list_folders( $title = '' ) {
+		_ezg_deprecated_function( __FUNCTION__, 'eazyest-gallery 2.0.0', 'ezg_list_folders()' );
+		
+		if ( ! empty( $title ) ) :
+			?>
+			<h2><?php echo esc_html( $title ); ?></h2>
+			<?php
+		endif;
+		
+		$title = '';
+		ezg_list_folders( $title, 'echo' );	
+	}
+
+} // if not function_exists 'lg_list_folders'
+
+if ( ! function_exists( 'lg_random_image' ) ) {
 
 /**
  * lg_random_image()
@@ -89,3 +95,5 @@ function lg_random_image(  $title = '', $count = '1', $folder = '', $sub = true 
 	<?php	endif;
 	ezg_random_image( $args );
 }
+
+} // if not function_exists 'lg_random_image'
