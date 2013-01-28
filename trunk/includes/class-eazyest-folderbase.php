@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r33)
+ * @version 0.1.0 (r40)
  * @access public
  */
 
@@ -489,12 +489,12 @@ class Eazyest_FolderBase {
 				while( $file = readdir( $handle ) ) {
 					if (	!	in_array(	$file, array(	'.', '..'	)	)	) {
 						if ( is_file( $directory . $file ) ) 
-							unlink( $directory . $file );
+							@unlink( $directory . $file );
 						else if ( is_dir( $directory . $file ) ) 
 							$this->clear_dir ( $directory . $file );
 					}
 				}
-				rmdir( $directory );
+				@rmdir( $directory );
 			}
 			if ( is_resource( $handle ) )
 				closedir( $handle );

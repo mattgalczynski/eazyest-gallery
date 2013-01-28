@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r35)
+ * @version 0.1.0 (r40)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -79,8 +79,9 @@ class Eazyest_Upgrade_Engine {
 			'get_upgrade_folders', 
 			'upgrade_folder', 
 			'convert_page', 
-			'update_settings' 
-		);
+			'update_settings',
+			'cleanup',
+		);	
 		foreach( $actions as $action ) {
 			add_action( "wp_ajax_eazyest_gallery_$action", array( $this, $action ) );
 		}	
@@ -107,12 +108,12 @@ class Eazyest_Upgrade_Engine {
 			// no folder found, abort
 			if ( 0 == count( $upgrade_folders ) ) {
 				echo 'empty';
-				die();
+				wp_die();
 			}	
 			set_transient(  'eazyest-gallery-upgrade-folders', $upgrade_folders, 0 );
 		}
 		echo  count( $upgrade_folders );	
-		die();
+		wp_die();
 	}
 	
 	/**
@@ -152,7 +153,7 @@ class Eazyest_Upgrade_Engine {
 			}
 			echo count( $upgrade_folders );
 		}
-		die();
+		wp_die();
 	}
 	
 	/**
@@ -176,7 +177,7 @@ class Eazyest_Upgrade_Engine {
 			wp_delete_post( $page->ID, true );
 		}
 		echo '1';
-		die();
+		wp_die();
 	}
 	
 	/**
@@ -202,7 +203,7 @@ class Eazyest_Upgrade_Engine {
 		}
 		$this->update_options();
 		echo '1';
-		die();
+		wp_die();
 	}
 	
 	/**
@@ -218,9 +219,11 @@ class Eazyest_Upgrade_Engine {
 		check_ajax_referer( 'eazyest-gallery-update' );
 		$this->drop_table();
 		$this->remove_roles();
-		$this->remove_commentmeta();
+		$this->remove_commentmeta();		
+		$this->remove_lazyest_gallery();
+		delete_option( 'lazyest-gallery' );
 		echo '1';
-		die();	
+		wp_die();	
 	}
 	
 	// Upgrade functions ---------------------------------------------------------	
@@ -353,7 +356,6 @@ class Eazyest_Upgrade_Engine {
 		$options['gallery_secure'] = EZG_SECURE_VERSION;
 		$options['new_install']    = false;	
 		update_option( 'eazyest-gallery', $options );
-		delete_option( 'lazyest-gallery' );
 		
 		if ( $fields_options = get_option( 'eazyest-fields' ) )
 			eazyest_extra_fields()->enable();

@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r35)
+ * @version 0.1.0 (r40)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -136,7 +136,7 @@ class Eazyest_Gallery_Upgrader {
 	function enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
 		if ( $this->should_upgrade() ) {	
-			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r35', true );			
+			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r40', true );			
 			wp_localize_script( 'eazyest-gallery-upgrader', 'eazyestUpgraderSettings', $this->script_settings() );
 		} else {				
 			$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
@@ -157,10 +157,12 @@ class Eazyest_Gallery_Upgrader {
 	 */
 	function script_settings() {
 		return array(
-			'stop'     =>  __( 'Stop',                                       'eazyest-gallery' ),
-			'restart'  =>  __( 'Restart',                                    'eazyest-gallery' ),
-			'ready'    =>  __( 'All folders converted to custom post types', 'eazyest-gallery' ),
-			'finished' =>  __( 'Upgrade Finished',                           'eazyest-gallery' )
+			'stop'             => __( 'Stop',                                       'eazyest-gallery' ),
+			'restart'          => __( 'Restart',                                    'eazyest-gallery' ),
+			'ready'            => __( 'All folders converted to custom post types', 'eazyest-gallery' ),
+			'finished'         => __( 'Upgrade Finished',                           'eazyest-gallery' ),
+			'errorMessage'     => __( 'You cannot use %s for a gallery folder.',    'eazyest-gallery' ),
+			'notExistsMessage' => __( 'This folder does not exist yet.',            'eazyest-gallery' ),
 		);
 	}
 	
@@ -369,10 +371,9 @@ class Eazyest_Gallery_Upgrader {
 		$exist_class     = eazyest_gallery()->right_path() ? ' hide-if-js' : '' ;
 		$dangerous_class = eazyest_folderbase()->is_dangerous( eazyest_gallery()->root() ) ? '' : ' hide-if-js';  
 		?>
-		<?php wp_nonce_field( 'gallery-folder', 'gallery-folder', false ); ?>
+		<?php wp_nonce_field( 'gallery-folder-nonce', 'gallery-folder-nonce',  false ); ?>
 		<input type="text" id="gallery_folder" name="gallery_folder" size="60" class="regular-text code" value="<?php echo $gallery_folder ?>" />	
-		<div class="error below-h2<?php echo $exist_class; ?>" style="width: 50%;"><p><?php _e( 'This folder does not exist on your server', 'eazyest-gallery' ); ?></p></div>	
-		<div class="error below-h2<?php echo $dangerous_class; ?>" style="width: 50%;"><p><?php _e( 'You cannot use this folder for your gallery', 'eazyest-gallery' ); ?></p></div>
+		<div id="eazyest-ajax-response" class="hidden"></div>		
 		<?php
 	}
 	
