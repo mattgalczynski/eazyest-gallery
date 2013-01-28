@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r40)
+ * @version 0.1.0 (r42)
  * @access public
  */
 
@@ -127,7 +127,6 @@ class Eazyest_FolderBase {
 	function filters() {
 		// filters related to folders
 		add_filter( 'pre_get_posts',                   array( $this, 'pre_get_posts'                ),  10    );
-		add_filter( 'is_protected_meta',               array( $this, 'is_protected_meta'            ),  10, 2 );
 		// filters related to attachments and images
 		add_filter( 'image_downsize',                  array( $this, 'image_downsize'               ),   5, 3 );
 		add_filter( 'get_attached_file',               array( $this, 'get_attached_file'            ),  20, 2 );
@@ -201,7 +200,7 @@ class Eazyest_FolderBase {
 				'show_ui'             => true,
 				'can_export'          => true,
 				'hierarchical'        => true,
-				'query_var'           => true,
+				'query_var'           => eazyest_gallery()->post_type,
 				'menu_icon'           => eazyest_gallery()->plugin_url . '/admin/images/file-manager-menu.png',
 				'taxonomies'          => array('post_tag'),
 				'has_archive'         => true,
@@ -213,10 +212,6 @@ class Eazyest_FolderBase {
 			flush_rewrite_rules();
 			delete_transient( 'eazyest-gallery-flush-rewrite-rules' );
 		}		
-	}
-	
-	function is_protected_meta( $protected, $meta_key ) {
-		return '_gallery_path' == $meta_key ? true : $protected;
 	}
 	
 	/**
@@ -260,20 +255,7 @@ class Eazyest_FolderBase {
 				$order_by = $option == 'menu_order-ASC' ? 'menu_order' :  substr( $option[0], 5 );
 				$query->set( 'orderby', $order_by );
 				$query->set( 'order',   $option[1] );
-			}
-			
-			if ( 'menu_order-ASC' == eazyest_gallery()->sort_by() && empty( $query->query_vars['post_parent'] ) )
-				$query->set( 'post_parent', 0 );
-		}	
-		
-		// add galleryfolder to tag query
-  	if ( is_tag() ) {
-			$post_type = $query->get( 'post_type' );						
-			if( $post_type )
-	    	$post_type = $post_type;
-			else
-	    	$post_type = array( 'post', eazyest_gallery()->post_type );
-    	$query->set( 'post_type', $post_type );
+			}			
 		}
 		
 		// show only images attached to folder if query-attachments
