@@ -66,15 +66,14 @@
 		if ( eazyestUpgraderRunning ) {			
 			var data = {				
 				action         : 'eazyest_gallery_cleanup',
-				gallery_folder : $('#gallery_folder').val(),
 				_ajax_nonce    : $('#_wpnonce').val()		
-			};
+			};	
 			$.post( ajaxurl, data, function(response ){
 				$('#start-upgrade').hide();
 				$('#upgrade-process-title').html( eazyestUpgraderSettings.finished );
 				$('#upgrade-success').show();
 			});
-		}
+		}	
 	}
 	
 	function eazyestUpgrader() {
@@ -129,16 +128,33 @@
 			$(this).parents('form').submit();
 		});
 		
-		$('#gallery_folder').change(function(){
-			data = {
-				action         : 'eazyest_gallery_gallery_folder_change',
-				gallery_folder : $('#gallery_folder').val(),
-				_ajax_nonce    : $('#gallery-folder').val()				
+		// gallery_folder changed, check if gallery folder is ok
+		$('#gallery_folder').change( function(){
+			var data = {
+				action         : 'eazyest_gallery_folder_change',
+				_wpnonce       : $('#gallery-folder-nonce').val(), 
+				gallery_folder : $('#gallery_folder').val()
 			};
 			$.post( ajaxurl, data, function(response){
-				
+				if ( 0 == response.result ) {
+					$('#eazyest-ajax-response').hide();
+					$('#create-folder').hide();
+				} else {
+					if ( 1 == response.result ) { 
+						// folder on a dangerous path, restore value from settings
+						$('#eazyest-ajax-response').html(eazyestUpgraderSettings.errorMessage.replace('%s', '<code>'+$('#gallery_folder').val()+'</code>')).show('fast', function(){							
+							$('#gallery_folder').val(response.folder);
+						});
+					} else {						
+						// file does not exist
+						$('#eazyest-ajax-response').html(eazyestUpgraderSettings.notExistsMessage).show('fast', function(){
+							$('#gallery_folder').val(response.folder);
+						});
+					}
+				}
 			});
-		});	
+			return false;
+		});
 		
 	}); // $(document).ready();
 	
