@@ -170,7 +170,7 @@ function ezg_folder_attachments_count( $post_id = 0 ) {
 }
 
 /**
- * ezg_folder_thumbnail()
+ * ezg_breadcrumb()
  * Wrap for Eazyest_Frontend::breadcrumb()
  * @see Eazyest_Frontend::breadcrumb()
  * 
@@ -206,6 +206,12 @@ function ezg_thumbnails( $post_id = 0 ) {
  */
 function ezg_subfolders( $post_id = 0 ) {
 	eazyest_frontend()->subfolders( $post_id );
+}
+
+function ezg_credits() {
+	?>
+	<p class="eazyest-credits"><sub><?php printf( __( 'Powered by Eazyest Gallery version %s. Copyright &copy; 2012-%d %s',  'eazyest-gallery' ), eazyest_gallery()->version(), date( 'Y' ), '<a href="http://brimosoft.nl/">Brimosoft</a>' ); ?></sub></p>
+	<?php
 }
 
 // template tags --------------------------------------------------------------
@@ -358,7 +364,7 @@ function ezg_recent_images( $attr = array() ) {
 }
 
 /**
- * lgz_recent_folders()
+ * ezg_recent_folders()
  * Display a gallery of folder icons of the latest folders
  * 
  * @since 0.1.0 (r2)
@@ -371,7 +377,7 @@ function ezg_recent_images( $attr = array() ) {
  * @param mixed $attr
  * @return void
  */
-function lgz_recent_folders( $attr = array() ) {
+function ezg_recent_folders( $attr = array() ) {
 	extract( shortcode_atts( array(
 		'number'     => 1,
 		'columns'    => eazyest_gallery()-> thumbs_columns,
