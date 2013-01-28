@@ -138,7 +138,13 @@ class Eazyest_Frontend {
 		add_action( 'eazyest_gallery_before_folder_content',     'ezg_breadcrumb',                5 );
 		add_action( 'eazyest_gallery_before_folder_content',     'ezg_thumbnails',               10 );
 		add_action( 'eazyest_gallery_after_folder_content',      'ezg_subfolders',                5 );
-		add_action( 'eazyest_gallery_before_attachment',         'ezg_breadcrumb',                5 ); 
+		add_action( 'eazyest_gallery_before_attachment',         'ezg_breadcrumb',                5 );
+		
+		if ( eazyest_gallery()->show_credits ) {
+			add_action( 'eazyest_gallery_after_folder_content', 'ezg_credits', 999 ); 
+			add_action( 'eazyest_gallery_end_of_gallery',       'ezg_credits', 999 );
+			add_action( 'eazyest_gallery_after_attachment',     'ezg_credits', 999 );
+		}
 	}
 
 	/**
