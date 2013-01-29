@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r43)
+ * @version 0.1.0 (r46)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -163,9 +163,10 @@ class Eazyest_Frontend {
 		add_filter( 'post_thumbnail_html',    array( $this, 'post_thumbnail_html' ), 10, 2 );
 		// template filters
 		add_filter( 'template_include',       array( $this, 'template_include'    )        );
-		// attachmnent filters
-		add_filter( 'attachment_link',        array( $this, 'attachment_link'     ), 10, 2 );
-		add_filter( 'wp_get_attachment_link', array( $this, 'add_attr_to_link'    ),  1, 2 );
+		// attachmnent filters should fire after folderbase filtered the urls (20)
+		add_filter( 'attachment_link',        array( $this, 'attachment_link'     ), 30, 2 );		
+		add_filter( 'wp_get_attachment_link', array( $this, 'add_attr_to_link'    ), 40, 2 );
+		add_filter( 'wp_get_attachment_url',  array( $this, 'attachment_link'     ), 30, 2 );
 		// content filters
 		add_filter( 'the_content',            array( $this, 'folder_content'      ), 99    );
 		add_filter( 'the_excerpt',            array( $this, 'folder_content'      ), 99    );
@@ -1181,6 +1182,29 @@ class Eazyest_Frontend {
 		$GLOBALS['post'] = $global_post;
 	}
 	
+	function get_next_attachment_link( $post_id ) {
+		// Grab the IDs of all the image attachments in a gallery so we can get the URL of the next adjacent image in a gallery,
+	 	// or the first image (if we're looking at the last image in a gallery), or, in a gallery of one, just the link to that image file
+		list( $orderby, $order ) = explode( '-', eazyest_gallery()->sort_by('thumbnails') );
+		$attachments = array_values( get_children( array( 'post_parent' => get_post( $post_id )->post_parent, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby ) ) );
+		foreach ( $attachments as $k => $attachment ) {
+			if ( $attachment->ID == $post_id )
+				break;
+		}
+		$k++;
+		// If there is more than 1 attachment in a gallery
+		if ( count( $attachments ) > 1 ) {
+			if ( isset( $attachments[ $k ] ) )
+				// get the URL of the next image attachment
+				return get_attachment_link( $attachments[ $k ]->ID );
+			else
+				// or get the URL of the first image attachment
+				return get_attachment_link( $attachments[ 0 ]->ID );
+		} else {
+			return '#';
+		}
+	}
+	
 	/**
 	 * Eazyest_Frontend::attachment_link()
 	 * Filter for <code>'attachment_link'</code>
@@ -1210,20 +1234,24 @@ class Eazyest_Frontend {
 		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )	
 			// bail if not in gallery		
 			return $link;
-		
-		// displaying a thumbnail click link according to settings
+			
 		if ( is_singular( 'attachment' ) ) {
-			if ( $post_id != $GLOBALS['post']->ID )
+			if ( $post_id != $GLOBALS['post']->ID ) {
 				// do not change other attachments links on an attachment page
 				return $link;
+			}		
+			// displaying an image click link according to settings
 			$option = eazyest_gallery()->on_slide_click;
 		}	else {
 			$option = eazyest_gallery()->on_thumb_click;
-		}
+		}	
 		switch(  $option ) {
 			case 'nothing' :
 				$link = 'javascript:void(0)';
 				break;
+			case 'next' : 
+				$link = $this->get_next_attachment_link( $post_id );
+				break;	
 			case 'medium' :
 			case 'large'  :	
 			case 'full'   :
@@ -1266,16 +1294,25 @@ class Eazyest_Frontend {
 		if ( is_admin() )
 			return $link;
 			
-		$attachment = get_post( $post_id );
 		// bail if parent is not a folder	
 		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
-			return $link;						
+			return $link;					
+			
+		if ( is_attachment() && $post_id != $GLOBALS['post']->ID )
+			// do not change other attachments links on an attachment page
+			return $link;
+		
+		$attachment = get_post( $post_id );				
 		$post_type = eazyest_gallery()->post_type;
 		$class_attr = $rel_attr = array();
 		$option = '';
+		
+		// change links when we are showing an eazyest gallery
 		if ( is_singular( $post_type ) || is_attachment() || defined( 'LAZYEST_GALLERY_SHORTCODE' ) ) {
-			$option = ( is_singular( 'attachment' ) ) ? eazyest_gallery()->on_slide_click : eazyest_gallery()->on_thumb_click;
-			if ( ( is_singular( 'attachment' ) ) && 'nothing' != $option ) {
+			// get the on_click option
+			$option = ( is_attachment() ) ? eazyest_gallery()->on_slide_click : eazyest_gallery()->on_thumb_click;
+			// add filters if for onclick class and rel
+			if ( ( is_attachment() ) && 'nothing' != $option ) {
 				$class_attr = apply_filters( 'eazyest_gallery_on_attachment_click_class', $class_attr );
 				$rel_attr   = apply_filters( 'eazyest_gallery_on_attachment_click_rel',   $rel_attr   );
 				$popup = eazyest_gallery()->slide_popup;
@@ -1305,6 +1342,7 @@ class Eazyest_Frontend {
 					$rel_attr[] = $rel;
 			}
 		} 	
+		// add rel attribute to link
 		if ( count( $rel_attr ) ){
 			if ( strpos( $link, 'rel="' ) ) {
 				$rel_pattern = 'rel="' . implode( ' ', $rel_attr ) . ' ';
@@ -1313,7 +1351,8 @@ class Eazyest_Frontend {
 				$rel_pattern   = "<a rel='" . implode( ' ', $rel_attr ) . "' ";
 				$link = str_replace( '<a ', $rel_pattern, $link );
 			}
-		}		
+		}	
+		// add class attribute to link	
 		if ( count( $class_attr ) ) {
 			if ( strpos( $link, 'class="' ) ) {
 				$class_pattern = 'class="' . implode( ' ', $class_attr ) . ' '; 
@@ -1322,8 +1361,7 @@ class Eazyest_Frontend {
 				$class_pattern = "<a class='" . implode( ' ', $class_attr ) . "' ";
 				$link = str_replace( '<a ', $class_pattern, $link );
 			}
-		}	 
-				
+		}	 			
 		return $link;
 	}	
 

@@ -701,6 +701,7 @@ class Eazyest_Settings_Page {
 		$slide_popup    = eazyest_gallery()->slide_popup;
 		$options = array(
 			'default' => __( 'Theme default',        'eazyest-gallery' ),
+			'next'    => __( 'Go to next image',     'eazyest-gallery' ),
 			'full'    => __( 'Show full size image', 'eazyest-gallery' ),
 			'nothing' => __( 'Nothing',              'eazyest-gallery' ),			
 		);
