@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r46)
+ * @version 0.1.0 (r48)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -166,7 +166,7 @@ class Eazyest_Frontend {
 		// attachmnent filters should fire after folderbase filtered the urls (20)
 		add_filter( 'attachment_link',        array( $this, 'attachment_link'     ), 30, 2 );		
 		add_filter( 'wp_get_attachment_link', array( $this, 'add_attr_to_link'    ), 40, 2 );
-		add_filter( 'wp_get_attachment_url',  array( $this, 'attachment_link'     ), 30, 2 );
+		add_filter( 'wp_get_attachment_url',  array( $this, 'attachment_link'     ), 99, 2 );
 		// content filters
 		add_filter( 'the_content',            array( $this, 'folder_content'      ), 99    );
 		add_filter( 'the_excerpt',            array( $this, 'folder_content'      ), 99    );
@@ -217,7 +217,7 @@ class Eazyest_Frontend {
 	function pre_get_posts( $query ) {
 		if ( is_admin() )
  			return $query;
- 			$post_type = eazyest_gallery()->post_type;
+		$post_type = eazyest_gallery()->post_type;
  		if ( is_post_type_archive( $post_type ) && $post_type == $query->get( 'post_type' ) ) {
  			$query->set( 'post_parent', 0 );
  			$posts_per_page = eazyest_gallery()->folders_page;
@@ -555,7 +555,6 @@ class Eazyest_Frontend {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses apply_filters()
-	 * @uses wp_get_attachment_image_src()
 	 * @param integer $post_id
 	 * @return array
 	 */
@@ -571,7 +570,7 @@ class Eazyest_Frontend {
 				$src = $icon;
 			else {		
 				if ( ! empty( $thumbnail_id ) ) {	
-					$wp_src = wp_get_attachment_image_src( $thumbnail_id, 'thumbnail' );
+					$wp_src = eazyest_folderbase()->get_attachment_image_src( $thumbnail_id, 'thumbnail' );
 					$src = $wp_src[0];
 				} else {
 					$src = $icon;
@@ -1219,7 +1218,6 @@ class Eazyest_Frontend {
 	 * @uses WP_Post
 	 * @uses get_post_type()
 	 * @uses is_singular()
-	 * @uses wp_get_attachment_image_src()
 	 * @uses apply_filters()
 	 * @param string $link
 	 * @param integer $post_id
@@ -1229,13 +1227,11 @@ class Eazyest_Frontend {
 		// bail if admin
 		if ( is_admin() )
 			return $link;
-			
-		$attachment = get_post( $post_id );
 		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )	
 			// bail if not in gallery		
 			return $link;
 			
-		if ( is_singular( 'attachment' ) ) {
+		if ( is_attachment() ) {
 			if ( $post_id != $GLOBALS['post']->ID ) {
 				// do not change other attachments links on an attachment page
 				return $link;
@@ -1244,8 +1240,10 @@ class Eazyest_Frontend {
 			$option = eazyest_gallery()->on_slide_click;
 		}	else {
 			$option = eazyest_gallery()->on_thumb_click;
-		}	
+		}				
 		switch(  $option ) {
+			case 'default' :
+				break;
 			case 'nothing' :
 				$link = 'javascript:void(0)';
 				break;
@@ -1255,12 +1253,10 @@ class Eazyest_Frontend {
 			case 'medium' :
 			case 'large'  :	
 			case 'full'   :
-				$wp_src = wp_get_attachment_image_src( $attachment->ID, $option );
+				$wp_src = eazyest_folderbase()->get_attachment_image_src( get_post( $post_id )->ID, $option );
 				$link   = $wp_src[0];
 				break;
-			default :
-				$link = $link;									
-		}
+		}	
 		if ( is_singular( 'attachment' ) )
 			$link = apply_filters( 'eazyest_gallery_on_slide_click_link', $link, $option );
 		else
