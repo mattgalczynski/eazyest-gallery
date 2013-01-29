@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r45)
+ * @version 0.1.0 (r48)
  * @access public
  */
 
@@ -130,7 +130,6 @@ class Eazyest_FolderBase {
 		// filters related to attachments and images
 		add_filter( 'image_downsize',                  array( $this, 'image_downsize'               ),   5, 3 );
 		add_filter( 'get_attached_file',               array( $this, 'get_attached_file'            ),  20, 2 );
-		add_filter( 'update_attached_file',            array( $this, 'get_attachment_url'           ),  20, 2 );
 		add_filter( 'wp_get_attachment_url',           array( $this, 'get_attachment_url'           ),  20, 2 );
 		add_filter( 'update_post_metadata',            array( $this, 'update_attachment_metadata'   ),  20, 5 );
 		add_filter( 'wp_image_editors',                array( $this, 'image_editors'                ), 999    );
@@ -1199,17 +1198,29 @@ class Eazyest_FolderBase {
 	 * @param int $post_id
 	 * @return string
 	 */
-	public function get_attachment_url( $url, $post_id ) {
+	public function get_attachment_url( $url, $post_id ) {		
 		if ( $this->is_gallery_image( $post_id ) ) {
-			$filename = basename( $url );
-			$guid = get_post( $post_id )->guid;
-			$original = basename( $guid );	
- 			if ( $filename !=  $original )
- 				$url = substr( $guid, 0, -strlen( $original ) ) . '_temp/' . $filename;
-			else 
-				$url = $guid;	  
- 		}
+			$url = eazyest_gallery()->address() . get_attached_file( $post_id );			
+ 		} 		
 		return $url;	
+	}
+	
+	/**
+	 * Eazyest_FolderBase::get_attachment_image_src()
+	 * Like wp_get_attachment_images_src(), returns array of url and width, height.
+	 * 
+	 * @since 0.1.0 (r48)
+	 * @uses wp_get_attachment_image_src() for non-gallery images
+	 * @param int $attachment_id
+	 * @param string $size
+	 * @return array (url, width, height)
+	 */
+	public function get_attachment_image_src( $attachment_id, $size='thumbnail' ) {
+		if ( $this->is_gallery_image( $attachment_id ) ) {
+			return $this->image_downsize( null, $attachment_id, $size );
+		} else {
+			return wp_get_attachment_image_src($attachment_id, $size );
+		}
 	}
 	
 	/**
@@ -1665,11 +1676,15 @@ class Eazyest_FolderBase {
 	 */
 	function file_metadata( $metadata, $attachment_id ) {
 		if ( ! $this->is_gallery_image( $attachment_id ) )
-			return $metadata;			
-		$file = basename( get_post( $attachment_id )->guid );
+			return $metadata;	
+		$guid = get_post( $attachment_id )->guid;
+		$gallery_path = get_post_meta( get_post( $attachment_id )->post_parent, '_gallery_path', true );			
+		$pathinfo = pathinfo( $guid );
+		if ( false === strpos( $metadata, $pathinfo['filename'] ) )
+			$metadata = trailingslashit( $gallery_path ) . $pathinfo['basename'];
 		if ( false !== strpos( $metadata, eazyest_gallery()->address() ) )
 			$metadata = substr( $metadata, strlen( eazyest_gallery()->address() ) );
-		if ( $file != basename( $metadata ) && ( false === strpos( $metadata, '_temp' ) ) ) {
+		if ( $pathinfo['basename'] != basename( $metadata ) && ( false === strpos( $metadata, '_temp' ) ) ) {
 			$metadata = dirname( $metadata) . '/_temp/' . basename( $metadata );
 		}			
 		return $metadata;		

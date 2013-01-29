@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r19)
+ * @version 0.1.0 (r48)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -139,14 +139,13 @@ class Eazyest_Slideshow {
 	 * Return src attribute for images in the slideshow
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses wp_get_attachment_image_src()
 	 * @uses WP_Post
 	 * @param string $size
 	 * @return string
 	 */
 	private function data_image( $size = 'thumbnail' ) {
 		global $post;
-		$wp_src = wp_get_attachment_image_src( $post->ID, $size );
+		$wp_src = eazyest_folderbase()->get_attachment_image_src( $post->ID, $size );
 		return $wp_src[0];
 	}
 	

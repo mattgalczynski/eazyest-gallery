@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r32)
+ * @version 0.1.0 (r48)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -274,7 +274,7 @@ class Eazyest_Shortcodes {
 					<div class='nav-next alignright'>$nextpage_link</div>
 				</nav>
 			";
-						
+
 		return $output;			
 	}
 	
@@ -533,7 +533,7 @@ class Eazyest_Shortcodes {
 			$attachment_id = 0;
 			if ( ! empty( $attachments ) ) {		
 				foreach( $attachments as $attachment ) {
-					$wp_src = wp_get_attachment_image_src( $attachment->ID, 'full' );
+					$wp_src = eazyest_folderbase()->get_attachment_image_src( $attachment->ID, 'full' );
 					if( $image == basename( $wp_src[0] ) ) {
 						$attachment_id = $attachment->ID;
 						break;
@@ -565,7 +565,7 @@ class Eazyest_Shortcodes {
 			if ( ! defined( 'LAZYEST_GALLERY_SHORTCODE' ) )
 				define( 'LAZYEST_GALLERY_SHORTCODE', true );
 			
-			$wp_sr = wp_get_attachment_image_src( $attachment->ID, $display );
+			$wp_sr = eazyest_folderbase()->get_attachment_image_src( $attachment->ID, $display );
 			$width = 10 + $wp_src[1];
 			$link   = eazyest_frontend()->add_attr_to_link( wp_get_attachment_link( $attachment->ID, $display ), $attachment->ID );			
 			$output = "
@@ -603,9 +603,9 @@ class Eazyest_Shortcodes {
 					$display = 'full';
 					break;
 				default :
-					$attr['display'] = 'medium';								
+					$attr['display'] = 'medium';
 			}
 		return eazyest_slideshow()->slideshow( $attr );
 	}
 
-} // LAzyest_Shortcodes
+} // Lazyest_Shortcodes

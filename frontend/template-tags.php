@@ -252,7 +252,6 @@ function ezg_list_folders( $title = '', $echo = 'echo' ) {
  * @uses esc_html()
  * @uses get_post
  * @uses WP_Post
- * @uses wp_get_attachment_image_src()
  * @uses wp_get_attachment_link
  * @param array $attr
  * <code>array(
@@ -295,7 +294,7 @@ function ezg_random_images( $attr = array() ) {
 					$i = 0;
 					foreach( $results as $attachment_id ) : 
 						$attachment = get_post( $attachment_id );
-						$wp_sr      = wp_get_attachment_image_src( $attachment->ID, $size );
+						$wp_sr      = eazyest_folderbase()->get_attachment_image_src( $attachment->ID, $size );
 						$link       = eazyest_frontend()->add_attr_to_link( wp_get_attachment_link( $attachment->ID, $size ), $attachment->ID ); 
 				?>
 				<<?php ezg_itemtag(); ?> class="gallery-item">							
