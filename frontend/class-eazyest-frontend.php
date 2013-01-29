@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r48)
+ * @version 0.1.0 (r51)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -130,7 +130,8 @@ class Eazyest_Frontend {
 	 * @return void
 	 */
 	function actions() {
-		add_action( 'wp_head', array( $this, 'setup_tags' ), 1 );
+		add_action( 'wp_head',            array( $this, 'setup_tags'       ), 1 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' )    );
 		
 		// gallery output actions
 		add_action( 'eazyest_gallery_after_folder_icon',         'ezg_folder_icon_caption',       5 );
@@ -226,6 +227,11 @@ class Eazyest_Frontend {
  			$query->set( 'posts_per_page', $posts_per_page );
  		}
  		return $query;
+	}
+	
+	function register_scripts() {		
+		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
+		wp_register_script( 'eazyest-frontend', eazyest_gallery()->plugin_url . "frontend/js/eazyest-frontend.$j", array( 'jquery' ), '0.1.0-r51', true );
 	}
 	
 	// template functions	--------------------------------------------------------
@@ -663,6 +669,7 @@ class Eazyest_Frontend {
 	 * @return string &lt;style&gt; element
 	 */
 	function gallery_style( $selector, $columns = 3 ) {
+		$columns = absint( $columns );
 		$width = $columns > 0 ? floor( 100 / $columns ) : intval( get_option( 'thumbnail_size_w' ) ) + 20;
 		$px = $columns > 0 ? '%' : 'px';
 		$itemwidth = $width . $px;
@@ -694,7 +701,8 @@ class Eazyest_Frontend {
 					margin-bottom: 0;
 				}
 			</style>";
-			
+		if ( 0 == $columns )
+			wp_enqueue_script( 'eazyest-frontend' );	
 		return apply_filters( 'eazyest_gallery_style', $style );			
 	}
 	
@@ -1094,7 +1102,9 @@ class Eazyest_Frontend {
 				// use a gallery with filtered captions if thumb_description or eazyest_fields enabled 
 				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 ); // priority 2000 to override other plugins
 				
-			$gallery = do_shortcode( "[gallery id='$post_id' order='$order' orderby='$orderby' columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag']" );
+			add_filter( 'gallery_style', array( $this, 'style_div' ) );
+			$gallery = do_shortcode( "[gallery id='$post_id' order='$order' orderby='$orderby' columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag']" );			
+			remove_filter( 'gallery_style', array( $this, 'style_div' ) );
 				
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// remove filter for other shortcodes in post
@@ -1105,6 +1115,22 @@ class Eazyest_Frontend {
 			else
 				return $gallery;
 		}		
+	}
+	
+	/**
+	 * Eazyest_Frontend::style_div()
+	 * Output custom gallery style and opening <div> element for gallery_shortcode.
+	 * 
+	 * @since 0.1.0 (r51)
+	 * @return string html style + div tag 
+	 */
+	function style_div() {
+		$selector = ezg_selector( true, false );
+		$columns  = eazyest_gallery()->thumbs_columns;
+		$gallery_style = $this->gallery_style( $selector, $columns );
+		$id = $GLOBALS['post']->ID;
+		$gallery_div = "<div id='$selector' class='gallery galleryid-{$id} gallery-columns-{$columns} gallery-size-thumbnail'>";
+		return $gallery_style . "\n\t\t" . $gallery_div;
 	}
 	
 	/**
