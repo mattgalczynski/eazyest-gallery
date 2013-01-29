@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r31)
+ * @version 0.1.0 (r47)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -148,6 +148,15 @@ class Eazyest_Settings_Page {
 		#eazyest-ajax-response code {
 			color:  #ff0000;
 			font-size:12px;
+		}
+		.form-table td p.gallery-folder {
+			border-color: #dfdfdf;	-webkit-border-radius: 3px;
+			border-radius: 3px;
+			border-width: 1px;
+			border-style: solid;
+			margin-top: 1px;
+			padding-left: 2px;
+			width: 25em;
 		}
 		</style>
 		<?php
@@ -404,13 +413,20 @@ class Eazyest_Settings_Page {
 		$gallery_folder = eazyest_gallery()->gallery_folder;
 		$gallery_secure = eazyest_gallery()->gallery_secure;
 		$new_install    = eazyest_gallery()->new_install;
+		$has_folders    = get_posts( array( 'post_type' => eazyest_gallery()->post_type ) );
+		$enabled        = empty( $has_folders ) || ! eazyest_gallery()->right_path();
 		?><div style="position:relative">
 			<?php wp_nonce_field( 'file-tree-nonce',      'file-tree-nonce',       false ) ?>
 			<?php wp_nonce_field( 'gallery-folder-nonce', 'gallery-folder-nonce',  false ); ?>
 			<input type="hidden" name="eazyest-gallery[gallery_secure]" value="<?php echo $gallery_secure; ?>" />			
 			<input type="hidden" name="eazyest-gallery[new_install]" value="<?php echo $new_install; ?>" />
-			<input type="text" name="eazyest-gallery[gallery_folder]" id="gallery_folder" size="60" class="regular-text code" value="<?php echo $gallery_folder ?>" />
-			<a id="folder-select" class="button button-small open" href="#"><strong>&#8744;</strong></a><div id="file-tree"></div>
+			<?php if ( $enabled ) : ?>
+				<input type="text" name="eazyest-gallery[gallery_folder]" id="gallery_folder" size="60" class="regular-text code" value="<?php echo $gallery_folder ?>" />
+				<a id="folder-select" class="button button-small open" href="#"><strong>&#8744;</strong></a><div id="file-tree"></div>
+			<?php else : ?>
+				<input type="hidden" name="eazyest-gallery[gallery_folder]" id="gallery_folder" value="<?php echo $gallery_folder ?>" />
+				<p class="gallery-folder"><?php echo $gallery_folder ?></p>
+			<?php endif; ?>
 			<div id="eazyest-ajax-response" class="hidden"></div>
 			<a id="create-folder" class="button hidden" href="#"><?php _e( 'Create folder', 'eazyest-gallery' ); ?></a>
 		</div>	
@@ -819,7 +835,8 @@ class Eazyest_Settings_Page {
 				'id'      => 'main-settings',
 				'title'   => __( 'Main Settings', 'eazyest-gallery' ),
 				'content' => "\n<p>" .         __( 'In the Main Settings you set the server directory for your gallery.', 'eazyest-gallery' ) . "<br />\n" .
-				                               __( 'Eazyest Gallery will not work if this directory does not exist.',     'eazyest-gallery' ) . "</p>\n" .
+				                               __( 'Eazyest Gallery will not work if this directory does not exist.',     'eazyest-gallery' ) . "<br />\n" .
+				                               __( 'You cannot change this directory after you add folders to it.',       'eazyest-gallery' ) . "</p>\n" .
 				             "\n<p>" .         __( 'Set a title for your gallery archive page',                           'eazyest-gallery' ) . "</p>\n" .
 				             "\n<p><strong>" . __( 'Please donate to support the development of Eazyest Gallery',         'eazyest-gallery' ) . "</strong></p>\n"       
 			),
