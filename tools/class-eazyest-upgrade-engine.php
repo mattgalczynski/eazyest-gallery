@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r40)
+ * @version 0.1.0 (r50)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -373,7 +373,7 @@ class Eazyest_Upgrade_Engine {
 		global $wpdb;
 		$table = $wpdb->prefix . 'lazyestfiles';
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$table'") == $table ) {
-			return false !== $wpdb->query( "DROP TABLE $table" ); 
+			$wpdb->query( "DROP TABLE $table" ); 
 		}
 		return true;
 	}
@@ -402,7 +402,7 @@ class Eazyest_Upgrade_Engine {
 	 */
 	function remove_commentmeta() {
 		global $wpdb;
-		return false !== $wpdb->query( "DELETE FROM $wpdb->commentmeta WHERE meta_key = 'lazyest'" );
+		$wpdb->query( "DELETE FROM $wpdb->commentmeta WHERE meta_key = 'lazyest'" );
 	}
 	
 	function remove_lazyest_gallery() {
@@ -425,12 +425,13 @@ class Eazyest_Upgrade_Engine {
 		check_admin_referer( 'eazyest-gallery-update' );
 		$this->update_options();
 		$this->remove_roles();		
-		$upgraded = $this->drop_table() && $this->remove_commentmeta() ? true : false;
+		$this->drop_table(); 
+		$this->remove_commentmeta();			
+		$this->remove_lazyest_gallery();
 		
-		if ( $upgraded )
-			$redirect = add_query_arg( array( 'page' => 'eazyest-gallery-tools', 'gallery-upgraded' => $upgraded ), admin_url( 'tools.php' ) );
-		else 
-			$redirect = add_query_arg( array( 'page' => 'eazyest-gallery', 'gallery-upgraded' => $upgraded ), admin_url( 'options-general.php' ) );
+		delete_option( 'lazyest-gallery' );
+		
+		$redirect = add_query_arg( array( 'page' => 'eazyest-gallery'), admin_url( 'options-general.php' ) );
 			
 		wp_redirect( $redirect );
 		exit;
@@ -605,7 +606,8 @@ class Eazyest_Upgrade_Engine {
 				$folder['post_parent']   = $post_parent;
 				// move comments to this folder					
 				wp_update_post( $folder );		
-				if ( 'TRUE' == eazyest_gallery()-> allow_comments  ) {
+				$options = get_option( 'lazyest-gallery'  );
+				if ( $options && 'TRUE' == $options['allow_comments'] ) {
 					if ( $this->move_comments( $folder_data['id'], $folder_id ) )
 						wp_update_comment_count( $folder_id );	
 				}			
@@ -801,7 +803,8 @@ class Eazyest_Upgrade_Engine {
 					$attachment['post_date']     = $datetime;
 					$attachment['post_date_gmt'] = get_gmt_from_date( $datetime ); 
 					wp_update_post( $attachment  );
-					if ( 'TRUE' == eazyest_gallery()->allow_comments ) {
+					$options = get_option( 'lazyest-gallery' );
+					if ( $options && 'TRUE' == $options['allow_comments'] ) {
 						if ( $this->move_comments( $image['id'], $attachment_id ) )
 							wp_update_comment_count($attachment_id );	
 					}

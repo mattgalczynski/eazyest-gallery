@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r40)
+ * @version 0.1.0 (r50)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -367,12 +367,13 @@ class Eazyest_Gallery_Upgrader {
 	 * @return void
 	 */
 	function gallery_folder() {
-		$gallery_folder = str_replace( '\\', '/', eazyest_gallery()->gallery_folder );
+		$options = get_option( 'lazyest-gallery' );
+		eazyest_gallery()->gallery_folder = str_replace( '\\', '/', $options['gallery_folder'] );
 		$exist_class     = eazyest_gallery()->right_path() ? ' hide-if-js' : '' ;
 		$dangerous_class = eazyest_folderbase()->is_dangerous( eazyest_gallery()->root() ) ? '' : ' hide-if-js';  
 		?>
 		<?php wp_nonce_field( 'gallery-folder-nonce', 'gallery-folder-nonce',  false ); ?>
-		<input type="text" id="gallery_folder" name="gallery_folder" size="60" class="regular-text code" value="<?php echo $gallery_folder ?>" />	
+		<input type="text" id="gallery_folder" name="gallery_folder" size="60" class="regular-text code" value="<?php echo eazyest_gallery()->gallery_folder ?>" />	
 		<div id="eazyest-ajax-response" class="hidden"></div>		
 		<?php
 	}
@@ -388,7 +389,8 @@ class Eazyest_Gallery_Upgrader {
 	 * @return void
 	 */
 	function gallery_id() {
-		$gallery_id = eazyest_gallery()->gallery_id;
+		$options = get_option( 'lazyest-gallery' );
+		$gallery_id = $options['gallery_id'];
 		$pages = get_pages( array( 'sort_column' => 'post_date', 'sort_order' => 'DESC', 'post_status' => 'publish,private' ) );
 		?>
 		<select id="gallery_id">
@@ -408,11 +410,12 @@ class Eazyest_Gallery_Upgrader {
 	 * @return void
 	 */
 	function convert_page() {
+		$options = get_option( 'lazyest-gallery' );
 		?>
 		<p>
 			<input type="radio" name="convert_page" id="convert_page-true" value="1" />
 			<label for="convert_page-true"><?php _e( 'Delete my gallery page and use the slug for my new gallery', 'eazyest-gallery' ) ?></label>
-			<?php if ( 'TRUE' == eazyest_gallery()->allow_comments ) : ?> 
+			<?php if ( 'TRUE' == $options['allow_comments'] ) : ?> 
 			<p class="description"><?php _e( 'If you select to delete your page, comments on the gallery root cannot be re-linked and will be discarded', 'eazyest-gallery' ); ?></p>
 			<?php endif; ?>
 		</p>
@@ -432,7 +435,8 @@ class Eazyest_Gallery_Upgrader {
 	 * @return void
 	 */
 	function allow_comments() {
-		$allow_comments =  'TRUE' == eazyest_gallery()->allow_comments;		
+		$options = get_option( 'lazyest-gallery' );
+		$allow_comments =  'TRUE' == $options['allow_comments'];		
 		?>
 		<input type="checkbox" name="allow_comments" id="allow_comments" value="1" <?php checked( 'TRUE' == $allow_comments ) ?> />
 		<label><?php _e( 'Comments will be re-linked to custom post types', 'eazyest-gallery' ); ?></label>
