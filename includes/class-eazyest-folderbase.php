@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r44)
+ * @version 0.1.0 (r45)
  * @access public
  */
 
@@ -1497,21 +1497,62 @@ class Eazyest_FolderBase {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @see wordpress/wp-includes/media.php
-	 * @uses get_post()
-	 * @uses get_post_meta()
-	 * @uses get_post_type()
-	 * @param array $resize
+	 * @uses wp_get_attachment_metadata()
+	 * @uses get_option() to get image dimensions
+	 * @param string|array $resize
 	 * @param int $post_id
 	 * @param string $size
 	 * @return array
 	 */
 	public function image_downsize( $resize, $post_id, $size ) {
-		if ( $this->is_gallery_image( $post_id ) ) {
-			$resize = $this->resize_image( $post_id, $size );
-		}		
-		return $resize;
+		
+		if ( ! $this->is_gallery_image( $post_id ) ) 
+			return false;
+		
+		if ( !is_array( $imagedata = wp_get_attachment_metadata( $post_id ) ) )
+			return false;				
+						
+		// we only store thumbnail, medium and large sizes
+		$restrict_sizes = array( 'thumbnail', 'medium', 'large' );
+		if ( ! is_array( $size ) && ! in_array( $size, $restrict_sizes ) ) {
+			global $_wp_additional_image_sizes;
+			if ( isset( $_wp_additional_image_sizes[$size] ) ) {
+				$size = array( $_wp_additional_image_sizes[$size]['width'],  $_wp_additional_image_sizes[$size]['height'] );
+			} else {
+				$size = 'full';
+			}
+		} 		
+		// if size is array, recalculate requested size to either thumbnail, medium or large
+		if ( is_array( $size ) ) {
+			$width  = $size[0];
+			$height = $size[1];
+			$size   = 'full';	
+			foreach( $restrict_sizes as $dim ) {
+				if ( $width <= intval( get_option( "{$dim}_size_w" ) ) && $height <= intval( get_option( "{$dim}_size_h" ) ) ){
+					$size = $dim;
+					break;
+				}
+			}		
+		}						
+		if ( 'full' == $size || 
+			( $imagedata['width']  <= intval( get_option( "{$size}_size_w" ) ) && 
+				$imagedata['height'] <= intval( get_option( "{$size}_size_h" ) ) ) )
+			// original is smaller than requested			
+			$img_url = eazyest_gallery()->address() . $imagedata['file'];	
+		else
+			$img_url = eazyest_gallery()->address() . trailingslashit( dirname( $imagedata['file'] ) ) . $imagedata['sizes'][$size]['file'];
+			
+		return array( $img_url, $imagedata['width'], $imagedata['height'], false );
 	}
 	
+	/**
+	 * Eazyest_FolderBase::image_editors()
+	 * Add 'Eazyest_Image_Editor' as first in the image editors array
+	 * 
+	 * @since 0.1.0 (r36)
+	 * @param array $editor_classes
+	 * @return array
+	 */
 	public function image_editors( $editor_classes ) {
 		require_once( eazyest_gallery()->plugin_dir . 'includes/class-eazyest-image-editor.php' );
 		array_unshift( $editor_classes, 'Eazyest_Image_Editor' );
@@ -1528,150 +1569,6 @@ class Eazyest_FolderBase {
 	 */
 	public function size_dir( $size ) {
 		return  'full' == $size ? '' : '_' . $size;
-	}
-	
-	/**
-	 * Eazyest_FolderBase::resize_filename()
-	 * Generate the full path filename for a resized image
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @uses trailingslashit
-	 * @param string $filename
-	 * @param string $size
-	 * @return string
-	 */
-	private function resize_filename( $filename, $size ) {
-		$size_dir = $this->size_dir( $size );
-		$size_dir = '' == $size_dir ? $size_dir : $size_dir . '/';	
-		return trailingslashit( dirname( $filename ) ) . $size_dir . basename( $filename ); 
-	}
-	
-	/**
-	 * Eazyest_FolderBase::create_size()
-	 * Create a new thumbnail, medium or large image in the gallery
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @uses wp_mkdir_p()
-	 * @uses get_option()
-	 * @uses wp_get_image_editor()
-	 * @uses is_wp_error()
-	 * @param string $gallery_path
-	 * @param string $filename
-	 * @param int $size
-	 * @param string $mime_type
-	 * @return array
-	 */
-	private function create_size( $filename, $size, $mime_type ) {
-		
-		if ( $size == 'thumb' ) $size = 'thumbnail';
-		// default sizes
-		$width = 128;
-		$height = 96;
-		$crop = $size == 'thumbnail' && get_option( 'thumbnail_crop' );
-		$gallery_path = dirname( $filename );
-		$basename = 		basename( $filename );
-		$size_dir = $this->size_dir( $size );		
-		$original_dir = eazyest_gallery()->root() . $gallery_path;
-		$original 		= trailingslashit( eazyest_gallery()->root() ) . $filename;
-		$resize_dir   = trailingslashit( $original_dir ) . $size_dir;
-		$resized      = trailingslashit( $resize_dir   ) . $basename;
-		global $_wp_additional_image_sizes;		
-		if ( in_array( $size, array( 'thumbnail', 'medium', 'large' ) ) ) {
-			$width  = intval( get_option( "{$size}_size_w" ) );
-			$height = intval( get_option( "{$size}_size_h" ) ); 
-			 
-		} elseif ( isset( $_wp_additional_image_sizes ) && count( $_wp_additional_image_sizes ) && in_array( $size, array_keys( $_wp_additional_image_sizes ) ) ) {
-			$width  = intval( $_wp_additional_image_sizes[$size]['width'] );
-			$height = intval( $_wp_additional_image_sizes[$size]['height'] );			
-		}
-		$original = str_replace( '\\', '/', $original );			
-		$editor = wp_get_image_editor( $original );
-		if ( ! is_wp_error( $editor ) ) {			
-			$resize = $editor->resize( $width, $height, $crop );
-			if ( is_wp_error( $resize ) )
-				return $resize;
-			return $editor->save( $resized, $mime_type );		
-		}	else {
-			return $editor;
-		}				
-	}
-	
-	/**
-	 * Eazyest_FolderBase::resize_image()
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @uses get_post()
-	 * @uses get_post_meta()
-	 * @uses is_wp_error() for result of create_size
-	 * @uses trailingslashit()
-	 * @uses get_option() to get resized dimensions
-	 * @uses wp_get_attachment_metadata()
-	 * @param int $post_id attachment->ID
-	 * @param string $size
-	 * @return mixed array on success, bool false on failure
-	 */
-	public function resize_image( $post_id, $size ) {
-		$attachment   = get_post( $post_id );
-		$mime_type    = $attachment->post_mime_type;
-		$filename    = get_post_meta( $post_id, '_wp_attached_file', true );
-		if ( false !== strpos( $filename, eazyest_gallery()->root() ) )
-			$filename = substr( $filename, strlen( eazyest_gallery()->root() ) );
-		$gallery_path = dirname( $filename );
-		if ( basename( $filename ) != basename( get_post( $post_id )->guid ) ) {
-			$gallery_path .=  '/_temp';
-			$filename = trailingslashit( $gallery_path ) . basename( $filename );
-		}		
-		$restrict_sizes = array( 'thumbnail', 'medium', 'large' );
-		if ( ! is_array( $size ) && ! in_array( $size, $restrict_sizes ) ) {
-			global $_wp_additional_image_sizes;
-			if ( isset( $_wp_additional_image_sizes[$size] ) ) {
-				$size = array( $_wp_additional_image_sizes[$size]['width'],  $_wp_additional_image_sizes[$size]['height'] );
-			} else {
-				$size = 'full';
-			}
-		} 		
-		if ( is_array( $size ) ) {
-			$width  = $size[0];
-			$height = $size[1];
-			$size   = 'full';	
-			foreach( $restrict_sizes as $dim ) {
-				if ( $width <= intval( get_option( "{$dim}_size_w" ) ) && $height <= intval( get_option( "{$dim}_size_h" ) ) ){
-					$size = $dim;
-					break;
-				}
-			}		
-		}			
-		// check and create cache directory for this size
-		$resize_dir = eazyest_gallery()->root() . trailingslashit( $gallery_path ) . $this->size_dir( $size );
-		
-		if ( !file_exists( $resize_dir ) )
-			wp_mkdir_p( $resize_dir );			
-		
-		$resize_name = $this->resize_filename( $filename, $size );
-		$img_file = eazyest_gallery()->root() . $resize_name;		
-		$img_url  = eazyest_gallery()->address() . $resize_name;	
-		
-		if ( ! file_exists( $img_file ) ) {
-			$result = $this->create_size( $filename, $size, $mime_type );
-			if ( ! is_wp_error( $result ) ) {
-				return( array( $img_url, $result['width'], $result['height'], false ) );
-			} else {
-				$img_file = eazyest_gallery()->root()  . trailingslashit( $gallery_path ) . $filename;
-				$img_url  = eazyest_gallery()->address() . trailingslashit( $gallery_path ) . $filename;
-				return false;	
-			}
-		}
-		if ( file_exists( $img_file ) ) {
-			$metadata = wp_get_attachment_metadata( $post_id );
-			if ( isset( $metadata['sizes'][$size] ) ) {
-				$width  = $metadata['sizes'][$size]['width'];
-				$height = $metadata['sizes'][$size]['height'];
-			} else {
-				list( $width, $height ) = getimagesize( $img_file );
-			}				
-			return array( $img_url, $width, $height, true );
-		}				
-		return false;
 	}
 	
 	/**
