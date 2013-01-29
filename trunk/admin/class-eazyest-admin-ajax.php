@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r22)
+ * @version 0.1.0 (r49)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -150,11 +150,11 @@ class Eazyest_Admin_Ajax {
 			if ( file_exists( $dir ) ) {
 				$abspath = str_replace( '\\', '/', ABSPATH );
 				$rel_dir = eazyest_gallery()->get_relative_path( $abspath, $dir );
-				eazyest_gallery()->change_option( 'gallery_folder', $rel_dir );
+				eazyest_gallery()->gallery_folder = $rel_dir;
 				if ( ! eazyest_folderbase()->is_dangerous( eazyest_gallery()->root() ) )
 					echo $rel_dir;
-				else 
-					echo "!";	
+				else
+					echo "!";
 			}
 		}
 		wp_die();
