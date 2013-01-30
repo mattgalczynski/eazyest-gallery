@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r48)
+ * @version 0.1.0 (r52)
  * @access public
  */
 
@@ -1181,7 +1181,7 @@ class Eazyest_FolderBase {
 				if ( false === strpos( $file, $path )  ) {
 					update_post_meta( $post_id, '_wp_attached_file', $path );
 				}
-				$file = eazyest_gallery()->root() . $path; 
+				$file = $path; 
 			}				
 		}	
 		return $file;
@@ -1202,6 +1202,7 @@ class Eazyest_FolderBase {
 		if ( $this->is_gallery_image( $post_id ) ) {
 			$url = eazyest_gallery()->address() . get_attached_file( $post_id );			
  		} 		
+lg_db($url); 		
 		return $url;	
 	}
 	
@@ -1545,15 +1546,18 @@ class Eazyest_FolderBase {
 				}
 			}		
 		}						
-		if ( 'full' == $size || 
-			( $imagedata['width']  <= intval( get_option( "{$size}_size_w" ) ) && 
-				$imagedata['height'] <= intval( get_option( "{$size}_size_h" ) ) ) )
+		if ( 'full' == $size || ( $imagedata['width']  <= intval( get_option( "{$size}_size_w" ) ) && $imagedata['height'] <= intval( get_option( "{$size}_size_h" ) ) ) ) {
 			// original is smaller than requested			
-			$img_url = eazyest_gallery()->address() . $imagedata['file'];	
-		else
+			$img_url = eazyest_gallery()->address() . $imagedata['file'];
+			$width   = $imagedata['width'];
+			$height  = $imagedata['height'];
+		}
+		else{
 			$img_url = eazyest_gallery()->address() . trailingslashit( dirname( $imagedata['file'] ) ) . $imagedata['sizes'][$size]['file'];
-			
-		return array( $img_url, $imagedata['width'], $imagedata['height'], false );
+			$width   = $imagedata['sizes'][$size]['width'];
+			$height  = $imagedata['sizes'][$size]['height'];
+		}
+		return array( $img_url, $width, $height, false );
 	}
 	
 	/**
