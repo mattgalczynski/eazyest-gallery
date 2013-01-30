@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r51)
+ * @version 0.1.0 (r52)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -160,7 +160,7 @@ class Eazyest_Frontend {
 		add_filter( 'pre_get_posts',          array( $this, 'pre_get_posts'       )        );		
 		// post thumbnail filters
 		add_filter( 'get_post_metadata',      array( $this, 'post_thumbnail_id'   ), 10, 3 );
-		add_filter( 'post_thumbnail_size',    array( $this, 'post_thumbnail_size' )        );
+		add_filter( 'post_thumbnail_size',    array( $this, 'post_thumbnail_size' ), 20    );
 		add_filter( 'post_thumbnail_html',    array( $this, 'post_thumbnail_html' ), 10, 2 );
 		// template filters
 		add_filter( 'template_include',       array( $this, 'template_include'    )        );
@@ -537,7 +537,7 @@ class Eazyest_Frontend {
 	function post_thumbnail_size( $size ) {
 		global $post;
 		if ( isset( $post ) && $post->post_type == eazyest_gallery()->post_type )
-			$size = 'thumbnail';
+			$size = 'thumbnail';		
 		return $size;	
 	}
 	
@@ -675,6 +675,7 @@ class Eazyest_Frontend {
 		$itemwidth = $width . $px;
 		$float = is_rtl() ? 'right' : 'left';
 		$itemheight = $columns == 0 ? intval( get_option( 'thumbnail_size_h' ) ) + 22 : 0;
+		$imgheight = get_option( 'thumbnail_size_h' ) . 'px';
 			
 		$style = "
 			<style type='text/css'>
@@ -1103,7 +1104,7 @@ class Eazyest_Frontend {
 				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 ); // priority 2000 to override other plugins
 				
 			add_filter( 'gallery_style', array( $this, 'style_div' ) );
-			$gallery = do_shortcode( "[gallery id='$post_id' order='$order' orderby='$orderby' columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag']" );			
+			$gallery = do_shortcode( "[gallery id='$post_id' order='$order' orderby='$orderby' columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag' size='thumbnail']" );			
 			remove_filter( 'gallery_style', array( $this, 'style_div' ) );
 				
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
