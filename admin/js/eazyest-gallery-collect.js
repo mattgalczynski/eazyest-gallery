@@ -1,9 +1,22 @@
 (function($) {
 		
-	function eazyest_gallery_collect_finished(response) {			
- 		$('#ajax-response').removeClass('collect-folders').html(response).delay(10000).hide(2000, 'linear', function(){
- 			$(this).html('');
- 		});
+	function eazyest_gallery_collect_finished(response) {
+		if ( 0 == response ) {
+			$('#ajax-response').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).delay(10000).hide(2000, 'linear', function(){
+				$(this).html('');
+			});
+		} else {
+			var totalCount = 0;
+			$.each( response, function(key, folder){
+				tdImages = 'tr#post-' + folder.id + ' td.galleryfolder_images';
+				var count = parseInt( $(tdImages).html(), 10 ) + folder.images;
+				totalCount += folder.images;
+				$(tdImages).html(count);
+			});
+			$('#ajax-response').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).delay(10000).hide(2000, 'linear', function(){
+				$(this).html('');
+			});
+		}
 	}
 	
 	function eazyest_gallery_collect_next(nextFolder) {

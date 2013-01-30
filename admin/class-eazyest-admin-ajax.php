@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r49)
+ * @version 0.1.0 (r54)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -218,12 +218,13 @@ class Eazyest_Admin_Ajax {
 	 * @uses check_ajax_referer()
 	 * @use set_transient() to store intemediate results
 	 * @uses get_transient() to retrieve intermediate results 
+	 * @uses wp_send_json() to send array of updated image counts
 	 * @return void
 	 */
 	function collect_folders() {
 		// check_ajax_referer( 'collect-folders' );
 		$subaction = isset( $_POST['subaction'] ) ? $_POST['subaction'] : 'start';
-		$results = array( 'images' => array( 'added' => 0, 'deleted' => 0 ), 'folders' => array() );
+		$results = array( 'updated' => array(), 'folders' => array() );
 		if ( 'start' == $subaction ) {
 			global $wpdb;
 			$results['folders']  = $wpdb->get_results( $wpdb->prepare(  "SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status = 'publish'", eazyest_gallery()->post_type  ), ARRAY_A );
@@ -236,10 +237,7 @@ class Eazyest_Admin_Ajax {
 			$folder = reset( $results['folders'] );
 			$new_images = eazyest_folderbase()->get_new_images( $folder['ID'] );
 			if ( 0 != $new_images ) {
-				if ( 0 > $new_images )
-					$results['images']['deleted'] = $results['images']['deleted'] - $new_images;
-				else	 				
-					$results['images']['added'] = $results['images']['added'] + $new_images;
+				$results['updated'][] = array( 'id' => $folder['ID'], 'images' => $new_images ); 
 			}
 			eazyest_folderbase()->collect_images( $folder['ID'] );
 			array_shift( $results['folders'] );
@@ -248,12 +246,10 @@ class Eazyest_Admin_Ajax {
 		if ( count( $results['folders'] ) ) {
 			echo 'next';
 		} else {
-			if ( $results['images']['added'] || $results['images']['deleted'] ) {
-				$message = sprintf( _n( '%d Image added.', '%d Images added.', $results['images']['added'], 'eazyest-gallery' ), $results['images']['added'] ) . '<br />';
-				$message .= sprintf( _n( '%d Image deleted.', '%d Images deleted.', $results['images']['deleted'], 'eazyest-gallery' ), $results['images']['deleted'] );
-				echo $message;
+			if ( empty( $results['updated'] ) ) {
+				echo 0;
 			} else {
-				echo __( 'No images added nor deleted', 'eazyest-gallery' );
+				wp_send_json( $results['updated'] );
 			}
 		}
 		wp_die();		 
