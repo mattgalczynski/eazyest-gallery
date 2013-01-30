@@ -20,7 +20,7 @@ get_header(); ?>
 			</header><!-- .archive-header -->
 
 			<?php ezg_gallery_style() ?>
-			<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
+			<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?> entry-content">
 				<?php $i = 0; ?>
 				<?php
 				/* Start the Loop */
