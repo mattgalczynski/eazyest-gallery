@@ -142,7 +142,7 @@ class Eazyest_Folder_Editor {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',       true );
 		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r29', true );
-		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r20', true );
+		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r54', true );
 	}
 	
 	/**
@@ -169,7 +169,9 @@ class Eazyest_Folder_Editor {
 		return array(
 			'pagenow'     => 'edit-' . eazyest_gallery()->post_type,
 			'collecting'  => __( 'Searching for new folders and images', 'eazyest-gallery' ),
-			'_wpnonce'    => wp_create_nonce( 'collect-folders' )
+			'notfound'    => __( 'No new images found in your gallery', 'eazyest-gallery'  ),
+			'foundimages' => __( 'Found %d new images in your gallery', 'eazyest-gallery'  ),
+			'_wpnonce'    => wp_create_nonce( 'collect-folders' ),
 		);
 	}
 	
