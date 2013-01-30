@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r52)
+ * @version 0.1.0 (r55)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -308,7 +308,7 @@ class Eazyest_Frontend {
 			$template_name =  "/archive-galleryfolder.php";
 		if ( is_singular( $post_type ) )
 			$template_name = "/single-galleryfolder.php";
-		if ( is_singular( 'attachment' ) )
+		if ( is_singular( 'attachment' ) &&  eazyest_gallery()->post_type == get_post_type( $GLOBALS['post']->post_parent ) )
 			$template_name = "/eazyest-image.php";	
 		if (  '' != $template_name ) {		
 			if ( file_exists( STYLESHEETPATH . $template_name ) ) {
@@ -891,7 +891,7 @@ class Eazyest_Frontend {
 	 * @return void
 	 */
 	function breadcrumb( $post_id = 0 ) {
-		
+			
 		if ( defined( 'LAZYEST_GALLERY_SHORTCODE' ) && ! apply_filters( 'eazyest_gallery_shortcode_breadcrumb', false ) )
 			return '';
 			
