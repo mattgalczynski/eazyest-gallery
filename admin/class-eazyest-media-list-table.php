@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r56) 
+ * @version 0.1.0 (r57) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public

@@ -13,7 +13,7 @@ else
  * Eazyest_Image_Editor
  * 
  * @since 0.1.0 (r36)
- * @version 0.1.0 (r36)
+ * @version 0.1.0 (r58)
  * @package Eazyest Gallery
  * @subpackage Image Editor
  * @see WP_Image_Editor 
