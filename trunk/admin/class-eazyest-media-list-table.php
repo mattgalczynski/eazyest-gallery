@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r34) 
+ * @version 0.1.0 (r56) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public
@@ -284,7 +284,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		$item_url   = add_query_arg( array( 'post' => $item->ID ), admin_url( 'post.php' ) );
 		$edit_url   = get_edit_post_link( $item->ID, true );
 		$delete_url = add_query_arg( array( 'action' => 'attachment_action', 'attachment_action' =>'delete', 'media' => $item->ID, 'bulk-media' => wp_create_nonce( 'bulk-media' ) ), $item_url );
-		$view_url   = eazyest_folderbase()->attachment_view_url( $item->ID );
+		$view_url   = get_permalink( $item->ID );
 		if ( current_user_can( 'edit_post', $item->ID ) )
 			$actions['edit'] = "<a href='$edit_url'>" . __( 'Edit', 'eazyest-galery' ) . "</a>";
 		if ( current_user_can( 'delete_post', $item->ID ) )

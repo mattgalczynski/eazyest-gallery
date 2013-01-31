@@ -37,9 +37,10 @@
 		if ( '1' == $('input[name=convert_page]:checked').val() && eazyestUpgraderRunning ) {
 			$('#upgrade_page').show();
 			var data = {
-				action      : 'eazyest_gallery_convert_page',
-				gallery_id  : $('#gallery_id').val(),
-				_ajax_nonce : $('#_wpnonce').val()		
+				action         : 'eazyest_gallery_convert_page',
+				gallery_folder : $('#gallery_folder').val(),
+				gallery_id     : $('#gallery_id').val(),
+				_ajax_nonce    : $('#_wpnonce').val()		
 			};
 			$.post( ajaxurl, data, function(response){
 				eazyestUpdateSettings();			
@@ -66,6 +67,7 @@
 		if ( eazyestUpgraderRunning ) {			
 			var data = {				
 				action         : 'eazyest_gallery_cleanup',
+				gallery_folder : $('#gallery_folder').val(),
 				_ajax_nonce    : $('#_wpnonce').val()		
 			};	
 			$.post( ajaxurl, data, function(response ){

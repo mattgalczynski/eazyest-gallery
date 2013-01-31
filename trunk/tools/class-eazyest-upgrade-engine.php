@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r50)
+ * @version 0.1.0 (r56)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -607,7 +607,7 @@ class Eazyest_Upgrade_Engine {
 				// move comments to this folder					
 				wp_update_post( $folder );		
 				$options = get_option( 'lazyest-gallery'  );
-				if ( $options && 'TRUE' == $options['allow_comments'] ) {
+				if (  isset($options['allow_comments']) && 'TRUE' == $options['allow_comments'] ) {
 					if ( $this->move_comments( $folder_data['id'], $folder_id ) )
 						wp_update_comment_count( $folder_id );	
 				}			
@@ -731,8 +731,10 @@ class Eazyest_Upgrade_Engine {
 	private function delete_cache() {	
 		$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' );
 		$gallery_path = $upgrade_folders[0];
-		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . eazyest_gallery()->thumb_folder );
-		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . eazyest_gallery()->slide_folder );
+		$options = get_option( 'lazyest-gallery' );
+		eazyest_gallery()->gallery_folder = $_POST['gallery_folder'];
+		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . $options['thumb_folder'] );
+		eazyest_folderbase()->clear_dir( eazyest_gallery()->root() . $gallery_path . '/' . $options['slide_folder'] );
 	}
 	
 	/**
@@ -804,7 +806,7 @@ class Eazyest_Upgrade_Engine {
 					$attachment['post_date_gmt'] = get_gmt_from_date( $datetime ); 
 					wp_update_post( $attachment  );
 					$options = get_option( 'lazyest-gallery' );
-					if ( $options && 'TRUE' == $options['allow_comments'] ) {
+					if (  isset($options['allow_comments']) && 'TRUE' == $options['allow_comments'] ) {
 						if ( $this->move_comments( $image['id'], $attachment_id ) )
 							wp_update_comment_count($attachment_id );	
 					}

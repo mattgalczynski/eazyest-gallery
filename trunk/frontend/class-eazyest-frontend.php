@@ -164,7 +164,7 @@ class Eazyest_Frontend {
 		add_filter( 'post_thumbnail_html',    array( $this, 'post_thumbnail_html' ), 10, 2 );
 		// template filters
 		add_filter( 'template_include',       array( $this, 'template_include'    )        );
-		// attachmnent filters should fire after folderbase filtered the urls (20)
+		// attachmnent filters
 		add_filter( 'attachment_link',        array( $this, 'attachment_link'     ), 30, 2 );		
 		add_filter( 'wp_get_attachment_link', array( $this, 'add_attr_to_link'    ), 40, 2 );
 		add_filter( 'wp_get_attachment_url',  array( $this, 'attachment_link'     ), 99, 2 );

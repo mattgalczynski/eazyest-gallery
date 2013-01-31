@@ -26,46 +26,26 @@ class Eazyest_Image_Editor extends _Eazyest_Image_Editor {
 	 *
 	 * @since 0.1.0 (r36)
 	 * @version 0.1.0 (r36)
-	 * @uses get_option to get image sizes
 	 * @uses trailingslashit to build save path
-	 * @uses wp_mkdir_p to cerate output directory
+	 * @uses wp_mkdir_p to create output directory
 	 * @param string $suffix not used in Eazyest Gallery
 	 * @param string $dest_path
 	 * @param string $extension
 	 * @return string filename
 	 */
 	public function generate_filename( $suffix = null, $dest_path = null, $extension = null )  {
+		$filename = parent::generate_filename( $suffix, $dest_path, $extension );
 		
 		if ( ( false === strpos( $this->file, eazyest_gallery()->address() ) ) && ( false === strpos( $this->file, eazyest_gallery()->root() ) ) )
-			return parent::generate_filename( $suffix, $dest_path, $extension );
+			return $filename; 
 			
-		$sizes  = array( 'thumbnail', 'medium', 'large' );
-		$subdir = '';
-		$width  = $this->size['width'];
-		$height = $this->size['height'];
-		if ( ! empty( $this->size ) )	
-			foreach( $sizes as $size ) {
-				if ( $width <= intval( get_option( "{$size}_size_w" ) ) && $height <= intval( get_option( "{$size}_size_h" ) ) ){
-					$subdir = eazyest_folderbase()->size_dir( $size );	
-					break;
-				}		
-			}					
-		if ( false !== strpos( $this->file, eazyest_gallery()->address ) ) {
-			$gallery_path = substr( $this->file, strlen( eazyest_gallery()->address ) );
-			$this->file = trailingslashit( eazyest_gallery()->root() ) . $gallery_path;
-		}
-		
-		$info   = pathinfo( $this->file );
-		$dir    = $info['dirname'];
-		$ext    = $info['extension'];
-		$name   = basename( $this->file );
-		
-		$dest_path = trailingslashit( $dir ) . $subdir;
+		$dir    = dirname( $this->file );
+		$name   = basename( $filename );	
+			
+		$dest_path = $dir . '/_cache';
 		if ( ! file_exists( $dest_path ) )
 			wp_mkdir_p( $dest_path );
-		
-		if ( ! is_null( $dest_path ) && $_dest_path = realpath( $dest_path ) )
-			$dir = $_dest_path;	
-		return trailingslashit( $dir ) . $name;	
+			
+		return trailingslashit( $dest_path ) . $name;	
 	}
 } // Eazyest_Image_Editor
