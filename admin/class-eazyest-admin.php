@@ -108,10 +108,34 @@ class Eazyest_Admin {
 		}
 		$this->folder_editor();
   }
+	
+	/**
+	 * Eazyest_Admin::theme_compatible()
+	 * 
+	 * @since 0.1.0 (r61)
+	 * @return string|bool name of theme when compatible theme is used | false if not
+	 */
+	function theme_compatible() {		
+		$theme = basename( TEMPLATEPATH );
+		if ( in_array( $theme, array( 'twentyten', 'twentyeleven', 'twentytwelve' ) ) )
+			return $theme;
+		else
+			return false;	
+	}
   
+  /**
+   * Eazyest_Admin::includes()
+   * Include files.
+   * 
+   * @since 0.1.0 (r2)
+   * @return void
+   */
   function includes() {
   	// tools
   	include( eazyest_gallery()->plugin_dir . 'tools/class-eazyest-upgrader.php' );
+  	if ( $theme = $this->theme_compatible() ) {
+  		include( eazyest_gallery()->plugin_dir . 'themes/' . $theme . '/functions.php' );
+  	}
   }
   
   /**
@@ -240,6 +264,13 @@ class Eazyest_Admin {
 		return Eazyest_Settings_Page::instance();
   }
   
+  /**
+   * Eazyest_Admin::tools_page()
+   * Initiate the tools page.
+   * 
+   * @since 0.1.0 (r2)
+   * @return Eazyest_Tools_Page object
+   */
   function tools_page() {
   	require_once( eazyest_gallery()->plugin_dir . 'tools/class-eazyest-tools-page.php' );
   	return Eazyest_Tools_Page:: instance();
