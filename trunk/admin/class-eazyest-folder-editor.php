@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012
- * @version 0.1.0 (r30)
+ * @version 0.1.0 (r58)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -992,11 +992,9 @@ class Eazyest_Folder_Editor {
 		$list_table->prepare_items();
 		?>
 		<div id="attached-images-<?php echo $post->ID ?>" class="attached-images after-editor">
-		<?php				
-		if ( $list_table->has_items() ) {			
+		<?php		
 			$list_table->views();
 			$list_table->display();
-		}
 		?>
 		</div>
 		<?php
@@ -1021,12 +1019,10 @@ class Eazyest_Folder_Editor {
 		?>
 		<div id="sub-folders-<?php echo $post->ID ?>" class="sub-folders after-editor">
 		<?php
-		if ( $list_table->has_items() ) {
-			if ( 'menu_order-ASC' == eazyest_gallery()->sort_by() )
-				wp_enqueue_script( 'eazyest-gallery-admin' );			
+			if ( $list_table->has_items() && 'menu_order-ASC' == eazyest_gallery()->sort_by() )
+				wp_enqueue_script( 'eazyest-gallery-admin' );						
 			$list_table->views();
 			$list_table->display();
-		}
 		?>
 		</div>
 		<?php
