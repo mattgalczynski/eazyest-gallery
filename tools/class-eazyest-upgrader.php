@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r50)
+ * @version 0.1.0 (r56)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -136,7 +136,7 @@ class Eazyest_Gallery_Upgrader {
 	function enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
 		if ( $this->should_upgrade() ) {	
-			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r40', true );			
+			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r56', true );			
 			wp_localize_script( 'eazyest-gallery-upgrader', 'eazyestUpgraderSettings', $this->script_settings() );
 		} else {				
 			$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
@@ -415,7 +415,7 @@ class Eazyest_Gallery_Upgrader {
 		<p>
 			<input type="radio" name="convert_page" id="convert_page-true" value="1" />
 			<label for="convert_page-true"><?php _e( 'Delete my gallery page and use the slug for my new gallery', 'eazyest-gallery' ) ?></label>
-			<?php if ( 'TRUE' == $options['allow_comments'] ) : ?> 
+			<?php if ( isset($options['allow_comments']) && 'TRUE' == $options['allow_comments'] ) : ?> 
 			<p class="description"><?php _e( 'If you select to delete your page, comments on the gallery root cannot be re-linked and will be discarded', 'eazyest-gallery' ); ?></p>
 			<?php endif; ?>
 		</p>
@@ -436,7 +436,7 @@ class Eazyest_Gallery_Upgrader {
 	 */
 	function allow_comments() {
 		$options = get_option( 'lazyest-gallery' );
-		$allow_comments =  'TRUE' == $options['allow_comments'];		
+		$allow_comments =   isset($options['allow_comments']) && 'TRUE' == $options['allow_comments'];		
 		?>
 		<input type="checkbox" name="allow_comments" id="allow_comments" value="1" <?php checked( 'TRUE' == $allow_comments ) ?> />
 		<label><?php _e( 'Comments will be re-linked to custom post types', 'eazyest-gallery' ); ?></label>
