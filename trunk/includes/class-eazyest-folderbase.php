@@ -126,13 +126,17 @@ class Eazyest_FolderBase {
 	 */
 	function filters() {
 		// filters related to folders
-		add_filter( 'pre_get_posts',                   array( $this, 'pre_get_posts'                ),  10    );
-		// filters related to attachments and images
-		add_filter( 'get_attached_file',               array( $this, 'get_attached_file'            ),  20, 2 );
-		add_filter( 'wp_get_attachment_url',           array( $this, 'get_attachment_url'           ),  20, 2 );
-		add_filter( 'update_post_metadata',            array( $this, 'update_attachment_metadata'   ),  20, 5 );
-		add_filter( 'wp_image_editors',                array( $this, 'image_editors'                ), 999    );
-		add_filter( 'wp_save_image_editor_file',       array( $this, 'save_image_editor_file'       ),  20, 5 );
+		add_filter( 'pre_get_posts',              array( $this, 'pre_get_posts'              ),  10    );
+		// filters related to metadata 
+		add_filter( 'get_attached_file',          array( $this, 'get_attached_file'          ),  20, 2 );
+		add_filter( 'wp_get_attachment_url',      array( $this, 'get_attachment_url'         ),  20, 2 );
+		add_filter( 'update_post_metadata',       array( $this, 'update_attachment_metadata' ),  20, 5 );
+		add_filter( 'wp_get_attachment_metadata', array( $this, 'get_attachment_metadata'   ),  10, 2 );
+		// filters related to image editing 
+		add_filter( 'wp_image_editors',           array( $this, 'image_editors'              ), 999    );
+		add_filter( 'wp_save_image_editor_file',  array( $this, 'save_image_editor_file'     ),  20, 5 );
+		// other filters 
+		add_filter( 'wp_create_file_in_uploads',  array( $this, 'create_file_in_uploads'     ),  10, 2 );
 	}
 	
 	// Functions related to folders ----------------------------------------------
@@ -1161,29 +1165,18 @@ class Eazyest_FolderBase {
 	 * Returns filename in gallery
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_post()
 	 * @uses get_post_meta()
-	 * @uses get_post_type()
 	 * @param string $file
 	 * @param int $post_id
 	 * @return string file
 	 */
 	public function get_attached_file( $file, $post_id ) {
-		$attachment = get_post( $post_id );
-		$parent_id = $attachment->post_parent;
 		
-		if ( $parent_id ) {			
-			if ( $this->is_gallery_image( $post_id ) ) {				
-				$gallery_path = trailingslashit( get_post_meta( $parent_id, '_gallery_path', true ) );
-				if ( basename( $file ) != basename( $attachment->guid ) )
-					$gallery_path .= '_cache/';
-				$path = $gallery_path . basename( $file );								
-				if ( false === strpos( $file, $path )  ) {
-					update_post_meta( $post_id, '_wp_attached_file', $path );
-				}
-				$file = $path; 
-			}				
-		}	
+		if ( $this->is_gallery_image( $post_id ) ) {
+			$attached_file = get_post_meta( $post_id, '_wp_attached_file', true );
+			$file = eazyest_gallery()->root() . $attached_file; 
+		}
+				
 		return $file;
 	}
 		
@@ -1193,16 +1186,40 @@ class Eazyest_FolderBase {
 	 * Returns url for image in gallery
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_post_type()
+	 * @uses get_post_meta()
 	 * @param string $url
 	 * @param int $post_id
 	 * @return string
 	 */
 	public function get_attachment_url( $url, $post_id ) {		
+		
 		if ( $this->is_gallery_image( $post_id ) ) {
-			$url = eazyest_gallery()->address() . get_attached_file( $post_id );			
- 		} 		
+			$attached_file = get_post_meta( $post_id, '_wp_attached_file', true );
+			$url = eazyest_gallery()->address() . $attached_file; 
+		}
+				
 		return $url;	
+	}
+	
+	/**
+	 * Eazyest_FolderBase::create_file_in_uploads()
+	 * When a file is created in cache, return the cache path.
+	 * 
+	 * @since 0.1.0 (r61)
+	 * @uses get_transient())
+	 * @param string $file
+	 * @param int $post_id
+	 * @return string
+	 */
+	function create_file_in_uploads( $file, $post_id ) {
+		if ( $this->is_gallery_image( $post_id ) ) {
+			if ( $saved = get_transient( 'eazyest_gallery_saved_in_cache' ) ) {
+				if ( basename( $file) == basename( $saved ) ){
+					$file = $saved;
+				}
+			}
+		}
+		return $file;
 	}
 	
 	/**
@@ -1534,6 +1551,30 @@ class Eazyest_FolderBase {
 	}
 	
 	/**
+	 * Eazyest_FolderBase::get_attachment_metadata()
+	 * Filter for attachment metadata.
+	 * Creates new metadata if metadata got lost e.g. when saved in another path than WP expected
+	 * 
+	 * @since 0.1.0 (r61)
+	 * @uses wp_generate_attachment_metadata()
+	 * @uses get_attached_file()
+	 * @uses update_post_meta()
+	 * @param array $metadata
+	 * @param int $post_id
+	 * @return array
+	 */
+	function get_attachment_metadata( $metadata, $post_id ) {
+		if ( ! $this->is_gallery_image( $post_id ) )
+			return $metadata;	
+		
+		if ( empty( $metadata ) ) {
+			$metadata = wp_generate_attachment_metadata( $post_id, get_attached_file( $post_id ) );
+			update_post_meta( $post_id, '_wp_attachment_metadata', $metadata );
+		}
+		return $metadata;
+	}
+	
+	/**
 	 * Eazyest_FolderBase::sizes_metadata()
 	 * Update metadata for image sizes.
 	 * All resized images are stored in subdirectory _cache
@@ -1604,10 +1645,30 @@ class Eazyest_FolderBase {
 	 * @return array updated metadata
 	 */
 	function file_metadata( $metadata, $attachment_id ) {
+		
 		if ( ! $this->is_gallery_image( $attachment_id ) )
 			return $metadata;	
-			
-		$guid = get_post( $attachment_id )->guid;
+		
+		$attachment = get_post( $attachment_id );
+		$guid = $attachment->guid;
+		
+		// clear some files used in creating header-images
+		if( $cache = get_transient( 'eazyest_gallery_created_cache' ) ) {
+			if ( basename( $cache ) == basename( $guid ) && file_exists( $cache ) ) {				
+				$metadata = $cache;
+				$attachment->guid = str_replace( eazyest_gallery()->root(), eazyest_gallery()->address(), $metadata );
+				wp_update_post( $attachment );
+				delete_transient( 'eazyest_gallery_created_cache' );
+				if ( false !== strpos( $metatada, 'cropped-' ) ) {
+					if ( $midsize = get_transient( 'eazyest_gallery_midsize' ) ){
+						if ( file_exists( $midsize ) )
+							@unlink( $midsize );
+						delete_transient( 'eazyest_gallery_midsize' );					
+					}
+				}
+			}				
+		}
+		
 		$gallery_path = get_post_meta( get_post( $attachment_id )->post_parent, '_gallery_path', true );			
 		$pathinfo = pathinfo( $guid );
 		if ( false === strpos( $metadata, $pathinfo['filename'] ) )
@@ -1650,7 +1711,8 @@ class Eazyest_FolderBase {
 				if ( $old_value[0] === $meta_value )
 					return false;
 			}
-		}	
+		}		
+				
 		// only filter metadata for gallery images	
 		if ( ! $this->is_gallery_image( $object_id ) )
 			return $result;
@@ -1661,7 +1723,7 @@ class Eazyest_FolderBase {
 			$meta_value = $this->backup_metadata( $meta_value, $object_id );
 		if ( $meta_key == '_wp_attached_file' )
 			$meta_value = $this->file_metadata( $meta_value, $object_id );
-		
+				
 		// add or change metavalue;
 		global $wpdb;	
 		if ( ! $meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE meta_key = %s AND post_id = %d", $meta_key, $object_id ) ) )
@@ -1733,9 +1795,8 @@ class Eazyest_FolderBase {
 		
 		if ( empty( $attachment ) )
 			return false;
-		
-		$gallery_filename = substr( $attachment->guid, strlen( eazyest_gallery()->address ) );
-		return file_exists( eazyest_gallery()->root() . $gallery_filename );	
+			
+		return false !== strpos( $attachment->guid, eazyest_gallery()->address() );	
 	}
 	
 	/**
@@ -1922,6 +1983,18 @@ class Eazyest_FolderBase {
 	}
 	
 } // Eazyest_FolderBase
+
+/**
+ * ezg_is_gallery_image()
+ * Wrapper for eazyest_folderbase()->is_gallery_image().
+ * 
+ * @since 0.1.0 (r61) 
+ * @param int $post_id
+ * @return bool true if attachment image resides in eazyest gallery
+ */
+function ezg_is_gallery_image( $post_id ) {
+	return eazyest_folderbase()->is_gallery_image( $post_id );
+}
 
 /**
  * eazyest_folderbase()

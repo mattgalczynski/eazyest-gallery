@@ -97,8 +97,7 @@ class Eazyest_Folder_Editor {
   	add_action( $manage_action,                      array( $this, 'custom_column'           ), 10, 2 );
   	
   	add_action( 'eazyest_gallery_before_list_items', array( $this, $before_list_items_action ), 10, 1 );
-  	add_action( 'eazyest_gallery_collect_folders',   array( $this, 'collect_folders'         )        );
-  	
+  	add_action( 'eazyest_gallery_collect_folders',   array( $this, 'collect_folders'         )        );  	
 	}
 	
 	/**
@@ -125,7 +124,7 @@ class Eazyest_Folder_Editor {
 		add_filter( 'upload_dir',                          array( $this, 'upload_dir'           )        );
 		add_filter( 'views_edit-galleryfolder',            array( $this, 'save_columns_button'  )        );
 		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'dropdown_pages_args'  ), 10, 2 );
-		
+		// filters to adapt media upload 
 		add_filter( 'media_view_strings',                  array( $this, 'media_view_strings'   ), 10, 2 );
 		add_filter( 'media_send_to_editor',                array( $this, 'media_send_to_editor' ), 10, 3 );
 	}
@@ -874,7 +873,8 @@ class Eazyest_Folder_Editor {
    * @return array
    */
   function media_view_strings( $strings, $post ) {
-		if ( eazyest_gallery()->post_type == $post->post_type ) { 		
+  	
+		if ( isset( $post ) && eazyest_gallery()->post_type == $post->post_type ) { 		
 	 		// disable some views that have no purpose in Eazyest Gallery
 	 		$disabled = array( 'selectFiles', 'createNewGallery', 'fromUrlTitle', 'createGalleryTitle' );
 	 		foreach( $disabled as $string )

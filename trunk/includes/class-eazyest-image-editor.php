@@ -48,4 +48,41 @@ class Eazyest_Image_Editor extends _Eazyest_Image_Editor {
 			
 		return trailingslashit( $dest_path ) . $name;	
 	}
+	
+		/**
+	 * Saves current in-memory image to file.
+	 *
+	 * @since 0.1.0 (r61)
+	 * @access public
+	 *
+	 * @param string $destfilename
+	 * @param string $mime_type
+	 * @return array|WP_Error {'path'=>string, 'file'=>string, 'width'=>int, 'height'=>int, 'mime-type'=>string}
+	 */
+	public function save( $filename = null, $mime_type = null ) {
+		if ( ! isset( $filename ) )
+			return parent::save( $filename, $mime_type );
+			
+		$filename = str_replace( '\\', '/', $filename );
+		
+		if ( ( false === strpos( $this->file, eazyest_gallery()->address() ) ) && ( false === strpos( $this->file, eazyest_gallery()->root() ) ) )
+			return parent::save( $filename, $mime_type );
+			
+		if ( basename( $this->file ) != basename( $filename ) && false === strpos( $filename, '_cache' ) ) {
+			$dirname = dirname( $this->file );
+			
+			if ( strpos( $dirname, eazyest_gallery()->address() ) )
+				$dirname = str_replace( eazyest_gallery()->address(), eazyest_gallery()->root(), $dirname );
+			
+			if ( false === strpos( $filename, 'midsize-' ) ){
+				$dirname .=	'/_cache';
+				set_transient( 'eazyest_gallery_created_cache', $dirname . '/' . basename( $filename ) );
+				if ( false !== strpos( $filename, 'midsize-' ) )
+					set_transient( 'eazyest_gallery_midsize', $this->file );
+			}
+								
+			$filename = $dirname . '/' . basename( $filename );
+		}				
+		return parent::save( $filename, $mime_type );		
+	}
 } // Eazyest_Image_Editor
