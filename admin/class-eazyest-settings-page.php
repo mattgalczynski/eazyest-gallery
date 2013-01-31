@@ -425,7 +425,7 @@ class Eazyest_Settings_Page {
 				<a id="folder-select" class="button button-small open" href="#"><strong>&#8744;</strong></a><div id="file-tree"></div>
 			<?php else : ?>
 				<input type="hidden" name="eazyest-gallery[gallery_folder]" id="gallery_folder" value="<?php echo $gallery_folder ?>" />
-				<p class="gallery-folder"><?php echo $gallery_folder ?></p>
+				<p class="gallery-folder code"><?php echo $gallery_folder ?></p>
 			<?php endif; ?>
 			<div id="eazyest-ajax-response" class="hidden"></div>
 			<a id="create-folder" class="button hidden" href="#"><?php _e( 'Create folder', 'eazyest-gallery' ); ?></a>
