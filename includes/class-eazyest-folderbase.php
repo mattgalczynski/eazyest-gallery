@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r60)
+ * @version 0.1.0 (r61)
  * @access public
  */
 
@@ -1669,10 +1669,13 @@ class Eazyest_FolderBase {
 			}				
 		}
 		
-		$gallery_path = get_post_meta( get_post( $attachment_id )->post_parent, '_gallery_path', true );			
+		$gallery_path = get_post_meta( get_post( $attachment_id )->post_parent, '_gallery_path', true );
+		if ( basename( $guid ) != basename( $metadata ) && false === strpos( $metadata, '_cache' ) )
+			$gallery_path .= '/_cache';
+					
 		$pathinfo = pathinfo( $guid );
 		if ( false === strpos( $metadata, $pathinfo['filename'] ) )
-			$metadata = trailingslashit( $gallery_path ) . $pathinfo['basename'];
+			$metadata = $gallery_path . '/' . $pathinfo['basename'];
 			
 		if ( false !== strpos( $metadata, eazyest_gallery()->address() ) )
 			$metadata = substr( $metadata, strlen( eazyest_gallery()->address() ) );
