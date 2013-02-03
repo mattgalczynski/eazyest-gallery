@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r54)
+ * @version 0.1.0 (r63)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -63,16 +63,28 @@ class Eazyest_Admin_Ajax {
 	 */
 	function actions() {
 		// admin actions
-		$actions = array( 
+		$ajax = array( 
+			// admin ajax
 			'upload', 
 			'filetree', 
 			'select_dir', 
 			'folder_change',
 			'collect_folders',
 			'create_folder',
+			
+			// frontend logged in
+			'next_slideshow',
 		);
-		foreach( $actions as $action ) {
+		$nopriv = array(
+			// frontend not logged in
+			'next_slideshow',
+		);
+				
+		foreach( $ajax as $action ) {
 			add_action( "wp_ajax_eazyest_gallery_$action", array( $this, $action ) );
+		}
+		foreach( $nopriv as $action ) {
+			add_action( "wp_ajax_nopriv_eazyest_gallery_$action", array( $this, $action ) );			
 		}
 	}
   // Admin actions ------------------------------------------------------------
@@ -222,7 +234,7 @@ class Eazyest_Admin_Ajax {
 	 * @return void
 	 */
 	function collect_folders() {
-		// check_ajax_referer( 'collect-folders' );
+		check_ajax_referer( 'collect-folders' );
 		$subaction = isset( $_POST['subaction'] ) ? $_POST['subaction'] : 'start';
 		$results = array( 'updated' => array(), 'folders' => array() );
 		if ( 'start' == $subaction ) {
@@ -253,6 +265,42 @@ class Eazyest_Admin_Ajax {
 			}
 		}
 		wp_die();		 
+	}
+	
+	// Frontend actions	
+	
+	/**
+	 * Eazyest_Admin_Ajax::next_slideshow()
+	 * Echo the next slide by AJAX call for slideshow
+	 * 
+	 * @since 0.1.0 (r63)
+	 * @uses check_ajax_referer()
+	 * @uses get_transient() to get query args for slide
+	 * @uses WP_Query
+	 * @uses wp_get_attachment_link() to get link and image for next slide 
+	 * @return void
+	 */
+	function next_slideshow() {
+		$show = isset( $_POST['show_id'] ) ? substr( $_POST['show_id'], 23 ) : 0;
+		check_ajax_referer( 'eazyest-ajax-nonce-' . $show );
+		if ( $query_args = get_transient( "eazyest-ajax-slideshow-$show" ) ) {
+			if ( isset( $query_args['size'] ) ) {
+				$size = $query_args['size'];
+				unset( $query_args['size'] );
+			} else {
+				$size = 'thumbnail';
+			}
+			$query_args['posts_per_page'] = 1;
+			$query = new WP_Query( $query_args );
+			global $post;
+			if ( $query->have_posts() ) {
+				$query->the_post();
+				echo wp_get_attachment_link( $post->ID, $size, true );
+			}	
+			wp_die();
+		}
+		echo 0;
+		wp_die();
 	}
 	
 } // Eazyest_Ajax

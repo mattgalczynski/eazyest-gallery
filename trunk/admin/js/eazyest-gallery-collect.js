@@ -23,7 +23,7 @@
 	 	data = {
 	 		action     : 'eazyest_gallery_collect_folders',
 	 		subaction  : nextFolder,
-	 		'_wpnonce' : eazyestGalleryCollect._wpnonce
+	 		_wpnonce   : eazyestGalleryCollect._wpnonce
 	 	}
 	 	$.post( ajaxurl, data, function(response){
 	 		if ( 'next' == response )

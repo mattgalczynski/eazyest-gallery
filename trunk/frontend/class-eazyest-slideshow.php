@@ -61,6 +61,7 @@ class Eazyest_Slideshow {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts'       ),  50 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_camera_style'   )      );		
 		add_action( 'wp_footer',          array( $this, 'camera_scripts'         ), 100 );
+		// ajax actions
 	}
 	
 	/**
@@ -72,15 +73,23 @@ class Eazyest_Slideshow {
 	 * @return void
 	 */
 	function register_scripts() {
-		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
+		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
 		
 		// check if the camera scripts are already registered because other plugins use the same scripts
 		if ( ! wp_script_is( 'jquery-easing', 'registered' ) )		
-			wp_register_script( 'jquery-easing', eazyest_gallery()->plugin_url . "/frontend/js/jquery.easing.1.3.$j", array( 'jquery' ), '1.3', true );		
+			wp_register_script( 'jquery-easing', eazyest_gallery()->plugin_url . "frontend/js/jquery.easing.1.3.$j", array( 'jquery' ), '1.3', true );		
 		if ( ! wp_script_is( 'camera-slide', 'registered' ) )			
-			wp_register_script( 'camera-slide', eazyest_gallery()->plugin_url . "/frontend/js/camera.$j", array( 'jquery', 'jquery-easing' ), '1.3.3', true );
+			wp_register_script( 'camera-slide', eazyest_gallery()->plugin_url . "frontend/js/camera.$j", array( 'jquery', 'jquery-easing' ), '1.3.3', true );
 			
-		wp_register_script( 'eazyest-slideshow',  eazyest_gallery()->plugin_url . "/frontend/js/eazyest-slideshow.$j", array( 'jquery' ), '0.1.0-r2', true );
+		wp_register_script( 'eazyest-slideshow',  eazyest_gallery()->plugin_url . "frontend/js/eazyest-slideshow.$j", array( 'jquery' ), '0.1.0-r2', true );
+		wp_localize_script( 'eazyest-slideshow', 'eazyestSlideshowSettings', $this->slideshow_settings() );
+	}
+	
+	function slideshow_settings() {
+		return array( 
+			'timeOut' => apply_filters( 'eazyest_gallery_ajax_timeout', 5000 ),
+			'ajaxurl' => esc_js( admin_url( 'admin-ajax.php' ) ), 
+		);
 	}
 	
 	/**
@@ -214,24 +223,50 @@ class Eazyest_Slideshow {
 	 * @param string $size
 	 * @return void
 	 */
-	function ajax_slideshow( $query_args, $id = 0, $size = 'thumbnail' ) {				
+	function ajax_slideshow( $query_args, $show = 1, $size = 'thumbnail' ) {	
 		if ( empty( $query_args ) )
 			return;	
-					
-		static $show = 0;
-		$show++;
-		
+				
 		$global_post = $GLOBALS['post'];
-					
+		global $post;
+							
 		if ( $query_args != get_transient( "eazyest-ajax-slideshow-$show" ) )		
-			set_transient( "eazyest-ajax-slideshow-$show", $args, DAY_IN_SECONDS );
+			set_transient( "eazyest-ajax-slideshow-$show", $query_args, DAY_IN_SECONDS );
+		
+		if ( isset( $query_args['size'] ) ) {
+			$size = $query_args['size'];
+			unset( $query_args['size'] );
+		}
+		$query_args['posts_per_page'] = 1;
+		$height = absint( get_option( "{$size}_size_h" ) ) + 20;
+		$width  = absint( get_option( "{$size}_size_w" ) ) + 20;
 		$query = new WP_Query( $query_args );
-		?>
+		if ( $query->have_posts() ) : $query->the_post();
+		?>		
+		<style type="text/css">
+			#eazyest-ajax-slideshow-<?php echo $show ?> {
+				position: relative;
+				height: <?php echo $height; ?>px;
+				width: !important<?php echo $width; ?>px; 
+			}
+			#eazyest-ajax-slideshow-<?php echo $show ?> .gallery-item {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			#eazyest-ajax-slideshow-<?php echo $show ?> .gallery-item.top {
+				z-index: 1000;
+			}
+		</style>
 		<form id="eazyest-slideshow-form-<?php echo $show ?>">
-			<?php wp_nonce_field( 'eazyest-ajax-slideshow-' . $show, 'eazyest-slideshow-nonce-' . $show  ); ?>
-			<?php if ( $query->have_posts() ) : $query->the_post(); ?>
+			<?php wp_nonce_field( 'eazyest-ajax-nonce-' . $show, 'eazyest-ajax-nonce-' . $show  ); ?>
 			<div id="eazyest-ajax-slideshow-<?php echo $show ?>" class="gallery eazyest-gallery eazyest-ajax-slideshow">
-				<<?php ezg_itemtag(); ?> class="gallery-item">
+				<<?php ezg_itemtag(); ?> class="gallery-item top">
+					<<?php ezg_icontag();?> class="gallery-icon">
+						<?php echo wp_get_attachment_link( $post->ID, $size, true ); ?>
+					</<?php ezg_icontag();?>>
+				</<?php ezg_itemtag(); ?>>
+				<<?php ezg_itemtag(); ?> class="gallery-item bottom">
 					<<?php ezg_icontag();?> class="gallery-icon">
 						<?php echo wp_get_attachment_link( $post->ID, $size, true ); ?>
 					</<?php ezg_icontag();?>>
@@ -321,7 +356,8 @@ class Eazyest_Slideshow {
 			'number'     => 0,
 			'size'       => 'large',
 			'skin'       => 'ash',
-			'ajax'       => 0
+			'ajax'       => 0,
+			'show'       => 1,
 		), $attr ) );
 	
 		$id = intval($id);
@@ -340,17 +376,20 @@ class Eazyest_Slideshow {
 			'post_status'    => array( 'publish', 'inherit' ),
 			'post_per_page'  => $number,
 			'orderby'        => $orderby, 
-			'order'          => $order
+			'order'          => $order,
 		);
 		if ( isset( $post__in ) ) {
 			$args['post__in'] = $post__in;
 		} else {
 			$args['post_parent'] = $id;
+		}			
+		if ( $ajax ) {
+			$arg['size'] = $size;
+			$this->ajax_slideshow( $args, $show );
 		}
-		if ( $ajax )
-			$this->ajax_slideshow( $args, $id, $size );
-		else	
+		else {
 			$this->camera_slideshow( $args, $id, $size, $skin );
+		}
 	}
 	
 } // Eazyest_Slideshow
