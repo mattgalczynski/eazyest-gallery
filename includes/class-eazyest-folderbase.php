@@ -131,7 +131,7 @@ class Eazyest_FolderBase {
 		add_filter( 'get_attached_file',          array( $this, 'get_attached_file'          ),  20, 2 );
 		add_filter( 'wp_get_attachment_url',      array( $this, 'get_attachment_url'         ),  20, 2 );
 		add_filter( 'update_post_metadata',       array( $this, 'update_attachment_metadata' ),  20, 5 );
-		add_filter( 'wp_get_attachment_metadata', array( $this, 'get_attachment_metadata'   ),  10, 2 );
+		add_filter( 'wp_get_attachment_metadata', array( $this, 'get_attachment_metadata'    ),  10, 2 );
 		// filters related to image editing 
 		add_filter( 'wp_image_editors',           array( $this, 'image_editors'              ), 999    );
 		add_filter( 'wp_save_image_editor_file',  array( $this, 'save_image_editor_file'     ),  20, 5 );
@@ -1883,7 +1883,7 @@ class Eazyest_FolderBase {
 			SELECT ID FROM $wpdb->posts 
 			WHERE post_parent $post_ids 
 			AND post_type = 'attachment' 
-			AND post_status IN ('inherit', 'publish') 
+			AND post_status IN ('inherit','publish') 
 			ORDER BY RAND() 
 			LIMIT $number;", 
 			ARRAY_A 

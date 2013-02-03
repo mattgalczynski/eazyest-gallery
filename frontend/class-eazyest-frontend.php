@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r58)
+ * @version 0.1.0 (r63)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -82,6 +82,7 @@ class Eazyest_Frontend {
 		$this->actions();
 		$this->filters();
 		$this->shortcodes();
+		eazyest_slideshow();
 	}
 	
 	/**
@@ -105,11 +106,13 @@ class Eazyest_Frontend {
 	 * @return void
 	 */
 	private function includes() {
-		/**
+		/** 
 		 * include template tags for theme builders.
 		 * @since 0.1.0 (r2)
 		 */ 
 		include( eazyest_gallery()->plugin_dir . '/frontend/template-tags.php' );	
+		
+		include( eazyest_gallery()->plugin_dir . '/frontend/class-eazyest-slideshow.php' );
 	}
 	
 	/**
@@ -567,6 +570,7 @@ class Eazyest_Frontend {
 	function post_thumbnail_attr( $post_id = 0 ) {
 		global $post;		
 		$post_id = 0 != $post_id ? $post_id : $post->ID;
+		
 		$thumbnail_id = $this->post_thumbnail_id( null, $post_id, '_thumbnail_id' );
 		$option = eazyest_gallery()->folder_image;
 		$src = '';
@@ -631,7 +635,8 @@ class Eazyest_Frontend {
 	 */
 	function folder_thumbnail_html( $post_id = 0 ) {
 		global $post;
-		$post_id = 0 != $post_id ? $post_id : $post->ID;		
+		$post_id = 0 != $post_id ? $post_id : $post->ID;
+		
 		$attr = $this->post_thumbnail_attr( $post_id );
 		$html = empty( $attr['src'] ) ? '' : sprintf( '<img src="%s" class="attachment-thumbnail folder-icon" alt="%s" />',
 			$attr['src'],

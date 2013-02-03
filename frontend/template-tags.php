@@ -117,6 +117,10 @@ function ezg_icontag() {
 	echo eazyest_frontend()->icontag();
 }
 
+function ezg_captiontag() {
+	echo eazyest_frontend()->captiontag();
+}
+
 /**
  * ezg_folders_break()
  * Wrap for Eazyest_Frontend::folders_break()
@@ -279,35 +283,20 @@ function ezg_random_images( $attr = array() ) {
 	$subfolders = $subfolders ? true : false;
 	$columns = absint( $columns );	
 			
-	if ( isset( $folder ) && ! isset( $id ) )
+	if ( isset( $folder ) )
 		$id = eazyest_folderbase()->get_folder_by_string( $folder );
-	if ( $id ) {
-		$results = eazyest_folderbase()->random_images( $post_id, $number, $subfolders );
-		if ( ! empty( $results ) ) :
-			?>
-			<?php if ( ! empty( $title ) ) : ?>
-			<h3><?php echo esc_html( $title ); ?></h3>
-			<?php endif; ?>
-			<?php ezg_gallery_style() ?>
-			<div id="<?php ezg_selector( false, true ) ?>" class="gallery eazyest-gallery gallery-size-<?php echo $size; ?>">
-				<?php 
-					$i = 0;
-					foreach( $results as $attachment_id ) : 
-						$attachment = get_post( $attachment_id );
-						$wp_sr      = eazyest_folderbase()->get_attachment_image_src( $attachment->ID, $size );
-						$link       = eazyest_frontend()->add_attr_to_link( wp_get_attachment_link( $attachment->ID, $size ), $attachment->ID ); 
-				?>
-				<<?php ezg_itemtag(); ?> class="gallery-item">							
-					<<?php ezg_icontag(); ?> class="gallery-icon">
-						<?php echo $link ?>
-					</<?php ezg_icontag(); ?>>
-				</<?php ezg_itemtag(); ?>>
-				<?php ezg_folders_break( ++$i ); ?>
-				<?php	endforeach; ?>
-				<br style="clear:both;"/>
-			</div>
-		<?php endif;
-	}	
+		
+	$ids = implode( ', ', eazyest_folderbase()->random_images( $id, $number, $subfolders ) );
+	
+	$itemtag    = eazyest_frontend()->itemtag();
+	$icontag    = eazyest_frontend()->icontag();
+	$captiontag = eazyest_frontend()->captiontag();
+	?>
+	<?php if ( ! empty( $title ) ) : ?>
+	<h3><?php echo esc_html( $title ); ?></h3>
+	<?php endif; ?>	
+	<?php
+	echo do_shortcode( "[gallery ids='$ids' columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag' size='$size']" );
 }
 
 /**
@@ -316,7 +305,7 @@ function ezg_random_images( $attr = array() ) {
  * 
  * @since 0.1.0 (r2)
  * @uses shortcode_atts
- * @uses get_the_ID()
+ * @uses do_shortcode to display WordPress gallery
  * @param array $attr
  * array(
  *  'folder'     => '',
@@ -334,7 +323,7 @@ function ezg_recent_images( $attr = array() ) {
 	  'folder'     => '',
 		'id'         => 0,
 		'number'     => 1,
-		'columns'    => eazyest_gallery()-> thumbs_columns ,
+		'columns'    => eazyest_gallery()-> thumbs_columns,
 		'title'      => '',
 		'subfolders' => 0,
 		'size'       => 'thumbnail'
@@ -345,15 +334,12 @@ function ezg_recent_images( $attr = array() ) {
 		
 	if ( ! $id )
 		$subfolders = true;
-	
-	if ( $id == 0 )
-		$id = get_the_ID();
 			
 	$ids = implode( ', ', eazyest_folderbase()->recent_images( $id, $number, $subfolders ) );
-
-	$itemtag    = ezg_itemtag();
-	$icontag    = ezg_icontag();
-	$captiontag = ezg_captiontag();
+	
+	$itemtag    = eazyest_frontend()->itemtag();
+	$icontag    = eazyest_frontend()->icontag();
+	$captiontag = eazyest_frontend()->captiontag();
 	?>
 	<?php if ( ! empty( $title ) ) : ?>
 	<h3><?php echo esc_html( $title ); ?></h3>
@@ -379,30 +365,43 @@ function ezg_recent_images( $attr = array() ) {
 function ezg_recent_folders( $attr = array() ) {
 	extract( shortcode_atts( array(
 		'number'     => 1,
-		'columns'    => eazyest_gallery()-> thumbs_columns,
+		'columns'    => eazyest_gallery()->folder_columns,
 		'title'      => '', 
 	), $attr ) );
 	
 	$args = array(
 		'post_type'   => eazyest_gallery()->post_type,
 		'post_status'    => 'publish',
-		'orderby'        => 'date',
+		'orderby'        => 'post_date',
 		'order'          => 'DESC',
-		'posts_per_page' => $number
+		'posts_per_page' => $number,
+		'suppress_filters' => true,
 	);
+	if ( ! defined( 'DOING_GALLERYFOLDERS' ) )
+		define( 'DOING_GALLERYFOLDERS', true );
+	
+	$folder_columns = eazyest_frontend()->folder_columns;
 	eazyest_frontend()->folder_columns = $columns;
 	
 	$global_post = $GLOBALS['post'];
-	$query = new WP_Query( $args );	
+	global $post;
+	
+	$posts = get_pages( $args );
+	
+	$i = 0;		
+	$selector = ezg_selector( true, false );
+	echo eazyest_frontend()->gallery_style( $selector, $columns );
 	?>
-	<?php while( $query->have_posts() ) : $query->the_post(); ?>							
+	
+	<div id="<?php echo $selector; ?>" class="eazyest-gallery gallery gallery-columns-<?php echo $columns ?> gallery-size-thumbnail">
+	<?php foreach( $posts as $post ) : setup_postdata($post); ?>							
 		<<?php ezg_itemtag(); ?> class="gallery-item folder-item">
 	
 		<?php do_action( 'eazyest_gallery_before_folder_icon' ); ?>
 	
 		<<?php ezg_icontag(); ?> class="gallery-icon folder-icon">
 			<a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'View folder &#8220;%s&#8221;', 'eazyest-gallery' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark">
-				<?php ezg_folder_thumbnail(); ?> 
+				<?php ezg_folder_thumbnail( $post->ID ); ?> 
 			</a>
 		</<?php ezg_icontag(); ?>>
 	
@@ -410,9 +409,12 @@ function ezg_recent_folders( $attr = array() ) {
 	
 		</<?php ezg_itemtag(); ?>>
 		<?php ezg_folders_break( ++$i ); ?>	
-	<?php endwhile; ?>
-	<?php
-		
+	<?php endforeach; ?>
+	</div>
+	
+	<?php		
+	
+	eazyest_frontend()->folder_columns = $folder_columns;
 	wp_reset_query();
 	wp_reset_postdata();
 	$GLOBALS['post'] = $global_post;
