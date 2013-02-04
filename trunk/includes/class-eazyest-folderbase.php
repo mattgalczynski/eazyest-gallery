@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r67)
+ * @version 0.1.0 (r68)
  * @access public
  */
 
@@ -1578,9 +1578,10 @@ class Eazyest_FolderBase {
 		if ( ! $this->is_gallery_image( $post_id ) )
 			return false;
 		
-		$metadata = wp_get_attachment_metadata( $post_id );		
-		$dir    = dirname( $metadata['file'] );
-		$name   = basename( $metadata['file'] );
+		$metadata = wp_get_attachment_metadata( $post_id );
+		$attached = get_post_meta( $post_id, '_wp_attached_file', true );		
+		$dir    = dirname( $attached );
+		$name   = basename( $attached );
 		$width  = $metadata['width'];
 		$height = $metadata['height'];
 		if ( 'full' != $size && isset( $metadata['sizes'][$size]['file'] ) ) {
@@ -1643,15 +1644,14 @@ class Eazyest_FolderBase {
 	function sizes_metadata( $metadata, $attachment_id ) {
 		if ( ! $this->is_gallery_image( $attachment_id ) )
 			return $metadata;	
-			
-		$file = $metadata['file'];
 		
-		// Make the file path relative to the eazyest gallery dir
+		
+		$file = get_post_meta( $attachment_id, '_wp_attached_file', true );
 		if ( false !== strpos( $file, eazyest_gallery()->root() ) )
 			$file = substr( $file, strlen( eazyest_gallery()->root() ) );
-		$gallery_path = trailingslashit( dirname( $file ) );
-				
-  	$metadata['file'] = $gallery_path . basename( $file );
+			
+		if ( $file != $metadata['file'] )
+			$metadata['file'] = $file;
   	
   	if ( isset( $metadata['sizes'] ) ) {
   		foreach( $metadata['sizes'] as $key => $size ) {
@@ -1659,34 +1659,6 @@ class Eazyest_FolderBase {
   		}
   	}
 		return $metadata;			
-	}
-	
-	/**
-	 * Eazyest_FolderBase::backup_metadata()
-	 * Update backup metadata for resized images in _temp folder.
-	 * 
-	 * @since 0.1.0 (r36)
-	 * @uses get_post() to get attachment
-	 * @param array $metadata
-	 * @param int $attachment_id
-	 * @return array updated metadata
-	 */
-	function backup_metadata( $metadata, $attachment_id ) {
-		if ( ! $this->is_gallery_image( $attachment_id ) )
-			return $metadata;				
-			
-		$file = basename( get_post( $attachment_id )->guid );
-		if ( $file != basename( $backup['file'] ) ) {	
-			if ( false === strpos( '_cache/', $backup['file'] ) )
-				$backup['file'] = '_cache/' . $backup['file'];
-				
-			foreach( $metadata as $key => $backup ) {
-				 if ( false === strpos( '_cache/', $metadata[$key]['file'] ) ) {
-					$metadata[$key]['file'] =  '_cache/' . $metadata[$key]['file'];
-				}
-			}
-		}
-		return( $metadata );
 	}
 	
 	/**
@@ -1721,13 +1693,11 @@ class Eazyest_FolderBase {
 						delete_transient( 'eazyest_gallery_midsize' );					
 					}
 				}
-			}				
-		}
-		
-		$gallery_path = get_post_meta( get_post( $attachment_id )->post_parent, '_gallery_path', true );
-		if ( basename( $guid ) != basename( $metadata ) && false === strpos( $metadata, '_cache' ) )
-			$gallery_path .= '/_cache';
-					
+			} else if ( basename( $cache ) != basename( $guid ) && file_exists( $cache ) ) {								
+				$metadata = $cache;
+				delete_transient( 'eazyest_gallery_created_cache' );
+			} 				
+		}						
 		$pathinfo = pathinfo( $guid );
 		if ( false === strpos( $metadata, $pathinfo['filename'] ) )
 			$metadata = $gallery_path . '/' . $pathinfo['basename'];
@@ -1777,8 +1747,6 @@ class Eazyest_FolderBase {
 			
 		if ( $meta_key == '_wp_attachment_metadata' )	
 			$meta_value = $this->sizes_metadata( $meta_value, $object_id );
-		if ( $meta_key == '_wp_attachment_backup_sizes' )
-			$meta_value = $this->backup_metadata( $meta_value, $object_id );
 		if ( $meta_key == '_wp_attached_file' )
 			$meta_value = $this->file_metadata( $meta_value, $object_id );
 				
@@ -1831,6 +1799,8 @@ class Eazyest_FolderBase {
 			
 		$filename = trailingslashit( $dirname ) . basename( $filename );
 		$result = $image->save( $filename, $mime_type );
+		if ( ! is_wp_error( $result ) )
+			set_transient( 'eazyest_gallery_created_cache', $filename );
 		return $result;	
 	}
 	
