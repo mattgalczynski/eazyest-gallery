@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r63)
+ * @version 0.1.0 (r65)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -135,14 +135,16 @@ class Eazyest_Frontend {
 	function actions() {
 		add_action( 'wp_head',            array( $this, 'setup_tags'       ), 1 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' )    );
-		
 		// gallery output actions
-		add_action( 'eazyest_gallery_after_folder_icon',         'ezg_folder_icon_caption',       5 );
-		add_action( 'eazyest_gallery_after_folder_icon_caption', 'ezg_folder_attachments_count',  5 );
-		add_action( 'eazyest_gallery_before_folder_content',     'ezg_breadcrumb',                5 );
-		add_action( 'eazyest_gallery_before_folder_content',     'ezg_thumbnails',               10 );
-		add_action( 'eazyest_gallery_after_folder_content',      'ezg_subfolders',                5 );
-		add_action( 'eazyest_gallery_before_attachment',         'ezg_breadcrumb',                5 );
+		add_action( 'eazyest_gallery_after_folder_icon',         'ezg_folder_icon_caption',       5    );
+		add_action( 'eazyest_gallery_after_folder_icon_caption', 'ezg_folder_attachments_count',  5    );
+		add_action( 'eazyest_gallery_before_folder_content',     'ezg_breadcrumb',                5    );
+		add_action( 'eazyest_gallery_before_folder_content',     'ezg_slideshow_button',          9    );
+		add_action( 'eazyest_gallery_before_folder_content',     'ezg_folder',                   10    );
+		add_action( 'eazyest_gallery_thumbnails',                'ezg_thumbnails',                5    );
+		add_action( 'eazyest_gallery_slideshow',                 'ezg_slideshow',                 5, 2 );
+		add_action( 'eazyest_gallery_after_folder_content',      'ezg_subfolders',                5    );
+		add_action( 'eazyest_gallery_before_attachment',         'ezg_breadcrumb',                5    );
 		
 		if ( eazyest_gallery()->show_credits ) {
 			add_action( 'eazyest_gallery_after_folder_content', 'ezg_credits', 999 ); 
@@ -884,6 +886,46 @@ class Eazyest_Frontend {
 	}
 	
 	/**
+	 * Eazyest_Frontend::slideshow_button()
+	 * echo or return the slideshow button.
+	 * you have to add style rules for a.button or a.small or a.button.small
+	 * 
+	 * @since 0.1.0 (r65)
+	 * @uses is_single()
+	 * @uses get_permalink() to get clean permalink for currently showing post
+	 * @uses trailingslashit() to build pretty permalink
+	 * @uses add_query_arg() to build link query
+	 * @param bool $echo echo link or not
+	 * @return string
+	 */
+	function slideshow_button( $echo = true ) {		
+		// only show slideshow button on single posts/pages/galleryfolders
+		if ( ! is_single() )
+			return;
+		
+		global $wp_query;
+		// don't show slideshow button if we display a slideshow 
+		if ( isset( $wp_query->query_vars['slideshow'] ) )
+			return;
+		
+		global $post;
+		$current_permalink = get_permalink( $post->ID );
+			
+		global $wp_rewrite;
+		if ( $wp_rewrite->using_permalinks() ) {
+			$button_url = 	trailingslashit( $current_permalink ) . 'slideshow/large/';		
+		} else {
+			$button_url = add_query_arg( array( 'slideshow' => 'large' ), $current_permalink );
+		}
+		$slideshow = __( 'Slideshow', 'eazyest-gallery' );
+		$button_link = "<a class='button small' href='$button_url' title='$slideshow'>$slideshow</a>";
+		if ( $echo )
+			echo $button_link;
+		else 
+			return $button_link;	
+	}
+	
+	/**
 	 * Eazyest_Frontend::breadcrumb()
 	 * Echo breadcrumb trail html markup.
 	 * Applies filters for the separator char (&rsaquo;) and for the breadcrumb items (array).
@@ -897,7 +939,7 @@ class Eazyest_Frontend {
 	 */
 	function breadcrumb( $post_id = 0 ) {
 			
-		if ( defined( 'LAZYEST_GALLERY_SHORTCODE' ) && ! apply_filters( 'eazyest_gallery_shortcode_breadcrumb', false ) )
+		if ( defined( 'LAZYEST_GALLERY_SHORTCODE' ) && apply_filters( 'eazyest_gallery_shortcode_breadcrumb', true ) )
 			return '';
 			
 		if ( $post_id == 0 )
@@ -932,7 +974,7 @@ class Eazyest_Frontend {
 	
 	/**
 	 * Eazyest_Frontend::post_gallery()
-	 * Same functionality al;s WordPress gallery_code but with a filter for captions
+	 * Same functionality as WordPress gallery_code but with a filter for captions
 	 * <code>'eazyest_gallery_thumbsview_caption'</code>
 	 * 
 	 * @see http://codex.wordpress.org/Gallery_Shortcode
@@ -1058,6 +1100,44 @@ class Eazyest_Frontend {
 	}
 	
 	/**
+	 * Eazyest_Frontend::folder()
+	 * Display folder gallery-content, either thumbnails or slideshow.
+	 * 
+	 * @since 0.1.0 (r65) 
+	 * @param integer $post_id
+	 * @param bool $echo to cho or to return markup
+	 * @return void|string
+	 */
+	function folder( $post_id = 0, $echo = true ) {		
+		global $wp_query; 
+		if ( isset( $wp_query->query_vars['slideshow'] ) )
+			do_action( 'eazyest_gallery_slideshow', $post_id, 'large', $echo );
+		else
+			do_action( 'eazyest_gallery_thumbnails', $post_id, $echo );
+	}
+	
+	/**
+	 * Eazyest_Frontend::slideshow()
+	 * Display slideshow.
+	 * 
+	 * @since 0.1.0 (r65)
+	 * @param integer $post_id
+	 * @param string $size
+	 * @param bool $echo
+	 * @return
+	 */
+	function slideshow( $post_id = 0, $size = 'large', $echo = true ) {
+		ob_start();
+		eazyest_slideshow()->slideshow( array( 'id' => $post_id, 'size' => $size ) );
+		$slideshow = ob_get_contents();
+		ob_end_clean();
+		if ( $echo )
+			echo $slideshow;
+		else
+			return $slideshow;	
+	}
+	
+	/**
 	 * Eazyest_Frontend::thumbnails()
 	 * Echo or Return folder thumbnails gallery
 	 * If you don't have extra fields, the function puts out a WordPress <code>[gallery]</code> tag.
@@ -1075,6 +1155,7 @@ class Eazyest_Frontend {
 	 * @return void or string
 	 */
 	function thumbnails( $post_id = 0, $echo = true ) {
+			
 		if ( $post_id == 0 )
 			$post_id = get_the_ID();
 			
@@ -1169,6 +1250,7 @@ class Eazyest_Frontend {
 			$post_id = get_the_ID();
 		
 		$global_post = $GLOBALS['post'];
+		global $post;
 		
 		$args = array(
 			'post_type'   => eazyest_gallery()->post_type,

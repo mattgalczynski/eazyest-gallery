@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r48)
+ * @version 0.1.0 (r65)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -185,7 +185,8 @@ class Eazyest_Slideshow {
 			return;	
 					
 		$global_post = $GLOBALS['post'];
-		$query = new WP_Query( $query_args );	
+		global $post;	
+		$query = new WP_Query( $query_args );
 		?>
 		<div class="fluid_container">
 			<div class="camera_wrap camera_<?php echo $skin ?>_skin" id="camera_wrap_<?php echo $id ?>">
@@ -330,6 +331,9 @@ class Eazyest_Slideshow {
 	 * skin is not applied for ajax thumbnail slideshows
 	 * 
 	 * @since 0.1.0 (r2)
+	 * @uses sanitize_sql_orderby()
+	 * @uses apply_filters() for 'eazyest_gallery_slideshow_attr' array filter
+	 * @uses shortcode_atts to parse $attr array
 	 * @param mixed $attr
 	 * @return void;
 	 */
@@ -347,6 +351,8 @@ class Eazyest_Slideshow {
 		
 		list( $default_orderby, $default_ascdesc ) = explode( '-', eazyest_gallery()->sort_by( 'thumbnails' ) );
 		$order_by = eazyest_gallery()->sort_by( 'thumbnails' ) == 'menu_order-ASC' ? 'menu_order' :  substr( $default_orderby[0], 5 );
+		
+		$attr = apply_filters( 'eazyest_gallery_slideshow_attr', $attr );
 	
 		extract( shortcode_atts( array(
 			'order'      => $default_ascdesc,
