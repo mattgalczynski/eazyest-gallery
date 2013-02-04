@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r63)
+ * @version 0.1.0 (r69)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -90,7 +90,7 @@ class Eazyest_Admin_Ajax {
   // Admin actions ------------------------------------------------------------
 	/**
 	 * Eazyest_Ajax::upload()
-	 * Refresh the attachment list table after imaage uploads
+	 * Refresh the attachment list table after image uploads
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses check_ajax_referer()
@@ -103,7 +103,7 @@ class Eazyest_Admin_Ajax {
 			global $post;
 			$post = get_post( $post_id );
 	  	require_once( eazyest_gallery()->plugin_dir . 'admin/class-eazyest-media-list-table.php' );  	
-	  	$list_table = new Eazyest_Media_List_Table( array( 'plural' => 'media'  ) );  	
+	  	$list_table = new Eazyest_Media_List_Table( array( 'plural' => 'media', 'screen' => eazyest_gallery()->post_type  ) );  	
 			$list_table->prepare_items();
 			if ( $list_table->has_items() ) {			
 				$list_table->views();
