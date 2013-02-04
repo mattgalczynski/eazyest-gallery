@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r65)
+ * @version 0.1.0 (r66)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -277,40 +277,6 @@ class Eazyest_Slideshow {
 		<?php endif; ?>
 		<?php
 		wp_enqueue_script( 'eazyest-slideshow' );
-	}
-	
-	/**
-	 * Eazyest_Slideshow::refresh_ajax_slideshow()
-	 * Select the next item to be displayed in the Ajax driven slideshow
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @uses check_ajax_referer()
-	 * @uses get_transient()
-	 * @uses WP_Query
-	 * @uses wp_get_attachment_link()
-	 * @return void
-	 */
-	function refresh_ajax_slideshow() {
-		check_ajax_referer( $_POST['slideshow_id'] );
-		$slideshow_id = $_POST['slideshow_id'];
-	  if (	$query_args = get_transient( $slideshow_id ) ) {
-	  	$query_args['offset'] = isset( $_POST['offset'] ) ? intval( $_POST['offset'] ) : 0;
-	  }
-	  $query = new WP_Query( $query_args );
-	  $itemtag = ezg_itemtag();
-	  $icontag = ezg_icontag();
-	  $link    = wp_get_attachment_link( $post->ID, $size, true );
-	  $item = '';
-	  if ( $query->have_posts() ) { 
-	  	$query->the_post();
-			$item .= "
-			<$itemtag class='gallery-item'>
-				<$icontag class='gallery-icon'>
-					$link
-				</$icontag>
-			</$itemtag>";
-		}
-		wp_send_json( array( 'item' => $item, 'posts' => $query->foundposts ) );
 	}
 	
 	/**
