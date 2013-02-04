@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r61)
+ * @version 0.1.0 (r65)
  * @access public
  */
 
@@ -69,6 +69,7 @@ class Eazyest_FolderBase {
   	$this->actions();
 		$this->filters();
 		$this->register_post_types();
+		$this->endpoints();
   }
   
   /**
@@ -214,6 +215,19 @@ class Eazyest_FolderBase {
 			flush_rewrite_rules();
 			delete_transient( 'eazyest-gallery-flush-rewrite-rules' );
 		}		
+	}
+	
+	/**
+	 * Eazyest_FolderBase::endpoints()
+	 * Add rewrite endpoints for slideshow.
+	 * @see http://codex.wordpress.org/Rewrite_API/add_rewrite_endpoint
+	 * 
+	 * @since 0.1.0 (r65)
+	 * @uses add_rewrite_endpoint()
+	 * @return void
+	 */
+	function endpoints() {
+		add_rewrite_endpoint( 'slideshow', EP_PERMALINK );
 	}
 	
 	/**

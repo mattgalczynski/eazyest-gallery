@@ -6,6 +6,7 @@
  * @package Eazyest Gallery
  * @subpackage Frontend/Template Tags
  * @since 0.1.0 (r2)
+ * @version 0.1.0 (r65)
  */ 
   
 // Exit if accessed directly
@@ -187,7 +188,36 @@ function ezg_breadcrumb( $post_id = 0 ) {
 }
 
 /**
- * ezg_folder_thumbnail()
+ * ezg_slideshow_button()
+ * Wrap for Eazyest_Frontend::slideshow_button().
+ * @see Eazyest_Frontend::slideshow_button()
+ * 
+ * @since 0.1.0 (r65)
+ * @return void
+ */
+function ezg_slideshow_button() {
+	eazyest_frontend()->slideshow_button();
+}
+
+function ezg_slideshow( $post_id = 0, $size = 'large' ) {
+	eazyest_frontend()->slideshow( $post_id, $size );
+}
+
+/**
+ * ezg_folder()
+ * Wrap for Eazyest_Frontend::folder().
+ * @see Eazyest_Frontend::folder()
+ * 
+ * @since 0.1.0 (r65)
+ * @param integer $post_id
+ * @return void
+ */
+function ezg_folder( $post_id = 0 ) {
+	eazyest_frontend()->folder( $post_id );
+}
+
+/**
+ * ezg_folder_thumbnails()
  * Wrap for Eazyest_Frontend::thumbnails()
  * @see Eazyest_Frontend::thumbnails()
  * 
