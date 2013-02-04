@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r65)
+ * @version 0.1.0 (r67)
  * @access public
  */
 
@@ -310,8 +310,47 @@ class Eazyest_FolderBase {
 	}
 	
 	/**
+	 * Eazyest_FolderBase::copy_timestamp()
+	 * Eazyest Gallery uses created timestamp for post_date.
+	 * 
+	 * @since 0.1.0 (r66)
+	 * @uses get_post_type() to check if it is an attachment
+	 * @uses apply_filters() for 'eazyest_gallery_copy_timestamp' (true)
+	 * @uses get_post()
+	 * @uses get_gmt_from_date() to calculate post_date_gmt
+	 * @uses wp_update_post() to save changed dates
+	 * @param int $post_id
+	 * @return void
+	 */
+	function copy_timestamp( $post_id ) {
+		if ( 'attachment' != get_post_type( $post_id ) )
+			return;
+		
+		if ( ! apply_filters( 'eazyest_gallery_copy_timestamp', true ) )
+			return;
+			
+		$metadata = get_attachment_metadata( $post_id );
+		if ( ! empty( $metadata['image_meta']['created_timestamp'] ) ) {
+			$attachment = get_post( $post_id, ARRAY_A );
+			$datetime = date( 'Y-m-d H:i:s', $metadata['image_meta']['created_timestamp'] );
+			$changed = false;
+			if ( $datetime != $attachment['post_date'] ) {
+				$attachment['post_date'] = $datetime;
+				$changed = true;
+			}
+			$datetime_gmt = get_gmt_from_date( $datetime );
+			if ( $datetime_gmt != $attachment['post_date_gmt'] ) {
+				$attachment['post_date_gmt'] = $datetime_gmt;
+				$changed = true;
+			}
+			if ( $changed )
+				wp_update_post( $attachment );
+		}		
+	}
+	
+	/**
 	 * Eazyest_FolderBase::save_attachment()
-	 * When a single attachment is saved, the post_excerpt (caption) is copied from post_title
+	 * When a single attachment is saved, copy fields values 
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses get_post()
@@ -330,9 +369,10 @@ class Eazyest_FolderBase {
 			if ( eazyest_gallery()->post_type == get_post_type( $attachment->post_parent ) ) {
 				if ( empty( $attachment->post_excerpt ) ) {
 					$attachment->post_excerpt = $attachment->post_title;
-					wp_update_post( $attachment );
-				}
+				}		
+				wp_update_post( $attachment );
 			}
+			$this->copy_timestamp( $post_id );
 		}
 	}
 	
@@ -1388,6 +1428,7 @@ class Eazyest_FolderBase {
   	$attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
   	if ( !is_wp_error( $attach_id ) ) {
 			wp_update_attachment_metadata( $attach_id, wp_generate_attachment_metadata( $attach_id, $filename ) );
+			$this->copy_timestamp( $attach_id );
 			return $attach_id;
 		} else { 
 			return false;
@@ -1580,7 +1621,7 @@ class Eazyest_FolderBase {
 	function get_attachment_metadata( $metadata, $post_id ) {
 		if ( ! $this->is_gallery_image( $post_id ) )
 			return $metadata;	
-		
+
 		if ( empty( $metadata ) ) {
 			$metadata = wp_generate_attachment_metadata( $post_id, get_attached_file( $post_id ) );
 			update_post_meta( $post_id, '_wp_attachment_metadata', $metadata );
