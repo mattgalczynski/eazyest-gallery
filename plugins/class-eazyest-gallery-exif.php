@@ -3,6 +3,18 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit; 
 
+/**
+ * Eazyest_Gallery_Exif
+ * Plugin to display Exif data for an attachment
+ * 
+ * @package Eazyest Gallery
+ * @subpackage Plugins/Exif
+ * @author Marcel Brinkkemper
+ * @copyright 2013 Brimosoft
+ * @version 0.1.0 (r78)
+ * @since 01.10 (r2)
+ * @access public
+ */
 class Eazyest_Gallery_Exif {
 	
 	/**
@@ -96,9 +108,9 @@ class Eazyest_Gallery_Exif {
 	 * @return void
 	 */
 	function enable_exif() {
-		$enable_exif = eazyest_gallery()->enable_exif ;
+		$enable_exif =  eazyest_gallery()->enable_exif;
 		?>
-		<input type="checkbox" id="enable_exif" name="eazyest-gallery[enable_exif]" <?php checked( $enable_exif ) ?> />
+		<input type="checkbox" id="enable_exif" name="eazyest-gallery[enable_exif]" value="1" <?php checked( $enable_exif ) ?> />
 		<label for="enable_exif"><?php _e( 'Show Exif information on the attachment page', 'eazyest-gallery' ) ?> </label>
 		<?php
 	}

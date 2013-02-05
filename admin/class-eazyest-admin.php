@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2012 Brimosoft
- * @version 0.1.0 (r77)
+ * @version 0.1.0 (r78)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -200,7 +200,7 @@ class Eazyest_Admin {
   		$old_options['gallery_folder'] = $options['gallery_folder'];
   		$old_options['gallery_title']  = $options['gallery_title'];
 			$old_options['show_credits']   = $options['show_credits'];
-			$old_options['new_install']    = false;
+			unset( $old_options['new_install'] );
 			$options = $old_options; 
   	}
   	
@@ -217,7 +217,7 @@ class Eazyest_Admin {
   		$options['gallery_folder'] = $defaults['gallery_folder'];
 			add_settings_error( __( 'eazyest-gallery', 'eazyest-gallery' ), 'gallery_folder', __( 'The folder you have selected does not exist', 'eazyest-gallery'), 'error' );
 		}	
-		
+			
 		// other fields to sanitize
 		foreach ( $defaults as $setting => $value ) {
 			switch( $setting ) {
@@ -242,10 +242,10 @@ class Eazyest_Admin {
 				case 'thumb_caption' :
 				case 'thumb_description' :
 				case 'enable_exif' :
-					$options[$setting] = isset( $options[$setting] ) ? true : false;
+					$options[$setting] = ! empty( $options[$setting] ) ? true : false;
 					break;
 				default :
-					$options[$setting] = isset( $options[$setting] ) ? $options[$setting] : $value;		
+					$options[$setting] = ! empty( $options[$setting] ) ? $options[$setting] : $value;		
 			}
 		}
 		if ( ( ! $options['thumb_caption']) )

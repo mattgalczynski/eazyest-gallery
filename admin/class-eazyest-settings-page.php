@@ -5,13 +5,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * Eazyest_Settings_Page
- * Admin Settings Page for LAzyest Gallery
+ * Admin Settings Page for Lazyest Gallery
  * 
  * @package Eazyest Gallery
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r77)
+ * @version 0.1.0 (r78)
  * @since 0.1.0 (r2)
  * @access public
  */
