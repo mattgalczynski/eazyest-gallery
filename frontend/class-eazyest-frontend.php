@@ -7,12 +7,12 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r73)
+ * @since lazyest-gallery 0.16.0
+ * @version 0.1.0 (r80)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @since lazyest-gallery 0.16.0
  */
 class Eazyest_Frontend {
 	
@@ -903,9 +903,18 @@ class Eazyest_Frontend {
 		if ( ! is_single() )
 			return;
 		
-		global $wp_query;
+		global $wp_query, $post;
+		// check if current post has attachments
+		$attachments = get_posts( array(
+			'post_type' => 'attachment',
+			'numberposts' => null,
+			'post_status' => null,
+			'post_parent' => $post->ID,
+		) );
+		// don't show button if no attachmenst
+		if ( empty( $attachments ) )
+			return;
 		
-		global $post;
 		$current_permalink = get_permalink( $post->ID );
 			
 		global $wp_rewrite;
