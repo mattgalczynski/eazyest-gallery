@@ -79,6 +79,7 @@ class Eazyest_Admin {
 		$this->setup_variables();
 		$this->includes(); 
 		$this->actions();
+		$this->filters();
 	}
 	
 	/**
@@ -150,6 +151,18 @@ class Eazyest_Admin {
   	add_action( 'admin_init', array( $this, 'after_activation' ) );
   	add_action( 'admin_init', array( $this, 'register_setting' ) );
   	add_action( 'admin_menu', array( $this, 'admin_menu'       ) );
+  }
+  
+  /**
+   * Eazyest_Admin::filters()
+   * add WordPress filters.
+   * 
+   * @since 0.1.0 (r79)
+   * @uses add_filter()
+   * @return void
+   */
+  function filters() {  	
+    add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
   }
   
   /**
@@ -278,6 +291,24 @@ class Eazyest_Admin {
   		'eazyest-gallery-tools',
   		array( $this->tools_page(), 'display' )
 		);
+  }
+  
+  /**
+   * Eazyest_Admin::plugin_action_links()
+   * Add links to the plugin action menu.
+   * 
+   * @since 0.1.0 (r79)
+   * @uses admin_url()
+   * @param mixed $links
+   * @param mixed $file
+   * @return
+   */
+  function plugin_action_links( $links, $file ) {
+  	if ( $file == eazyest_gallery()->plugin_basename ) {
+  		$url = '<a href="' . admin_url( 'options-general.php?page=eazyest-gallery' ) . '">' . __( 'Settings', 'eazyest-gallery' ) . '</a>';
+  		array_unshift( $links, $url );
+  	}
+  	return $links;
   }
   
   /**
