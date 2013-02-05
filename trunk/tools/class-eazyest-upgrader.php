@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r56)
+ * @version 0.1.0 (r76)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -203,18 +203,19 @@ class Eazyest_Gallery_Upgrader {
 	
 	/**
 	 * Eazyest_Gallery_Upgrader::hide_folders()
-	 * Hide the custom post menu if Eazyest Gallery should be upgraded
+	 * Hide the custom post_type menu if Eazyest Gallery should be upgraded or gallery folder does not exist
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @return void
 	 */
 	function hide_folders() {
-		if ( $this->should_upgrade() ) {
-		?>
-		<style type="text/css" media="screen">
-			#menu-posts-galleryfolder { display:none; }
+		if ( $this->should_upgrade() || ! eazyest_gallery()->right_path() ) {
+			$post_type = eazyest_gallery()->post_type;
+		echo "
+		<style type='text/css' media='screen'>
+			#menu-posts-$post_type { display:none; }
 		</style>
-		<?php
+		";
 		}
 	}
 	
