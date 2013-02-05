@@ -105,6 +105,14 @@ class Eazyest_Gallery_Exif {
 	
 	// exif output functions -----------------------------------------------------
 	
+	/**
+	 * Eazyest_Gallery_Exif::imgtype()
+	 * Returns array of exif image types strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function imgtype() {
 		return array( 
 			'', 
@@ -127,6 +135,14 @@ class Eazyest_Gallery_Exif {
 		);
 	}
 	
+	/**
+	 * Eazyest_Gallery_Exif::orientation()
+	 * Returns array of exif orientation strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function orientation() {
 		return array( 
 			'', 
@@ -141,6 +157,14 @@ class Eazyest_Gallery_Exif {
 		);
 	}
 	
+	/**
+	 * Eazyest_Gallery_Exif::resolution_unit()
+	 * Returns array of exif resolution unit strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function resolution_unit() {
 		return array(
 			'', 
@@ -150,6 +174,14 @@ class Eazyest_Gallery_Exif {
 		);
 	}
 	
+	/**
+	 * Eazyest_Gallery_Exif::ycbcr_positioning()
+	 * Returns array of exif ycbcr positioning strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function ycbcr_positioning() {
 		return array(
 			'', 
@@ -158,6 +190,14 @@ class Eazyest_Gallery_Exif {
 		);
 	}
 	
+	/**
+	 * Eazyest_Gallery_Exif::exposure_program()
+	 * Returns array of exif exposure program strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function exposure_program() {
 		return array(
       _x( 'Not defined',                                                         'exif exposure program', 'eazyest-gallery' ),
@@ -172,6 +212,14 @@ class Eazyest_Gallery_Exif {
     );
 	}
 	
+	/**
+	 * Eazyest_Gallery_Exif::metering_mode()
+	 * Returns array of exif metering mode strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function metering_mode() {
 		return array(
         '0' => _x( 'Unknown',                 'exif metering mode', 'eazyest-gallery' ),
@@ -185,6 +233,14 @@ class Eazyest_Gallery_Exif {
     );
 	}
 	
+	/**
+	 * Eazyest_Gallery_Exif::light_source()
+	 * Returns array of exif light source strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function light_source() {
 		return array(
         '0' => _x( 'unknown',                                 'exif light source', 'eazyest-gallery' ),
@@ -210,6 +266,14 @@ class Eazyest_Gallery_Exif {
     );
 	}
 	
+	/**
+	 * Eazyest_Gallery_Exif::flash()
+	 * Returns array of exif flash strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access protected
+	 * @return array
+	 */
 	protected function flash() {
 		return array(
        '0' => _x( 'Flash did not fire.',                                                                   'exif flash', 'eazyest-gallery' ),
@@ -237,6 +301,16 @@ class Eazyest_Gallery_Exif {
     );
 	}	
 	
+	/**
+	 * Eazyest_Gallery_Exif::_photo_getval()
+	 * Get exif string value from array of strings.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @access private
+	 * @param string $image_info
+	 * @param array $val_array
+	 * @return string
+	 */
 	private function _photo_getval( $image_info, $val_array ) {
     $info_val = _x( 'Unknown', 'exif info', 'eazyets-galery' );
     foreach( $val_array as $name => $val ) {
@@ -248,6 +322,16 @@ class Eazyest_Gallery_Exif {
     return $info_val;
   }
 	
+	/**
+	 * Eazyest_Gallery_Exif::show_exif()
+	 * Show exif data div below image.
+	 * div is hidden on display, shows on user click.
+	 * 
+	 * @since 0.1.0 (r71)
+	 * @uses get_post() to get attachment properties 
+	 * @param int $post_id for currently showing attachment
+	 * @return void
+	 */
 	function show_exif( $post_id ) {
 		$guid = get_post( $post_id )->guid;
 		$original = str_replace( eazyest_gallery()->address(), eazyest_gallery()->root(), $guid );
@@ -427,74 +511,94 @@ class Eazyest_Gallery_Exif {
 	      $img_info[_x( 'Thumbnail MimeType', 'exif info', 'eazyest-gallery' )] = $exif['COMPUTED']['Thumbnail.MimeType'];
 		}   
     ?>    
-    <div class="imagedata">
-      <p class="exif-header"><?php _e( 'Image data', 'eazyest-gallery' ); ?></p>
-      <?php if ( $exif ) : ?>      
       <script type="text/javascript">
       	var showingExif = false;
+      	var showExifString = '<?php _e( 'Show Exif data', 'eazyest-gallery' ); ?>';
+      	var hideExifString = '<?php _e( 'Hide Exif data', 'eazyest-gallery' ); ?>';
 				function showExif() {
 					if ( showingExif ){
-						jQuery('#all-exif').hide();
+						jQuery('#exif-imagedata').hide();
+						jQuery('#show-exif').html(showExifString);
 						showingExif = false;
 					} else {							
-						jQuery('#all-exif').show();
+						jQuery('#exif-imagedata').show();
+						jQuery('#show-exif').html(hideExifString);
 						showingExif = true;
 					}
 				}	
 			</script>
       <style type="text/css">
-      	#all-exif { display:none }
-      	table.imagedata-table th { padding-right: 10px; text-align:right; width:20em; }
-			</style>
-      <table class="imagedata-table">
-        <tbody>
-          <tr>
-            <th scope="row"><?php _e( 'Date', 'eazyest-gallery' ); ?></th>
-            <td><?php echo $img_info[__( 'File Date/Time', 'eazyest-gallery' )]; ?></td>
-          </tr>
-          <tr>
-            <th scope="row"><?php _e( 'Height' ); ?></th>
-            <td><?php echo $img_info[__( 'Height', 'eazyest-gallery' )]; ?></td>
-          </tr>
-          <tr>
-            <th scope="row"><?php _e( 'Width' ); ?></th>            
-            <td><?php echo $img_info[__( 'Width', 'eazyest-gallery' )]; ?></td>
-          </tr>
-          <?php if ( isset( $img_info[__( 'Make', 'eazyest-gallery' )] ) && isset( $img_info[__( 'Model', 'eazyest-gallery' )]) ) : ?>
-          <tr>
-            <th scope="row"><?php _e( 'Camera', 'eazyest-gallery' ); ?></th>            
-            <td><?php echo $img_info[__( 'Make', 'eazyest-gallery' )] . ' - ' . $img_info[__( 'Model', 'eazyest-gallery' )]; ?></td>
-          </tr>
-          <?php endif; ?>
-        </tbody>
-        <tbody  id="all-exif">
-	        <?php foreach( $img_info as $name => $val ) : if ( $val ) : ?>
+      	#exif-imagedata { display:none }
+      	table.imagedata-table { margin-top:1em }
+      	table.imagedata-table tbody th { padding-right: 10px; text-align:right; width:20em; }
+			</style> 
+			<div id="exif-imagedata">
+    		<?php if ( $exif ) : ?>  
+	      <table class="imagedata-table">
+	      	<thead>
+	      		<tr>
+	      			<th></th>
+	      			<th><?php _e( 'Image data', 'eazyest-gallery' ); ?></th>
+						</tr>
+					</thead>
+	        <tbody>
 	          <tr>
-	            <th scope="row"><?php echo $name; ?></th>
-	            <td><?php echo $val; ?></td>
+	            <th scope="row"><?php _e( 'Date', 'eazyest-gallery' ); ?></th>
+	            <td><?php echo $img_info[__( 'File Date/Time', 'eazyest-gallery' )]; ?></td>
 	          </tr>
-	        <?php endif; endforeach; ?>
-        </tbody>
-      </table>  
-      <a href="javascript:showExif();"><?php _e( 'Show all Exif data', 'eazyest-gallery' ); ?></a> 
-    <?php else : ?>
-    	<?php  list($width, $height, $type, $attr) = getimagesize( $original ); ?> 
-      <table class="imagedata-table">
-        <tbody>
-          <tr>
-            <th scope="row"><?php _e( 'Date', 'eazyest-gallery' ); ?></th>
-            <td><?php echo date( get_option('date_format' ), filemtime( $original ) ); ?></td>
-            <th scope="row"><?php _e( 'Height', 'eazyest-gallery' ); ?></th>
-            <td><?php printf( '%dpx', $height ); ?></td>
-            <th scope="row"><?php _e( 'Width', 'eazyest-gallery'  ); ?></th>            
-            <td><?php printf( '%dpx', $width ); ?></td>
-          </tr>
-        </tbody>
-      </table>   
-    <?php endif; ?>
-  </div>
-  <?php
-	wp_enqueue_script( 'jquery' );  
+	          <tr>
+	            <th scope="row"><?php _e( 'Height' ); ?></th>
+	            <td><?php echo $img_info[__( 'Height', 'eazyest-gallery' )]; ?></td>
+	          </tr>
+	          <tr>
+	            <th scope="row"><?php _e( 'Width' ); ?></th>            
+	            <td><?php echo $img_info[__( 'Width', 'eazyest-gallery' )]; ?></td>
+	          </tr>
+	          <?php if ( isset( $img_info[__( 'Make', 'eazyest-gallery' )] ) && isset( $img_info[__( 'Model', 'eazyest-gallery' )]) ) : ?>
+	          <tr>
+	            <th scope="row"><?php _e( 'Camera', 'eazyest-gallery' ); ?></th>            
+	            <td><?php echo $img_info[__( 'Make', 'eazyest-gallery' )] . ' - ' . $img_info[__( 'Model', 'eazyest-gallery' )]; ?></td>
+	          </tr>
+	          <?php endif; ?>
+	        </tbody>
+	        <tbody id="all-exif">
+		        <?php foreach( $img_info as $name => $val ) : if ( $val ) : ?>
+		          <tr>
+		            <th scope="row"><?php echo $name; ?></th>
+		            <td><?php echo $val; ?></td>
+		          </tr>
+		        <?php endif; endforeach; ?>
+	        </tbody>
+	      </table> 
+	    	<?php else : ?>
+	    	<?php  list($width, $height, $type, $attr) = getimagesize( $original ); ?> 
+	      <table class="imagedata-table">
+	      	<thead>
+	      		<tr>
+	      			<th></th>
+	      			<th><?php _e( 'Image data', 'eazyest-gallery' ); ?></th>
+						</tr>
+					</thead>
+	        <tbody>
+	          <tr>
+	            <th scope="row"><?php _e( 'Date', 'eazyest-gallery' ); ?></th>
+	            <td><?php echo date( get_option('date_format' ), filemtime( $original ) ); ?></td>
+	          </tr>
+						<tr>  
+	            <th scope="row"><?php _e( 'Height', 'eazyest-gallery' ); ?></th>
+	            <td><?php printf( '%dpx', $height ); ?></td>
+	          </tr>
+						<tr>  
+	            <th scope="row"><?php _e( 'Width', 'eazyest-gallery'  ); ?></th>            
+	            <td><?php printf( '%dpx', $width ); ?></td>
+	          </tr>
+	        </tbody>
+	      </table>  
+				<?php endif; ?> 
+  		</div>  		
+      <p><a id="show-exif" href="javascript:showExif();"><?php _e( 'Show Exif data', 'eazyest-gallery' ); ?></a></p> 
+  	<?php
+		wp_enqueue_script( 'jquery' );  
 	}
 	
 } // Eazyest_Gallery_Exif
