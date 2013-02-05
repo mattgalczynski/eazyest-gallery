@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r75)
+ * @version 0.1.0 (r77)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -188,11 +188,13 @@ class Eazyest_Settings_Page {
 	 * @return void
 	 */
 	function admin_notices() {
+		$messages = $errors = array();
 		if ( isset( $_GET['eazyest-activate'] ) ) {
-			$message = __( 'plugin <strong>activated</strong>. Please check your settings' );
-			?>
-			<div class="updated"><p><?php echo $message ?></p></div>
-			<?php
+			$messages[] = __( 'plugin <strong>activated</strong>. Please check your settings' );
+		}
+		if ( ! empty( $messages ) ) {
+			$message = implode( '<br />', $messages );
+			echo "<div class='updated'><p>$message</p></div>";
 		}
 	}
 	
@@ -232,22 +234,23 @@ class Eazyest_Settings_Page {
 		$sections = array(
 			'main-settings' => array(
 				'title'       => __( 'Main Settings', 'eazyest-gallery' ),
-				'description' => __( 'Main gallery settings to select your gallery', 'eazyest-gallery' ) 
+				'description' => __( 'Main gallery settings to select your gallery', 'eazyest-gallery' ), 
 			),
 			'folder-settings' => array(
 				'title'       => __( 'Folder Options', 'eazyest-gallery' ),
-				'description' => __( 'How your folders will be displayed', 'eazyest-gallery' ) 
+				'description' => __( 'How your folders will be displayed', 'eazyest-gallery' ), 
 			),
 			'image-settings' => array(
 				'title'       => __( 'Image Options', 'eazyest-gallery' ),
-				'description' => __( 'How your images will be displayed', 'eazyest-gallery' )
+				'description' => __( 'How your images will be displayed', 'eazyest-gallery' ),
 			),
 			'advanced-settings' => array(
 				'title'       => __( 'Advanced Options', 'eazyest-gallery' ),
-				'description' => __( 'Options for advanced users', 'eazyest-gallery' )
-			)
-				
+				'description' => __( 'Options for advanced users', 'eazyest-gallery' ),
+			)				
 		);
+		if ( eazyest_gallery()->new_instrall || ! eazyest_gallery()->right_path() )
+			$sections['main-settings']['description'] .= '<br />' . __( 'You have to select a folder on your server before you can use Eazyest Gallery', 'eazyest-gallery' );
 		$sections = apply_filters( 'eazyest_gallery_settings_sections', $sections );
 		return isset( $sections[$section] ) ? $sections[$section] : array();	
 	}
@@ -432,6 +435,9 @@ class Eazyest_Settings_Page {
 		$new_install    = eazyest_gallery()->new_install;
 		$has_folders    = get_posts( array( 'post_type' => eazyest_gallery()->post_type ) );
 		$enabled        = empty( $has_folders ) || ! eazyest_gallery()->right_path();
+		$buttonclass    = 'button';
+		if ( eazyest_gallery()->right_path() )
+			$buttonclass .= ' hidden';
 		?><div style="position:relative">
 			<?php wp_nonce_field( 'file-tree-nonce',      'file-tree-nonce',       false ) ?>
 			<?php wp_nonce_field( 'gallery-folder-nonce', 'gallery-folder-nonce',  false ); ?>
@@ -445,7 +451,7 @@ class Eazyest_Settings_Page {
 				<p class="gallery-folder code"><?php echo $gallery_folder ?></p>
 			<?php endif; ?>
 			<div id="eazyest-ajax-response" class="hidden"></div>
-			<a id="create-folder" class="button hidden" href="#"><?php _e( 'Create folder', 'eazyest-gallery' ); ?></a>
+			<p><a id="create-folder" class="<?php echo $buttonclass ?>" href="#"><?php _e( 'Create folder', 'eazyest-gallery' ); ?></a></p>
 		</div>	
 		<?php
 		wp_enqueue_script( 'eazyest-gallery-settings' );
