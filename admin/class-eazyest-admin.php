@@ -147,8 +147,27 @@ class Eazyest_Admin {
    * @return void
    */
   function actions() {
+  	add_action( 'admin_init', array( $this, 'after_activation' ) );
   	add_action( 'admin_init', array( $this, 'register_setting' ) );
   	add_action( 'admin_menu', array( $this, 'admin_menu'       ) );
+  }
+  
+  /**
+   * Eazyest_Admin::after_activation()
+   * Redirect users to settings screen after activation.
+   * 
+   * @since 0.1.0 (r74)
+   * @uses delete_transient()
+   * @uses wp_redirect()
+	 * @uses admin_url() 
+   * @return void
+   */
+  function after_activation() {
+  	if ( $activated = get_transient( 'eazyest-gallery-activated' ) ) {
+  		delete_transient( 'eazyest-gallery-activated' );
+  		wp_redirect( admin_url( 'options-general.php?page=eazyest-gallery' ) );
+  		exit;
+  	}
   }
   
   /**
