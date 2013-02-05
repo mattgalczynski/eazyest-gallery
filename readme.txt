@@ -4,7 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5
 Requires at least: 3.5
-Stable tag: 0.1.0-alpha-4
+Stable tag: 0.1.0-alpha-5
+License: GPLv3
 
 Eazyest Gallery is an easy gallery management plugin featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
 
@@ -19,12 +20,48 @@ Eazyest Gallery is the successor of [Lazyest Gallery](http://wordpress.org/exten
 All Lazyest Gallery functionality is implemented by using custom post types.
 Your Gallery folders and subfolders will become part of WordPress media.
 
+= Eazyest Galery features =
+* Fully integrated with WordPress Admin and Media media management
+* Unlimited number of images in unlimited number of nested folders
+* Comment on folders and images
+* Widgets
+* Add tags and custom fields to folders
+* Automatic indexing of (ftp) uploaded folders and images
+* Upgrade/Import tool for Lazyest Gallery
+* Many actions and filters to interact with Eazyest Gallery
+
+== Installation ==
+
+1. Install eazyest-gallery using the WordPress plugin installer
+2. Confirm your Gallery folder in Settings -> Eazyest Gallery
+
+== Frequently Asked Questions ==
+
+* No one has asked a question yet.
+
+== Screenshots ==
+
+1. Eazyest Gallery menu, below WordPress Media menu
+2. Manually sorting folders in the Gallery Admin screen
+3. The gallery folder edit screen
+4. Upload images with the WordPress Media uploader
+5. A Gallery folder in Twenty Twelve with random image widget
+6. Camera slideshow by [Manuel Masia](http://www.pixedelic.com/) included
+
 == Upgrade Notice ==
 
-= 0.1.0-alpha-4 =
-* Many changes in the workings of the plugin. You have to re-install the plugin on a clean WordPress install 
+= 0.1.0-alpha-5 =
+* 0.1.0 alpha 5 includes new functionality  
 
 == Changelog ==
+
+= 0.1.0-alpha-5 =
+* Changed: Image and subfolder list tables visible when empty
+* Added: Widgets
+* Added: Display Exif data on attachment page
+* Added: Slideshow
+* Added: Support for Header images from Eazyest Gallery images
+* Changed: Use iptc/exif created timestamp for attachment post_date
 
 = 0.1.0-alpha-4 =
 * Changed: All resized images now stored in subdirectory _cache
@@ -35,7 +72,6 @@ Your Gallery folders and subfolders will become part of WordPress media.
 * Copyright (c) 2004        Nicholas Bruun Jespersen (lazy-gallery)
 * Copyright (c) 2005 - 2006 Valerio Chiodino (lazyest-gallery)
 * Copyright (c) 2008 - 2013 Marcel Brinkkemper (lazyest-gallery and eazyest-gallery)
-
 * TableDnD plug-in for JQuery, Copyright (c) Denis Howlett
 * JQuery File Tree, Copyright (c) 2008, A Beautiful Site, LLC
 * Camera slideshow v1.3.3, Copyright (c) 2012 by Manuel Masia - www.pixedelic.com
