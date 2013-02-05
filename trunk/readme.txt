@@ -46,7 +46,7 @@ Your Gallery folders and subfolders will become part of WordPress media.
 3. The gallery folder edit screen
 4. Upload images with the WordPress Media uploader
 5. A Gallery folder in Twenty Twelve with random image widget
-6. Camera slideshow by [Manuel Masia](http://www.pixedelic.com/) included
+6. Camera slideshow by [Manuel Masia](http://www.pixedelic.com/plugins/camera/) included
 
 == Upgrade Notice ==
 
