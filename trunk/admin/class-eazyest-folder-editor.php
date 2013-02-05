@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012
- * @version 0.1.0 (r58)
+ * @version 0.1.0 (r81)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -628,9 +628,10 @@ class Eazyest_Folder_Editor {
 				'folder'    => $post->ID, 
 				'action'    =>	'move_folder'
 			), admin_url( 'edit.php' ) ), 'move_folder' );
-		$to_top_url    = add_query_arg( array( 'move' => 'to_top'    ), $move_url );
-		$to_bottom_url = add_query_arg( array( 'move' => 'to_bottom' ), $move_url ); 
-		if ( $post->post_type == $post_type && $post->post_status != 'trash' ) {
+		// 'to top' and 'to bottom' shortcuts for manually sorted folders	
+		if ( $post->post_type == $post_type && $post->post_status != 'trash' && eazyest_gallery()->sort_folders ==  'menu_order-ASC' ) {
+			$to_top_url    = add_query_arg( array( 'move' => 'to_top'    ), $move_url );
+			$to_bottom_url = add_query_arg( array( 'move' => 'to_bottom' ), $move_url ); 
 			$actions["to-top to-top-{$post->ID}"]       = "<a href='$to_top_url'>"    . __( 'to Top&nbsp;&#8593;', 'eazyest-gallery'   ) . "</a>";
 			$actions["to-bottom to-bottom-{$post->ID}"] = "<a href='$to_bottom_url'>" . __( 'to Bottom&nbsp;&#8595;', 'eazyest-gallery') . "</a>";
 		}			
