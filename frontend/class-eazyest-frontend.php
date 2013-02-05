@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Eazyest_Frontend class
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
- * @version 0.1.0 (r65)
+ * @version 0.1.0 (r73)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -904,9 +904,6 @@ class Eazyest_Frontend {
 			return;
 		
 		global $wp_query;
-		// don't show slideshow button if we display a slideshow 
-		if ( isset( $wp_query->query_vars['slideshow'] ) )
-			return;
 		
 		global $post;
 		$current_permalink = get_permalink( $post->ID );
@@ -917,8 +914,14 @@ class Eazyest_Frontend {
 		} else {
 			$button_url = add_query_arg( array( 'slideshow' => 'large' ), $current_permalink );
 		}
-		$slideshow = __( 'Slideshow', 'eazyest-gallery' );
-		$button_link = "<a class='button small' href='$button_url' title='$slideshow'>$slideshow</a>";
+		$slideshow  = __( 'Slideshow', 'eazyest-gallery'  );
+		$thumbnails = __( 'Thumbnails', 'eazyest-gallery' );
+		
+		if ( isset( $wp_query->query_vars['slideshow'] ) )
+			$button_link = "<a class='button small' href='$current_permalink' title='$thumbnails'>$thumbnails</a>";
+		else	
+			$button_link = "<a class='button small' href='$button_url' title='$slideshow'>$slideshow</a>";
+			
 		if ( $echo )
 			echo $button_link;
 		else 
