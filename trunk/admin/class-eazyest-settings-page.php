@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r47)
+ * @version 0.1.0 (r75)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -71,6 +71,7 @@ class Eazyest_Settings_Page {
 		
 		add_action( 'admin_head',            array( $this, 'admin_style'           ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_notices',         array( $this, 'admin_notices'         ) );
 	}
 	
 	/**
@@ -177,6 +178,22 @@ class Eazyest_Settings_Page {
 		wp_register_script( 'eazyest-gallery-settings', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-settings.$j", array( 'jquery-filetree' ), '0.1.0-r21', true );
 		
 		wp_localize_script( 'eazyest-gallery-settings', 'fileTreeSettings', $this->filetree_args() );
+	}
+	
+	/**
+	 * Eazyest_Settings_Page::admin_notices()
+	 * Show admin notice after redirecting on activate.
+	 * 
+	 * @since 0.1.0 (r75)
+	 * @return void
+	 */
+	function admin_notices() {
+		if ( isset( $_GET['eazyest-activate'] ) ) {
+			$message = __( 'plugin <strong>activated</strong>. Please check your settings' );
+			?>
+			<div class="updated"><p><?php echo $message ?></p></div>
+			<?php
+		}
 	}
 	
 	/**

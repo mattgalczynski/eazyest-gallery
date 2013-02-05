@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2012 Brimosoft
- * @version 0.1.0 (r22)
+ * @version 0.1.0 (r75)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -165,7 +165,7 @@ class Eazyest_Admin {
   function after_activation() {
   	if ( $activated = get_transient( 'eazyest-gallery-activated' ) ) {
   		delete_transient( 'eazyest-gallery-activated' );
-  		wp_redirect( admin_url( 'options-general.php?page=eazyest-gallery' ) );
+  		wp_redirect( admin_url( 'options-general.php?page=eazyest-gallery&eazyest-activate=true' ) );
   		exit;
   	}
   }
@@ -195,6 +195,15 @@ class Eazyest_Admin {
   	// eazyest gallery cannot work if gallery folder does not exist
   	$options['gallery_folder'] = str_replace( '\\', '/', $options['gallery_folder'] );
   	
+  	if ( isset( $options['new_install'] ) && $options['new_install'] ) {
+  		$new_options = $defaults;
+  		$new_options['gallery_folder'] = $options['gallery_folder'];
+  		$new_options['gallery_title']  = $options['gallery_title'];
+			$new_options['show_credits']   = $options['show_credits'];
+			$new_options['new_install']    = false;
+			$options = $new_options; 
+  	}
+  	
 		$gallery_folder = eazyest_gallery()->get_absolute_path(  ABSPATH . $options['gallery_folder'] );
   	if ( eazyest_folderbase()->is_dangerous( $gallery_folder ) ) {			
 			$options['new_install']    = true;
@@ -207,7 +216,7 @@ class Eazyest_Admin {
 			$options['new_install']    = true;
   		$options['gallery_folder'] = $defaults['gallery_folder'];
 			add_settings_error( __( 'eazyest-gallery', 'eazyest-gallery' ), 'gallery_folder', __( 'The folder you have selected does not exist', 'eazyest-gallery'), 'error' );
-		}		
+		}	
 		
 		// other fields to sanitize
 		foreach ( $defaults as $setting => $value ) {
