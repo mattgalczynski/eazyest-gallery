@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2012 Brimosoft
- * @version 0.1.0 (r75)
+ * @version 0.1.0 (r77)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -196,12 +196,12 @@ class Eazyest_Admin {
   	$options['gallery_folder'] = str_replace( '\\', '/', $options['gallery_folder'] );
   	
   	if ( isset( $options['new_install'] ) && $options['new_install'] ) {
-  		$new_options = $defaults;
-  		$new_options['gallery_folder'] = $options['gallery_folder'];
-  		$new_options['gallery_title']  = $options['gallery_title'];
-			$new_options['show_credits']   = $options['show_credits'];
-			$new_options['new_install']    = false;
-			$options = $new_options; 
+  		$old_options = get_option( 'eazyest-gallery' );
+  		$old_options['gallery_folder'] = $options['gallery_folder'];
+  		$old_options['gallery_title']  = $options['gallery_title'];
+			$old_options['show_credits']   = $options['show_credits'];
+			$old_options['new_install']    = false;
+			$options = $old_options; 
   	}
   	
 		$gallery_folder = eazyest_gallery()->get_absolute_path(  ABSPATH . $options['gallery_folder'] );
