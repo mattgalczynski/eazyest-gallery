@@ -515,7 +515,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 					$t_time = $h_time = __( 'Unpublished', 'eazyest-gallery' );
 					$time_diff = 0;
 				} else {
-					$t_time = get_the_time( __( 'Y/m/d g:i:s A' ) 'eazyest-gallery' );
+					$t_time = get_the_time( __( 'Y/m/d g:i:s A', 'eazyest-gallery' ) );
 					$m_time = $post->post_date;
 					$time = get_post_time( 'G', true, $post );
 
