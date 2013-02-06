@@ -107,7 +107,7 @@ class Eazyest_Tools_Page {
 			<h2 class="nav-tab-wrapper">
 				<?php foreach( $this->tabs as $id => $tab ) : ?>
 				<?php $class = $id == $current_tab ? 'nav-tab nav-tab-active' : 'nav-tab'; ?> 
-				<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'eazyest-gallery-tools', 'tab' => $id ), admin_url( 'tools.php' ) ) ); ?>" class="<?php echo $class ?>"><?php esc_html_e( $tab['title'] ); ?></a>
+				<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'eazyest-gallery-tools', 'tab' => $id ), admin_url( 'tools.php' ) ) ); ?>" class="<?php echo $class ?>"><?php esc_html( $tab['title'] ); ?></a>
 				<?php endforeach; ?>
 			</h2>
 			<?php endif; ?>

@@ -232,8 +232,8 @@ class Eazyest_Gallery_Upgrader {
 	function admin_notices() {
 		if ( $this->should_upgrade() ) {
 				if ( 'tools_page_eazyest-gallery-tools' != get_current_screen()->id ){			
-				$message  = __( 'Eazyest Gallery found Lazyest Gallery settings in your database' );
-				$linktext = __( 'Please upgrade to Eazyest Gallery' );
+				$message  = __( 'Eazyest Gallery found Lazyest Gallery settings in your database', 'eazyest-gallery'  );
+				$linktext = __( 'Please upgrade to Eazyest Gallery', 'eazyest-gallery'  );
 				$url      = add_query_arg( array( 'page' => 'eazyest-gallery-tools', 'tab' => 'upgrade' ), admin_url( 'tools.php' ) );
 				?>
 				<div id="eazyest-gallery-upgrade-notice" class="error"><p><?php echo $message ?> <a href="<?php echo $url; ?>" title="<?php echo esc_attr( $linktext ); ?>"><?php echo $linktext ?></a></p></div>
@@ -314,11 +314,11 @@ class Eazyest_Gallery_Upgrader {
 		return array(
 			'gallery-settings' => array(
 				'title'       => __( 'Your current settings', 'eazyest-gallery' ),
-				'description' => __( 'These settings are necessary to convert your content.' )
+				'description' => __( 'These settings are necessary to convert your content.', 'eazyest-gallery' ),
 			),
 			'upgrade-options' => array(
 				'title'       => __( 'Options',                                                       'eazyest-gallery' ),
-				'description' => __( 'Some optional parameters to help tune the conversion process.', 'eazyest-gallery' )
+				'description' => __( 'Some optional parameters to help tune the conversion process.', 'eazyest-gallery' ),
 			)
 		);
 	}
@@ -551,7 +551,7 @@ class Eazyest_Gallery_Upgrader {
 				<div class="submit" id="skip">
 					<a href="#skip_upgrade" class="button button-secondary" id="skip_upgrade"><?php echo esc_attr_e( 'Skip', 'eazyest-gallery'); ?></a>
 					<label for="skip_upgrade"><?php _e( 'Don\'t upgrade', 'eazyest-gallery' ); ?></label>
-					<p class="description"><?php _e( 'Don\'t save any content, just let Eazyest Gallery automatically import my folders and images.') ?></p>
+					<p class="description"><?php _e( 'Don\'t save any content, just let Eazyest Gallery automatically import my folders and images.', 'eazyest-gallery' ) ?></p>
 				</div>
 			</form>
 		<?php	

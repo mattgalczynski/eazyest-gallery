@@ -534,14 +534,14 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 					echo '<abbr title="' . $t_time . '">' . apply_filters( 'post_date_column_time', $h_time, $post, $column_name, $mode ) . '</abbr>';
 				echo '<br />';
 				if ( 'publish' == $post->post_status ) {
-					_e( 'Published' );
+					_e( 'Published', 'eazyest-gallery' );
 				} elseif ( 'future' == $post->post_status ) {
 					if ( $time_diff > 0 )
 						echo '<strong class="attention">' . __( 'Missed schedule', 'eazyest-gallery' ) . '</strong>';
 					else
-						_e( 'Scheduled' );
+						_e( 'Scheduled', 'eazyest-gallery' );
 				} else {
-					_e( 'Last Modified' );
+					_e( 'Last Modified', 'eazyest-gallery' );
 				}
 				echo '</td>';
 			break;

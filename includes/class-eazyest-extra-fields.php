@@ -459,7 +459,7 @@ class Eazyest_Extra_Fields {
 	 */
 	function section_fields( $fields ) {
 		$fields['enable_extra_fields'] = array(
-			'title'    => __( 'Extra Fields' ),
+			'title'    => __( 'Extra Fields', 'eazyest-gallery'  ),
 			'callback' => array( $this, 'enable_extra_fields' )
 		);
 		return $fields;
