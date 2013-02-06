@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r68)
+ * @version 0.1.0 (r84)
  * @access public
  */
 
@@ -1623,7 +1623,7 @@ class Eazyest_FolderBase {
 		if ( ! $this->is_gallery_image( $post_id ) )
 			return $metadata;	
 
-		if ( empty( $metadata ) ) {
+		if ( empty( $metadata ) && is_admin() ) {
 			$metadata = wp_generate_attachment_metadata( $post_id, get_attached_file( $post_id ) );
 			update_post_meta( $post_id, '_wp_attachment_metadata', $metadata );
 		}
