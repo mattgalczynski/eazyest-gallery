@@ -190,7 +190,7 @@ class Eazyest_Settings_Page {
 	function admin_notices() {
 		$messages = $errors = array();
 		if ( isset( $_GET['eazyest-activate'] ) ) {
-			$messages[] = __( 'plugin <strong>activated</strong>. Please check your settings' );
+			$messages[] = __( 'plugin <strong>activated</strong>. Please check your settings', 'eazyest-gallery' );
 		}
 		if ( ! empty( $messages ) ) {
 			$message = implode( '<br />', $messages );

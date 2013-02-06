@@ -78,7 +78,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		$columns['icon']         = '';
 		$columns['file']         = _x( 'File', 'column name', 'eazyest-gallery' );
 		$columns['description']  = _x( 'Content', 'column name', 'eazyest-gallery' );
-		$columns['comments']     = '<span><span class="vers"><div title="' . esc_attr__( 'Comments' ) . '" class="comment-grey-bubble"></div></span></span>';
+		$columns['comments']     = '<span><span class="vers"><div title="' . esc_attr__( 'Comments', 'eazyest-gallery' ) . '" class="comment-grey-bubble"></div></span></span>';
 		$columns['date']         = _x( 'Date', 'column name', 'eazyest-gallery' );
 		return $columns;
 	}
@@ -205,7 +205,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 			return;
 
 		echo "<select name='attachment_action$two'>\n";
-		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions' ) . "</option>\n";
+		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'eazyest-gallery' ) . "</option>\n";
 
 		foreach ( $this->_actions as $name => $title ) {
 			$class = 'edit' == $name ? ' class="hide-if-no-js"' : '';
@@ -379,7 +379,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 					?>
 						<th scope="row" class="check-column">
 							<?php if ( $user_can_edit ) { ?>
-								<label class="screen-reader-text" for="cb-select-<?php echo $item->ID; ?>"><?php echo sprintf( __( 'Select %s' ), $att_title );?></label>
+								<label class="screen-reader-text" for="cb-select-<?php echo $item->ID; ?>"><?php echo sprintf( __( 'Select %s', 'eazyest-gallery' ), $att_title );?></label>
 								<input type="checkbox" name="media[<?php echo $item->ID; ?>]" id="cb-select-<?php echo $item->ID; ?>" value="<?php echo $item->ID; ?>" />
 							<?php } ?>
 						</th>
@@ -395,7 +395,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 									echo $thumb;
 								} else {
 						?>
-								<a href="<?php echo get_edit_post_link( $item->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $att_title ) ); ?>">
+								<a href="<?php echo get_edit_post_link( $item->ID, true ); ?>" title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $att_title ) ); ?>">
 									<?php echo $thumb; ?>
 								</a>
 				
@@ -415,7 +415,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 									echo $filename;
 								} else { ?>
 								<a href="<?php echo get_edit_post_link( $item->ID, true ); ?>"
-									title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $filename ) ); ?>">
+									title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $filename ) ); ?>">
 									<?php echo $filename; ?></a>
 								<?php };
 								_media_states( $item ); ?></strong>
@@ -500,17 +500,17 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 							
 							case 'date':
 								if ( '0000-00-00 00:00:00' == $item->post_date ) {
-									$h_time = __( 'Unpublished' );
+									$h_time = __( 'Unpublished', 'eazyest-gallery' );
 								} else {
 									$m_time = $item->post_date;
 									$time = get_post_time( 'G', true, $item, false );
 									if ( ( abs( $t_diff = time() - $time ) ) < DAY_IN_SECONDS ) {
 										if ( $t_diff < 0 )
-											$h_time = sprintf( __( '%s from now' ), human_time_diff( $time ) );
+											$h_time = sprintf( __( '%s from now', 'eazyest-gallery' ), human_time_diff( $time ) );
 										else
-											$h_time = sprintf( __( '%s ago' ), human_time_diff( $time ) );
+											$h_time = sprintf( __( '%s ago', 'eazyest-gallery' ), human_time_diff( $time ) );
 									} else {
-										$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
+										$h_time = mysql2date( __( 'Y/m/d', 'eazyest-gallery' ), $m_time );
 									}
 								}
 								?>
