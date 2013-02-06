@@ -363,7 +363,7 @@ class Eazyest_Gallery {
 	 * @return string
 	 */
 	function gallery_name() {		
-		return apply_filters( 'eazyest_gallery_menu_name', __( 'Eazyest Gallery', 'eayzest-gallery' ) );
+		return apply_filters( 'eazyest_gallery_menu_name', __( 'Eazyest Gallery', 'eazyest-gallery' ) );
 	}
 	
 	/**
