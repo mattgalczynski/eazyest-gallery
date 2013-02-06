@@ -263,7 +263,7 @@ class Eazyest_FolderBase {
 	 * @return WP_Query object
 	 */
 	function pre_get_posts( $query ) {
-		// order by from eazyest-galery options
+		// order by from eazyest-gallery options
 		if ( eazyest_gallery()->post_type == $query->get( 'post_type' ) ) {
 			if ( ! isset( $_REQUEST['orderby'] ) ) {
 				// set sort order from options

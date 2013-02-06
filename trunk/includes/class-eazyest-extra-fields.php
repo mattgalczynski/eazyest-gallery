@@ -520,7 +520,7 @@ class Eazyest_Extra_Fields {
 				height: 21px; 
 			}
 		</style>
-		<h3><?php _e( 'Custom Fields', 'eazyest-galery' ); ?></h3>
+		<h3><?php _e( 'Custom Fields', 'eazyest-gallery' ); ?></h3>
 		<p><?php _e( 'Add extra fields to be stored with your images and folders', 'eazyest-gallery' ); ?></p>
 		<table class="form-table" id="eazyest-gallery-extra-fields">
 			<thead>
