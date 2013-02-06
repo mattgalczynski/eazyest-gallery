@@ -324,7 +324,7 @@ class Eazyest_Gallery_Exif {
 	 * @return string
 	 */
 	private function _photo_getval( $image_info, $val_array ) {
-    $info_val = _x( 'Unknown', 'exif info', 'eazyets-galery' );
+    $info_val = _x( 'Unknown', 'exif info', 'eazyest-gallery' );
     foreach( $val_array as $name => $val ) {
       if ( $name == $image_info ) {
         $info_val = &$val;
@@ -409,9 +409,9 @@ class Eazyest_Gallery_Exif {
 	      
 	    $img_info[_x( 'Focus Distance', 'exif info', 'eazyest-gallery' )] = isset( $exif['COMPUTED']['FocusDistance'] ) ? sprintf(  _x( '%s m', 'length meter', 'eazyest-gallery' ), $exif['COMPUTED']['FocusDistance'] ) : NULL;
 	    
-	    $img_info[_x( 'Focal Length', 'exif info', 'eazyest-gallery' )] = isset( $exif['EXIF']['FocalLength'] ) ? sprintf( _x( '%s mm', 'length milimeter', 'eazyest-galery' ), $exif['EXIF']['FocalLength'] ) : NULL;
+	    $img_info[_x( 'Focal Length', 'exif info', 'eazyest-gallery' )] = isset( $exif['EXIF']['FocalLength'] ) ? sprintf( _x( '%s mm', 'length milimeter', 'eazyest-gallery' ), $exif['EXIF']['FocalLength'] ) : NULL;
 			 
-	    $img_info[_x( 'FocalLength In 35mm Film', 'exif info', 'eazyest-gallery' )] = isset( $exif['EXIF']['FocalLengthIn35mmFilm'] ) ? sprintf( _x( '%s mm', 'length milimeter', 'eazyest-galery' ), $exif['EXIF']['FocalLengthIn35mmFilm'] ) : NULL;
+	    $img_info[_x( 'FocalLength In 35mm Film', 'exif info', 'eazyest-gallery' )] = isset( $exif['EXIF']['FocalLengthIn35mmFilm'] ) ? sprintf( _x( '%s mm', 'length milimeter', 'eazyest-gallery' ), $exif['EXIF']['FocalLengthIn35mmFilm'] ) : NULL;
 			 
 	    if ( isset( $exif['EXIF']['ColorSpace'] ) ) 
 	      $img_info[_x( 'Color Space', 'exif info', 'eazyest-gallery' )] = $exif['EXIF']['ColorSpace'] == 1 ? _x( 'sRGB', 'exif info', 'eazyest-gallery' ) :  _x( 'Uncalibrated', 'exif info', 'eazyest-gallery' );

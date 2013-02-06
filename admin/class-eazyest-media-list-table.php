@@ -286,10 +286,10 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		$delete_url = add_query_arg( array( 'action' => 'attachment_action', 'attachment_action' =>'delete', 'media' => $item->ID, 'bulk-media' => wp_create_nonce( 'bulk-media' ) ), $item_url );
 		$view_url   = get_permalink( $item->ID );
 		if ( current_user_can( 'edit_post', $item->ID ) )
-			$actions['edit'] = "<a href='$edit_url'>" . __( 'Edit', 'eazyest-galery' ) . "</a>";
+			$actions['edit'] = "<a href='$edit_url'>" . __( 'Edit', 'eazyest-gallery' ) . "</a>";
 		if ( current_user_can( 'delete_post', $item->ID ) )
-			$actions['delete'] = "<a class='submitdelete' href='$delete_url' onclick='return showNotice.warn();'>" . __( 'Delete Permanently', 'eazyest-galery' ) . "</a>";
-		$actions['view'] = "<a href='$view_url' title='" . esc_attr( sprintf( __( 'View &#8220;%s&#8221;', 'eazyest-gallery' ), $att_title ) ) . "' rel='permalink'>" . __( 'View', 'eazyest-galery' ) . "</a>";
+			$actions['delete'] = "<a class='submitdelete' href='$delete_url' onclick='return showNotice.warn();'>" . __( 'Delete Permanently', 'eazyest-gallery' ) . "</a>";
+		$actions['view'] = "<a href='$view_url' title='" . esc_attr( sprintf( __( 'View &#8220;%s&#8221;', 'eazyest-gallery' ), $att_title ) ) . "' rel='permalink'>" . __( 'View', 'eazyest-gallery' ) . "</a>";
 		
 		$actions = apply_filters( 'eazyest_gallery_media_row_actions', $actions, $item );
 		return $actions;

@@ -973,7 +973,7 @@ class Eazyest_Frontend {
 		$crumbs[] = get_the_title( $post_id );
 		
 		/* translators: breadcrumb trail separator */
-		$sep = __( '&rsaquo;', 'eazyest_gallery' );
+		$sep = __( '&rsaquo;', 'eazyest-gallery' );
 		$separator = apply_filters( 'eazyest_gallery_breadcrumb_separator', " $sep " );
 		$crumbs    = apply_filters( 'eazyest_gallery_breadcrumb_items',     $crumbs  );
 		$trail     = implode( $separator, $crumbs );
