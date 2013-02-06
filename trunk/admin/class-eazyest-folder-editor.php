@@ -617,7 +617,6 @@ class Eazyest_Folder_Editor {
 	 * @param stdClass $post
 	 * @uses admin_url()
 	 * @uses add_query_arg()
-	 * @uses get_children()
 	 * @uses get_current_screen()
 	 * @return array 
 	 */
