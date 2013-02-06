@@ -601,10 +601,10 @@ class Eazyest_Folder_Editor {
 		$columns["{$type}_path"]   = _x( 'Name',    'column name', 'eazyest-gallery' );
 		$columns['title']          = _x( 'Caption', 'column name', 'eazyest-gallery' );
 		$columns["{$type}_images"] = _x( 'Images',  'column name', 'eazyest-gallery' );
-		$columns['tags']           = _x( 'Tags',    'column name'                    );
+		$columns['tags']           = _x( 'Tags',    'column name', 'eazyest-gallery' );
 		$columns['comments']       = '<span><span class="vers"><div title="' . esc_attr__( 'Comments', 'eazyest-gallery' ) . '" class="comment-grey-bubble"></div></span></span>';
 		$columns["{$type}_new"]    = '';
-		$columns['date']           = _x( 'Date' ,   'column name' );
+		$columns['date']           = _x( 'Date' ,   'column name', 'eazyest-gallery' );
 		return $columns;
 	}
 	

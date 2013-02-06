@@ -424,11 +424,11 @@ class Eazyest_Gallery_Exif {
 	      
 	    if ( isset( $exif['IFD0']['XResolution'] ) ) 
 	    	                                                                // translators: resolution, unit
-	      $img_info[_x( 'X Resolution', 'exif info', 'eazyest-gallery' )] = sprintf( __( '%s%s' ), $exif['IFD0']['XResolution'], $resolution_unit[$exif['IFD0']['ResolutionUnit']] );
+	      $img_info[_x( 'X Resolution', 'exif info', 'eazyest-gallery' )] = sprintf( __( '%s%s', 'eazyest-gallery' ), $exif['IFD0']['XResolution'], $resolution_unit[$exif['IFD0']['ResolutionUnit']] );
 				 
 	    if ( isset( $exif['IFD0']['YResolution'] ) ) 
 	    	                                                                // translators: resolution, unit
-	      $img_info[_x( 'Y Resolution', 'exif info', 'eazyest-gallery' )] = sprintf( __( '%s%s' ), $exif['IFD0']['YResolution'], $resolution_unit[$exif['IFD0']['ResolutionUnit']] );
+	      $img_info[_x( 'Y Resolution', 'exif info', 'eazyest-gallery' )] = sprintf( __( '%s%s', 'eazyest-gallery' ), $exif['IFD0']['YResolution'], $resolution_unit[$exif['IFD0']['ResolutionUnit']] );
 				 
 	    if ( isset( $exif['IFD0']['Software'] ) ) 
 	      $img_info[_x( 'Software', 'exif info', 'eazyest-gallery' )] = utf8_encode( $exif['IFD0']['Software'] );
@@ -559,11 +559,11 @@ class Eazyest_Gallery_Exif {
 	            <td><?php echo $img_info[__( 'File Date/Time', 'eazyest-gallery' )]; ?></td>
 	          </tr>
 	          <tr>
-	            <th scope="row"><?php _e( 'Height' ); ?></th>
+	            <th scope="row"><?php _e( 'Height', 'eazyest-gallery' ); ?></th>
 	            <td><?php echo $img_info[__( 'Height', 'eazyest-gallery' )]; ?></td>
 	          </tr>
 	          <tr>
-	            <th scope="row"><?php _e( 'Width' ); ?></th>            
+	            <th scope="row"><?php _e( 'Width', 'eazyest-gallery' ); ?></th>            
 	            <td><?php echo $img_info[__( 'Width', 'eazyest-gallery' )]; ?></td>
 	          </tr>
 	          <?php if ( isset( $img_info[__( 'Make', 'eazyest-gallery' )] ) && isset( $img_info[__( 'Model', 'eazyest-gallery' )]) ) : ?>

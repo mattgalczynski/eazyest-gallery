@@ -339,9 +339,9 @@ class Eazyest_Widget_Random_Images extends WP_Widget {
 	function __construct() {
 		$widget_ops = array( 
 		 'classname'   =>     'widget_eazyest_random_image', 
-		 'description' => __( 'Random images from your gallery' ) 
+		 'description' => __( 'Random images from your gallery', 'eazyest-gallery' ) 
 		 );
-		parent::__construct( 'eazyest_random_image', __('EZG Random Images'), $widget_ops );
+		parent::__construct( 'eazyest_random_image', __('EZG Random Images', 'eazyest-gallery' ), $widget_ops );
 	}
 	
 	/**
