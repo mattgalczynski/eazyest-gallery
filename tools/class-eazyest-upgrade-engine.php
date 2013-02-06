@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r64)
+ * @version 0.1.0 (r95)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -197,7 +197,7 @@ class Eazyest_Upgrade_Engine {
 		$options = get_option( 'lazyest-gallery' );	
 		if ( $options['gallery_folder'] != $_POST['gallery_folder'] ) {
 			eazyest_gallery()->gallery_folder = $_POST['gallery_folder'];
-			$temproot = str_replace('\\', '/', trailingslashit( $this->get_absolute_path( ABSPATH . $gallery_folder ) ) );
+			$temproot = str_replace('\\', '/', trailingslashit( eazyest_gallery()->get_absolute_path( ABSPATH . $gallery_folder ) ) );
 			if ( $temproot == eazyest_gallery()->root() )
 				set_transient( 'eazyest-gallery-folder', $_POST['gallery_folder'] );
 		}
@@ -596,7 +596,7 @@ class Eazyest_Upgrade_Engine {
 					$parent_dir = dirname( $gallery_path );
 					global $wpdb;
 					$parent_ids = $wpdb->get_col( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_gallery_path' AND meta_value = '$parent_dir'" );
-					$post_parent = $parent_ids[0];
+					$post_parent = isset( $parent_ids[0] ) ? $parent_ids[0] : 0;
 				}
 				// read existing edits
 				$xml_file = eazyest_gallery()->root() . $gallery_path . '/captions.xml';
