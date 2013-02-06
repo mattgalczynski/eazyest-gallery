@@ -127,7 +127,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
-			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All' ) . '</label>'
+			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All', 'eazyest-gallery' ) . '</label>'
 				. '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
 			$cb_counter++;
 		}
@@ -308,7 +308,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 	 */
 	function get_bulk_actions() {
 		$actions = array();			
-		$actions['trash'] = __( 'Move to Trash' );
+		$actions['trash'] = __( 'Move to Trash', 'eazyest-gallery' );
 
 		return $actions;
 	}
@@ -372,7 +372,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 			return;
 
 		echo "<select name='folder_action$two'>\n";
-		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions' ) . "</option>\n";
+		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'eazyest-gallery' ) . "</option>\n";
 
 		foreach ( $this->_actions as $name => $title ) {
 			$class = 'edit' == $name ? ' class="hide-if-no-js"' : '';
@@ -447,7 +447,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 			?>
 			<th scope="row" class="check-column">
 				<?php if ( $can_edit_post ) { ?>
-				<label class="screen-reader-text" for="cb-select-<?php the_ID(); ?>"><?php printf( __( 'Select %s' ), $title ); ?></label>
+				<label class="screen-reader-text" for="cb-select-<?php the_ID(); ?>"><?php printf( __( 'Select %s', 'eazyest-gallery' ), $title ); ?></label>
 				<input id="cb-select-<?php the_ID(); ?>" type="checkbox" name="folders[]" value="<?php the_ID(); ?>" />
 				<?php } ?>
 			</th>
@@ -478,28 +478,28 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 					$pad = str_repeat( '&#8212; ', $level );					
 					?>
 					<td <?php echo $attributes ?>><strong>
-					<a class="row-title" href="<?php echo $edit_link; ?>" title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $title ) ); ?>"><?php echo $pad; echo $title ?></a></strong>
+					<a class="row-title" href="<?php echo $edit_link; ?>" title="<?php echo esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $title ) ); ?>"><?php echo $pad; echo $title ?></a></strong>
 					<?php
 				}
 
 				$actions = array();
 				if ( $can_edit_post && 'trash' != $post->post_status ) {
-					$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '" title="' . esc_attr( __( 'Edit this item' ) ) . '">' . __( 'Edit' ) . '</a>';
+					$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, true ) . '" title="' . esc_attr( __( 'Edit this item', 'eazyest-gallery' ) ) . '">' . __( 'Edit', 'eazyest-gallery' ) . '</a>';
 				}
 				if ( current_user_can( $post_type_object->cap->delete_post, $post->ID ) ) {
 					if ( 'trash' == $post->post_status )
-						$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash' ) ) . "' href='" . wp_nonce_url( admin_url( sprintf( $post_type_object->_edit_link . '&amp;action=untrash', $post->ID ) ), 'untrash-post_' . $post->ID ) . "'>" . __( 'Restore' ) . "</a>";
+						$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash', 'eazyest-gallery' ) ) . "' href='" . wp_nonce_url( admin_url( sprintf( $post_type_object->_edit_link . '&amp;action=untrash', $post->ID ) ), 'untrash-post_' . $post->ID ) . "'>" . __( 'Restore', 'eazyest-gallery' ) . "</a>";
 					elseif ( EMPTY_TRASH_DAYS )
-						$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash' ) . "</a>";
+						$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash', 'eazyest-gallery' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash', 'eazyest-gallery' ) . "</a>";
 					if ( 'trash' == $post->post_status || !EMPTY_TRASH_DAYS )
-						$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently' ) . "</a>";
+						$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this item permanently', 'eazyest-gallery' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently', 'eazyest-gallery' ) . "</a>";
 				}
 				if ( $post_type_object->public ) {
 					if ( in_array( $post->post_status, array( 'pending', 'draft', 'future' ) ) ) {
 						if ( $can_edit_post )
-							$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __( 'Preview' ) . '</a>';
+							$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'eazyest-gallery' ), $title ) ) . '" rel="permalink">' . __( 'Preview', 'eazyest-gallery' ) . '</a>';
 					} elseif ( 'trash' != $post->post_status ) {
-						$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View &#8220;%s&#8221;' ), $title ) ) . '" rel="permalink">' . __( 'View' ) . '</a>';
+						$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( sprintf( __( 'View &#8220;%s&#8221;', 'eazyest-gallery' ), $title ) ) . '" rel="permalink">' . __( 'View', 'eazyest-gallery' ) . '</a>';
 					}
 				}
 
@@ -512,19 +512,19 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 
 			case 'date':
 				if ( '0000-00-00 00:00:00' == $post->post_date ) {
-					$t_time = $h_time = __( 'Unpublished' );
+					$t_time = $h_time = __( 'Unpublished', 'eazyest-gallery' );
 					$time_diff = 0;
 				} else {
-					$t_time = get_the_time( __( 'Y/m/d g:i:s A' ) );
+					$t_time = get_the_time( __( 'Y/m/d g:i:s A' ) 'eazyest-gallery' );
 					$m_time = $post->post_date;
 					$time = get_post_time( 'G', true, $post );
 
 					$time_diff = time() - $time;
 
 					if ( $time_diff > 0 && $time_diff < DAY_IN_SECONDS )
-						$h_time = sprintf( __( '%s ago' ), human_time_diff( $time ) );
+						$h_time = sprintf( __( '%s ago', 'eazyest-gallery' ), human_time_diff( $time ) );
 					else
-						$h_time = mysql2date( __( 'Y/m/d' ), $m_time );
+						$h_time = mysql2date( __( 'Y/m/d', 'eazyest-gallery' ), $m_time );
 				}
 
 				echo '<td ' . $attributes . '>';
@@ -537,7 +537,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 					_e( 'Published' );
 				} elseif ( 'future' == $post->post_status ) {
 					if ( $time_diff > 0 )
-						echo '<strong class="attention">' . __( 'Missed schedule' ) . '</strong>';
+						echo '<strong class="attention">' . __( 'Missed schedule', 'eazyest-gallery' ) . '</strong>';
 					else
 						_e( 'Scheduled' );
 				} else {
@@ -590,7 +590,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 							);
 						}
 						/* translators: used between list items, there is a space after the comma */
-						echo join( __( ', ' ), $out );
+						echo join( __( ', ', 'eazyest-gallery' ), $out );
 					} else {
 						echo '&#8212;';
 					}

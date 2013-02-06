@@ -223,7 +223,7 @@ class Eazyest_Folder_Editor {
 				$ids = isset($_REQUEST['ids']) ? $_REQUEST['ids'] : 0;				
 				$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'trashed' ), $_SERVER['REQUEST_URI'] );
 				$undo_url = wp_nonce_url( add_query_arg( array( 'ids' => $ids, 'action' => 'untrash_folders' ), $_SERVER['REQUEST_URI'] ), 'bulk-posts' );
-				$message .= ' <a href="' . $undo_url . '">' . __( 'Undo' ) . '</a>';
+				$message .= ' <a href="' . $undo_url . '">' . __( 'Undo', 'eazyest-gallery' ) . '</a>';
 			}
 			
 			if ( isset( $_REQUEST['untrashed'] ) && $untrashed = absint( $_REQUEST['untrashed'] ) ) {
@@ -602,7 +602,7 @@ class Eazyest_Folder_Editor {
 		$columns['title']          = _x( 'Caption', 'column name', 'eazyest-gallery' );
 		$columns["{$type}_images"] = _x( 'Images',  'column name', 'eazyest-gallery' );
 		$columns['tags']           = _x( 'Tags',    'column name'                    );
-		$columns['comments']       = '<span><span class="vers"><div title="' . esc_attr__( 'Comments' ) . '" class="comment-grey-bubble"></div></span></span>';
+		$columns['comments']       = '<span><span class="vers"><div title="' . esc_attr__( 'Comments', 'eazyest-gallery' ) . '" class="comment-grey-bubble"></div></span></span>';
 		$columns["{$type}_new"]    = '';
 		$columns['date']           = _x( 'Date' ,   'column name' );
 		return $columns;
@@ -747,7 +747,7 @@ class Eazyest_Folder_Editor {
 				$sub_id = eazyest_folderbase()->get_folder_by_path( $directory );
 				if ( current_user_can( 'edit_post', $sub_id ) ) {					
 					$edit_link  = get_edit_post_link( $sub_id, true );
-					$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $directory ) );
+					$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $directory ) );
 					$display   .= "<a href='$edit_link' title='$edit_title'>$edit_name</a> ";
 				} else {
 					$display .= "$edit_name"; 
@@ -781,7 +781,7 @@ class Eazyest_Folder_Editor {
 				$display    = " <strong>$edit_name</strong> ";
 			} else {
 				$edit_link  = get_edit_post_link( $post_id, true );
-				$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;' ), $gallery_path ) );
+				$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $gallery_path ) );
 				$display    = " <strong><a href='$edit_link' title='$edit_title'>$edit_name</a></strong> ";
 			}
 			
