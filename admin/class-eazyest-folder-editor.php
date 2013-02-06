@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012
- * @version 0.1.0 (r81)
+ * @version 0.1.0 (r88)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -929,7 +929,7 @@ class Eazyest_Folder_Editor {
   	$gallery_display = implode( '/', $path );
   	?>
   	<div class="misc-pub-section">	  	
-	  	<p><?php echo __( 'Path: ', 'eazyest-gallery' ) . $gallery_display ?></p>
+	  	<p><?php printf( __( 'Path: %s', 'eazyest-gallery' ), $gallery_display ); ?></p>
 	  	<input type="hidden" id="gallery_path" name="gallery_path" value="<?php echo $gallery_path ?>" />
   	</div>
   	<?php
