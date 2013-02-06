@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r84)
+ * @version 0.1.0 (r92)
  * @access public
  */
 
@@ -283,6 +283,14 @@ class Eazyest_FolderBase {
 			$post_id = $this->refered_by_folder();
 			if ( $post_id )
 				$query->set( 'post_parent', $post_id ); 
+		}
+		if ( is_tag() ) {
+			$post_types = $query->get( 'post_type' );
+			if ( ! $post_types || 'post' == $post_types )
+				$post_types = array( 'post', eazyest_gallery()->post_type );
+			if ( is_array( $post_types ) )
+				$post_types[] = eazyest_gallery()->post_type;
+			 $query->set( 'post_type', $post_types );		
 		}    				
 		return $query;
 	}
