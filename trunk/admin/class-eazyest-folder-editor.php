@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012
- * @version 0.1.0 (r36)
+ * @version 0.1.0 (r96)
  * @since 0.1.0 (r2)
  * @access public
  */
