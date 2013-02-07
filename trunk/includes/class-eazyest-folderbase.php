@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r92)
+ * @version 0.1.0 (r96)
  * @access public
  */
 
@@ -69,6 +69,7 @@ class Eazyest_FolderBase {
   	$this->actions();
 		$this->filters();
 		$this->register_post_types();
+		$this->register_post_status();
 		$this->endpoints();
   }
   
@@ -186,7 +187,6 @@ class Eazyest_FolderBase {
 			'categories',
 			'thumbnail',
 			'comments',
-			'revisions',
 			'page-attributes',		
 		);
 		
@@ -215,6 +215,27 @@ class Eazyest_FolderBase {
 			flush_rewrite_rules();
 			delete_transient( 'eazyest-gallery-flush-rewrite-rules' );
 		}		
+	}
+	
+	/**
+	 * Eazyest_FolderBase::register_post_status()
+	 * Register a post status for hidden folders.
+	 * Hidden folders do exist, but they do not show in folder listings and cannot be accessed in frontend.
+	 * 
+	 * @since 0.1.0 (r96)
+	 * @return void
+	 */
+	function register_post_status() {
+		$post_status = 'hidden';
+		$args = array(
+			'label'                     => _x( 'Hidden', 'post status', 'eazyest-gallery' ),
+			'public'                    => false,
+			'exclude_from_search'       => true,
+			'show_in_admin_all_list'    => true,
+			'show_in_admin_status_list' => true,
+			'label_count'               => _n_noop( 'Hidden <span class="count">(%s)</span>', 'Hidden <span class="count">(%s)</span>' ),
+		);
+		register_post_status( $post_status, $args );
 	}
 	
 	/**
@@ -314,6 +335,7 @@ class Eazyest_FolderBase {
 			// only do this for post type galleryfolder 
 			$this->save_gallery_path( $post_id );
 			$this->save_attachments( $post_id );
+			$this->save_post_status( $post_id );
 		}
 	}
 	
@@ -337,7 +359,7 @@ class Eazyest_FolderBase {
 		if ( ! apply_filters( 'eazyest_gallery_copy_timestamp', true ) )
 			return;
 			
-		$metadata = get_attachment_metadata( $post_id );
+		$metadata = wp_get_attachment_metadata( $post_id );
 		if ( ! empty( $metadata['image_meta']['created_timestamp'] ) ) {
 			$attachment = get_post( $post_id, ARRAY_A );
 			$datetime = date( 'Y-m-d H:i:s', $metadata['image_meta']['created_timestamp'] );
@@ -383,6 +405,25 @@ class Eazyest_FolderBase {
 			$this->copy_timestamp( $post_id );
 		}
 	}
+	
+	/**
+	 * Eazyest_FolderBase::save_post_status()
+	 * Save post_status 'hidden' for hidden folders
+	 * 
+	 * @since 0.1.0 (r96)
+	 * @uses get_post() to retrieve post fields
+	 * @uses wp_update_post() to save post
+	 * @param int $post_id just saved post
+	 * @return void
+	 */
+	function save_post_status( $post_id ) {
+		if(  isset( $_POST['visibility'] ) && 'hidden' == $_POST['visibility'] ) {
+			$post = get_post( $post_id, ARRAY_A );
+			$post['post_status'] = 'hidden';
+			unset( $_POST['action'] );
+			wp_update_post( $post );
+		}
+	} 
 	
 	/**
 	 * Eazyest_FolderBase::save_gallery_path()

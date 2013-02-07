@@ -56,6 +56,17 @@
 			});
 			return false;
 		});
+		
+		$('.save-post-visibility', '#post-visibility-select').click(function () { // crazyhorse - multiple ok cancels
+			var pvSelect = $('#post-visibility-select');
+			pvSelect.slideUp('fast');
+			$('.edit-visibility', '#visibility').show();
+			if ( $('input:radio:checked', '#post-visibility-select').val() == 'hidden' ) {
+				$('#post-visibility-display').html(galleryfolderL10n.hidden );
+				$('#post-status-display').html(galleryfolderL10n.hiddenpublish );
+			}
+			return false;
+		});
 						
 	}); // $(document).ready
 	

@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012
- * @version 0.1.0 (r88)
+ * @version 0.1.0 (r36)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -92,8 +92,9 @@ class Eazyest_Folder_Editor {
   	add_action( 'edit_form_after_title',             array( $this, 'media_buttons'           )        );
   	add_action( 'edit_form_after_editor',            array( $this, 'list_table_attachments'  ),  1, 1 );
   	add_action( 'edit_form_after_editor',            array( $this, 'list_table_folders'      ),  2, 1 );
-  	add_action( 'post_submitbox_misc_actions',       array( $this, 'folder_information'      ), 10    );
-  	add_action( 'post_submitbox_misc_actions',       array( $this, 'donate'                  ), 11    );
+  	add_action( 'add_meta_boxes',                    array( $this, 'submit_meta_box'         )        );
+  	add_action( 'post_submitbox_misc_actions',       array( $this, 'folder_information'      ),  8    );
+  	add_action( 'post_submitbox_misc_actions',       array( $this, 'donate'                  ),  9    );
   	add_action( $manage_action,                      array( $this, 'custom_column'           ), 10, 2 );
   	
   	add_action( 'eazyest_gallery_before_list_items', array( $this, $before_list_items_action ), 10, 1 );
@@ -118,15 +119,16 @@ class Eazyest_Folder_Editor {
 	 */
 	function filters() {
 		$manage_columns = 'manage_edit-' . eazyest_gallery()->post_type . '_columns';
-		
-		add_filter( $manage_columns,                       array( $this, 'folder_columns'       )        );
-		add_filter( 'page_row_actions',                    array( $this, 'page_row_actions'     ), 10, 2 );
-		add_filter( 'upload_dir',                          array( $this, 'upload_dir'           )        );
-		add_filter( 'views_edit-galleryfolder',            array( $this, 'save_columns_button'  )        );
-		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'dropdown_pages_args'  ), 10, 2 );
+		// folder edit screen filters
+		add_filter( 'post_updated_messages',               array( $this, 'post_updated_messages' )        );
+		add_filter( $manage_columns,                       array( $this, 'folder_columns'        )        );
+		add_filter( 'page_row_actions',                    array( $this, 'page_row_actions'      ), 10, 2 );
+		add_filter( 'upload_dir',                          array( $this, 'upload_dir'            )        );
+		add_filter( 'views_edit-galleryfolder',            array( $this, 'save_columns_button'   )        );
+		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'dropdown_pages_args'   ), 10, 2 );
 		// filters to adapt media upload 
-		add_filter( 'media_view_strings',                  array( $this, 'media_view_strings'   ), 10, 2 );
-		add_filter( 'media_send_to_editor',                array( $this, 'media_send_to_editor' ), 10, 3 );
+		add_filter( 'media_view_strings',                  array( $this, 'media_view_strings'    ), 10, 2 );
+		add_filter( 'media_send_to_editor',                array( $this, 'media_send_to_editor'  ), 10, 3 );
 	}
 	
 	/**
@@ -140,15 +142,32 @@ class Eazyest_Folder_Editor {
 	function register_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',       true );
-		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r29', true );
+		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r96', true );
 		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r54', true );
+				
+		wp_localize_script( 'eazyest-gallery-admin',   'galleryfolderL10n',     $this->localize_folder_script()  );
+		wp_localize_script( 'eazyest-gallery-collect', 'eazyestGalleryCollect', $this->localize_collect_script() );
+	}
+	
+	/**
+	 * Eazyest_Folder_Editor::localize_folder_script()
+	 * Localize script to set visibility strings.
+	 * 
+	 * @since 0.1.0 (r96)
+	 * @return array
+	 */
+	function localize_folder_script() {
+		return array(
+			'hidden' =>        __( 'Hidden',           'eazyest-gallery' ),
+			'hiddenpublish' => __( 'Hidden Published', 'eazyest-gallery' ),
+		);
 	}
 	
 	/**
 	 * Eazyest_Folder_Editor::enqueue_scripts()
 	 * Enqueue scripts to collect new ftp-uploaded folders.
 	 * 
-	 * Applies filter <code>'eazyest_gallery_ajax_collect'</code> bool
+	 * Applies filter <code>'eazyest_gallery_ajax_collect'</code> bool if this should run or not
 	 * 
 	 * @since 0.1.0 (r20)
 	 * @uses apply_filters()
@@ -159,11 +178,18 @@ class Eazyest_Folder_Editor {
 		if ( $this->bail() )
 			return;
 		if ( apply_filters( 'eazyest_gallery_ajax_collect', true ) && ! isset( $_REQUEST['collect-refresh'] ) ) {
-			wp_localize_script( 'eazyest-gallery-collect', 'eazyestGalleryCollect', $this->localize_collect_script() );
 			wp_enqueue_script( 'eazyest-gallery-collect' );
 		}
 	}
 	
+	/**
+	 * Eazyest_Folder_Editor::localize_collect_script()
+	 * Localize script for collecting images.
+	 * 
+	 * @since 0.1.0 (r20)
+	 * @uses wp_create_nonce() for ajax nonce 
+	 * @return array
+	 */
 	function localize_collect_script() {
 		return array(
 			'pagenow'     => 'edit-' . eazyest_gallery()->post_type,
@@ -193,6 +219,55 @@ class Eazyest_Folder_Editor {
 	}
 	
 	/**
+	 * Eazyest_Folder_Editor::post_updated_messages()
+	 * Filter post updated messages for galleryfolder post type.
+	 * @see http://codex.wordpress.org/Function_Reference/register_post_type
+	 * 
+	 * @since 0.1.0 (r96)
+	 * @uses esc_url()
+	 * @uses  get_permalink()
+	 * @uses add_query_arg()
+	 * @uses wp_post_revision_title() 
+	 * @uses date_i18n()
+	 * @param array $messages
+	 * @return array
+	 */
+	function post_updated_messages( $messages ) {
+		if ( $this->bail() )
+			return $messages;
+			
+		if ( ! isset( $_GET['post'] ) )
+			return $messages;
+		
+		global $post, $post_ID;	
+		$messages[eazyest_gallery()->post_type] = array(
+			 0 => '', // Unused. Messages start at index 1.
+			 1 => sprintf( __('Folder updated. <a href="%s">View post</a>', 'eazyest-gallery' ), esc_url( get_permalink($post_ID) ) ),
+			 2 => __('Custom field updated.', 'eazyest-gallery' ),
+			 3 => __('Custom field deleted.', 'eazyest-gallery' ),
+			 4 => __('Folder updated.', 'eazyest-gallery' ),
+			/* translators: %s: date and time of the revision */
+			 5 => isset($_GET['revision']) ? sprintf( __('Folder restored to revision from %s', 'eazyest-gallery' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			 6 => sprintf( __('Folder published. <a href="%s">View folder</a>', 'eazyest-gallery' ), esc_url( get_permalink($post_ID) ) ),
+			 7 => __('Folder saved.', 'eazyest-gallery' ),
+			 8 => sprintf( __('Folder submitted. <a target="_blank" href="%s">Preview folder</a>', 'eazyest-gallery' ), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+			 9 => sprintf( __('Folder scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview folder</a>', 'eazyest-gallery' ),
+				// translators: Publish box date format, see http://php.net/date
+				date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
+			10 => sprintf( __('Folder draft updated. <a target="_blank" href="%s">Preview folder</a>', 'eazyest-gallery' ), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+		);
+		if ( 'hidden' == $post->post_status ) {
+			$messages['post'][1]  = __('Folder updated.',  'eazyest-gallery' );
+			$messages['post'][6]  = __('Folder published.', 'eazyest-gallery' );
+			$messages['post'][10] = __('Folder draft updated', 'eazyest-gallery' );
+			$messages['post'][9]  = sprintf( __('Folder scheduled for: <strong>%1$s</strong>.', 'eazyest-gallery' ),
+				// translators: Publish box date format, see http://php.net/date
+				date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) );
+		}
+		return $messages;
+	}
+	
+	/**
 	 * Eazyest_Folder_Editor::admin_notices()
 	 * Show notices after custom actions
 	 * 
@@ -215,7 +290,7 @@ class Eazyest_Folder_Editor {
 		if ( 'post' ==  $screen->base && eazyest_gallery()->post_type == $screen->id ) {
 			if ( isset( $_GET['post'] ) && ! empty( $_GET['deleted'] ) && $deleted = absint( $_GET['deleted'] ) ) {
 				$message = sprintf( _n( 'Image attachment permanently deleted.', '%d image attachments permanently deleted.', $deleted, 'eazyest-gallery' ), number_format_i18n( $_GET['deleted'] ) );
-				$_SERVER['REQUEST_URI'] = remove_query_arg(array('deleted'), $_SERVER['REQUEST_URI']);
+				$_SERVER['REQUEST_URI'] = remove_query_arg(array( 'deleted'), $_SERVER['REQUEST_URI']);
 			}
 			if ( isset( $_REQUEST['trashed'] ) && $trashed = absint( $_REQUEST['trashed'] ) ) {
 				$post_type = eazyest_gallery()->post_type;
@@ -319,7 +394,7 @@ class Eazyest_Folder_Editor {
 		check_admin_referer( 'bulk-folders', 'bulk-folders' );
 		
 		$sendback = wp_get_referer();
-		$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'ids', 'message' ), $sendback );
+		$sendback = remove_query_arg( array( 'trashed', 'untrashed', 'deleted', 'ids', 'message' ), $sendback );
 		if ( isset( $_REQUEST['folders'] ) && 0 < count( $_REQUEST['folders'] ) ) {
 			$trashed = 0;
 			$post_type_object = get_post_type_object( eazyest_gallery()->post_type );
@@ -353,7 +428,7 @@ class Eazyest_Folder_Editor {
 	 * @return void
 	 */
 	function untrash_folders() {
-		check_admin_referer('bulk-posts');
+		check_admin_referer( 'bulk-posts');
 					
 		$sendback = add_query_arg( array( 'action' => 'edit' ), admin_url( 'post.php' ) );
 				
@@ -368,7 +443,7 @@ class Eazyest_Folder_Editor {
 				
 				$parent_id = get_post( $post_id )->post_parent;
 				if ( ! wp_untrash_post( $post_id ) )
-					wp_die( __('Error in restoring from Trash.', 'eazyest-gallery' ) );
+					wp_die( __( 'Error in restoring from Trash.', 'eazyest-gallery' ) );
 
 				$untrashed++;
 			}
@@ -397,7 +472,7 @@ class Eazyest_Folder_Editor {
 		check_admin_referer( 'bulk-media', 'bulk-media' );
 		
 		$sendback = wp_get_referer();
-		$sendback = remove_query_arg( array('trashed', 'untrashed', 'deleted', 'ids', 'message' ), $sendback );
+		$sendback = remove_query_arg( array( 'trashed', 'untrashed', 'deleted', 'ids', 'message' ), $sendback );
 		
 		if ( isset( $_REQUEST['media'] ) && 0 < count( $_REQUEST['media'] ) ) {
 			$deleted = 0;
@@ -558,10 +633,10 @@ class Eazyest_Folder_Editor {
 				border: 0 none;
 			}
 			#icon-edit.icon32.icon32-posts-galleryfolder {
-				background:  transparent url('<?php echo $folder_icon_url ?>') no-repeat;
+				background:  transparent url( '<?php echo $folder_icon_url ?>') no-repeat;
 			}
 			.edit-tags-php #icon-edit.icon32.icon32-posts-galleryfolder {
-				background: transparent url('<?php echo $folder_icon_url ?>') no-repeat;
+				background: transparent url( '<?php echo $folder_icon_url ?>') no-repeat;
 			}
 			.subsubsub a.save-gallery:hover {
 				color:#fff;
@@ -905,6 +980,257 @@ class Eazyest_Folder_Editor {
   	return $html;
   }
   
+  /**
+   * Eazyest_Folder_Editor::submit_meta_box()
+   * Replace WordPress submitdiv with Eazyest Gallery submitdiv.
+   * 
+   * @since 0.1.0 (r96)
+   * @uses remove_meta_box()
+   * @uses add_meta_box()
+   * @return void
+   */
+  function submit_meta_box(){
+  	remove_meta_box( 'submitdiv', eazyest_gallery()->post_type, 'side' );
+  	// re-add submitdiv with priority high because WordPress will ignore removed core meta boxes
+  	add_meta_box( 'submitdiv', __( 'Publish' ), array( $this, 'folder_submit_meta_box' ), eazyest_gallery()->post_type, 'side', 'high' );
+  }
+	
+	/**
+	 * Eazyest_Folder_Editor::folder_submit_meta_box()
+	 * Replacement submit box which includes the 'hidden' visibility
+	 * @see http://core.trac.wordpress.org/browser/tags/3.5.1/wp-admin/includes/meta-boxes.php
+	 * 
+	 * @since 0.1.0 (r96)
+	 * @param WP_Post $post 
+	 * @return void
+	 */
+	function folder_submit_meta_box( $post ) {global $action;
+
+		$post_type = $post->post_type;
+		$post_type_object = get_post_type_object($post_type);
+		$can_publish = current_user_can($post_type_object->cap->publish_posts);
+		?>
+		<div class="submitbox" id="submitpost">
+		
+		<div id="minor-publishing">
+		
+		<?php // Hidden submit button early on so that the browser chooses the right button when form is submitted with Return key ?>
+		<div style="display:none;">
+		<?php submit_button( __( 'Save' ), 'button', 'save' ); ?>
+		</div>
+		
+		<div id="minor-publishing-actions">
+		<div id="save-action">
+		<?php if ( 'publish' != $post->post_status && 'future' != $post->post_status && 'pending' != $post->post_status ) { ?>
+		<input <?php if ( 'private' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft'); ?>" class="button" />
+		<?php } elseif ( 'pending' == $post->post_status && $can_publish ) { ?>
+		<input type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save as Pending', 'eazyest-gallery' ); ?>" class="button" />
+		<?php } ?>
+		<span class="spinner"></span>
+		</div>
+		<?php if ( $post_type_object->public && 'hidden' != $post->post_status ) : ?>
+		<div id="preview-action">
+		<?php
+		if ( 'publish' == $post->post_status ) {
+			$preview_link = esc_url( get_permalink( $post->ID ) );
+			$preview_button = __( 'Preview Changes', 'eazyest-gallery' );
+		} else {
+			$preview_link = set_url_scheme( get_permalink( $post->ID ) );
+			$preview_link = esc_url( apply_filters( 'preview_post_link', add_query_arg( 'preview', 'true', $preview_link ) ) );
+			$preview_button = __( 'Preview', 'eazyest-gallery' );
+		}
+		?>
+		<a class="preview button" href="<?php echo $preview_link; ?>" target="wp-preview" id="post-preview"><?php echo $preview_button; ?></a>
+		<input type="hidden" name="wp-preview" id="wp-preview" value="" />
+		</div>
+		<?php endif; // public post type ?>
+		<div class="clear"></div>
+		</div><!-- #minor-publishing-actions -->
+		
+		<div id="misc-publishing-actions">
+		
+		<div class="misc-pub-section"><label for="post_status"><?php _e( 'Status:', 'eazyest-gallery' ) ?></label>
+		<span id="post-status-display">
+		<?php
+		switch ( $post->post_status ) {
+			case 'private':
+				_e( 'Privately Published', 'eazyest-gallery' );
+				break;
+			case 'hidden':
+				_e( 'Hidden Published', 'eazyest-gallery' );
+				break;	
+			case 'publish':
+				_e( 'Published', 'eazyest-gallery' );
+				break;
+			case 'future':
+				_e( 'Scheduled', 'eazyest-gallery' );
+				break;
+			case 'pending':
+				_e( 'Pending Review', 'eazyest-gallery' );
+				break;
+			case 'draft':
+			case 'auto-draft':
+				_e( 'Draft', 'eazyest-gallery' );
+				break;	
+		}
+		?>
+		</span>
+		<?php if ( 'publish' == $post->post_status || 'private' == $post->post_status || 'hidden' == $post->post_status || $can_publish ) { ?>
+		<a href="#post_status" <?php if ( 'private' == $post->post_status ) { ?>style="display:none;" <?php } ?>class="edit-post-status hide-if-no-js"><?php _e( 'Edit', 'eazyest-gallery' ) ?></a>
+		
+		<div id="post-status-select" class="hide-if-js">
+		<input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr( ( 'auto-draft' == $post->post_status ) ? 'draft' : $post->post_status); ?>" />
+		<select name='post_status' id='post_status'>
+		<?php if ( 'publish' == $post->post_status ) : ?>
+		<option<?php selected( $post->post_status, 'publish' ); ?> value='publish'><?php _e( 'Published', 'eazyest-gallery' ) ?></option>
+		<?php elseif ( 'private' == $post->post_status ) : ?>
+		<option<?php selected( $post->post_status, 'private' ); ?> value='publish'><?php _e( 'Privately Published', 'eazyest-gallery' ) ?></option>
+		<?php elseif ( 'hidden' == $post->post_status ) : ?>
+		<option<?php selected( $post->post_status, 'hidden' ); ?> value='publish'><?php _e( 'Hidden Published', 'eazyest-gallery' ) ?></option>
+		<?php elseif ( 'future' == $post->post_status ) : ?>
+		<option<?php selected( $post->post_status, 'future' ); ?> value='future'><?php _e( 'Scheduled', 'eazyest-gallery' ) ?></option>
+		<?php endif; ?>
+		<option<?php selected( $post->post_status, 'pending' ); ?> value='pending'><?php _e( 'Pending Review', 'eazyest-gallery' ) ?></option>
+		<?php if ( 'auto-draft' == $post->post_status ) : ?>
+		<option<?php selected( $post->post_status, 'auto-draft' ); ?> value='draft'><?php _e( 'Draft', 'eazyest-gallery' ) ?></option>
+		<?php else : ?>
+		<option<?php selected( $post->post_status, 'draft' ); ?> value='draft'><?php _e( 'Draft', 'eazyest-gallery' ) ?></option>
+		<?php endif; ?>
+		</select>
+		 <a href="#post_status" class="save-post-status hide-if-no-js button"><?php _e( 'OK', 'eazyest-gallery' ); ?></a>
+		 <a href="#post_status" class="cancel-post-status hide-if-no-js"><?php _e( 'Cancel', 'eazyest-gallery' ); ?></a>
+		</div>
+		
+		<?php } ?>
+		</div><!-- .misc-pub-section -->
+		
+		<div class="misc-pub-section" id="visibility">
+		<?php _e( 'Visibility:'); ?> <span id="post-visibility-display"><?php
+		
+		if ( 'private' == $post->post_status ) {
+			$post->post_password = '';
+			$visibility = 'private';
+			$visibility_trans = __( 'Private', 'eazyest-gallery' );
+		} elseif( 'hidden' == $post->post_status ) {
+			$visibility = 'hidden';
+			$visibility_trans = __( 'Hidden', 'eazyest-gallery' );	
+		} elseif ( !empty( $post->post_password ) ) {
+			$visibility = 'password';
+			$visibility_trans = __( 'Password protected', 'eazyest-gallery' );
+		} elseif ( $post_type == 'post' && is_sticky( $post->ID ) ) {
+			$visibility = 'public';
+			$visibility_trans = __( 'Public, Sticky', 'eazyest-gallery' );
+		} else {
+			$visibility = 'public';
+			$visibility_trans = __( 'Public', 'eazyest-gallery' );
+		}
+		
+		echo esc_html( $visibility_trans ); ?></span>
+		<?php if ( $can_publish ) { ?>
+		<a href="#visibility" class="edit-visibility hide-if-no-js"><?php _e( 'Edit', 'eazyest-gallery' ); ?></a>
+		
+		<div id="post-visibility-select" class="hide-if-js">
+		<input type="hidden" name="hidden_post_password" id="hidden-post-password" value="<?php echo esc_attr($post->post_password); ?>" />
+		<?php if ($post_type == 'post'): ?>
+		<input type="checkbox" style="display:none" name="hidden_post_sticky" id="hidden-post-sticky" value="sticky" <?php checked(is_sticky($post->ID)); ?> />
+		<?php endif; ?>
+		<input type="hidden" name="hidden_post_visibility" id="hidden-post-visibility" value="<?php echo esc_attr( $visibility ); ?>" />
+		<input type="radio" name="visibility" id="visibility-radio-public" value="public" <?php checked( $visibility, 'public' ); ?> /> <label for="visibility-radio-public" class="selectit"><?php _e( 'Public', 'eazyest-gallery' ); ?></label><br />
+		<?php if ( $post_type == 'post' && current_user_can( 'edit_others_posts' ) ) : ?>
+		<span id="sticky-span"><input id="sticky" name="sticky" type="checkbox" value="sticky" <?php checked( is_sticky( $post->ID ) ); ?> /> <label for="sticky" class="selectit"><?php _e( 'Stick this post to the front page', 'eazyest-gallery' ); ?></label><br /></span>
+		<?php endif; ?>
+		<input type="radio" name="visibility" id="visibility-radio-password" value="password" <?php checked( $visibility, 'password' ); ?> /> <label for="visibility-radio-password" class="selectit"><?php _e( 'Password protected', 'eazyest-gallery' ); ?></label><br />
+		<span id="password-span"><label for="post_password"><?php _e( 'Password:'); ?></label> <input type="text" name="post_password" id="post_password" value="<?php echo esc_attr($post->post_password); ?>" /><br /></span>
+		<input type="radio" name="visibility" id="visibility-radio-private" value="private" <?php checked( $visibility, 'private' ); ?> /> <label for="visibility-radio-private" class="selectit"><?php _e( 'Private', 'eazyest-gallery' ); ?></label><br />
+		<input type="radio" name="visibility" id="visibility-radio-hidden" value="hidden" <?php checked( $visibility, 'hidden' ); ?> /> <label for="visibility-radio-hidden" class="selectit"><?php _e( 'Hidden', 'eazyest-gallery' ); ?></label><br />
+		<p>
+		 <a href="#visibility" class="save-post-visibility hide-if-no-js button"><?php _e( 'OK', 'eazyest-gallery' ); ?></a>
+		 <a href="#visibility" class="cancel-post-visibility hide-if-no-js"><?php _e( 'Cancel', 'eazyest-gallery' ); ?></a>
+		</p>
+		</div>
+		<?php } ?>
+		
+		</div><!-- .misc-pub-section -->
+		
+		<?php
+		// translators: Publish box date format, see http://php.net/date
+		$datef = __( 'M j, Y @ G:i', 'eazyest-gallery' );
+		if ( 0 != $post->ID ) {
+			if ( 'future' == $post->post_status ) { // scheduled for publishing at a future date
+				$stamp = __( 'Scheduled for: <b>%1$s</b>', 'eazyest-gallery' );
+			} else if ( 'publish' == $post->post_status || 'private' == $post->post_status ) { // already published
+				$stamp = __( 'Published on: <b>%1$s</b>', 'eazyest-gallery' );
+			} else if ( '0000-00-00 00:00:00' == $post->post_date_gmt ) { // draft, 1 or more saves, no date specified
+				$stamp = __( 'Publish <b>immediately</b>', 'eazyest-gallery' );
+			} else if ( time() < strtotime( $post->post_date_gmt . ' +0000' ) ) { // draft, 1 or more saves, future date specified
+				$stamp = __( 'Schedule for: <b>%1$s</b>', 'eazyest-gallery' );
+			} else { // draft, 1 or more saves, date specified
+				$stamp = __( 'Publish on: <b>%1$s</b>', 'eazyest-gallery' );
+			}
+			$date = date_i18n( $datef, strtotime( $post->post_date ) );
+		} else { // draft (no saves, and thus no date specified)
+			$stamp = __( 'Publish <b>immediately</b>', 'eazyest-gallery' );
+			$date = date_i18n( $datef, strtotime( current_time( 'mysql') ) );
+		}
+		
+		if ( $can_publish ) : // Contributors don't get to choose the date of publish ?>
+		<div class="misc-pub-section curtime">
+			<span id="timestamp">
+			<?php printf($stamp, $date); ?></span>
+			<a href="#edit_timestamp" class="edit-timestamp hide-if-no-js"><?php _e( 'Edit', 'eazyest-gallery' ) ?></a>
+			<div id="timestampdiv" class="hide-if-js"><?php touch_time(($action == 'edit'), 1); ?></div>
+		</div><?php // /misc-pub-section ?>
+		<?php endif; ?>
+		
+		<?php do_action( 'post_submitbox_misc_actions'); ?>
+		</div>
+		<div class="clear"></div>
+		</div>
+		
+		<div id="major-publishing-actions">
+		<?php do_action( 'post_submitbox_start'); ?>
+		<div id="delete-action">
+		<?php
+		if ( current_user_can( "delete_post", $post->ID ) ) {
+			if ( !EMPTY_TRASH_DAYS )
+				$delete_text = __( 'Delete Permanently', 'eazyest-gallery' );
+			else
+				$delete_text = __( 'Move to Trash', 'eazyest-gallery' );
+			?>
+		<a class="submitdelete deletion" href="<?php echo get_delete_post_link($post->ID); ?>"><?php echo $delete_text; ?></a><?php
+		} ?>
+		</div>
+		
+		<div id="publishing-action">
+		<span class="spinner"></span>
+		<?php
+		if ( !in_array( $post->post_status, array( 'publish', 'future', 'private') ) || 0 == $post->ID ) {
+			if ( $can_publish ) :
+				if ( !empty($post->post_date_gmt) && time() < strtotime( $post->post_date_gmt . ' +0000' ) ) : ?>
+				<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Schedule', 'eazyest-gallery' ) ?>" />
+				<?php submit_button( __( 'Schedule', 'eazyest-gallery' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'p' ) ); ?>
+		<?php	else : ?>
+				<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Publish', 'eazyest-gallery' ) ?>" />
+				<?php submit_button( __( 'Publish', 'eazyest-gallery' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'p' ) ); ?>
+		<?php	endif;
+			else : ?>
+				<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Submit for Review') ?>" />
+				<?php submit_button( __( 'Submit for Review', 'eazyest-gallery' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'p' ) ); ?>
+		<?php
+			endif;
+		} else { ?>
+				<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Update', 'eazyest-gallery' ) ?>" />
+				<input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e( 'Update', 'eazyest-gallery' ) ?>" />
+		<?php
+		} ?>
+		</div>
+		<div class="clear"></div>
+		</div>
+		</div>
+		
+		<?php		
+	}
+	
   /**
    * Eazyest_Folder_Editor::folder_information()
    * Output folder information in a metabox
