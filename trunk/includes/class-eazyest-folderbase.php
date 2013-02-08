@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r96)
+ * @version 0.1.0 (r98)
  * @access public
  */
 
@@ -204,7 +204,6 @@ class Eazyest_FolderBase {
 				'can_export'          => true,
 				'hierarchical'        => true,
 				'query_var'           => eazyest_gallery()->post_type,
-				'menu_icon'           => eazyest_gallery()->plugin_url . '/admin/images/file-manager-menu.png',
 				'taxonomies'          => array('post_tag'),
 				'has_archive'         => true,
 			)
