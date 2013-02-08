@@ -6,8 +6,8 @@
  * @package Eazyest Gallery
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
- * @copyright 2012
- * @version 0.1.0 (r98)
+ * @copyright 2012-2013 Brimosoft
+ * @version 0.1.0 (r103)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -571,7 +571,9 @@ class Eazyest_Folder_Editor {
 	 * @return void
 	 */
 	function admin_style() {
-		// styling for post_type galleryfolder pages							
+		// styling for post_type galleryfolder pages
+		if ( $this->bail() )
+			return;							
 		?>
 		<style type="text/css">
 			.fixed .column-galleryfolder_images {
@@ -642,35 +644,6 @@ class Eazyest_Folder_Editor {
 				background-size: 16px 16px;
 				padding-left: 18px;
 			}
-			#menu-posts-<?php echo eazyest_gallery()->post_type; ?> .wp-menu-image {
-				background: url('<?php echo  eazyest_gallery()->plugin_url ?>admin/images/icon-adminmenu16-sprite.png') no-repeat 6px 6px !important;
-    	}
-			#menu-posts-<?php echo eazyest_gallery()->post_type; ?>:hover .wp-menu-image, #menu-posts-<?php echo eazyest_gallery()->post_type; ?>.wp-has-current-submenu .wp-menu-image {
-				background-position: 6px -26px !important;
-			}
-			.icon32-posts-<?php echo eazyest_gallery()->post_type; ?> {
-				background: url('<?php echo  eazyest_gallery()->plugin_url ?>admin/images/icon-adminpage32.png') no-repeat left top !important;
-			}
-			@media
-			only screen and (-webkit-min-device-pixel-ratio: 1.5),
-			only screen and (   min--moz-device-pixel-ratio: 1.5),
-			only screen and (     -o-min-device-pixel-ratio: 3/2),
-			only screen and (        min-device-pixel-ratio: 1.5),
-			only screen and (        		 min-resolution: 1.5dppx) {
-				
-				#menu-posts-<?php echo eazyest_gallery()->post_type; ?> .wp-menu-image {
-				background-image: url('<?php echo eazyest_gallery()->plugin_url ?>admin/images/icon-adminmenu16-sprite_2x.png') !important;
-				-webkit-background-size: 16px 48px;
-				-moz-background-size: 16px 48px;
-				background-size: 16px 48px;
-			}
-			.icon32-posts-YOUR_POSTTYPE_NAME {
-				background-image: url('<?php echo  eazyest_gallery()->plugin_url ?>admin/images/icon-adminpage32_2x.png') !important;
-				-webkit-background-size: 32px 32px;
-				-moz-background-size: 32px 32px;
-				background-size: 32px 32px;
-			}         
-		}
 		</style>
 		<?php	
 	}

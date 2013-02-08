@@ -10,9 +10,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @package Eazyest Gallery
  * @subpackage Tools/Upgrader
  * @author Marcel Brinkkemper
- * @copyright 2012 Brimosoft
+ * @copyright 2012-2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r76)
+ * @version 0.1.0 (r103)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -525,7 +525,7 @@ class Eazyest_Gallery_Upgrader {
 			return;
 		if ( $this->no_upgrade() )
 			return;
-		$settings_page = admin_url( 'options-general.php?page=eazyest-gallery' );	
+		$settings_page = admin_url( 'index.php?page=eazyest-gallery-about&lazyest=true' );	
 		?>	
 			<form id="upgrade-form" action="admin.php" method="post">
 				<input type="hidden" name="action" id="" value="skip_gallery_update"  />
@@ -546,7 +546,7 @@ class Eazyest_Gallery_Upgrader {
 					<p id="upgrade_page" class="hidden-upgrader"><?php _e( 'Converting your Gallery Page', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-settings" class="hidden-upgrader"><?php _e( 'Updating your settings', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-cleanup" class="hidden-upgrader"><?php _e( 'Cleanup and Remove Lazyest Gallery plugin', 'eazyest-gallery' ); ?></p>
-					<p id="upgrade-success"  class="hidden-upgrader"><?php _e( 'Successfully upgraded Eazyest Gallery', 'eazyest-gallery' ); ?> <a href="<?php echo $settings_page ?>"><?php _e( 'Please check your Settings', 'eazyest-gallery' ) ?></a></p>				
+					<p id="upgrade-success"  class="hidden-upgrader"><?php _e( 'Successfully upgraded Eazyest Gallery', 'eazyest-gallery' ); ?> <a href="<?php echo $about_page ?>"><?php _e( 'Check out what&#8217;s new', 'eazyest-gallery' ) ?></a></p>				
 				</div>
 				<div class="submit" id="skip">
 					<a href="#skip_upgrade" class="button button-secondary" id="skip_upgrade"><?php echo esc_attr_e( 'Skip', 'eazyest-gallery'); ?></a>
