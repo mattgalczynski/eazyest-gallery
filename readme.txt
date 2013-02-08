@@ -75,6 +75,7 @@ Your Gallery folders and subfolders will become part of WordPress media.
 * TableDnD plug-in for JQuery, Copyright (c) Denis Howlett
 * JQuery File Tree, Copyright (c) 2008, A Beautiful Site, LLC
 * Camera slideshow v1.3.3, Copyright (c) 2012 by Manuel Masia - www.pixedelic.com
+* Jigsoar icons, Handcrafted by Benjamin Humphrey for Jigsoar - www.jigsoaricons.com
 
 == License ==
 
