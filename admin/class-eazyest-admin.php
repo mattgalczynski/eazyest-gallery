@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r103)
+ * @version 0.1.0 (r104)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -315,8 +315,17 @@ class Eazyest_Admin {
 		);	
   }
   
+  /**
+   * Eazyest_Admin::admin_head()
+   * Remove about pages from them enu and add menu styles for galleryfolder post type.
+   * 
+   * @since 0.1.0 (r103)
+   * @uses remove_submenu_page()
+   * @return void
+   */
   function admin_head() {  	
-		remove_submenu_page( 'index.php', 'eazyest-gallery-about' );
+		remove_submenu_page( 'index.php', 'eazyest-gallery-about' );		
+		remove_submenu_page( 'index.php', 'eazyest-gallery-credits' );
 		$this->admin_style();
   }
   
