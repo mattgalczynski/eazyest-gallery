@@ -4,15 +4,14 @@
 if ( !defined( 'ABSPATH' ) ) exit; 
 
 /**
- * Eazyest_Admin
- * 
- * This class contains all functions and actions required for Eazyest Gallery to work in the WordPress admin
+ * Eazyest_Admin 
+ * This class contains all functions and actions required for Eazyest Gallery to work in the WordPress admin.
  * 
  * @package Eazyest Gallery
  * @subpackage Admin
  * @author Marcel Brinkkemper
- * @copyright 2010-2012 Brimosoft
- * @version 0.1.0 (r78)
+ * @copyright 2010-2013 Brimosoft
+ * @version 0.1.0 (r103)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -151,6 +150,7 @@ class Eazyest_Admin {
   	add_action( 'admin_init', array( $this, 'after_activation' ) );
   	add_action( 'admin_init', array( $this, 'register_setting' ) );
   	add_action( 'admin_menu', array( $this, 'admin_menu'       ) );
+  	add_action( 'admin_head', array( $this, 'admin_head'       ) );
   }
   
   /**
@@ -178,7 +178,10 @@ class Eazyest_Admin {
   function after_activation() {
   	if ( $activated = get_transient( 'eazyest-gallery-activated' ) ) {
   		delete_transient( 'eazyest-gallery-activated' );
-  		wp_redirect( admin_url( 'options-general.php?page=eazyest-gallery&eazyest-activate=true' ) );
+  		if ( eazyest_gallery_upgrader()->should_upgrade() )
+  			wp_redirect( admin_url( 'options-general.php?page=eazyest-gallery&eazyest-activate=true' ) );
+  		else
+  			wp_redirect( admin_url( 'tools.php?page=eazyest-gallery-tools' ) );
   		exit;
   	}
   }
@@ -272,6 +275,8 @@ class Eazyest_Admin {
    * 
    * @since 0.1.0 (r2)
    * @uses add_options_page()
+   * @uses add_management_page()
+   * @uses add_dashboard_page()
    * @return void
    */
   function admin_menu() { 	
@@ -284,13 +289,71 @@ class Eazyest_Admin {
 		);	
 		add_action( "load-$settings", array( $this->settings_page(), 'add_help_tabs' ) );
 		
-		$tools = add_management_page(
+		add_management_page(
   		__( 'Eazyest Gallery Tools', 'eazyest-gallery' ),
   		eazyest_gallery()->gallery_name(),
   		'manage_options',
   		'eazyest-gallery-tools',
   		array( $this->tools_page(), 'display' )
 		);
+		
+		add_dashboard_page(
+			__( 'About Eazyest Gallery', 'eazyest-gallery' ),
+  		eazyest_gallery()->gallery_name(),
+			'read',
+			'eazyest-gallery-about',
+			array( $this->about_page(), 'about' )
+		);
+		
+		
+		add_dashboard_page(
+			__( 'About Eazyest Gallery', 'eazyest-gallery' ),
+  		eazyest_gallery()->gallery_name(),
+			'read',
+			'eazyest-gallery-credits',
+			array( $this->about_page(), 'credits' )
+		);	
+  }
+  
+  function admin_head() {  	
+		remove_submenu_page( 'index.php', 'eazyest-gallery-about' );
+		$this->admin_style();
+  }
+  
+  function admin_style() {
+  	?>
+  	<style>
+			#menu-posts-<?php echo eazyest_gallery()->post_type; ?> .wp-menu-image {
+				background: url('<?php echo  eazyest_gallery()->plugin_url ?>admin/images/icon-adminmenu16-sprite.png') no-repeat 6px 6px !important;
+    	}
+			#menu-posts-<?php echo eazyest_gallery()->post_type; ?>:hover .wp-menu-image, #menu-posts-<?php echo eazyest_gallery()->post_type; ?>.wp-has-current-submenu .wp-menu-image {
+				background-position: 6px -26px !important;
+			}
+			.icon32-posts-<?php echo eazyest_gallery()->post_type; ?> {
+				background: url('<?php echo  eazyest_gallery()->plugin_url ?>admin/images/icon-adminpage32.png') no-repeat left top !important;
+			}
+			@media
+			only screen and (-webkit-min-device-pixel-ratio: 1.5),
+			only screen and (   min--moz-device-pixel-ratio: 1.5),
+			only screen and (     -o-min-device-pixel-ratio: 3/2),
+			only screen and (        min-device-pixel-ratio: 1.5),
+			only screen and (        		 min-resolution: 1.5dppx) {
+				
+				#menu-posts-<?php echo eazyest_gallery()->post_type; ?> .wp-menu-image {
+				background-image: url('<?php echo eazyest_gallery()->plugin_url ?>admin/images/icon-adminmenu16-sprite_2x.png') !important;
+				-webkit-background-size: 16px 48px;
+				-moz-background-size: 16px 48px;
+				background-size: 16px 48px;
+			}
+			.icon32-posts-YOUR_POSTTYPE_NAME {
+				background-image: url('<?php echo  eazyest_gallery()->plugin_url ?>admin/images/icon-adminpage32_2x.png') !important;
+				-webkit-background-size: 32px 32px;
+				-moz-background-size: 32px 32px;
+				background-size: 32px 32px;
+			}         
+		}
+		</style>
+  	<?php
   }
   
   /**
@@ -307,6 +370,7 @@ class Eazyest_Admin {
   	if ( $file == eazyest_gallery()->plugin_basename ) {
   		$url = '<a href="' . admin_url( 'options-general.php?page=eazyest-gallery' ) . '">' . __( 'Settings', 'eazyest-gallery' ) . '</a>';
   		array_unshift( $links, $url );
+  		$links[] = '<a href="' . admin_url( 'index.php?page=eazyest-gallery-about' ) . '">' . __( 'About', 'eazyest-gallery' ) . '</a>';
   	}
   	return $links;
   }
@@ -316,7 +380,7 @@ class Eazyest_Admin {
    * Initiate the settings page
    * 
    * @since 0.1.0 (r2)
-   * @return Eazyest_Settings_page object
+   * @return Eazyest_Settings_Page object
    */
   function settings_page() {
 		require_once( eazyest_gallery()->plugin_dir . 'admin/class-eazyest-settings-page.php' );
@@ -332,7 +396,12 @@ class Eazyest_Admin {
    */
   function tools_page() {
   	require_once( eazyest_gallery()->plugin_dir . 'tools/class-eazyest-tools-page.php' );
-  	return Eazyest_Tools_Page:: instance();
+  	return Eazyest_Tools_Page::instance();
+  }
+  
+  function about_page() {
+  	include_once( eazyest_gallery()->plugin_dir . 'admin/class-eazyest-about-page.php' );
+  	return Eazyest_About_Page::instance();
   }
   
   /**
