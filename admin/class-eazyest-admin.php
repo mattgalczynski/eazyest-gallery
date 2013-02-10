@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r104)
+ * @version 0.1.0 (r106)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -178,10 +178,7 @@ class Eazyest_Admin {
   function after_activation() {
   	if ( $activated = get_transient( 'eazyest-gallery-activated' ) ) {
   		delete_transient( 'eazyest-gallery-activated' );
-  		if ( eazyest_gallery_upgrader()->should_upgrade() )
-  			wp_redirect( admin_url( 'options-general.php?page=eazyest-gallery&eazyest-activate=true' ) );
-  		else
-  			wp_redirect( admin_url( 'tools.php?page=eazyest-gallery-tools' ) );
+ 			wp_redirect( admin_url( 'index.php?page=eazyest-gallery-about' ) );
   		exit;
   	}
   }
