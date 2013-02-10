@@ -69,7 +69,7 @@ class Eazyest_About_Page {
 			font-size: 14px;
 			text-align: center;
 			margin: 0 -5px;
-			background: url('<?php echo eazyest_gallery()->plugin_url ?>admin/images/badge.jpg?ver=0.1.0') no-repeat;
+			background: url('<?php echo eazyest_gallery()->plugin_url ?>admin/images/badge.png?ver=0.1.0') no-repeat;
 		}
 		.about-wrap .eazyest-badge {
 			position: absolute;
