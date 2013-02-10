@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r98)
+ * @version 0.1.0 (r107)
  * @access public
  */
 
@@ -1698,7 +1698,7 @@ class Eazyest_FolderBase {
 		if ( false !== strpos( $file, eazyest_gallery()->root() ) )
 			$file = substr( $file, strlen( eazyest_gallery()->root() ) );
 			
-		if ( $file != $metadata['file'] )
+		if ( ! isset( $metadata['file'] ) || $file != $metadata['file'] )
 			$metadata['file'] = $file;
   	
   	if ( isset( $metadata['sizes'] ) ) {
