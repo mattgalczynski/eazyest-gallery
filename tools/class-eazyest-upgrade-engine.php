@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r95)
+ * @version 0.1.0 (r108)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -139,10 +139,12 @@ class Eazyest_Upgrade_Engine {
 			$folder_id = 0;
 			$images_max = intval( $_POST['images_max'] );
 			$upgrade_images = get_transient( 'eazyest-gallery-upgrade_images' );
-			// if we have images to convert in folder from previous request do not upgrade folder again
-			if ( ! $upgrade_images )
+			if ( ! $upgrade_images ) {
+				// only upgrade folder if we do not have leftover images
 				$folder_id = $this->do_upgrade_folder();
-			if ( 0 == $this->do_upgrade_images( $folder_id, $images_max ) ) {	
+			}
+			if ( 0 == $this->do_upgrade_images( $folder_id, $images_max ) ) {
+				// all images have been upgraded, remove xml files and remove folder from upgrade array
 				if ( isset( $_POST['remove_xml'] ) )
 					$this->remove_xml( $folder_id );
 				array_shift( $upgrade_folders );
@@ -557,7 +559,6 @@ class Eazyest_Upgrade_Engine {
 	 * @uses aplly_filters()) for ('eazyest_gallery_delete_cache',false) because by default chache is not deleted
 	 * @uses get_post()
 	 * @uses wp_update_post()
-	 * @uses get_post_meta()
 	 * @return integer post_id for new galleryfolder
 	 */
 	function do_upgrade_folder() {		
@@ -578,7 +579,7 @@ class Eazyest_Upgrade_Engine {
 			// insert foldr in wpdb and retrieve stored/sanitized galery_path		
 			$folder_id = eazyest_folderbase()->insert_folder( $raw_path );
 			if ( $folder_id ) {
-				$gallery_path = get_post_meta( $folder_id, '_gallery_path', true );
+				$gallery_path = ezg_get_gallery_path( $folder_id );
 				
 				// change folders array to support renamed folder
 				foreach( $upgrade_folders as $key => $upgrade_folder ) {
@@ -752,12 +753,11 @@ class Eazyest_Upgrade_Engine {
 	 * Remove captions.xml file for this folder.
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_post_meta()
 	 * @param integer $folder_id
 	 * @return void
 	 */
 	private function remove_xml( $folder_id ) {
-		$gallery_path = get_post_meta( $folder_id, '_gallery_path', true );
+		$gallery_path = ezg_get_gallary_path( $folder_id );
 		$captions_xml = eazyest_gallery()->root() . $gallery_path . '/captions.xml';
 		if ( file_exists( $captions_xml ) )
 			unlink( $captions_xml );
@@ -771,7 +771,6 @@ class Eazyest_Upgrade_Engine {
 	 * @uses get_transient()
 	 * @uses delete_transient()
 	 * @uses get_post()
-	 * @uses get_post_meta()
 	 * @uses wp_update_post()
 	 * @param integer $folder_id post_id
 	 * @param integer $images_max maximum number of images to update in one run
@@ -783,7 +782,7 @@ class Eazyest_Upgrade_Engine {
 			$gallery_path = $upgrade_folders[0];
 			$folder_id = eazyest_folderbase()->get_folder_by_path( $gallery_path );	
 		} else {						
-			$gallery_path = get_post_meta( $folder_id, '_gallery_path', true );
+			$gallery_path = ezg_get_gallery_path( $folder_id );
 		}	
 		// get image names in folder	
 		$upgrade_images = get_transient( 'eazyest-gallery-upgrade-images' );

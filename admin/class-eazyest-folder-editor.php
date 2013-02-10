@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r103)
+ * @version 0.1.0 (r108)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -830,13 +830,12 @@ class Eazyest_Folder_Editor {
 	 * Get display text for folder path
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_post_meta()
 	 * @param int $post_id
 	 * @return string 
 	 */
 	function get_folder_path_display( $post_id, $for = 'table' ) {
 		global $post;
-  	$gallery_path = get_post_meta( $post_id, '_gallery_path', true );
+  	$gallery_path = ezg_get_gallery_path( $post_id );
 		$display = __( 'Not Saved', 'eazyest-gallery' );
 		
 		if ( ! empty( $gallery_path ) ) {
@@ -916,14 +915,13 @@ class Eazyest_Folder_Editor {
    * Remove Media Buttins from edit screen when Folder has not been saved yet
    * 
    * @since 0.1.0 (r2)
-   * @uses get_post_meta()
    * @uses remove_all_actions()
    * @return void
    */
   function media_buttons() {
   	global $post;
   	if ( $post->post_type == eazyest_gallery()->post_type ) {
-  		$gallery_path = get_post_meta( $post->ID, '_gallery_path', true );
+  		$gallery_path = ezg_get_gallery_path( $post->ID );	
   		if ( '' == $gallery_path ) 
 				remove_all_actions( 'media_buttons' );	
   	}  		
@@ -1227,7 +1225,7 @@ class Eazyest_Folder_Editor {
    * Output folder information in a metabox
    * 
    * @since 0.1.0 (r2)
-   * @uses get_post_meta()
+   * @uses get_post()
 	 * @return void
    */
   function folder_information() {
@@ -1236,7 +1234,7 @@ class Eazyest_Folder_Editor {
   	
   	global $post;
   	$folder = $post;
-  	$gallery_path = get_post_meta( $post->ID, '_gallery_path', true );
+  	$gallery_path = ezg_get_gallery_path( $post->ID );	
   	$path[] = $this->get_folder_path_display( $folder->ID, 'meta' ); 		  	
   	while ( 0 < $folder->post_parent ) {
   		$folder = get_post( $folder->post_parent );
@@ -1363,7 +1361,7 @@ class Eazyest_Folder_Editor {
 		  $post_type = get_post_type( get_post( $post_id )->post_parent );			
 		// if it is galleryfolder, change upload_dir
   	if ( eazyest_gallery()->post_type == $post_type ) {
-			$gallery_path = get_post_meta( $post_id, '_gallery_path', true );
+			$gallery_path      = ezg_get_gallery_path( $post_id );
 			$upload['path']    = untrailingslashit( eazyest_gallery()->root()  . $gallery_path );
 			$upload['url']     = untrailingslashit( eazyest_gallery()->address() . $gallery_path );
 			$upload['subdir']  = untrailingslashit( $gallery_path );

@@ -525,7 +525,7 @@ class Eazyest_Gallery_Upgrader {
 			return;
 		if ( $this->no_upgrade() )
 			return;
-		$settings_page = admin_url( 'index.php?page=eazyest-gallery-about&lazyest=true' );	
+		$about_page = admin_url( add_query_arg( array( 'page' => 'eazyest-gallery-about' ), 'index.php' ) );	
 		?>	
 			<form id="upgrade-form" action="admin.php" method="post">
 				<input type="hidden" name="action" id="" value="skip_gallery_update"  />
