@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r107)
+ * @version 0.1.0 (r108)
  * @access public
  */
 
@@ -458,7 +458,7 @@ class Eazyest_FolderBase {
 			 
 			// possibly append to post parent
 			if ( isset( $_POST['post_parent'] ) ) {
-				$parent_path = get_post_meta( $_POST['post_parent'], '_gallery_path', true );
+				$parent_path = ezg_get_gallery_path( $_POST['post_parent'] );	
 				$gallery_path = '' == $parent_path ? $gallery_path : trailingslashit( $parent_path ) . $gallery_path; 
 			}
 			
@@ -468,7 +468,7 @@ class Eazyest_FolderBase {
 				wp_mkdir_p( $new_directory );
 			if ( file_exists( $new_directory ) ) {
 				// only save when gallery path exists
-				update_post_meta( $post_id, '_gallery_path', $gallery_path ); 			
+				ezg_update_gallery_path( $post_id, $gallery_path ); 			
 			}			
 		}	
 	}
@@ -541,13 +541,15 @@ class Eazyest_FolderBase {
 	 */
 	function goto_parent( $sub_id ) {
 		$sub = get_post( $sub_id );
-		$sub_path    = get_post_meta( $sub->ID,          '_gallery_path', true );
-		$parent_path = get_post_meta( $sub->post_parent, '_gallery_path', true );		
+		
+		$sub_path    = ezg_get_gallery_path( $sub->ID );	
+		$parent_path = ezg_get_gallery_path( $sub->post_parent );		
 		$new_path = $parent_path . '/' . basename( $sub_path );
 		
 		// rename path in filesystem
 		if ( rename( eazyest_gallery()->root() . $sub_path, eazyest_gallery()->root() . $new_path ) ) {
 			// change metadata
+			ezg_update_gallery_path( $sub->ID, $new_path, $sub_path );
 			update_post_meta( $sub->ID, '_gallery_path', $new_path, $sub_path );
 			// check attachments
 			$attachments = get_children(  array( 'post_parent' => $sub_id, 'post_type' => 'attachment' )  );
@@ -633,7 +635,7 @@ class Eazyest_FolderBase {
 					} 
 				}
 			}
-			$gallery_path = get_post_meta( '_gallery_path', $post_id );
+			$gallery_path = ezg_get_gallery_path( $post_id );
 			$delete_dir = eazyest_gallery()->root() . $gallery_path;
 			$this->clear_dir( $gallery_path ); 	
 		}
@@ -649,7 +651,7 @@ class Eazyest_FolderBase {
 	 * @return array
 	 */
 	public function get_subdirectories( $post_id ) {
-		$directory = get_post_meta( $post_id, '_gallery_path', true );
+		$directory = ezg_get_gallery_path( $post_id );	
 		$paths = $this->get_folder_paths();
 		foreach( $paths as $key => $path ) {
 			if ( false === strpos( $path, $directory ) || strlen( $path ) == strlen( $directory ) )
@@ -869,7 +871,7 @@ class Eazyest_FolderBase {
 			if ( $this->folder_paths['post_id'] == $post_id )
 				return ( $this->folder_paths['folders'] );
 		}
-		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
+		$gallery_path =ezg_get_gallery_path( $post_id );
 		$root = ( empty( $gallery_path ) ) ? '' : eazyest_gallery()->root() . $gallery_path;
 				
 		unset( $this->folder_paths );
@@ -1083,8 +1085,8 @@ class Eazyest_FolderBase {
 		);
 		
 		$post_id = wp_insert_post( $folder );
-		if ( $post_id ) {			
-			update_post_meta( $post_id, '_gallery_path', untrailingslashit( $folder_path ) );
+		if ( $post_id ) {	
+			ezg_update_gallery_path( $post_id,untrailingslashit( $folder_path ) );
 			do_action( 'eazyest_gallery_insert_folder', $post_id );
 		}
 		return $post_id;	
@@ -1347,7 +1349,6 @@ class Eazyest_FolderBase {
 	 * Get all filenames of images currently in the folder
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_metadata
 	 * @uses trailingsalshit
 	 * @param int $post_id
 	 * @return array
@@ -1358,7 +1359,7 @@ class Eazyest_FolderBase {
 			if ( $this->folder_images['post_id'] == $post_id )
 				return ( $this->folder_images['images'] );
 		}
-		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
+		$gallery_path = ezg_get_gallery_path( $post_id );
 		if ( empty( $gallery_path ) )
 			return array();
 		
@@ -1385,7 +1386,6 @@ class Eazyest_FolderBase {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses sanitize_file_name()
-	 * @uses get_metadata()
 	 * @uses trailingslashit 
 	 * @param string $filename
 	 * @param integer $post_id
@@ -1394,7 +1394,7 @@ class Eazyest_FolderBase {
 	function sanitize_filename( $filename, $post_id = 0 ) {
 		$sanitized = sanitize_file_name( $filename ) ;
 		if ( $post_id ) {
-			$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
+			$gallery_path = ezg_get_gallery_path( $post_id );
 			$folder_path = eazyest_gallery()->root() . $gallery_path;
 			if ( $sanitized != $filename ) {
 				// filename changed after sanitizing
@@ -1446,7 +1446,6 @@ class Eazyest_FolderBase {
 	 * Insert a new image found in a folder into the WP database
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_metadata()
 	 * @uses wp_check_filetype()
 	 * @uses wp_upload_dir()
 	 * @uses trailingslashit()
@@ -1459,7 +1458,7 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function insert_image( $post_id, $filename, $title ) {
-		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
+		$gallery_path = ezg_get_gallery_path( $post_id );
 		$wp_filetype = wp_check_filetype( basename( $filename ), null );
   	$wp_upload_dir = wp_upload_dir(); 
 		$title = preg_replace( '/\.[^.]+$/', '', basename( $title ) );
@@ -1504,13 +1503,12 @@ class Eazyest_FolderBase {
 	 * Add new names to post_images names because sanitized filenames could be equal
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_metadata()
 	 * @uses trailingslashit()
 	 * @param integer $post_id
 	 * @return void
 	 */
 	function add_images( $post_id ) {		
-		$gallery_path = get_metadata( 'post', $post_id, '_gallery_path', true );
+		$gallery_path = ezg_get_gallery_path( $post_id );
 		$this->get_posted_images( $post_id );
 		$this->get_folder_images( $post_id );
 		$added = 0;
@@ -1562,7 +1560,7 @@ class Eazyest_FolderBase {
 		$this->get_folder_images( $post_id );
 		$deleted = 0;		
 		if ( ! empty( $this->posted_images['images'] ) ) {			
-			$gallery_path = get_post_meta( $post_id, '_gallery_path', true );
+			$gallery_path = ezg_get_gallery_path( $post_id );
 			foreach( $this->posted_images['images'] as $key => $image_name  ) {
 				if ( ! in_array( $image_name, $this->folder_images['images'] ) ) {
 					if ( $this->delete_attachment_by_filename( $gallery_path . '/' . $image_name ) ) {
@@ -1684,7 +1682,7 @@ class Eazyest_FolderBase {
 	 * All resized images are stored in subdirectory _cache
 	 * 
 	 * @since 0.1.0 (r36)
-	 * @uses get_post_meta() to get gallery_path
+	 * @uses get_post_meta() to get attached file
 	 * @param array $metadata
 	 * @param int $attachment_id
 	 * @return array updated metadata
@@ -1839,8 +1837,7 @@ class Eazyest_FolderBase {
 		if ( ! $this->is_gallery_image( $post_id ) )
 			return $result;
 			
-		$gallery_path = get_post_meta( get_post( $post_id )->post_parent, '_gallery_path', 'true' );
-		
+		$gallery_path = ezg_get_gallery_path( get_post( $post_id )->post_parent );
 		$dirname = eazyest_gallery()->root() . $gallery_path . '/_cache';
 		if ( ! file_exists( $dirname ) )
 			wp_mkdir_p( $dirname );
@@ -2070,6 +2067,36 @@ class Eazyest_FolderBase {
  */
 function ezg_is_gallery_image( $post_id ) {
 	return eazyest_folderbase()->is_gallery_image( $post_id );
+}
+
+/**
+ * ezg_get_gallery_path()
+ * Get value for metadata '_gallery_path'.
+ * 
+ * @since 0.1.0 (r108)
+ * @uses get_post_meta()
+ * @param integer $post_id
+ * @return string
+ */
+function ezg_get_gallery_path( $post_id = 0 ) {
+	return get_post_meta( $post_id, '_gallery_path', true );
+}
+
+/**
+ * ezg_update_gallery_path()
+ * update post metadata '_gallery_path'.
+ * 
+ * @since 0.1.0 (r108)
+ * @uses update_post_meta()
+ * @param integer $post_id
+ * @param string $new_value
+ * @param string $old_value
+ * @return bool
+ */
+function ezg_update_gallery_path( $post_id = 0, $new_value, $old_value ) {
+	if ( ! $post_id || empty( $gallery_path ) )
+		return false;
+	return update_post_meta( $post_id, '_gallery_path', $gallery_path );	
 }
 
 /**
