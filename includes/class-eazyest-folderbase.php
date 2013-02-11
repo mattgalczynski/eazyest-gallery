@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r111)
+ * @version 0.1.0 (r116)
  * @access public
  */
 
@@ -988,7 +988,11 @@ class Eazyest_FolderBase {
 	 */
 	function sanitize_folder( $folder_path = '' ) {
 		if ( '' != $folder_path ) {
-			$root = str_replace( '/', DIRECTORY_SEPARATOR, eazyest_gallery()->root() );
+			$root = eazyest_gallery()->root();
+			
+			if ( empty( $root ) || '/' == $root )
+				wp_die( __( 'Something went terribly wrong while trying to rename a gallery folder.', 'eazyest-gallery' ) );
+				
 			$folder_path = rtrim( $folder_path, '/' );
 			$parts = explode( '/', $folder_path );
 			// sanitize full path
