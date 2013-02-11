@@ -6,14 +6,14 @@
  * Date: Frebruary 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-beta-2-r115
+ * Version: 0.1.0-beta-2-r116
  * License: GNU General Public License, version 3
  */
  
 /**
  * Eazyest Gallery is easy gallery management software for WordPress.
  * 
- * @version 0.1.0 (r115)  
+ * @version 0.1.0 (r116)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -54,7 +54,7 @@ define('EZG_SECURE_VERSION', '0.1.0');
  * Holds the options and basic functions
  * 
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r89)
+ * @version 0.1.0 (r116)
  * @access public
  */
 class Eazyest_Gallery {
@@ -386,7 +386,8 @@ class Eazyest_Gallery {
 	
 	/**
 	 * Eazyest_Gallery::set_gallery_folder()
-	 * Set the root directory for the gallery
+	 * Set the root directory for the gallery.
+	 * Replace backward slashes in directories by forward slashes.
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses trailingslashit()
@@ -401,21 +402,39 @@ class Eazyest_Gallery {
 	
 	/**
 	 * Eazyest_Gallery::root()
+	 * path to gallery root.
 	 * 
 	 * @since lazyest-gallery 1.1.0
-	 * @return path to gallery root with all forward slashes and trailing slash
+	 * @return string 
 	 */
 	public function root() {
-		$this->set_gallery_folder();
+		if ( ! isset( $this->root ) )
+			$this->set_gallery_folder();
 		return $this->root;
 	}
 	
+	/**
+	 * Eazyest_Gallery::address()
+	 * eazyest gallery base url.
+	 * 
+	 * @since 0.1.0 (r2)
+	 * @return string
+	 */
 	public function address() {
+		if ( ! isset( $this->address ) )
+			$this->set_gallery_folder();
 		return $this->address;
 	}
 	
+	/**
+	 * Eazyest_Gallery::right_path()
+	 * Check if gallery root exists.
+	 * 
+	 * @since 0.1.0 (r2)
+	 * @return bool
+	 */
 	function right_path() {
-		return file_exists( $this->root );
+		return ! empty( $this->root ) && '/' != $this->root && file_exists( $this->root );
 	}
 
 	/**
