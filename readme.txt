@@ -52,7 +52,7 @@ Your Gallery folders and subfolders will become part of WordPress media.
 
 == Changelog ==
 
-= 0.1.0-beta-1
+= 0.1.0-beta-1 =
 * Bug Fix: Split-up of imported folders with many images
 * Added: About page
 * Added: post_status 'hidden'
