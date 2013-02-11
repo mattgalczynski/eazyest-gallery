@@ -4,23 +4,20 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5
 Requires at least: 3.5
-Stable tag: 0.1.0-alpha-5
+Stable tag: 0.1.0-beta-1
 License: GPLv3
 
 Eazyest Gallery is an easy gallery management plugin featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
 
 == Description ==
-Eazyest Gallery 0.1.0 is not finished software. Please use this version for test purposes only.
+Eazyest Gallery 0.1.0-beta is not yet finished software. Please use this version for test purposes only.
 
-Many things change between alpha tag updates. Features may be added or deleted.
-If you install an alpha update, you may have to start with a clean WordPress install.
-
-Eazyest Gallery is the successor of [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/)
+Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/)
 
 All Lazyest Gallery functionality is implemented by using custom post types.
 Your Gallery folders and subfolders will become part of WordPress media.
 
-= Eazyest Galery features =
+= Eazyest Gallery features =
 * Fully integrated with WordPress Admin and Media media management
 * Unlimited number of images in unlimited number of nested folders
 * Comment on folders and images
@@ -50,10 +47,22 @@ Your Gallery folders and subfolders will become part of WordPress media.
 
 == Upgrade Notice ==
 
-= 0.1.0-alpha-5 =
-* 0.1.0 alpha 5 includes new functionality  
+= 0.1.0-beta-1 =
+* 0.1.0 functionality ready version  
 
 == Changelog ==
+
+= 0.1.0-beta-1
+* Bug Fix: Split-up of imported folders with many images
+* Added: About page
+* Added: post_status 'hidden'
+* Added: Include folders in post tag archives
+* Added Slidshow button folr folders in frontend
+* Added: Exif on attachment page
+* Added: Support for header images from eazyest gallery images
+* Changed: Lazyest Gallery cache slides/ thumbs/ will not be deleted
+* Changed: Menu icons
+* Changed: You cannot change root gallery folder after you have inserted a folder
 
 = 0.1.0-alpha-5 =
 * Changed: Image and subfolder list tables visible when empty

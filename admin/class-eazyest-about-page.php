@@ -272,7 +272,12 @@ class Eazyest_About_Page {
 				<li class="wp-person" id="wp-person-audrey">
 					<img src="http://2.gravatar.com/avatar/0bb825e2d9dc951bca98b3afe7ff2b79?s=60" class="gravatar" alt="Audrey" />
 					<a class="web">Audrey</a>
-					<span class="title"><?php _e( 'Alpha-tester', 'eazyest-gallery' ); ?></span>
+					<span class="title"><?php _e( 'Alpha tester', 'eazyest-gallery' ); ?></span>
+				</li>
+				<li class="wp-person" id="wp-person-blogbata">
+					<img src="http://2.gravatar.com/avatar/f504f7cecb236d61336f643c2bd3e2da?s=60" class="gravatar" alt="Blogbata" />
+					<a class="web">Blogbata</a>
+					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
 				</li>
 			</ul>
 			<h4 class="wp-people-group"><?php _e( 'External Libraries', 'eazyest-gallery' ); ?></h4>
