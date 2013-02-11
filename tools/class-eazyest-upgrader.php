@@ -550,8 +550,8 @@ class Eazyest_Gallery_Upgrader {
 				</div>
 				<div class="submit" id="skip">
 					<a href="#skip_upgrade" class="button button-secondary" id="skip_upgrade"><?php echo esc_attr_e( 'Skip', 'eazyest-gallery'); ?></a>
-					<label for="skip_upgrade"><?php _e( 'Don\'t upgrade', 'eazyest-gallery' ); ?></label>
-					<p class="description"><?php _e( 'Don\'t save any content, just let Eazyest Gallery automatically import my folders and images.', 'eazyest-gallery' ) ?></p>
+					<label for="skip_upgrade"><?php _e( 'Don&#8217;t upgrade', 'eazyest-gallery' ); ?></label>
+					<p class="description"><?php _e( 'Don&#8217;t save any content, just let Eazyest Gallery automatically import my folders and images.', 'eazyest-gallery' ) ?></p>
 				</div>
 			</form>
 		<?php	
