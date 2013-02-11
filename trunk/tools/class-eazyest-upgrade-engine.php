@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r108)
+ * @version 0.1.0 (r110)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -580,7 +580,6 @@ class Eazyest_Upgrade_Engine {
 			$folder_id = eazyest_folderbase()->insert_folder( $raw_path );
 			if ( $folder_id ) {
 				$gallery_path = ezg_get_gallery_path( $folder_id );
-				
 				// change folders array to support renamed folder
 				foreach( $upgrade_folders as $key => $upgrade_folder ) {
 					$strpos = strpos( $upgrade_folder, $raw_path );
@@ -757,7 +756,7 @@ class Eazyest_Upgrade_Engine {
 	 * @return void
 	 */
 	private function remove_xml( $folder_id ) {
-		$gallery_path = ezg_get_gallary_path( $folder_id );
+		$gallery_path = ezg_get_gallery_path( $folder_id );
 		$captions_xml = eazyest_gallery()->root() . $gallery_path . '/captions.xml';
 		if ( file_exists( $captions_xml ) )
 			unlink( $captions_xml );
