@@ -75,7 +75,7 @@ class Eazyest_About_Page {
 			position: absolute;
 			top: 0;
 			right: 0;
-		}
+		}		
 		body.rtl .about-wrap .eazyest-badge {
 			right: auto;
 			left: 0;
@@ -144,7 +144,7 @@ class Eazyest_About_Page {
 		   		<p><?php _e( 'Use the WordPress Media Manager to upload images.', 'eazyest-gallery' ); ?></p>
 				 	<p><?php _e( 'Eazyest Gallery is fully compatible with WP Super Cache, Jetpack, WordPress-SEO, Comments-Reloaded and other popular plugins','eazyest-galery' ); ?></p>
 				 	<?php if( $should_upgrade ) : ?>
-				 	<p><strong><?php // translators: %s are placeholders for link anchors
+				 	<p class="attention"><strong><?php // translators: %s are placeholders for link anchors
 					          printf( __( 'Please convert your Lazyest Gallery Folders, Images, Captions, Descriptions and Comments with the %sUpgrade Tool%s.', 'eazyest-gallery' ),
 					            '<a href="' . admin_url( 'tools.php?page=eazyest-gallery-tools' ) . '">', '</a>'
 					          ); ?></strong></p>
@@ -163,7 +163,8 @@ class Eazyest_About_Page {
 					   <?php _e( 'Add titles, content, images, tags, and subfolders in the Edit Folder screen.', 'eazyest-gallery' ); ?><br />
 					   <?php _e( 'Sort your folders and images by date, by name, by title, or enable drag-and-drop manually sorting.', 'eazyest-gallery' )?></p>
 		   		<?php if ( ! eazyest_gallery()->right_path() ) : ?>
-		   		<p><strong><?php // translators: %s are placeholders for link anchors
+		   		<p class="attention"><strong><?php 
+					 					// translators: %s are placeholders for link anchors
 		   		          printf( __( 'Please confirm your server gallery folder in %sEazyest Gallery Settings%s.', 'eazyest-gallery' ),
 		   		          	'<a href="' . admin_url( 'options-general.php?page=eazyest-gallery' ) . '">', '</a>'
 										); ?></strong></p>
