@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r66)
+ * @version 0.1.0 (r117)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -136,7 +136,7 @@ class Eazyest_Slideshow {
 			?>
 		<script type="text/javascript">
 			(function($) {	
-				$('#camera_wrap_<?php echo $id ?>').camera({ thumbnails: true });
+				$('#camera_wrap_<?php echo $id ?>').camera({ thumbnails: false, pagination: false, portrait: true  });
 			})(jQuery)
 		</script>
 			<?php			
@@ -325,7 +325,7 @@ class Eazyest_Slideshow {
 			'orderby'    => $default_orderby,
 			'id'         => 0,
 			'subfolders' => 0,
-			'number'     => 0,
+			'number'     => -1,
 			'size'       => 'large',
 			'skin'       => 'ash',
 			'ajax'       => 0,
@@ -346,7 +346,7 @@ class Eazyest_Slideshow {
 			'post_type'      => 'attachment', 
 			'post_mime_type' => 'image',			 
 			'post_status'    => array( 'publish', 'inherit' ),
-			'post_per_page'  => $number,
+			'posts_per_page'  => $number,
 			'orderby'        => $orderby, 
 			'order'          => $order,
 		);
