@@ -877,12 +877,12 @@ class Eazyest_Settings_Page {
 										 "\n\t\t<li>" .     __( 'In the "Folder icons" options, you set what to display in the folder icons view.',                                 'eazyest-gallery' ) . 
 										 "\n\t\t\t<ul>" . 
 										 "\n\t\t\t\t<li>" . __( '"Featured image" will display the folder featured image.',                                                         'eazyest-gallery' ) . "<br />" .
-										                    __( 'If you haven\'t selected a featured image yet, Eazyest Gallery will show the first image in your folder.',         'eazyest-gallery' ) . "</li>"  .
+										                    __( 'If you haven&#8217;t selected a featured image yet, Eazyest Gallery will show the first image in your folder.',         'eazyest-gallery' ) . "</li>"  .
   									 "\n\t\t\t\t<li>" . __( '"First image in folder" will display the first image, after sorting the images.',                                  'eazyest-gallery' ) . "</li>"  .
   									 "\n\t\t\t\t<li>" . __( '"Random image" will select a random image each time you open the folder icons page.',                              'eazyest-gallery' ) . "<br />" .
   									                    __( 'If you want to include random images from subfolders, please select ""Include images from subfolders".',         'eazyest-gallery' ) . "</li>"  .
   									 "\n\t\t\t\t<li>" . __( '"Folder icon" will display a standard folder icon.',                                                               'eazyest-gallery' ) . "</li>"  .
-										 "\n\t\t\t\t<li>" . __( 'If you don\'t want to display an image, please select "Title only".',                                              'eazyest-gallery' ) . "</li>"  .                   
+										 "\n\t\t\t\t<li>" . __( 'If you don&#8217;t want to display an image, please select "Title only".',                                              'eazyest-gallery' ) . "</li>"  .                   
   									 "\n\t\t\t</ul>" .
 										 "\n\t\t</li>" .									  
 				             "\n\t</ul>" .				             				    		             
