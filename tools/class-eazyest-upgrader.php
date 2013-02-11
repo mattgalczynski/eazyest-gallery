@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r103)
+ * @version 0.1.0 (r115)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -525,7 +525,7 @@ class Eazyest_Gallery_Upgrader {
 			return;
 		if ( $this->no_upgrade() )
 			return;
-		$about_page = admin_url( add_query_arg( array( 'page' => 'eazyest-gallery-about' ), 'index.php' ) );	
+		$about_page = admin_url( add_query_arg( array( 'page' => 'eazyest-gallery-about', 'lazyest' => 'true' ), 'index.php' ) );	
 		?>	
 			<form id="upgrade-form" action="admin.php" method="post">
 				<input type="hidden" name="action" id="" value="skip_gallery_update"  />
