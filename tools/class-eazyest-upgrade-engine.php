@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r110)
+ * @version 0.1.0 (r111)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -570,24 +570,31 @@ class Eazyest_Upgrade_Engine {
 			
 			// get folder path to upgrade
 			$raw_path = $upgrade_folders[0];
+			
+			if (  $folder_id = eazyest_folderbase()->get_folder_by_path( $raw_path ) ) {
+				// folder is already in database
+				return $folder_id;
+			}
 			$folder_title = basename( $raw_path );
 			
 			// convert dashes and hyphens to spaces
 			if ( eazyest_folderbase()->replace_dashes() )
 				$folder_title = str_replace( array( '-', '_'), ' ', $folder_title );		
 			
-			// insert foldr in wpdb and retrieve stored/sanitized galery_path		
+			// insert folder in wpdb and retrieve stored/sanitized galery_path		
 			$folder_id = eazyest_folderbase()->insert_folder( $raw_path );
 			if ( $folder_id ) {
 				$gallery_path = ezg_get_gallery_path( $folder_id );
 				// change folders array to support renamed folder
 				foreach( $upgrade_folders as $key => $upgrade_folder ) {
 					$strpos = strpos( $upgrade_folder, $raw_path );
-					if ( false !== $strpos && 0 == $strpos ) {
-						str_replace( $raw_path, $gallery_path, $upgrade_folder );
-						$upgrade_folders[$key] = $upgrade_folder;
+					if ( false !== $strpos ) {
+						if ( 0 == $strpos ) {
+							$upgrade_folder = str_replace( $raw_path, $gallery_path, $upgrade_folder );
+							$upgrade_folders[$key] = $upgrade_folder;
+						}
 					}
-				}
+				}				
 				// store folders array for next AJAX call
 				set_transient( 'eazyest-gallery-upgrade-folders', $upgrade_folders, 0 );
 				
