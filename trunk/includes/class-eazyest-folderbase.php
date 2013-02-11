@@ -6,9 +6,9 @@
  * @package Eazyest Gallery
  * @subpackage Folders
  * @author Marcel Brinkkemper
- * @copyright 2012 Brimosoft
+ * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r108)
+ * @version 0.1.0 (r111)
  * @access public
  */
 
@@ -1370,7 +1370,7 @@ class Eazyest_FolderBase {
 		if ( $dir_content = @opendir( $folder_path ) ) {  
 			while ( false !== ( $dir_file = readdir( $dir_content ) ) ) {
         if ( ! is_dir( $dir_file ) && ( 0 < preg_match( "/^.*\.(jpg|gif|png|jpeg)$/i", $dir_file ) ) ) {
-          $this->folder_images['images'][] = utf8_encode( basename( $dir_file ) );
+          $this->folder_images['images'][] = $gallery_path . '/' . utf8_encode( basename( $dir_file ) );
         }        			 
 			}
       @closedir( $dir_content );
@@ -1435,7 +1435,7 @@ class Eazyest_FolderBase {
 		) );
 		if ( ! empty( $attachments ) ) {
 			foreach( $attachments as $attachment ) {
-				$this->posted_images['images'][] = basename( $attachment->guid );
+				$this->posted_images['images'][] = substr( $attachment->guid, strlen( eazyest_gallery()->address() ) );
 			}
 		}
 		return $this->posted_images['images'];
@@ -1514,8 +1514,8 @@ class Eazyest_FolderBase {
 		$added = 0;
 		if ( ! empty( $this->folder_images['images'] ) ) {
 			foreach( $this->folder_images['images'] as $image_name ) {				
-				$attach_name = $this->sanitize_filename( $image_name, $post_id );		
-				$attach_file = eazyest_gallery()->root() . $gallery_path . '/' . $attach_name;
+				$attach_name = $gallery_path . '/' . $this->sanitize_filename( basename( $image_name ), $post_id );		
+				$attach_file = eazyest_gallery()->root() . $attach_name;
 				if ( ! in_array( $attach_name, $this->posted_images['images'] ) ) {
 					$this->insert_image( $post_id, $attach_file, $image_name  );
 					$this->posted_images['images'][] = $attach_name;
@@ -1563,7 +1563,7 @@ class Eazyest_FolderBase {
 			$gallery_path = ezg_get_gallery_path( $post_id );
 			foreach( $this->posted_images['images'] as $key => $image_name  ) {
 				if ( ! in_array( $image_name, $this->folder_images['images'] ) ) {
-					if ( $this->delete_attachment_by_filename( $gallery_path . '/' . $image_name ) ) {
+					if ( $this->delete_attachment_by_filename( $image_name ) ) {
 						unset( $this->posted_images['images'][$key] );
 						$deleted--;
 					}
@@ -2093,10 +2093,10 @@ function ezg_get_gallery_path( $post_id = 0 ) {
  * @param string $old_value
  * @return bool
  */
-function ezg_update_gallery_path( $post_id = 0, $new_value, $old_value ) {
-	if ( ! $post_id || empty( $gallery_path ) )
+function ezg_update_gallery_path( $post_id = 0, $new_value, $old_value = null ) {
+	if ( ! $post_id || empty( $new_value ) )
 		return false;
-	return update_post_meta( $post_id, '_gallery_path', $gallery_path );	
+	return update_post_meta( $post_id, '_gallery_path', $new_value, $old_value );	
 }
 
 /**
