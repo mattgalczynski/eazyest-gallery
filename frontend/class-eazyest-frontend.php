@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r118)
+ * @version 0.1.0 (r122)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -739,8 +739,7 @@ class Eazyest_Frontend {
 		$classes[] = "gallery-{$id}";
 		
 		if ( 'archive' == $type ) {
-			if ( $columns = $this->folder_columns )
-				$classes[] = "gallery-columns-{$columns}";
+			$classes[] = "gallery-columns-{$this->folder_columns}";
 			if ( $id )
 				$classes[] = "folder-{$id}";	
 			$classes[] = 'folders';			
