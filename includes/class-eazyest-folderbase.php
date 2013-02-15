@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r116)
+ * @version 0.1.0 (r123)
  * @access public
  */
 
@@ -288,7 +288,7 @@ class Eazyest_FolderBase {
 			if ( ! isset( $_REQUEST['orderby'] ) ) {
 				// set sort order from options
 				$option = explode( '-', eazyest_gallery()->sort_by() );
-				$order_by = $option == 'menu_order-ASC' ? 'menu_order' :  substr( $option[0], 5 );
+				$order_by = $option[0] == 'menu_order' ? 'menu_order' :  substr( $option[0], 5 );
 				$query->set( 'orderby', $order_by );
 				$query->set( 'order',   $option[1] );
 			}	
@@ -311,7 +311,7 @@ class Eazyest_FolderBase {
 			if ( is_array( $post_types ) )
 				$post_types[] = eazyest_gallery()->post_type;
 			 $query->set( 'post_type', $post_types );		
-		}    				
+		} 		  				
 		return $query;
 	}
 	
