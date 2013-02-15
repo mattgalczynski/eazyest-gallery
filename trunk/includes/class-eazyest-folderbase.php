@@ -784,7 +784,6 @@ class Eazyest_FolderBase {
 	 */
 	function is_dangerous( $directory ) {
 		$directory = trailingslashit( str_replace( '\\', '/', $directory ) );
-		
 		// check if gallery folder is not on server root
 		if ( $directory == '/' )
 	 		return true;
@@ -838,7 +837,7 @@ class Eazyest_FolderBase {
 	 */
 	private function _get_folder_paths( $root = '' ) {
 		$folder_paths = array();
-		$root = ( $root == '' ) ? untrailingslashit( eazyest_gallery()->root() ) : $root;
+		$root = ( empty( $root ) ) ? untrailingslashit( eazyest_gallery()->root() ) : $root;
 		if ( $dir_handler = @opendir( $root ) ) {
 			while ( false !== ( $folder_path = readdir( $dir_handler ) ) ) {
 				$folder_path = trailingslashit( $root ) . $folder_path;
@@ -871,9 +870,8 @@ class Eazyest_FolderBase {
 			if ( $this->folder_paths['post_id'] == $post_id )
 				return ( $this->folder_paths['folders'] );
 		}
-		$gallery_path =ezg_get_gallery_path( $post_id );
+		$gallery_path = ezg_get_gallery_path( $post_id );
 		$root = ( empty( $gallery_path ) ) ? '' : eazyest_gallery()->root() . $gallery_path;
-				
 		unset( $this->folder_paths );
 		$this->folder_paths = array( 'post_id' => $post_id, 'folders' => $this->_get_folder_paths( $root ) );
 		return $this->folder_paths['folders'];	

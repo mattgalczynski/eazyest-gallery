@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r111)
+ * @version 0.1.0 (r121)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -102,7 +102,7 @@ class Eazyest_Upgrade_Engine {
 	function get_upgrade_folders() {
 		check_ajax_referer( 'eazyest-gallery-update' );
 		eazyest_gallery()->gallery_folder = $_POST['gallery_folder'];
-		$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' ); 
+		$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' );
 		if ( ! $upgrade_folders ){
 			$upgrade_folders = eazyest_folderbase()->get_folder_paths();
 			// no folder found, abort
@@ -142,6 +142,7 @@ class Eazyest_Upgrade_Engine {
 			if ( ! $upgrade_images ) {
 				// only upgrade folder if we do not have leftover images
 				$folder_id = $this->do_upgrade_folder();
+				$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' );
 			}
 			if ( 0 == $this->do_upgrade_images( $folder_id, $images_max ) ) {
 				// all images have been upgraded, remove xml files and remove folder from upgrade array
@@ -407,6 +408,13 @@ class Eazyest_Upgrade_Engine {
 		$wpdb->query( "DELETE FROM $wpdb->commentmeta WHERE meta_key = 'lazyest'" );
 	}
 	
+	/**
+	 * Eazyest_Upgrade_Engine::remove_lazyest_gallery()
+	 * Remove the LAzyest Gallery plugin to prevent conflicts.
+	 * 
+	 * @since 0.1.0 (r2) 
+	 * @return void
+	 */
 	function remove_lazyest_gallery() {
 		$delete_directory = dirname( eazyest_gallery()->plugin_dir ) . '/lazyest-gallery';
 		if ( is_dir( $delete_directory ) )
@@ -570,11 +578,10 @@ class Eazyest_Upgrade_Engine {
 			
 			// get folder path to upgrade
 			$raw_path = $upgrade_folders[0];
-			
 			if (  $folder_id = eazyest_folderbase()->get_folder_by_path( $raw_path ) ) {
 				// folder is already in database
 				return $folder_id;
-			}
+			}			
 			$folder_title = basename( $raw_path );
 			
 			// convert dashes and hyphens to spaces
@@ -590,7 +597,7 @@ class Eazyest_Upgrade_Engine {
 					$strpos = strpos( $upgrade_folder, $raw_path );
 					if ( false !== $strpos ) {
 						if ( 0 == $strpos ) {
-							$upgrade_folder = str_replace( $raw_path, $gallery_path, $upgrade_folder );
+							$upgrade_folder = str_replace( $raw_path, $gallery_path, $upgrade_folder );	
 							$upgrade_folders[$key] = $upgrade_folder;
 						}
 					}
