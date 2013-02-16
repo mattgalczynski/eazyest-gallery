@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r108)
+ * @version 0.1.0 (r125)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -74,7 +74,8 @@ class Eazyest_Folder_Editor {
 		$before_list_items_action = apply_filters( 'eazyest_gallery_before_list_items_action', 'collect_images' ); 
 		
 		$manage_action = "manage_{$type}_posts_custom_column";
-  	add_action( 'admin_init',                        array( $this, 'collect_folders_action'  )        );
+  	add_action( 'admin_init',                        array( $this, 'collect_folders_action'  )        );	
+  	add_action( 'admin_init',                        array( $this, 'fix_content_messages'    )        );
   	add_action( 'admin_enqueue_scripts',             array( $this, 'register_scripts'        ), 10    );
   	add_action( 'admin_enqueue_scripts',             array( $this, 'enqueue_scripts'         ), 20    );
   	add_action( 'admin_head',                        array( $this, 'admin_style'             )        );
@@ -217,6 +218,29 @@ class Eazyest_Folder_Editor {
 			
 		return false;
 	}
+  
+  
+  /**
+   * Eazyest_Folder_Editor::fix_content_messages()
+   * Prevent plugins to issue messages depending on files in wp_upload_dir.
+   * 
+	 * Eazyest Gallery changes wp_upload_dir for post_type = galleryfolder screens.
+	 * Some plugins issue messages when a file is not found in wp_upload_dir.
+	 * This function tries to catch and remove them. 
+   * 
+   * @since 0.1.0 (r125)
+   * @uses remove_action() 
+   * @return void
+   */
+  function fix_content_messages() {
+		if ( $this->bail() )
+			return;
+  	
+  	// remove action for  Shadowbox JS missing source files message.
+  	global $ShadowboxAdmin;
+  	if ( isset( $ShadowboxAdmin ) )
+  		remove_action( 'admin_notices', array( $ShadowboxAdmin, 'missing_src_notice' ) );
+  }
 	
 	/**
 	 * Eazyest_Folder_Editor::post_updated_messages()
