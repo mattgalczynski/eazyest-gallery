@@ -57,15 +57,16 @@ else :
 	// or, if there's only 1 image, get the URL of the image
 	$next_attachment_url = wp_get_attachment_url();
 endif;
-if ( 'default' != eazyest_gallery()->on_slide_click ) {
-	$next_attachment_url = wp_get_attachment_url();
-}
-?>
-								<a href="<?php echo $next_attachment_url; ?>" title="<?php the_title_attribute(); ?>" rel="attachment"><?php
-								$attachment_size = apply_filters( 'twentytwelve_attachment_size', array( 960, 960 ) );
-								echo wp_get_attachment_image( $post->ID, $attachment_size );
-								?></a>
 
+if ( 'default' != eazyest_gallery()->on_slide_click ) :
+	$next_attachment_url = wp_get_attachment_url();
+endif;
+
+$attachment_size = apply_filters( 'twentytwelve_attachment_size', array( 960, 960 ) );
+// we need to add a filter to add popup markup
+$next_link = apply_filters( 'wp_get_attachment_link', '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
+?>
+								<?php	echo $next_link; ?>
 								<?php if ( ! empty( $post->post_excerpt ) ) : ?>
 								<div class="entry-caption">
 									<?php the_excerpt(); ?>

@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r122)
+ * @version 0.1.0 (r124)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1415,12 +1415,10 @@ class Eazyest_Frontend {
 	function add_attr_to_link( $link, $post_id ) {
 		// bail if admin
 		if ( is_admin() )
-			return $link;
-			
+			return $link;	
 		// bail if parent is not a folder	
 		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
-			return $link;					
-			
+			return $link;							
 		if ( is_attachment() && $post_id != $GLOBALS['post']->ID )
 			// do not change other attachments links on an attachment page
 			return $link;
@@ -1428,8 +1426,7 @@ class Eazyest_Frontend {
 		$attachment = get_post( $post_id );				
 		$post_type = eazyest_gallery()->post_type;
 		$class_attr = $rel_attr = array();
-		$option = '';
-		
+		$option = '';		
 		// change links when we are showing an eazyest gallery
 		if ( is_singular( $post_type ) || is_attachment() || defined( 'LAZYEST_GALLERY_SHORTCODE' ) ) {
 			// get the on_click option
@@ -1443,7 +1440,7 @@ class Eazyest_Frontend {
 				$class_attr  = apply_filters( 'eazyest_gallery_on_thumb_click_class', $class_attr );
 				$rel_attr    = apply_filters( 'eazyest_gallery_on_thumb_click_rel',   $rel_attr   );
 				$popup = eazyest_gallery()->thumb_popup;
-			}
+			}	
 			if( ! empty( $popup ) ) {
 				$rel = "{$popup}[gallery-{$attachment->post_parent}]";
 				switch( $popup ) {
@@ -1469,7 +1466,7 @@ class Eazyest_Frontend {
 		if ( count( $rel_attr ) ){
 			if ( strpos( $link, 'rel="' ) ) {
 				$rel_pattern = 'rel="' . implode( ' ', $rel_attr ) . ' ';
-				str_replace( 'rel="', $rel_pattern, $link ); 
+				$link = str_replace( 'rel="', $rel_pattern, $link ); 
 			} else { 
 				$rel_pattern   = "<a rel='" . implode( ' ', $rel_attr ) . "' ";
 				$link = str_replace( '<a ', $rel_pattern, $link );
