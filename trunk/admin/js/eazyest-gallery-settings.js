@@ -124,6 +124,39 @@
 			showThumbnailPopup( '#on_slide_click', '#slide-popup' );
 		});
 		
+		// folders_columns change
+		$('#folders_columns').change(function(){
+			var columnsVal = parseInt( $('#folders_columns').val(), 10 );
+			$('#folders_page').attr( 'step', columnsVal );
+			var pageVal = parseInt( $('#folders_page').val(), 10 );
+			if ( pageVal > 0 ) {
+				lowVal  = pageVal - pageVal%columnsVal;
+				highVal = lowVal + columnsVal;
+				if ( ( pageVal - lowVal ) > ( highVal - pageVal ) )
+					pageVal = highVal;
+				else
+					pageVal = lowVal;	
+				$('#folders_page').val( pageVal );
+			}
+		});
+		
+		// thumbs_columns change
+		$('#thumbs_columns').change(function(){
+			var columnsVal = parseInt( $('#thumbs_columns').val(), 10 );
+			$('#thumbs_page').attr( 'step', columnsVal );
+			var pageVal = parseInt( $('#thumbs_page').val(), 10 );
+			
+			if ( pageVal > 0 ) {
+				lowVal  = pageVal - pageVal%columnsVal;
+				highVal = lowVal + columnsVal;
+				if ( ( pageVal - lowVal ) > ( highVal - pageVal ) )
+					pageVal = highVal;
+				else
+					pageVal = lowVal;	
+				$('#thumbs_page').val( pageVal );
+			}
+		});
+		
 	}); // (document).ready
 		
 })(jQuery)

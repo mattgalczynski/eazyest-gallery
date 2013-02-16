@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r78)
+ * @version 0.1.0 (r127)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -284,11 +284,11 @@ class Eazyest_Settings_Page {
 				)
 			);
 		$sections['folder-settings'] = apply_filters( 'eazyest_gallery_folder_settings', array(
-			'folders_page' => array( 
-				'title' => __( 'Icons per page', 'eazyest-gallery' ) 
-			),
 			'folders_columns' => array(
 				'title' => __( 'Icon columns', 'eazyest-gallery' )
+			),
+			'folders_page' => array( 
+				'title' => __( 'Icons per page', 'eazyest-gallery' ) 
 			),
 			'sort_folders' => array(
 				'title' => __( 'Sort folders by', 'eazyest-gallery' )
@@ -301,11 +301,11 @@ class Eazyest_Settings_Page {
 			)
 		) );
 		$sections['image-settings'] = apply_filters( 'eazyest_gallery_image_settings', array(
-			'thumbs_page' => array(
-				'title' => __( 'Thumbnails per page', 'eazyest-gallery' )					
-			),
 			'thumbs_columns' => array(
 				'title' => ( 'Thumbnail columns' )
+			),
+			'thumbs_page' => array(
+				'title' => __( 'Thumbnails per page', 'eazyest-gallery' )					
 			),
 			'thumb_caption' => array(
 				'title' => __( 'Captions', 'eazyest-gallery' )
@@ -501,8 +501,9 @@ class Eazyest_Settings_Page {
 	 */
 	function folders_page() {
 		$folders_page = eazyest_gallery()->folders_page;
+		$step = eazyest_gallery()->folders_columns ? eazyest_gallery()->folders_columns : 1; 		
 		?>
-		<input id="folders_page" name="eazyest-gallery[folders_page]" type="number" min="0" step="1" class="small-text" value="<?php echo $folders_page; ?>" />
+		<input id="folders_page" name="eazyest-gallery[folders_page]" type="number" min="0" step="<?php echo $step; ?>" class="small-text" value="<?php echo $folders_page; ?>" />
 		<label for="folders_page"><?php _e( 'per page', 'eazyest-gallery' ) ?></label>
 		<?php
 	}
@@ -624,8 +625,9 @@ class Eazyest_Settings_Page {
 	 */
 	function thumbs_page() {
 		$thumbs_page = eazyest_gallery()->thumbs_page;
+		$step = eazyest_gallery()->thumbs_columns ? eazyest_gallery()->thumbs_columns : 1; 
 		?>
-		<input id="thumbs_page" name="eazyest-gallery[thumbs_page]" type="number" min="0" step="1" class="small-text" value="<?php echo $thumbs_page; ?>" />
+		<input id="thumbs_page" name="eazyest-gallery[thumbs_page]" type="number" min="0" step="<?php echo $step; ?>" class="small-text" value="<?php echo $thumbs_page; ?>" />
 		<label for="thumbs_page"><?php _e( 'per page', 'eazyest-gallery' ) ?></label>
 		<?php
 	}
