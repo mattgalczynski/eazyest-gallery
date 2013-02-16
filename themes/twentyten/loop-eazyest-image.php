@@ -86,14 +86,17 @@
 		// or, if there's only 1 image attachment, get the URL of the image
 		$next_attachment_url = wp_get_attachment_url();
 	}
-	if ( 'default' != eazyest_gallery()->on_slide_click )
+	if ( 'default' != eazyest_gallery()->on_slide_click ){
 		$next_attachment_url = wp_get_attachment_url();
+	}
+	$attachment_width  = apply_filters( 'twentyten_attachment_size',   900 );
+	$attachment_height = apply_filters( 'twentyten_attachment_height', 900 );
+	$attachment_size   = array( $attachment_width, $attachment_height );
+	// we need to add a filter to add popup markup
+	$next_link = apply_filters( 'wp_get_attachment_link', '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>'; 
+		
 ?>
-						<p class="attachment"><a href="<?php echo $next_attachment_url; ?>" title="<?php the_title_attribute(); ?>" rel="attachment"><?php
-							$attachment_width  = apply_filters( 'twentyten_attachment_size', 900 );
-							$attachment_height = apply_filters( 'twentyten_attachment_height', 900 );
-							echo wp_get_attachment_image( $post->ID, array( $attachment_width, $attachment_height ) ); // filterable image width with, essentially, no limit for image height.
-						?></a></p>
+						<p class="attachment"><?php echo $next_link ?></p>
 
 						<div id="nav-below" class="navigation">
 							<div class="nav-previous"><?php previous_image_link( false ); ?></div>
