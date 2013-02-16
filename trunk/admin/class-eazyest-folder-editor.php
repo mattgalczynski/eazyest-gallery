@@ -226,7 +226,8 @@ class Eazyest_Folder_Editor {
    * 
 	 * Eazyest Gallery changes wp_upload_dir for post_type = galleryfolder screens.
 	 * Some plugins issue messages when a file is not found in wp_upload_dir.
-	 * This function tries to catch and remove them. 
+	 * This function tries to catch and remove them.
+	 * Don't worry, they will work on opther screens. 
    * 
    * @since 0.1.0 (r125)
    * @uses remove_action() 
@@ -237,9 +238,12 @@ class Eazyest_Folder_Editor {
 			return;
   	
   	// remove action for  Shadowbox JS missing source files message.
-  	global $ShadowboxAdmin;
-  	if ( isset( $ShadowboxAdmin ) )
-  		remove_action( 'admin_notices', array( $ShadowboxAdmin, 'missing_src_notice' ) );
+  	if ( get_option ( 'shadowbox-js-missing-src' ) ){
+  		delete_option( 'shadowbox-js-missing-src' );
+	  	global $ShadowboxAdmin;
+	  	if ( isset( $ShadowboxAdmin ) )
+	  		remove_action( 'admin_notices', array( $ShadowboxAdmin, 'missing_src_notice' ) );
+		}
   }
 	
 	/**
