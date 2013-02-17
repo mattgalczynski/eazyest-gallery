@@ -247,7 +247,10 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function endpoints() {
+		// rewrite endpoint for slideshows /slideshow/large (2nd argument is size)
 		add_rewrite_endpoint( 'slideshow', EP_PERMALINK );
+		// rewrite endpoint for thumbnail pages /thumbnails/2 (2nd argument is page)
+		add_rewrite_endpoint( 'thumbnails', EP_PERMALINK );
 	}
 	
 	/**

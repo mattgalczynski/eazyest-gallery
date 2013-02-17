@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r124)
+ * @version 0.1.0 (r129)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1122,9 +1122,9 @@ class Eazyest_Frontend {
 	 * @return void|string
 	 */
 	function folder( $post_id = 0, $echo = true ) {		
-		global $wp_query; 
+		global $wp_query; 	
 		if ( isset( $wp_query->query_vars['slideshow'] ) )
-			do_action( 'eazyest_gallery_slideshow', $post_id, 'large', $echo );
+			do_action( 'eazyest_gallery_slideshow', $post_id, $wp_query->query_vars['slideshow'], $echo );
 		else
 			do_action( 'eazyest_gallery_thumbnails', $post_id, $echo );
 	}
@@ -1167,7 +1167,7 @@ class Eazyest_Frontend {
 	 * @param bool $echo echo or return the output default=true
 	 * @return void or string
 	 */
-	function thumbnails( $post_id = 0, $echo = true ) {
+	function thumbnails( $post_id = 0, $page = 0, $echo = true ) {
 			
 		if ( $post_id == 0 )
 			$post_id = get_the_ID();
@@ -1182,7 +1182,7 @@ class Eazyest_Frontend {
 		$captiontag = $this->captiontag();
 		
 		$ids = '';
-		// TODO: add code when extra fields or description in thumbnail view
+		
 		if ( ! is_single() ) {
 			$selector = ezg_selector( true, false );
 			$html = $this->gallery_style( $selector, $columns );
@@ -1201,14 +1201,84 @@ class Eazyest_Frontend {
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// use a gallery with filtered captions if thumb_description or eazyest_fields enabled 
 				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 ); // priority 2000 to override other plugins
+			
+			// check if we should display a paged thumbnail gallery
+			if ( eazyest_gallery()->folders_page ) {
+				global $wp_query;
 				
+				// check if we should show a sub page
+				$page = isset( $wp_query->query_vars['thumbnails'] ) ? $wp_query->query_vars['thumbnails'] : 1;
+				
+				$post_status = array( 'publish', 'inherit' );
+				global $current_user;
+				get_currentuserinfo();
+				// if current user is folder author, also show private posts
+				if ( $current_user && $current_user->ID == get_post( $post_id )->post_author )
+					$post_status[] = 'private';
+					
+				$args = array(
+					'post_type'      => 'attachment',
+					'post_parent'    => $post_id,
+					'posts_per_page' => eazyest_gallery()->folders_page,
+					'post_status'    => $post_status,
+					'paged'          => $page,
+					'fields'         => 'ids', 
+				);
+				$query = new WP_Query( $args );
+				$post_ids = "ids='" . implode( ',', $query->posts ) . "'";
+				
+				$folder_permalink = get_permalink( $post_id );
+				global $wp_rewrite;
+				$using_permalinks = $wp_rewrite->using_permalinks();
+				
+				$navigation = ''; 
+				if( $query->max_num_pages > 1 ) {
+					$navigation = "
+					<nav id='thumbnail-nav-$post_id' class='navigation' role='navigation'>
+						<h3 class='assistive-text'>" . __( 'Thumbnail navigation', 'eazyest-gallery' ) . "</h3>";
+					if ( $page > 1 ) {
+						// add navigation to previous page of thumbnails
+						if ( $using_permalinks )
+							$prev_link = $folder_permalink . 'thumbnails/' . strval( $page - 1 );
+						else
+							$prev_link = add_query_arg( array( 'thumbnails', strval( $page - 1 ) ), $folder_permalink );							
+						$navigation .= "
+						<div class='nav-previous alignleft'>
+							<a href='$prev_link'><span class='meta-nav'>&larr;</span> " . __( 'Previous thumbnails', 'eazyest-gallery' ) . "</a>
+						</div>";
+					}
+					if ( $page < $query->max_num_pages ) {
+						// add navigation to next page of thumbnails 
+						if ( $using_permalinks )
+							$next_link = $folder_permalink . 'thumbnails/' . strval( $page + 1 );
+						else
+							$next_link = add_query_arg( array( 'thumbnails', strval( $page + 1 ) ), $folder_permalink );
+						$navigation .= "
+						<div class='nav-next alignright'>
+							<a href='$next_link'>" . __( 'Next thumbnails', 'eazyest-gallery' ) . " <span class='meta-nav'>&rarr;</span></a>
+						</div>";
+						
+					}
+					$navigation .= " 
+					</nav>";	
+				}
+			} else {
+				$post_ids = "id='$post_id' order='$order' orderby='$orderby'";
+			}
+			
+			// add filter for eazyest-gallery style	
 			add_filter( 'gallery_style', array( $this, 'style_div' ) );
-			$gallery = do_shortcode( "[gallery id='$post_id' order='$order' orderby='$orderby' columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag' size='thumbnail']" );			
+			
+			$gallery = do_shortcode( "[gallery $post_ids columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag' size='thumbnail']" );
+			
+			// remove the filter because the page could have 'normal' WordPress galleries			
 			remove_filter( 'gallery_style', array( $this, 'style_div' ) );
 				
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// remove filter for other shortcodes in post
 				remove_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 );
+			
+			$gallery .= $navigation;
 						
 			if ( $echo )
 				echo $gallery;

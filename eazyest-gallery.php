@@ -3,17 +3,17 @@
  * Plugin Name: Eazyest Gallery
  * Plugin URI: http://brimosoft.nl/eazyest/gallery/
  * Description: Easy Gallery management plugin for Wordpress
- * Date: Frebruary 2013
+ * Date: February 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-beta-2-r127
+ * Version: 0.1.0-beta-2-r129
  * License: GNU General Public License, version 3
  */
  
 /**
  * Eazyest Gallery is easy gallery management software for WordPress.
  * 
- * @version 0.1.0 (r127)  
+ * @version 0.1.0 (r129)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
