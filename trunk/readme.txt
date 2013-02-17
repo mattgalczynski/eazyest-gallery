@@ -4,13 +4,14 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-beta-1
+Stable tag: 0.1.0-beta-2
 License: GPLv3
 
 Eazyest Gallery is an easy gallery management plugin featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
 
 == Description ==
-Eazyest Gallery 0.1.0-beta is not yet finished software. Please use this version at your own risks, or for test purposes only.
+Eazyest Gallery 0.1.0-beta is alomost finished software, but not quite. 
+Please use this version at your own risks, or for test purposes only.
 
 Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/)
 
@@ -47,10 +48,17 @@ Your Gallery folders and subfolders will become part of WordPress media.
 
 == Upgrade Notice ==
 
-= 0.1.0-beta-1 =
+= 0.1.0-beta-2 =
 * 0.1.0 functionality ready version  
 
 == Changelog ==
+
+= 0.1.0-beta-2 =
+* Bug Fix: Sort order did not apply to manually sorted folders
+* Bug Fix: Responsive display folder columns = 0
+* Bug Fix: Incorrect import and sanitize of Lazyest gallery folders
+* Added: Thumbnail navigation or AJAX "More thumbnails" for Folder display
+* Changed: Maximum number of icons/thumbnails is now full rows times columns
 
 = 0.1.0-beta-1 =
 * Bug Fix: Split-up of imported folders with many images
