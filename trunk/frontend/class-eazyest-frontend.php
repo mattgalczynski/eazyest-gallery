@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r130)
+ * @version 0.1.0 (r131)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -234,10 +234,33 @@ class Eazyest_Frontend {
  		return $query;
 	}
 	
+	/**
+	 * Eazyest_Frontend::register_scripts()
+	 * 
+	 * @since 0.1.0 (r51)
+	 * @uses wp_register_script()
+	 * @uses wp_localize_script()  
+	 * @return void
+	 */
 	function register_scripts() {		
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
-		wp_register_script( 'eazyest-frontend', eazyest_gallery()->plugin_url . "frontend/js/eazyest-frontend.$j", array( 'jquery' ), '0.1.0-r51', true );
+		wp_register_script( 'eazyest-frontend', eazyest_gallery()->plugin_url . "frontend/js/eazyest-frontend.$j", array( 'jquery' ), '0.1.0-r131', true );
+		wp_localize_script( 'eazyest-frontend', 'eazyestFrontend', $this->localize_script() );
 	}
+	
+	/**
+	 * Eazyest_Frontend::localize_script()
+	 * 
+	 * @since 0.1.0 (r131)
+	 * @uses admin_url()
+	 * @return array
+	 */
+	function localize_script() {
+		return array(
+			'moreButton' => __( 'More thumbnails', 'eazyest-gallery' ),
+			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+		);
+	}	
 	
 	// template functions	--------------------------------------------------------
 	/**
@@ -711,8 +734,7 @@ class Eazyest_Frontend {
 					margin-bottom: 0;
 				}
 			</style>";
-		if ( 0 == $columns )
-			wp_enqueue_script( 'eazyest-frontend' );	
+		wp_enqueue_script( 'eazyest-frontend' );	
 		return apply_filters( 'eazyest_gallery_style', $style );			
 	}
 	
@@ -1167,8 +1189,7 @@ class Eazyest_Frontend {
 	 * @param bool $echo echo or return the output default=true
 	 * @return void or string
 	 */
-	function thumbnails( $post_id = 0, $page = 0, $echo = true ) {
-			
+	function thumbnails( $post_id = 0, $page = 1, $echo = true ) {
 		if ( $post_id == 0 )
 			$post_id = get_the_ID();
 			
@@ -1183,12 +1204,12 @@ class Eazyest_Frontend {
 		
 		$ids = '';
 		
-		if ( ! is_single() ) {
+		if ( ! is_single() && ! defined( 'DOING_AJAX' ) ) {
 			$selector = ezg_selector( true, false );
 			$html = $this->gallery_style( $selector, $columns );
 			$html .= '<div id="' . ezg_selector( false, false ) . '" class="gallery eazyest-gallery gallery-size-thumbnail"><' . 
 				$this->itemtag() . ' class="gallery-item"><' . 
-				$this->icontag . ' class="gallery-icon">' . 
+				$this->icontag() . ' class="gallery-icon">' . 
 				$this->post_thumbnail_html( '', $post_id ) . '</' . 
 				$this->icontag() . '></' . 
 				$this->itemtag() . '><br style="clear:both"</div>';
@@ -1203,12 +1224,11 @@ class Eazyest_Frontend {
 				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 ); // priority 2000 to override other plugins
 			
 			// check if we should display a paged thumbnail gallery
-			if ( eazyest_gallery()->folders_page ) {
+			if ( eazyest_gallery()->post_type == get_post_type( $post_id ) && eazyest_gallery()->folders_page ) {
 				global $wp_query;
 				
 				// check if we should show a sub page
-				$page = isset( $wp_query->query_vars['thumbnails'] ) ? $wp_query->query_vars['thumbnails'] : 1;
-				
+				$page = isset( $wp_query->query_vars['thumbnails'] ) ? $wp_query->query_vars['thumbnails'] : $page;
 				$post_status = array( 'publish', 'inherit' );
 				global $current_user;
 				get_currentuserinfo();
@@ -1234,28 +1254,30 @@ class Eazyest_Frontend {
 				$navigation = ''; 
 				if( $query->max_num_pages > 1 ) {
 					$navigation = "
-					<nav id='thumbnail-nav-$post_id' class='navigation' role='navigation'>
+					<nav id='thumbnail-nav-$post_id' class='navigation thumbnail-navigation' role='navigation'>
 						<h3 class='assistive-text'>" . __( 'Thumbnail navigation', 'eazyest-gallery' ) . "</h3>";
 					if ( $page > 1 ) {
 						// add navigation to previous page of thumbnails
+						$prev_page =  strval( $page - 1 );
 						if ( $using_permalinks )
-							$prev_link = $folder_permalink . 'thumbnails/' . strval( $page - 1 );
+							$prev_link = $folder_permalink . 'thumbnails/' . $prev_page;
 						else
-							$prev_link = add_query_arg( array( 'thumbnails', strval( $page - 1 ) ), $folder_permalink );							
+							$prev_link = add_query_arg( array( 'thumbnails', $prev_page ), $folder_permalink );							
 						$navigation .= "
 						<div class='nav-previous alignleft'>
 							<a href='$prev_link'><span class='meta-nav'>&larr;</span> " . __( 'Previous thumbnails', 'eazyest-gallery' ) . "</a>
 						</div>";
 					}
 					if ( $page < $query->max_num_pages ) {
-						// add navigation to next page of thumbnails 
+						// add navigation to next page of thumbnails
+						$next_page = strval( $page + 1 );
 						if ( $using_permalinks )
-							$next_link = $folder_permalink . 'thumbnails/' . strval( $page + 1 );
+							$next_link = $folder_permalink . 'thumbnails/' . $next_page;
 						else
-							$next_link = add_query_arg( array( 'thumbnails', strval( $page + 1 ) ), $folder_permalink );
+							$next_link = add_query_arg( array( 'thumbnails', $next_page ), $folder_permalink );
 						$navigation .= "
 						<div class='nav-next alignright'>
-							<a href='$next_link'>" . __( 'Next thumbnails', 'eazyest-gallery' ) . " <span class='meta-nav'>&rarr;</span></a>
+							<a id='next-thumbnail-$next_page' href='$next_link'>" . __( 'Next thumbnails', 'eazyest-gallery' ) . " <span class='meta-nav'>&rarr;</span></a>
 						</div>";
 						
 					}
@@ -1296,11 +1318,13 @@ class Eazyest_Frontend {
 	 */
 	function style_div() {
 		$selector = ezg_selector( true, false );
+		if ( defined( 'DOING_AJAX' ) && isset( $_POST['page'] ) )
+			$selector .= '-' . $_POST['page'];
 		$columns  = eazyest_gallery()->thumbs_columns;
 		$gallery_style = $this->gallery_style( $selector, $columns );
 		$id = $GLOBALS['post']->ID;
 		$gallery_div = "<div id='$selector' class='gallery galleryid-{$id} gallery-columns-{$columns} gallery-size-thumbnail'>";
-		return $gallery_style . "\n\t\t" . $gallery_div;
+		return $gallery_style . $gallery_div;
 	}
 	
 	/**

@@ -6,7 +6,7 @@
  * @package Eazyest Gallery
  * @subpackage Frontend/Template Tags
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r129)
+ * @version 0.1.0 (r131)
  */ 
   
 // Exit if accessed directly
@@ -225,7 +225,7 @@ function ezg_folder( $post_id = 0 ) {
  * @param integer $post_id
  * @return void
  */
-function ezg_thumbnails( $post_id = 0, $page = 0 ) {
+function ezg_thumbnails( $post_id = 0, $page = 1 ) {
 	eazyest_frontend()->thumbnails( $post_id, $page );
 }
 

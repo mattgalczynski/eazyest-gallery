@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r69)
+ * @version 0.1.0 (r131)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -74,10 +74,12 @@ class Eazyest_Admin_Ajax {
 			
 			// frontend logged in
 			'next_slideshow',
+			'more_thumbnails',
 		);
 		$nopriv = array(
 			// frontend not logged in
 			'next_slideshow',
+			'more_thumbnails',
 		);
 				
 		foreach( $ajax as $action ) {
@@ -300,6 +302,32 @@ class Eazyest_Admin_Ajax {
 			wp_die();
 		}
 		echo 0;
+		wp_die();
+	}
+	
+	/**
+	 * Eazyest_Admin_Ajax::more_thumbnails()
+	 * Display the next page of thumbnails for a particular folder on AJAX request.
+	 * 
+	 * @since 0.1.0 (r131)
+	 * @uses site_url() to check referer
+	 * @uses wp_get_referer()
+	 * @uses get_post() to set GLOBALS['post'] to run frontend functions
+	 * @return void
+	 */
+	function more_thumbnails() {
+		$site_url = site_url();
+		$this_site = substr( $site_url, strpos( $site_url, '://' ) + 3 );
+		if ( strpos( wp_get_referer(), $this_site ) ) {
+			$post = get_post( $_POST['folder'] );
+			if ( $post ) {
+				$GLOBALS['post'] = $post;		
+				include_once( eazyest_gallery()->plugin_dir . 'frontend/class-eazyest-frontend.php' );
+				eazyest_frontend()->thumbnails( $_POST['folder'], $_POST['page'] );	 
+			}
+		} else {
+			echo 0;
+		}
 		wp_die();
 	}
 	
