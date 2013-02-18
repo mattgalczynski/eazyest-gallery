@@ -1,6 +1,6 @@
 // jQuery File Tree Plugin for Eazyest Gallery
 //
-// Version 1.01-lzg
+// Version 1.01-r134 
 //
 // Cory S.N. LaViska
 // A Beautiful Site (http://abeautifulsite.net/)
@@ -59,7 +59,7 @@ if(jQuery) (function($){
 						dir    : t,
 						action : 'eazyest_gallery_filetree',
 						_wpnonce : $('#file-tree-nonce').val()
-					}
+					};
 					$.post(o.script, data, function(response) {
 						$(c).find('.start').html('');
 						$(c).removeClass('wait').append(response);
