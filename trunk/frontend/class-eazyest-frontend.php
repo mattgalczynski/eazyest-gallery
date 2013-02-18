@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r140)
+ * @version 0.1.0 (r144)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1231,8 +1231,10 @@ class Eazyest_Frontend {
 				// use a gallery with filtered captions if thumb_description or eazyest_fields enabled 
 				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 ); // priority 2000 to override other plugins
 			
+				
+			$navigation = ''; 
 			// check if we should display a paged thumbnail gallery
-			if ( eazyest_gallery()->post_type == get_post_type( $post_id ) && eazyest_gallery()->folders_page ) {
+			if ( eazyest_gallery()->post_type == get_post_type( $post_id ) && eazyest_gallery()->thumbs_page ) {
 				global $wp_query;
 				
 				// check if we should show a sub page
@@ -1258,8 +1260,6 @@ class Eazyest_Frontend {
 				$folder_permalink = get_permalink( $post_id );
 				global $wp_rewrite;
 				$using_permalinks = $wp_rewrite->using_permalinks();
-				
-				$navigation = ''; 
 				if( $query->max_num_pages > 1 ) {
 					$navigation = "
 					<nav id='thumbnail-nav-$post_id' class='navigation thumbnail-navigation' role='navigation'>
@@ -1292,7 +1292,7 @@ class Eazyest_Frontend {
 					$navigation .= " 
 					</nav>";	
 				}
-			} else {
+			} else {			
 				$post_ids = "id='$post_id' order='$order' orderby='$orderby'";
 			}
 			
@@ -1489,7 +1489,8 @@ class Eazyest_Frontend {
 		if ( is_singular( 'attachment' ) )
 			$link = apply_filters( 'eazyest_gallery_on_slide_click_link', $link, $option );
 		else
-			$link = apply_filters( 'eazyest_gallery_on_thumb_click_link', $link, $option );	
+			$link = apply_filters( 'eazyest_gallery_on_thumb_click_link', $link, $option );
+						
 		return $link;
 	}
 	
