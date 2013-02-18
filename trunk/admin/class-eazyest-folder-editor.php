@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r125)
+ * @version 0.1.0 (r37)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -75,9 +75,9 @@ class Eazyest_Folder_Editor {
 		
 		$manage_action = "manage_{$type}_posts_custom_column";
   	add_action( 'admin_init',                        array( $this, 'collect_folders_action'  )        );	
-  	add_action( 'admin_init',                        array( $this, 'fix_content_messages'    )        );
   	add_action( 'admin_enqueue_scripts',             array( $this, 'register_scripts'        ), 10    );
   	add_action( 'admin_enqueue_scripts',             array( $this, 'enqueue_scripts'         ), 20    );
+  	add_action( 'admin_head',                        array( $this, 'fix_content_messages'    )        );
   	add_action( 'admin_head',                        array( $this, 'admin_style'             )        );
   	
   	add_action( 'admin_action_save_gallery',         array( $this, 'save_gallery'            )        );
@@ -213,7 +213,9 @@ class Eazyest_Folder_Editor {
 		if ( isset( $_GET['post_type'] ) && ( $_GET['post_type'] == eazyest_gallery()->post_type ) )
 			return false;
 			
-		if ( ( ! isset( get_current_screen()->post_type ) ) || ( eazyest_gallery()->post_type != get_current_screen()->post_type ) )
+		$screen = get_current_screen();
+		
+		if ( ( ! isset( $screen->post_type ) ) || ( eazyest_gallery()->post_type != $screen->post_type ) )
 			return true;			
 			
 		return false;
@@ -234,15 +236,16 @@ class Eazyest_Folder_Editor {
    * @return void
    */
   function fix_content_messages() {
+  	
 		if ( $this->bail() )
 			return;
-  	
+			
   	// remove action for  Shadowbox JS missing source files message.
-  	if ( get_option ( 'shadowbox-js-missing-src' ) ){
+  	if ( get_option ( 'shadowbox-js-missing-src' ) )
   		delete_option( 'shadowbox-js-missing-src' );
-	  	global $ShadowboxAdmin;
-	  	if ( isset( $ShadowboxAdmin ) )
-	  		remove_action( 'admin_notices', array( $ShadowboxAdmin, 'missing_src_notice' ) );
+  	global $ShadowboxAdmin;
+  	if ( isset( $ShadowboxAdmin ) ) {
+  		remove_action( 'admin_notices', array( $ShadowboxAdmin, 'missing_src_notice' ) );
 		}
   }
 	
