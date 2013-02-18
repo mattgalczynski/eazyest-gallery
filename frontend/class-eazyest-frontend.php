@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r131)
+ * @version 0.1.0 (r136)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -258,6 +258,7 @@ class Eazyest_Frontend {
 	function localize_script() {
 		return array(
 			'moreButton' => __( 'More thumbnails', 'eazyest-gallery' ),
+			'spinner'    => '<img src="' . eazyest_gallery()->plugin_url . 'frontend/images/ajax-loader.gif' . '" /> ',
 			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
 		);
 	}	
