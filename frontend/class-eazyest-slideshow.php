@@ -205,7 +205,7 @@ class Eazyest_Slideshow {
 			<div class="camera_wrap camera_<?php echo $skin ?>_skin" id="camera_wrap_<?php echo $id ?>">
 			<?php while( $query->have_posts() ) :	$query->the_post(); ?>
 			<?php
-				if ( apply_filters( 'eazyest_gallery_slideshow_captions', false ) ) {
+				if ( apply_filters( 'eazyest_gallery_slideshow_captions', true ) ) {
 				$caption_div = "
 						<div class='camera_caption fadeFromBottom'>
 	             " . wp_get_attachment_link( $post->ID, 'none', true, false, wptexturize( $post->post_excerpt ) ) . "
