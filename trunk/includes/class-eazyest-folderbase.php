@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r123)
+ * @version 0.1.0 (r133)
  * @access public
  */
 
@@ -1635,9 +1635,11 @@ class Eazyest_FolderBase {
 		$name   = basename( $attached );
 		$width  = $metadata['width'];
 		$height = $metadata['height'];
-		if ( 'full' != $size && isset( $metadata['sizes'][$size]['file'] ) ) {
-			$name = basename( $metadata['sizes'][$size]['file'] );
-			$dir = $dir . '/' . dirname( $metadata['sizes'][$size]['file'] );
+		if ( isset( $metadata['sizes'] ) ) {
+			if ( 'full' != $size && isset( $metadata['sizes'][$size] ) && isset( $metadata['sizes'][$size]['file'] ) ) {
+				$name = basename( $metadata['sizes'][$size]['file'] );
+				$dir = $dir . '/' . dirname( $metadata['sizes'][$size]['file'] );
+			}
 		}
 		$img_url = eazyest_gallery()->address . $dir .'/' . $name;
 		return array( $img_url, $width, $height, false ); 
