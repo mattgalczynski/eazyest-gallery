@@ -22,6 +22,7 @@
 			$('nav.thumbnail-navigation .nav-next').removeClass('nav-next alignright').addClass('nav-more alignleft');
 			$('nav.thumbnail-navigation .nav-more a').addClass('button').html( eazyestFrontend.moreButton );
 			$('nav.thumbnail-navigation .nav-more').on( 'click', 'a', function() {
+				$(this).html( eazyestFrontend.moreButton + '&hellip;' );
 				thumbsPage = $(this).attr('id').substr(15);
 				var data = {
 					action : 'eazyest_gallery_more_thumbnails',
