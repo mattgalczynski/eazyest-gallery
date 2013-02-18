@@ -2,7 +2,7 @@
 		
 	function eazyest_gallery_collect_finished(response) {
 		if ( 0 == response ) {
-			$('#ajax-response').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).delay(10000).hide(2000, 'linear', function(){
+			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).delay(10000).hide(2000, 'linear', function(){
 				$(this).html('');
 			});
 		} else {
@@ -13,7 +13,7 @@
 				totalCount += folder.images;
 				$(tdImages).html(count);
 			});
-			$('#ajax-response').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).delay(10000).hide(2000, 'linear', function(){
+			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).delay(10000).hide(2000, 'linear', function(){
 				$(this).html('');
 			});
 		}
@@ -36,7 +36,8 @@
 	$(document).ready(function(){
 		
 		if ( pagenow == eazyestGalleryCollect.pagenow ) {
-		 $('#ajax-response').html( eazyestGalleryCollect.collecting ).addClass('collect-folders').show('fast',function(){
+		 $( eazyestGalleryCollect.collecting ).insertBefore('#posts-filter table.wp-list-table');
+		 $('#eazyest-collect-folders').show('fast',function(){
 		 	eazyest_gallery_collect_next('start');
 		 });
 		}
