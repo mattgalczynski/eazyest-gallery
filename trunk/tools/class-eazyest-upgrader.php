@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r115)
+ * @version 0.1.0 (r141)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -296,7 +296,7 @@ class Eazyest_Gallery_Upgrader {
 		if ( ! $this->should_upgrade() ) {
 			?>
 			<h3><?php echo __( 'No upgrade required', 'eazyest-gallery' ) ?></h3>
-			<p><?php printf( __( 'Your database holds a secure version of Eazyest Gallery (%s), good job!', 'eazyest-gallery' ), '<strong>' . eazyest_gallery()->version() . '</strong>' ); ?></p>
+			<p><?php printf( __( 'You don&#8217;t need to update this version of Eazyest Gallery (%s), good job!', 'eazyest-gallery' ), '<strong>' . eazyest_gallery()->version() . '</strong>' ); ?></p>
 			<?php
 			return true;
 		}
@@ -530,9 +530,10 @@ class Eazyest_Gallery_Upgrader {
 			<form id="upgrade-form" action="admin.php" method="post">
 				<input type="hidden" name="action" id="" value="skip_gallery_update"  />
 				<?php wp_nonce_field( 'eazyest-gallery-update' ); ?>
-				<h3><?php _e( 'Upgrade from Lazyest Gallery',                                                                 'eazyest-gallery' )?></h3>
-				<p><?php  _e( 'Eazyest Gallery uses custom post types and stores all information in the WordPress database.', 'eazyest-gallery' ) ?></p>
-				<p><?php  _e( 'You have to convert your gallery to custom post types.',                                       'eazyest-gallery' ) ?></p>
+				<h3><?php         _e( 'Upgrade from Lazyest Gallery',                                                                 'eazyest-gallery' )?></h3>
+				<p><?php          _e( 'Eazyest Gallery uses custom post types and stores all information in the WordPress database.', 'eazyest-gallery' ) ?></p>
+				<p><?php          _e( 'You have to convert your gallery to custom post types.',                                       'eazyest-gallery' ) ?></p>
+				<p><strong><?php  _e( 'Please backup your database and your gallery before you start upgrading.',                     'eazyest-gallery' ) ?></strong></p>
 				<?php foreach( $this->sections() as $section => $parts ) : ?>
 				<?php $this->display_section( $section ); ?>
 				<?php endforeach; ?>
