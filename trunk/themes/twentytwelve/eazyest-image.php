@@ -63,8 +63,8 @@ if ( 'default' != eazyest_gallery()->on_slide_click ) :
 endif;
 
 $attachment_size = apply_filters( 'twentytwelve_attachment_size', array( 960, 960 ) );
-// we need to add a filter to add popup markup
-$next_link = apply_filters( 'wp_get_attachment_link', '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
+// we need to add popup markup
+$next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
 ?>
 								<?php	echo $next_link; ?>
 								<?php if ( ! empty( $post->post_excerpt ) ) : ?>
