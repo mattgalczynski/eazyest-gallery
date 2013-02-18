@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r136)
+ * @version 0.1.0 (r140)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -991,7 +991,14 @@ class Eazyest_Frontend {
 		
 		if ( count( $ancestors ) ) {
 			foreach( $ancestors as $folder_id ) {
-				$crumbs[] = '<a href="' . get_permalink( $folder_id ) . '" class="eazyest-gallery-breadcrumb-item">' . get_the_title( $folder_id ) . '</a>';
+				$the_permalink = get_permalink( $folder_id );				
+				$the_title     = get_the_title( $folder_id );
+				$the_linktitle = esc_attr( $the_title );
+				if ( get_post_status( $folder_id ) == 'trash' ){
+					$the_permalink = 'javascript:void(0)';
+					$the_linktitle     = __( 'This folder is not available', 'eazyest-gallery' ); 
+				}   
+				$crumbs[] = "<a href='$the_permalink' title='$the_linktitle' class='eazyest-gallery-breadcrumb-item'>$the_title</a>";
 			}
 		}
 		$crumbs[] = get_the_title( $post_id );
