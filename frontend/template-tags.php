@@ -118,8 +118,28 @@ function ezg_icontag() {
 	echo eazyest_frontend()->icontag();
 }
 
+/**
+ * ezg_captiontag()
+ * Wrap for Eazyest_Frontend::captiontag()
+ * 
+ * @since 0.1.0 (r2)
+ * @return void
+ */
 function ezg_captiontag() {
 	echo eazyest_frontend()->captiontag();
+}
+
+/**
+ * ezg_add_popup()
+ * Wrap for Eazyest_Frontend::add_attr_to_link().
+ * @see Eazyest_Frontend::add_attr_to_link()
+ * 
+ * @param string $link
+ * @param int $post_id
+ * @return string
+ */
+function ezg_add_popup( $link, $post_id ) {
+	return eazyest_frontend()->add_attr_to_link( $link, $post_id ) ;
 }
 
 /**
