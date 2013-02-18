@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r133)
+ * @version 0.1.0 (r139)
  * @access public
  */
 
@@ -630,17 +630,24 @@ class Eazyest_FolderBase {
 					$path = $gallery_path . '/' . $directory;
 					$sub_id = $this->get_folder_by_path( $path );
 					$this->goto_parent( $sub_id );
-					// remove all attachments and files in this folder/directory
+					// remove all attachments and files in this subfolder/directory
 					$attachments = get_children(  array( 'post_parent' => $sub_id, 'post_type' => 'attachment' )  );
 					if ( ! empty( $attachments ) ) {
 						foreach( $attachments as $attachment )
 							wp_delete_attachment( $attachment->ID, true );
 					} 
 				}
-			}
+			} 
+			// remove all attachments and files in this folder/directory
+			$attachments = get_children(  array( 'post_parent' => $post_id, 'post_type' => 'attachment' )  );
+			if ( ! empty( $attachments ) ) {
+				foreach( $attachments as $attachment )
+					wp_delete_attachment( $attachment->ID, true );
+			} 
 			$gallery_path = ezg_get_gallery_path( $post_id );
 			$delete_dir = eazyest_gallery()->root() . $gallery_path;
-			$this->clear_dir( $gallery_path ); 	
+			// now remove the folder and all files from the server
+			$this->clear_dir( $delete_dir ); 	
 		}
 	}
 	
