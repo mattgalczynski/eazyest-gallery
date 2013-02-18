@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r139)
+ * @version 0.1.0 (r143)
  * @access public
  */
 
@@ -134,6 +134,7 @@ class Eazyest_FolderBase {
 		add_filter( 'wp_get_attachment_url',      array( $this, 'get_attachment_url'         ),  20, 2 );
 		add_filter( 'update_post_metadata',       array( $this, 'update_attachment_metadata' ),  20, 5 );
 		add_filter( 'wp_get_attachment_metadata', array( $this, 'get_attachment_metadata'    ),  10, 2 );
+		add_filter( 'image_downsize',             array( $this, 'image_downsize'             ),  10, 3 );
 		// filters related to image editing 
 		add_filter( 'wp_image_editors',           array( $this, 'image_editors'              ), 999    );
 		add_filter( 'wp_save_image_editor_file',  array( $this, 'save_image_editor_file'     ),  20, 5 );
@@ -1313,7 +1314,6 @@ class Eazyest_FolderBase {
 			$attached_file = get_post_meta( $post_id, '_wp_attached_file', true );
 			$url = eazyest_gallery()->address() . $attached_file; 
 		}
-				
 		return $url;	
 	}
 	
@@ -1881,8 +1881,7 @@ class Eazyest_FolderBase {
 		$attachment = get_post( $attachment_id );
 		
 		if ( empty( $attachment ) )
-			return false;
-			
+			return false;			
 		return false !== strpos( $attachment->guid, eazyest_gallery()->address() );	
 	}
 	
