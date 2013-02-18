@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r117)
+ * @version 0.1.0 (r145)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -127,16 +127,26 @@ class Eazyest_Slideshow {
 	 * Adds javascript in wp_footer to start the slideshow(s)
 	 * 
 	 * @since 0.1.0 (r2)
+	 * @uses apply_filters(  'eazyest_gallery_camera_slideshow_options' ) array of options for camera slideshow
+	 * @see http://www.pixedelic.com/plugins/camera/#opts_anchor
 	 * @return void
 	 */
 	function camera_scripts() {
 		if ( empty( $this->cameras ) )
 			return;
+		
+		$camera_options = apply_filters( 'eazyest_gallery_camera_slideshow_options', array(
+			'thumbnails' => false,
+			'pagination' => false,
+			'portrait'   => true,
+			'height'		 => '50%',
+			'time'       => 7000
+		) );		
 		foreach( $this->cameras as $id ) {
 			?>
 		<script type="text/javascript">
 			(function($) {	
-				$('#camera_wrap_<?php echo $id ?>').camera({ thumbnails: false, pagination: false, portrait: true  });
+				$('#camera_wrap_<?php echo $id ?>').camera(<?php echo json_encode($camera_options); ?>);
 			})(jQuery)
 		</script>
 			<?php			
@@ -185,16 +195,26 @@ class Eazyest_Slideshow {
 			return;	
 					
 		$global_post = $GLOBALS['post'];
-		global $post;	
+		global $post;
+			
 		$query = new WP_Query( $query_args );
+		
+		$caption_div = '';
 		?>
 		<div class="fluid_container">
 			<div class="camera_wrap camera_<?php echo $skin ?>_skin" id="camera_wrap_<?php echo $id ?>">
 			<?php while( $query->have_posts() ) :	$query->the_post(); ?>
+			<?php
+				if ( apply_filters( 'eazyest_gallery_slideshow_captions', false ) ) {
+				$caption_div = "
+						<div class='camera_caption fadeFromBottom'>
+	             " . wp_get_attachment_link( $post->ID, 'none', true, false, wptexturize( $post->post_excerpt ) ) . "
+	          </div>
+				";
+			} 
+			?>
 			<div data-thumb="<?php echo $this->data_image( 'thumbnail' ) ?>" data-src="<?php echo $this->data_image( $size ) ?>">
-          <div class="camera_caption fadeFromBottom">
-             <?php echo wp_get_attachment_link( $post->ID, 'none', true, false, wptexturize( $post->post_excerpt ) ) ?>
-          </div>
+         <?php echo $caption_div; ?> 
       </div>
 			<?php endwhile; ?>
 		</div>
@@ -333,6 +353,9 @@ class Eazyest_Slideshow {
 		), $attr ) );
 	
 		$id = intval($id);
+		if ( ! $id )
+			$id = $GLOBALS['post']->ID;
+			
 		if ( 'RAND' == $order )
 			$orderby = 'none';
 			
