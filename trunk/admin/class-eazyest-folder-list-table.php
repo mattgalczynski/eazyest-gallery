@@ -16,7 +16,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r2)
+ * @version 0.1.0 (r150)
  * @access public 
  * @see WordPress WP_List_Table
  * @link http://codex.wordpress.org/Class_Reference/WP_List_Table
@@ -91,10 +91,10 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 	 */
 	function get_sortable_columns() {
 		return array(
-			'title'    => 'title',
-			'parent'   => 'parent',
-			'comments' => 'comment_count',
-			'date'     => array( 'date', true )
+			'folder_title'    => 'title',
+			'folder_parent'   => 'parent',
+			'folder_comments' => 'comment_count',
+			'folder_date'     => array( 'date', true )
 		);
 	}	
 	
@@ -164,11 +164,48 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 
 			$id = $with_id ? "id='$column_key'" : '';
 
-			if ( !empty( $class ) )
+			if ( !empty( $class ) ) {
 				$class = "class='" . join( ' ', $class ) . "'";
-
+				$class = str_replace( '-folder_', '-', $class );
+			}
+				
 			echo "<th scope='col' $id $class $style>$column_display_name</th>";
 		}
+	}
+	
+	/**
+	 * Eazyest_Folder_List_Table::display()
+	 * Override display to prevent duplicate ids in folder-editor.
+	 * @see WP_List_Table::display()
+	 * 
+	 * @since 0.1.0 (r150)
+	 * @return void
+	 */
+	function display() {
+		extract( $this->_args );
+
+		$this->display_tablenav( 'top' );
+
+		?>
+		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>" cellspacing="0">
+			<thead>
+			<tr>
+				<?php $this->print_column_headers(); ?>
+			</tr>
+			</thead>
+		
+			<tfoot>
+			<tr>
+				<?php $this->print_column_headers( false ); ?>
+			</tr>
+			</tfoot>
+		
+			<tbody id="the-folder-list"<?php if ( $singular ) echo " data-wp-lists='list:$singular'"; ?>>
+				<?php $this->display_rows_or_placeholder(); ?>
+			</tbody>
+		</table>
+		<?php
+		$this->display_tablenav( 'bottom' );
 	}
 	
 	/**
@@ -258,10 +295,11 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 			wp_nonce_field( 'bulk-folders', 'bulk-folders' );
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
-	
+			<?php if ( ! isset( $_GET['post'] ) ) : ?>
 			<div class="alignleft actions">
 				<?php $this->bulk_actions(); ?>
 			</div>
+			<?php endif; ?>
 			<?php
 			$this->extra_tablenav( $which );
 			$this->pagination( $which );
@@ -433,7 +471,8 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 		list( $columns, $hidden ) = $this->get_column_info();
 
 		foreach ( $columns as $column_name => $column_display_name ) {
-			$class = "class=\"$column_name column-$column_name\"";
+			$class_name = false === strpos( $column_name, 'folder_') ? $column_name : substr( $column_name, 7 );
+			$class = "class=\"$class_name column-$class_name\"";
 
 			$style = '';
 			if ( in_array( $column_name, $hidden ) )
@@ -454,7 +493,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 			<?php
 			break;
 
-			case 'title':
+			case 'folder_title':
 				if ( $this->hierarchical_display ) {
 					$attributes = 'class="post-title page-title column-title"' . $style;
 
@@ -510,7 +549,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 				echo '</td>';
 			break;
 
-			case 'date':
+			case 'folder_date':
 				if ( '0000-00-00 00:00:00' == $post->post_date ) {
 					$t_time = $h_time = __( 'Unpublished', 'eazyest-gallery' );
 					$time_diff = 0;
@@ -546,7 +585,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 				echo '</td>';
 			break;
 
-			case 'comments':
+			case 'folder_comments':
 			?>
 			<td <?php echo $attributes ?>><div class="post-com-count-wrapper">
 			<?php

@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r57) 
+ * @version 0.1.0 (r150) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public
@@ -81,6 +81,41 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		$columns['comments']     = '<span><span class="vers"><div title="' . esc_attr__( 'Comments', 'eazyest-gallery' ) . '" class="comment-grey-bubble"></div></span></span>';
 		$columns['date']         = _x( 'Date', 'column name', 'eazyest-gallery' );
 		return $columns;
+	}
+	
+	/**
+	 * Eazyest_Media_List_Table::display()
+	 * Override display to prevent duplicate ids.
+	 * @see WP_List_Table::display()
+	 * 
+	 * @since 0.1.0 (r150)
+	 * @return void
+	 */
+	function display() {
+		extract( $this->_args );
+
+		$this->display_tablenav( 'top' );
+
+		?>
+		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>" cellspacing="0">
+			<thead>
+			<tr>
+				<?php $this->print_column_headers(); ?>
+			</tr>
+			</thead>
+		
+			<tfoot>
+			<tr>
+				<?php $this->print_column_headers( false ); ?>
+			</tr>
+			</tfoot>
+		
+			<tbody id="the-media-list"<?php if ( $singular ) echo " data-wp-lists='list:$singular'"; ?>>
+				<?php $this->display_rows_or_placeholder(); ?>
+			</tbody>
+		</table>
+		<?php
+		$this->display_tablenav( 'bottom' );
 	}
 	
 	/**

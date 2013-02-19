@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r37)
+ * @version 0.1.0 (r150)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -690,18 +690,22 @@ class Eazyest_Folder_Editor {
 	function folder_columns( $columns ) {
 		$type = eazyest_gallery()->post_type;		
 		$drag_url = eazyest_gallery()->plugin_url . 'admin/images/sort.png';
-		$post_status = isset( $_REQUEST['post_status'] ) ? $_REQUEST['post_status'] : ''; 
+		$post_status = isset( $_REQUEST['post_status'] ) ? $_REQUEST['post_status'] : '';
+		$title = isset( $_GET['post'] ) ? 'folder_title' : 'title';
+		$comments = isset( $_GET['post'] ) ? 'folder_comments' : 'comments';
+		$date = isset( $_GET['post'] ) ? 'folder_date' : 'date';
 		$columns = array();
-		$columns['cb'] = '<input type="checkbox" />';
+		if ( ! isset( $_GET['post'] ) )
+			$columns['cb'] = '<input type="checkbox" />';
 		if (  'menu_order-ASC' == eazyest_gallery()->sort_by() && $post_status != 'trash' ) 
 			$columns["{$type}_drag"] = '<img src="' . $drag_url . '" alt="' . __( 'Draggable Column', 'eazyest-gallery' ) .  '" style="width:16px; height=16px"/>';
 		$columns["{$type}_path"]   = _x( 'Name',    'column name', 'eazyest-gallery' );
-		$columns['title']          = _x( 'Caption', 'column name', 'eazyest-gallery' );
+		$columns[$title]           = _x( 'Caption', 'column name', 'eazyest-gallery' );
 		$columns["{$type}_images"] = _x( 'Images',  'column name', 'eazyest-gallery' );
 		$columns['tags']           = _x( 'Tags',    'column name', 'eazyest-gallery' );
-		$columns['comments']       = '<span><span class="vers"><div title="' . esc_attr__( 'Comments', 'eazyest-gallery' ) . '" class="comment-grey-bubble"></div></span></span>';
+		$columns[$comments]        = '<span><span class="vers"><div title="' . esc_attr__( 'Comments', 'eazyest-gallery' ) . '" class="comment-grey-bubble"></div></span></span>';
 		$columns["{$type}_new"]    = '';
-		$columns['date']           = _x( 'Date' ,   'column name', 'eazyest-gallery' );
+		$columns[$date]            = _x( 'Date' ,   'column name', 'eazyest-gallery' );
 		return $columns;
 	}
 	
