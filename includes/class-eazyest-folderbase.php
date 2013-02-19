@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r150)
+ * @version 0.1.0 (r153)
  * @access public
  */
 
@@ -1622,6 +1622,7 @@ class Eazyest_FolderBase {
 	/**
 	 * Eazyest_FolderBase::image_downsize()
 	 * This function filters the image_downsize($id, $size = 'medium')
+	 * Returns the image url based on the gallery path instead of wp_upload path
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @see wordpress/wp-includes/media.php
@@ -1638,11 +1639,21 @@ class Eazyest_FolderBase {
 			
 		$metadata = wp_get_attachment_metadata( $post_id );
 		$attached = get_post_meta( $post_id, '_wp_attached_file', true );
+		
+		if ( ! file_exists( eazyest_gallery()->root() . $attached ) )
+			return false;
+			
+			
 		$pathinfo = pathinfo( $attached );		
 		$dir    = $pathinfo['dirname'];
 		$name   = $pathinfo['basename'];
-		$width  = $metadata['width'];
-		$height = $metadata['height'];
+		
+		if ( isset( $metadata['width'] ) && isset( $metadata['height'] ) ) {
+			$width  = $metadata['width'];
+			$height = $metadata['height'];
+		} else {
+			list( $width, $height ) = getimagesize( eazyest_gallery()->root() . $attached );
+		}
 		
 		// $size is array, find corresponding size string
 		if ( is_array( $size ) ) {
