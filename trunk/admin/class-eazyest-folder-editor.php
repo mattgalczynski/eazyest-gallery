@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r150)
+ * @version 0.1.0 (r152)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -972,10 +972,9 @@ class Eazyest_Folder_Editor {
    * @return array
    */
   function media_view_strings( $strings, $post ) {
-  	
 		if ( isset( $post ) && eazyest_gallery()->post_type == $post->post_type ) { 		
 	 		// disable some views that have no purpose in Eazyest Gallery
-	 		$disabled = array( 'selectFiles', 'createNewGallery', 'fromUrlTitle', 'createGalleryTitle' );
+	 		$disabled = array( 'selectFiles', 'createNewGallery', 'insertFromUrlTitle', 'createGalleryTitle' );
 	 		foreach( $disabled as $string )
 	 			$strings[$string] = '';
 	 		$strings['allMediaItems']      = __( 'Select a view', 'eazyest-gallery'           );	
