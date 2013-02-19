@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r103)
- * @version 0.1.0 (r103)
+ * @version 0.1.0 (r148)
  * @access public
  */
 class Eazyest_About_Page {
@@ -83,7 +83,7 @@ class Eazyest_About_Page {
 		</style>
 		<div class="wrap about-wrap">
 			<h1><?php printf( __( 'Welcome to Eazyest Gallery %s', 'eazyest-gallery' ), $display_version ); ?></h1>
-			<div class="about-text"><?php printf( __( 'Thank you for installing Eazyest Galery %s! This plugin offers your maybe the easiest way to manage your galleries in WordPress.', 'eazyest-gallery'  ), $display_version ); ?></div>
+			<div class="about-text"><?php printf( __( 'Thank you for installing Eazyest Galery %s! This plugin offers you the easiest way to manage your galleries in WordPress.', 'eazyest-gallery'  ), $display_version ); ?></div>
 			<div class="eazyest-badge"><?php printf( __( 'Version %s', 'eazyest-gallery' ), $display_version ); ?></div>
 		<?php		
 	}
@@ -277,6 +277,21 @@ class Eazyest_About_Page {
 				<li class="wp-person" id="wp-person-blogbata">
 					<img src="http://2.gravatar.com/avatar/f504f7cecb236d61336f643c2bd3e2da?s=60" class="gravatar" alt="Blogbata" />
 					<a class="web">Blogbata</a>
+					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>
+				<li class="wp-person" id="wp-person-santiagodemierr">
+					<img src="http://www.gravatar.com/avatar/9457df3ffa8c8c08777b658a0671f35f?s=60&d=monsterid&r=g" class="gravatar" alt="santiago.demierre" />
+					<a href="http://wordpress.org/support/profile/santiagodemierre" class="web">santiago.demierre</a>
+					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>				
+				<li class="wp-person" id="wp-person-tgv604">
+					<img src="http://www.gravatar.com/avatar/d583b42b4707813c345d63c376367a88?s=60&d=monsterid&r=g" class="gravatar" alt="tgv604" />
+					<a href="http://wordpress.org/support/profile/tgv604" class="web">tgv604</a>
+					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>
+				<li class="wp-person" id="wp-person-nino-b">
+					<img src="http://www.gravatar.com/avatar/4a7d696eb3c30f87d83e1dc63ac04048?s=60&d=monsterid&r=g" class="gravatar" alt="nino-b" />
+					<a href="http://wordpress.org/support/profile/nino-b" class="web">nino-b</a>
 					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
 				</li>
 			</ul>

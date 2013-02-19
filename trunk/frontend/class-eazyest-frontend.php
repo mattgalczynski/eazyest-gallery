@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r144)
+ * @version 0.1.0 (r147)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
