@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r143)
+ * @version 0.1.0 (r150)
  * @access public
  */
 
@@ -1635,17 +1635,45 @@ class Eazyest_FolderBase {
 	public function image_downsize( $resize, $post_id, $size ) {
 		if ( ! $this->is_gallery_image( $post_id ) )
 			return false;
-		
+			
 		$metadata = wp_get_attachment_metadata( $post_id );
-		$attached = get_post_meta( $post_id, '_wp_attached_file', true );		
-		$dir    = dirname( $attached );
-		$name   = basename( $attached );
+		$attached = get_post_meta( $post_id, '_wp_attached_file', true );
+		$pathinfo = pathinfo( $attached );		
+		$dir    = $pathinfo['dirname'];
+		$name   = $pathinfo['basename'];
 		$width  = $metadata['width'];
 		$height = $metadata['height'];
+		
+		// $size is array, find corresponding size string
+		if ( is_array( $size ) ) {
+			// check if file exists for this size array
+			$size_name = $pathinfo['filename'] . "-{$size[0]}x{$size[1]}" . $pathinfo['extension'];
+			$size_file = eazyest_gallery()->root() . $dir . '/_cache/' . $size_name;
+			if ( file_exists( $size_file ) ) {
+				$dir  = $dir . '/_cache'; 
+				$name = $size_name;
+			} else {
+				// find default size that fits best
+				$defaults = array( 'thumbnail', 'medium', 'large' );
+				foreach( $defaults as $default ) {
+					if ( $size[0] <= intval( get_option("{$default}_size_w" ) ) && $size[1] <= intval( get_option("{$default}_size_h" ) ) ) {
+						$size = $default;
+						break;
+					}
+				}
+				if ( is_array( $size ) )
+					$size = 'full';
+			}
+		}
+		
+		// get image name from metadata					
 		if ( isset( $metadata['sizes'] ) ) {
-			if ( 'full' != $size && isset( $metadata['sizes'][$size] ) && isset( $metadata['sizes'][$size]['file'] ) ) {
-				$name = basename( $metadata['sizes'][$size]['file'] );
-				$dir = $dir . '/' . dirname( $metadata['sizes'][$size]['file'] );
+			// check again we could have changed $size
+			if ( ! is_array( $size ) ) {
+				if ( 'full' != $size && isset( $metadata['sizes'][$size] ) && isset( $metadata['sizes'][$size]['file'] ) ) {
+					$name = basename( $metadata['sizes'][$size]['file'] );
+					$dir = $dir . '/' . dirname( $metadata['sizes'][$size]['file'] );
+				}
 			}
 		}
 		$img_url = eazyest_gallery()->address . $dir .'/' . $name;
