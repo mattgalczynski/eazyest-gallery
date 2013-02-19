@@ -432,9 +432,14 @@ class Eazyest_Frontend {
 	 */
 	function content_galleryfolder( $content ) {
 		ob_start(); // buffer to use actions that echo content
+		global $post;
 		?>
-		
-		<div class="gallery eazyest-gallery">
+		<style>
+			#eazyest-folder-<?php echo $post->ID; ?> .gallery-item {
+				width: <?php echo strval( get_option( 'thumbnail_size_w') + 20 ) ?>px; 
+			}
+		</style>
+		<div id="eazyest-folder-<?php echo $post->ID; ?>" class="gallery eazyest-gallery gallery-columns-1 gallery-size-thumbnail">
 			<dl class="gallery-item folder-item">
 				<?php do_action( 'eazyest_gallery_before_folder_icon' ); ?>
 				<dt class="gallery-icon folder-icon">
