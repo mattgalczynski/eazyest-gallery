@@ -1,6 +1,7 @@
 (function($) {
 		
 	var eazyestUpgraderRunning = false;
+	var eazyestImageCount = 0;
 	
 	function eazyestUpgradeFolder( folderCount ) {		
 		if ( eazyestUpgraderRunning ) {
@@ -16,9 +17,16 @@
 				if ( response != '0' ) {
 					var newCount = parseInt( response, 10 ); 
 					if( newCount != folderCount ) {
+						// start upgrading new folder
 						var current = parseInt( $('#current-folder').html() );
 						current++;
 						$('#current-folder').html(current);
+						$('#image-counter').hide();
+						eazyestImageCount = 0;
+					} else {
+						$('#image-counter').show();
+						eazyestImageCount = eazyestImageCount + parseInt( data.images_max, 10 );
+						$('#image-batch').html(eazyestImageCount);
 					}
 					eazyestUpgradeFolder( newCount );
 				} else {				
@@ -112,6 +120,7 @@
 						$('#current-folder').html( '1' );
 						$('#all-folders').html(folderCount);
 						$('#folder-counter').show();
+						$('span.spinner').show();
 						eazyestUpgradeFolder( folderCount );
 					}
 				}

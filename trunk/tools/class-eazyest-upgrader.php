@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r141)
+ * @version 0.1.0 (r57)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -136,7 +136,7 @@ class Eazyest_Gallery_Upgrader {
 	function enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
 		if ( $this->should_upgrade() ) {	
-			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r56', true );			
+			wp_enqueue_script( 'eazyest-gallery-upgrader',  eazyest_gallery()->plugin_url . "tools/js/eazyest-gallery-upgrader.$j", array( 'jquery' ), '0.1.0-r157', true );			
 			wp_localize_script( 'eazyest-gallery-upgrader', 'eazyestUpgraderSettings', $this->script_settings() );
 		} else {				
 			$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
@@ -530,10 +530,12 @@ class Eazyest_Gallery_Upgrader {
 			<form id="upgrade-form" action="admin.php" method="post">
 				<input type="hidden" name="action" id="" value="skip_gallery_update"  />
 				<?php wp_nonce_field( 'eazyest-gallery-update' ); ?>
-				<h3><?php         _e( 'Upgrade from Lazyest Gallery',                                                                 'eazyest-gallery' )?></h3>
-				<p><?php          _e( 'Eazyest Gallery uses custom post types and stores all information in the WordPress database.', 'eazyest-gallery' ) ?></p>
-				<p><?php          _e( 'You have to convert your gallery to custom post types.',                                       'eazyest-gallery' ) ?></p>
-				<p><strong><?php  _e( 'Please backup your database and your gallery before you start upgrading.',                     'eazyest-gallery' ) ?></strong></p>
+				<h3><?php         _e( 'Upgrade from Lazyest Gallery',                                                                                         'eazyest-gallery' ); ?></h3>
+				<p><?php          _e( 'Eazyest Gallery uses custom post types and stores all information in the WordPress database.',                         'eazyest-gallery' ); ?></p>
+				<p><?php          _e( 'You have to convert your gallery to custom post types.',                                                               'eazyest-gallery' ); ?></p>
+				<p><strong><?php  _e( 'Please backup your database and your gallery before you start upgrading.',                                             'eazyest-gallery' ); ?></strong></p>
+				<p><em><?php      _e( 'Be aware that importing and renaming folders and images and importing and linking comments is a time consuming task.', 'eazyest-gallery' ); ?></em></p>
+				<p><em><?php      _e( 'Importing large galleries containing hundreds of folders could well take hours to complete.',                          'eazyest-gallery' ); ?></em></p>
 				<?php foreach( $this->sections() as $section => $parts ) : ?>
 				<?php $this->display_section( $section ); ?>
 				<?php endforeach; ?>
@@ -543,7 +545,8 @@ class Eazyest_Gallery_Upgrader {
 				<div id="upgrade-process" class="hidden-upgrader">
 					<h3 id="upgrade-process-title"><?php _e( 'Upgrade progress', 'eazyest-gallery' ); ?></h3>
 					<p id="upgrade-error" class="hidden-upgrader"><?php _e( 'Something went terribly wrong in the upgrade process. Please check your settings above.', 'eazyest-gallery' ); ?></p>
-					<p id="folder-counter" class="hidden-upgrader"><span class="spinner"></span><?php printf( __( 'Converting folder %s of %s', 'eazyest-gallery' ), '<span id="current-folder"></span>', '<span id="all-folders"></span>' ); ?></p>
+					<p id="folder-counter" class="hidden-upgrader"><span class="spinner" style="float:left;"></span><?php printf( __( 'Converting folder %s of %s', 'eazyest-gallery' ), '<span id="current-folder"></span>', '<span id="all-folders"></span>' ); ?></p>
+					<p id="image-counter" class="hidden-upgrader"><?php printf( __( 'Busy converting a large folder. Imported %s images in this folder.', 'eazyest-gallery' ), '<span id="image-batch"></span>'  ) ?></p>
 					<p id="upgrade_page" class="hidden-upgrader"><?php _e( 'Converting your Gallery Page', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-settings" class="hidden-upgrader"><?php _e( 'Updating your settings', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-cleanup" class="hidden-upgrader"><?php _e( 'Cleanup and Remove Lazyest Gallery plugin', 'eazyest-gallery' ); ?></p>
