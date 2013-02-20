@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r145)
+ * @version 0.1.0 (r155)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -139,7 +139,7 @@ class Eazyest_Slideshow {
 			'thumbnails' => false,
 			'pagination' => false,
 			'portrait'   => true,
-			'height'		 => '50%',
+			'height'		 => '75%',
 			'time'       => 7000
 		) );		
 		foreach( $this->cameras as $id ) {
