@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r121)
+ * @version 0.1.0 (r157)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
