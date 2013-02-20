@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r153)
+ * @version 0.1.0 (r154)
  * @access public
  */
 
@@ -1682,7 +1682,9 @@ class Eazyest_FolderBase {
 			// check again we could have changed $size
 			if ( ! is_array( $size ) ) {
 				if ( 'full' != $size && isset( $metadata['sizes'][$size] ) && isset( $metadata['sizes'][$size]['file'] ) ) {
-					$name = basename( $metadata['sizes'][$size]['file'] );
+					$name   = basename( $metadata['sizes'][$size]['file'] );
+					$width  = $metadata['sizes'][$size]['width'];
+					$height = $metadata['sizes'][$size]['height'];
 					$dir = $dir . '/' . dirname( $metadata['sizes'][$size]['file'] );
 				}
 			}
