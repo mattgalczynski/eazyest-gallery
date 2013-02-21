@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r156)
+ * @version 0.1.0 (r158)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -394,7 +394,7 @@ class Eazyest_Frontend {
 		foreach ( (array) $template_names as $template_name ) {
 			if ( !$template_name )
 				continue;
-			if ( file_exists( STYLESHEETPATH . '/' . $template_name)) {
+			if ( file_exists( STYLESHEETPATH . '/' . $template_name )) {
 				$located = STYLESHEETPATH . '/' . $template_name;
 				break;
 			} else if ( file_exists( TEMPLATEPATH . '/' . $template_name) ) {
@@ -502,11 +502,10 @@ class Eazyest_Frontend {
 	 */
 	function folder_content( $content ) {
 		global $post;
-				
 		if ( eazyest_gallery()->post_type != $post->post_type )
 			return $content;
 				
-		if ( current_theme_supports( 'eazyest-gallery' ) || $this->theme_compatible() )
+		if ( current_theme_supports( 'eazyest-gallery' ) || $this->theme_compatible() || file_exists( STYLESHEETPATH . '/single-galleryfolder.php' ) )
 			return $content; 
 			
 		if ( is_single() )
@@ -765,9 +764,9 @@ class Eazyest_Frontend {
 		 
 		$classes = array( 'eazyest-gallery', 'gallery' );
 		$classes[] = "gallery-{$id}";
-		
+		$folder_columns = eazyest_gallery()->folder_columns;
 		if ( 'archive' == $type ) {
-			$classes[] = "gallery-columns-{$this->folder_columns}";
+			$classes[] = "gallery-columns-{$folder_columns}";
 			if ( $id )
 				$classes[] = "folder-{$id}";	
 			$classes[] = 'folders';			
