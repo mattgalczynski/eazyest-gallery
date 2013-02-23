@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r57)
+ * @version 0.1.0 (r159)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -335,25 +335,28 @@ class Eazyest_Gallery_Upgrader {
 		$sections = array(
 			'gallery-settings' => array(				
 				'gallery_folder' => array(
-					'title' => __( 'Your gallery folder', 'eazyest-gallery' )
+					'title' => __( 'Your gallery folder', 'eazyest-gallery' ),
 				),
 				'gallery_id' => array(
-					'title' => __( 'Your gallery page', 'eazyest-gallery' )
+					'title' => __( 'Your gallery page', 'eazyest-gallery' ),
 				),
 				'convert_page' => array(
-					'title' => __( 'Convert page', 'eazyest-gallery' )
+					'title' => __( 'Convert page', 'eazyest-gallery' ),
 				),
 				'allow_comments' => array(
-					'title' => __( 'Allow comments', 'eazyest-gallery' )
+					'title' => __( 'Allow comments', 'eazyest-gallery' ),
 				)				
 			),
 			'upgrade-options' => array(
 				'import_image_max' => array( 
-					'title' => __( 'Images limit', 'eazyest-gallery' )
+					'title' => __( 'Images limit', 'eazyest-gallery' ),
+				),
+				'remove_cache' => array(
+					'title' => __( 'Slides and Thumbs', 'eazyest-gallery' ),
 				),
 				'remove_xml' => array(
-					'title' => __( 'Caption files', 'eazyest-gallery' )
-				)
+					'title' => __( 'Caption files', 'eazyest-gallery' ),
+				),
 			)
 		);
 		return isset( $sections[$section] ) ? $sections[$section] : array();
@@ -454,10 +457,24 @@ class Eazyest_Gallery_Upgrader {
 	 */
 	function import_image_max() {
 		?>
-		<input type="text" name="import_image_max" id="import_image_max" value="50" class="small-text" />
+		<input type="text" name="import_image_max" id="import_image_max" value="<?php echo eazyest_folderbase()->max_process_items ?>" class="small-text" />
 		<label for="import_image_max"><?php _e( 'images to process at a time', 'eazyest-gallery') ?></label>
 		<p class="description"><?php _e( 'Keep this low if you experience out-of-memory issues.', 'eazyest-gallery' ) ?></p>
 		<?php
+	}
+	
+	/**
+	 * Eazyest_Gallery_Upgrader::remove_cache()
+	 * 
+	 * @since 0.1.0 (r159)
+	 * @uses _e()
+	 * @return void
+	 */
+	function remove_cache() {		
+		?>
+		<input type="checkbox" id="remove_cache" name="remove_cache" value="1" checked="checked"  />
+		<label><?php _e( 'Remove slides and thumbs after upgrade', 'eazyest-gallery' ); ?></label>
+		<?php		
 	}
 	
 	/**
@@ -471,7 +488,7 @@ class Eazyest_Gallery_Upgrader {
 	function remove_xml() {		
 		?>
 		<input type="checkbox" id="remove_xml" name="remove_xml" value="1" checked="checked"  />
-		<label><?php _e( 'Discard captions.xml files after upgrade', 'eazyest-gallery' ); ?></label>
+		<label><?php _e( 'Remove captions.xml files after upgrade', 'eazyest-gallery' ); ?></label>
 		<?php
 	}
 	

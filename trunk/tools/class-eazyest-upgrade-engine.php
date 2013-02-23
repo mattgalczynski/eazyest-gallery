@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r157)
+ * @version 0.1.0 (r159)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -573,7 +573,7 @@ class Eazyest_Upgrade_Engine {
 		$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' );
 		if ( $upgrade_folders ) {
 			// apply filter to delete cache (false)
-			if ( apply_filters( 'eazyest_gallery_delete_cache', false ) )
+			if ( isset( $_POST['remove_cache'] ) )
 				$this->delete_cache();
 			
 			// get folder path to upgrade
@@ -789,7 +789,9 @@ class Eazyest_Upgrade_Engine {
 	 * @param integer $images_max maximum number of images to update in one run
 	 * @return integer number of images still to upgrade
 	 */
-	function do_upgrade_images( $folder_id = 0, $images_max = 50 ) {	
+	function do_upgrade_images( $folder_id = 0, $images_max = 0 ) {
+		if  ( ! $images_max )
+			$images_max = eazyest_folderbase()->max_process_items;
 		if ( 0 == $folder_id ) {		
 			$upgrade_folders = get_transient( 'eazyest-gallery-upgrade-folders' );
 			$gallery_path = $upgrade_folders[0];

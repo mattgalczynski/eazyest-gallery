@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r142)
+ * @version 0.1.0 (r159)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -147,10 +147,17 @@ class Eazyest_Admin {
    * @return void
    */
   function actions() {
-  	add_action( 'admin_init', array( $this, 'after_activation' ) );
-  	add_action( 'admin_init', array( $this, 'register_setting' ) );
-  	add_action( 'admin_menu', array( $this, 'admin_menu'       ) );
-  	add_action( 'admin_head', array( $this, 'admin_head'       ) );
+  	add_action( 'admin_init',   array( $this, 'after_activation' ) );
+  	add_action( 'admin_init',   array( $this, 'register_setting' ) );
+  	add_action( 'admin_menu',   array( $this, 'admin_menu'       ) );
+  	add_action( 'admin_head',   array( $this, 'admin_head'       ) );
+  	
+  	// delete attachments in footer to speed up page load
+  	if ( $transient = get_transient( 'eazyest_gallery_delete_attachments' ) )
+  		add_action( 'admin_footer', array( $this, 'delete_attachments' ) );
+  		
+ 		// add attachments in footer to speed up page load
+		add_action( 'admin_footer', array( $this, 'add_attachments' ) );
   }
   
   /**
@@ -316,7 +323,7 @@ class Eazyest_Admin {
   
   /**
    * Eazyest_Admin::admin_head()
-   * Remove about pages from them enu and add menu styles for galleryfolder post type.
+   * Remove about pages from the menu and add menu styles for galleryfolder post type.
    * 
    * @since 0.1.0 (r103)
    * @uses remove_submenu_page()
@@ -353,7 +360,7 @@ class Eazyest_Admin {
 				-moz-background-size: 16px 48px;
 				background-size: 16px 48px;
 			}
-			.icon32-posts-YOUR_POSTTYPE_NAME {
+			.icon32-posts-<?php echo eazyest_gallery()->post_type; ?> {
 				background-image: url('<?php echo  eazyest_gallery()->plugin_url ?>admin/images/icon-adminpage32_2x.png') !important;
 				-webkit-background-size: 32px 32px;
 				-moz-background-size: 32px 32px;
@@ -362,6 +369,58 @@ class Eazyest_Admin {
 		}
 		</style>
   	<?php
+  }
+  
+  /**
+   * Eazyest_Admin::delete_attachments()
+   * Remove leftover attachments that were not deleted because of out of execution time error prevention.
+   * 
+   * @since 0.1.0 (r159)
+   * @uses get_transient() to get IDs of attachments to be deleted
+   * @uses wp_delete_attachment()
+   * @uses set_transient() if not all attachments have been deleted yet
+   * @uses delete_transient() if all attachments have been removed
+   * @return void
+   */
+  function delete_attachments() {
+  	/** remove attachments where images have been removed from server max_process_items per page load to prevent maximun execution time error */ 
+  	if ( $transient = get_transient( 'eazyest_gallery_delete_attachments' ) ) {
+  		$count = 0;
+  		while ( ! empty( $transient ) && $count < eazyest_folderbase()->max_process_items ) {
+  			wp_delete_attachment( $transient[0] );
+  			array_shift( $transient );
+  			$count++;
+  		}
+  		if ( ! empty( $transient) )
+  			set_transient( 'eazyest_gallery_delete_attachments', $transient );
+  		else
+				delete_transient(  'eazyest_gallery_delete_attachments' );	
+  	}
+  }
+  
+  
+  /**
+   * Eazyest_Admin::add_attachments()
+   * Add attachment that could not be inserted because of out of execution time error prevention.
+   * 
+   * @since 0.1.0 (r159)
+   * @uses get_transient() to get folder IDs whith new images
+   * @uses delete_transient()
+   * @return void
+   */
+  function add_attachments() {
+  	/** add attachments weher new images have been found in a folder max_process_items per page load to prevent maximun execution time error */
+  	if ( $post_ids = get_transient(  'eazyest_gallery_add_attachments' ) ) {
+	  	delete_transient(  'eazyest_gallery_add_attachments' );
+	  	$added = 0;	  	
+	  	if ( ! empty($post_ids ) ) {
+		  	foreach( $post_ids as $post_id ) {
+		  		$added += eazyest_folderbase()->add_images( $post_id );
+		  		if( $added > eazyest_folderbase()->max_process_items )
+		  			break;
+				} 
+			}
+		}
   }
   
   /**

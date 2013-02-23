@@ -10,6 +10,7 @@
 				gallery_folder : $('#gallery_folder').val(),
 				images_max     : $('#import_image_max' ).val(),
 				allow_comments : $('input[name=allow_comments]:checked').val(),
+				remove_cache   : $('input[name=remove_cache]:checked').val(),
 				remove_xml     : $('input[name=remove_xml]:checked').val(),
 				_ajax_nonce    : $('#_wpnonce').val()				
 			}

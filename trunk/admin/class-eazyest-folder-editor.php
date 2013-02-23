@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r152)
+ * @version 0.1.0 (r159)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -194,7 +194,7 @@ class Eazyest_Folder_Editor {
 	function localize_collect_script() {
 		return array(
 			'pagenow'     => 'edit-' . eazyest_gallery()->post_type,
-			'collecting'  => '<p id="eazyest-collect-folders" class="collect-folders">' . __( 'Searching for new folders and images', 'eazyest-gallery' ) . '</p>',
+			'collecting'  => '<p title="' . esc_attr__( 'Click to stop search', 'eazyest-gallery' ) . '" id="eazyest-collect-folders" class="collect-folders">' . __( 'Searching for new folders and images', 'eazyest-gallery' ) . '</p>',
 			'notfound'    => __( 'No new images found in your gallery', 'eazyest-gallery'  ),
 			'foundimages' => __( 'Found %d new images in your gallery', 'eazyest-gallery'  ),
 			'_wpnonce'    => wp_create_nonce( 'collect-folders' ),
@@ -342,16 +342,25 @@ class Eazyest_Folder_Editor {
 			<div class="updated"><p><?php echo $message ?></p></div>
 			<?php
 			return;			
-		}					
+		}
 		if ( isset( $_REQUEST['parent-of'] ) ) {
-			$message = __( 'You cannot delete a parent folder', 'eazyest-gallery' );
+			$message = '<p>' . __( 'You cannot delete a parent folder', 'eazyest-gallery' ) . '</p>';
 			$_SERVER['REQUEST_URI'] = remove_query_arg( array( 'parent-of' ), $_SERVER['REQUEST_URI'] );
+		}
+		
+		if ( $errors = get_transient( 'eazyest_gallery_rename_errors' ) ) {
+			$message .= '<p><strong>' . __( 'Eazyest Gallery found one or more new folders, but could not include them.', 'eazyest-gallery' ) . '<strong>';
+			foreach( errors as $error ) {
+				$message .= '<br />' . $error->get_error_message();
+			}
+			$message .= '<p>';
+			delete_transient( 'eazyest_gallery_rename_errors' );
 		}
 			
 		if ( empty( $message ) )
 			return;
 		?>
-		<div class="error"><p><?php echo $message ?></p></div>
+		<div class="error"><?php echo $message ?></div>
 		<?php
 	}
 	
@@ -674,6 +683,9 @@ class Eazyest_Folder_Editor {
 				background: url(images/wpspin_light.gif) no-repeat;
 				background-size: 16px 16px;
 				padding-left: 18px;
+			}
+			#eazyest-collect-folders {
+				cursor:pointer;
 			}
 		</style>
 		<?php	

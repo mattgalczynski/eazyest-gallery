@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r154)
+ * @version 0.1.0 (r159)
  * @access public
  */
 
@@ -46,6 +46,11 @@ class Eazyest_FolderBase {
    * @var number of new (+) or deleted (-) folders found the last time collect_folders() run
 	 */
   private $folders_collected;
+  
+  /**
+   * @var $max_process_items maxium number of items to process to prevent out of execution time errors   * 
+   */
+  public $max_process_items;
   
   /**
    * @staticvar Eazyest_FolderBase $instance single object in memory
@@ -94,29 +99,19 @@ class Eazyest_FolderBase {
 	 * filtered value can be either: 
 	 *  'collect_images' : collect new (ftp) uploaded images when new uploaded folder has been found and inserted in the WP database
 	 *                     this could potentially create many transactions when you open admin 
-	 *  'no_action'      : take no action ( default )
+	 *  '__return_false' : take no action ( default )
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses add_action() for 'save_post', 'before_delete_post' and 'eazyest_gallery_insert_folder'
 	 * @return void
 	 */
 	function actions() {
-		$insert_folder_action = apply_filters( 'eazyest_gallery_insert_folder_action', 'no_action' );
-		
-		add_action( 'save_post',                     array( $this, 'save_post'           ),  1    );
-		add_action( 'save_post',                     array( $this, 'save_attachment'     ),  2    );
-		add_action( 'before_delete_post',            array( $this, 'before_delete_post'  ),  1    );
-		add_action( 'eazyest_gallery_insert_folder', array( $this, $insert_folder_action ), 10, 1 );
+		add_action( 'init',                          array( $this, 'filtered_vars'       ), 1000    );
+		add_action( 'save_post',                     array( $this, 'save_post'           ),    1    );
+		add_action( 'save_post',                     array( $this, 'save_attachment'     ),    2    );
+		add_action( 'before_delete_post',            array( $this, 'before_delete_post'  ),    1    );
+		add_action( 'eazyest_gallery_insert_folder', '__return_false',                        10, 1 );
 	} 
-	
-	/**
-	 * Eazyest_FolderBase::no_action()
-	 * Do nothing
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @return void
-	 */
-	function no_action(){}
 	
 	/**
 	 * Eazyest_FolderBase::filters()
@@ -140,6 +135,18 @@ class Eazyest_FolderBase {
 		add_filter( 'wp_save_image_editor_file',  array( $this, 'save_image_editor_file'     ),  20, 5 );
 		// other filters 
 		add_filter( 'wp_create_file_in_uploads',  array( $this, 'create_file_in_uploads'     ),  10, 2 );
+	}
+	
+	/**
+	 * Eazyest_FolderBase::filtered_vars()
+	 * Initialize variables with filter
+	 * 
+	 * @since 0.1.0 (r159)
+	 * @uses add_filter()
+	 * @return void
+	 */
+	function filtered_vars() {
+		$this->max_process_items = apply_filters( 'eazyest_gallery_max_process_items', 30 );
 	}
 	
 	// Functions related to folders ----------------------------------------------
@@ -620,7 +627,7 @@ class Eazyest_FolderBase {
 		// check delete post for post_type galleryfolder
 		if ( eazyest_gallery()->post_type == get_post_type( $post_id ) ) {
 			// do not delete folder if it has sibbling WP_Posts
-			if ( $this->has_subfolders( $post_id ) ) {
+			if ( $this->has_subfolders( $post_id ) ) {	
 				wp_die( __( 'You cannot delete a parent folder', 'eazyest-gallery' ) );
 			}
 			// if it has subdirectories, but folder has changed parent, relocate directory and attachments
@@ -630,20 +637,27 @@ class Eazyest_FolderBase {
 				foreach( $subdirectories as $subdirectory ) {
 					$path = $gallery_path . '/' . $directory;
 					$sub_id = $this->get_folder_by_path( $path );
-					$this->goto_parent( $sub_id );
-					// remove all attachments and files in this subfolder/directory
-					$attachments = get_children(  array( 'post_parent' => $sub_id, 'post_type' => 'attachment' )  );
-					if ( ! empty( $attachments ) ) {
-						foreach( $attachments as $attachment )
-							wp_delete_attachment( $attachment->ID, true );
-					} 
+					$this->goto_parent( $sub_id );					
 				}
 			} 
-			// remove all attachments and files in this folder/directory
-			$attachments = get_children(  array( 'post_parent' => $post_id, 'post_type' => 'attachment' )  );
-			if ( ! empty( $attachments ) ) {
-				foreach( $attachments as $attachment )
-					wp_delete_attachment( $attachment->ID, true );
+			/** remove all attachments and files in this subfolder/directory 
+			 * @todo we need a cron job for this to prevent out of execution time errors
+			 */
+			$args = array(
+				'post_type'      => 'attachment',
+				'post_parent'    => $post_id,
+				'posts_per_page' => -1,
+				'post_status'    => 'any',
+				'fields'         => 'ids', 
+			);
+			$query = new WP_Query( $args );
+			if ( $query->have_posts() ) {
+				
+				$attachment_transient = $query->posts;
+				if ( $transient = get_transient( 'eazyest_gallery_delete_attachments' ) ) {
+					$attachment_transient = array_merge( $transient, $attachment_transient );
+				}
+				set_transient(  'eazyest_gallery_delete_attachments', $attachment_transient );	
 			} 
 			$gallery_path = ezg_get_gallery_path( $post_id );
 			$delete_dir = eazyest_gallery()->root() . $gallery_path;
@@ -854,7 +868,9 @@ class Eazyest_FolderBase {
 				$folder_path = trailingslashit( $root ) . $folder_path;
 				if ( $this->valid_dir( $folder_path ) ) {										
 					$folder_paths[] = utf8_encode( substr( str_replace( '\\', '/', $folder_path), strlen( eazyest_gallery()->root() ) ) );
-					$folder_paths = array_merge( $folder_paths, $this->_get_folder_paths( $folder_path ) );
+					$sub_paths = $this->_get_folder_paths( $folder_path );
+					if ( is_array( $sub_paths ) && ! empty( $sub_paths ) )
+						$folder_paths = array_merge( $folder_paths, $sub_paths );
 				} else {
 					continue;
 				}
@@ -1013,7 +1029,7 @@ class Eazyest_FolderBase {
 			$old_path = implode( DIRECTORY_SEPARATOR, $parts ) . DIRECTORY_SEPARATOR;
 			$old_dir = $root . $old_path;						
 			$new_dir = $root . $new_path;
-			if ( rename( $old_dir, $new_dir ) )
+			if ( @rename( $old_dir, $new_dir ) )
 				return str_replace( DIRECTORY_SEPARATOR, '/', $new_path );
 			else {				
 				return new WP_Error( 'error', sprintf( __( 'Could not rename folder from %1$s to %2$s', 'eazyest-gallery' ), $old_path, $new_path ) );
@@ -1074,7 +1090,7 @@ class Eazyest_FolderBase {
 			$folder_path = $this->sanitize_folder( $folder_path );
 		}	
 		if ( is_wp_error( $folder_path ) ) {	
-			return 0;
+			return $folder_path;
 		}
 		
 		if ( ! $post_parent ) {
@@ -1117,16 +1133,24 @@ class Eazyest_FolderBase {
 		$this->get_posted_paths( $post_id );
 		$this->get_folder_paths( $post_id );	
 		$added = 0;
+		$errors = array();
 		if ( ! empty( $this->folder_paths['folders'] ) ) {
 			foreach( $this->folder_paths['folders'] as $folder_name ) {
 				$child_name = $this->sanitize_dirname( $folder_name );
 				if ( ! in_array( $child_name, $this->posted_paths['folders'] ) ) {
-					$this->insert_folder( $folder_name, $post_id );
+					$result = $this->insert_folder( $folder_name, $post_id );
+					if ( is_wp_error( $result ) ) {
+						$errors[] = $result;
+						continue;
+					}
 					$this->posted_paths['folders'][] = $child_name;
 					$added++;
 				}
 			}
 		}
+		if ( ! empty( $errors ) )
+			set_transient( 'eazyest_gallery_rename_errors', $errors, DAY_IN_SECONDS );
+			
 		return $added;
 	}
 	
@@ -1144,11 +1168,14 @@ class Eazyest_FolderBase {
 		$this->get_folder_paths( $post_id );
 		$deleted = 0;
 		if ( ! empty( $this->posted_paths['folders'] ) ) {
-			foreach( $this->posted_paths['folders'] as $key => $path_name ) {
+			// reverse array, we want to start to delete sibblings first
+			$posted_paths = array_reverse( $this->posted_paths['folders'] );
+			foreach( $posted_paths as $key => $path_name ) {
 				if ( ! in_array( $path_name, $this->folder_paths['folders'] ) ) {
 					$folder_id = $this->get_folder_by_path( $path_name );
-					wp_delete_post( $post_id, true );
-					$deleted--;
+					if ( $folder_id )	
+						wp_delete_post( $folder_id, true );
+					$deleted++;
 				}
 			}
 		}
@@ -1161,12 +1188,18 @@ class Eazyest_FolderBase {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @param integer $post_id
-	 * @return integer number of folders added + or deleted -
+	 * @return array ( 'add' => int, 'delete' => int ) folders to be added and/or deleted
 	 */
-	function get_new_folders( $post_id ) {
-		$posted_paths = $this->get_posted_paths( $post_id, 'new' );
-		$folder_paths = $this->get_folder_paths( $post_id, 'new' );
-		return ( count( $folder_paths ) - count( $posted_paths ) );		
+	function get_new_folders( $post_id = 0 ) {
+		$this->get_posted_paths( $post_id, 'new' );
+		$this->get_folder_paths( $post_id, 'new' );
+		$changes = array( 
+			'add'    => 0, 
+			'delete' => 0, 
+		);		
+		$changes['delete'] = $this->delete_folders( $post_id );
+		$changes['add']    = $this->add_folders( $post_id );
+		return $changes;		
 	}
 	
 	/**
@@ -1184,18 +1217,12 @@ class Eazyest_FolderBase {
 	 * Check all folders in file system if they exist as posted galleryfolder
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @return integer
+	 * @return array
 	 */
 	public function collect_folders( $post_id = 0 ) {
-		// this loads the image name caches
-		$new_folders = $this->get_new_folders( $post_id ); 
-		// check if something has changed in the folder
-		if ( 0 == $new_folders )
-			return;
-		$function = $new_folders > 0 ? 'add_folders' : 'delete_folders';
-		
-		$this->folders_collected = $this->$function( $post_id );
-		return $this->folders_collected ;
+		$new_folders = $this->get_new_folders( $post_id );
+		$this->folders_collected = $new_folders['add'] - $new_folders['delete']; 	
+		return $this->folders_collected;
 	}
 	
 	/**
@@ -1275,6 +1302,16 @@ class Eazyest_FolderBase {
 	}
 	
 	// Functions related to images/attachments -----------------------------------
+	
+	public function get_attachment_by_filename( $filename ) {
+		global $wpdb;
+		$guid = eazyest_gallery()->address . $filename;
+		$ids = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $guid ), ARRAY_A );
+		if ( empty( $ids ) )
+			return false;
+		return $ids[0]['ID'];
+		
+	}
 	
 	/**
 	 * Eazyest_FolderBase::get_attached_file()
@@ -1500,12 +1537,18 @@ class Eazyest_FolderBase {
 	 *  
 	 * @since 0.1.0 (r2)
 	 * @param mixed $post_id
-	 * @return integer positive: new images have been added, negative: images have been deleted outside WordPress
+	 * @return array ( 'add' => int, 'delete' => int ) folders to be added and/or deleted
 	 */
-	function get_new_images( $post_id ) {		
-		$posted_images = $this->get_posted_images( $post_id, 'new' );
-		$folder_images = $this->get_folder_images( $post_id, 'new' );
-		return ( count( $folder_images ) - count( $posted_images) );
+	function get_new_images( $post_id ) {	
+		$this->get_posted_images( $post_id, 'new' );
+		$this->get_folder_images( $post_id, 'new' );
+		$changes = array( 
+			'add'    => 0, 
+			'delete' => 0, 
+		);
+		$changes['delete'] = $this->delete_attachments( $post_id );
+		$changes['add']    = $this->add_images( $post_id );
+		return $changes;
 	}
 	
 	/**
@@ -1524,38 +1567,37 @@ class Eazyest_FolderBase {
 		$this->get_posted_images( $post_id );
 		$this->get_folder_images( $post_id );
 		$added = 0;
+		$add_later = array();
 		if ( ! empty( $this->folder_images['images'] ) ) {
 			foreach( $this->folder_images['images'] as $image_name ) {				
 				$attach_name = $gallery_path . '/' . $this->sanitize_filename( basename( $image_name ), $post_id );		
 				$attach_file = eazyest_gallery()->root() . $attach_name;
 				if ( ! in_array( $attach_name, $this->posted_images['images'] ) ) {
-					$this->insert_image( $post_id, $attach_file, $image_name  );
+					if ( $added < $this->max_process_items )
+						$this->insert_image( $post_id, $attach_file, $image_name  );
 					$this->posted_images['images'][] = $attach_name;
 					$added++;
 				}
 			}				
 		}
+		if ( $added > $this->max_process_items ) {
+			if ( $transient = get_transient( 'eazyest_gallery_add_attachments' ) ) {
+				$transient[] = $post_id;
+			}	else {
+				$transient = array( $post_id );
+			}	
+			set_transient(  'eazyest_gallery_add_attachments', $transient );	
+		}	else {			
+			if ( $transient = get_transient( 'eazyest_gallery_add_attachments' ) ){
+				$transient = array_diff( $transient, array( $post_id ) ); 
+				if ( count( $transient ) ) {			
+					set_transient( 'eazyest_gallery_add_attachments', $transient );
+				}	else {
+					delete_transient( 'eazyest_gallery_add_attachments' );		
+				}
+			}
+		}		
 		return $added;
-	}
-	
-	/**
-	 * Eazyest_FolderBase::delete_attachment_by_filename()
-	 * Delete an attachment by filename path/image.ext
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @uses $wpdb
-	 * @uses wp_delete_attachment()
-	 * @param string $image_name
-	 * @return void
-	 */
-	function delete_attachment_by_filename( $image_name ) {
-		global $wpdb;
-		$guid = eazyest_gallery()->address . $image_name;
-		$ids = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid=%s", $guid ), ARRAY_A );
-		if ( empty( $ids ) )
-			return false;
-		$attachment_id = $ids[0]['ID'];
-		return wp_delete_attachment( $attachment_id, true );	
 	}
 	
 	/**
@@ -1563,24 +1605,34 @@ class Eazyest_FolderBase {
 	 * Delete attachments from WordPress database when original image has been (ftp) erased 
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses get_post_meta()
+	 * @uses wp_delete_attachment()
 	 * @param integer $post_id
 	 * @return void
 	 */
 	function delete_attachments( $post_id ) {		
 		$this->get_posted_images( $post_id );
 		$this->get_folder_images( $post_id );
-		$deleted = 0;		
+		$deleted = 0;
+		$delete_later = array();		
 		if ( ! empty( $this->posted_images['images'] ) ) {			
 			$gallery_path = ezg_get_gallery_path( $post_id );
 			foreach( $this->posted_images['images'] as $key => $image_name  ) {
 				if ( ! in_array( $image_name, $this->folder_images['images'] ) ) {
-					if ( $this->delete_attachment_by_filename( $image_name ) ) {
-						unset( $this->posted_images['images'][$key] );
-						$deleted--;
-					}
+					$attachment_id = $this->get_attachment_by_filename( $image_name ); 
+					if ( $deleted < $this->max_process_items )
+						wp_delete_attachment( $attachment_id, true );
+					else
+						$delete_later[] = $attachment_id;
+					unset( $this->posted_images['images'][$key] );
+					$deleted++;
 				}
 			}
+		}
+		if ( ! empty( $delete_later ) ) {
+			if ( $transient = get_tansient( 'eazyest_gallery_delete_attachments' ) ) {
+				$delete_later = array_merge( $delete_later, $transient );
+			}
+			set_transient(  'eazyest_gallery_delete_attachments', $delete_later );
 		}
 		return $deleted;
 	}
@@ -1608,12 +1660,7 @@ class Eazyest_FolderBase {
 	public function collect_images( $post_id ) {
 		// this loads the image name caches
 		$new_images = $this->get_new_images( $post_id ); 
-		// check if something has changed in the folder
-		if ( 0 == $new_images )
-			return;
-		$function = $new_images > 0 ? 'add_images' : 'delete_attachments';
-		
-		$this->images_collected = $this->$function( $post_id );
+		$this->images_collected = $new_images['add'] - $new_images['delete']; 	
 		return $this->images_collected ;
 	}
 	
