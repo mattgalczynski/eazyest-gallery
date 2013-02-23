@@ -241,23 +241,34 @@ class Eazyest_Admin_Ajax {
 		$results = array( 'updated' => array(), 'folders' => array() );
 		if ( 'start' == $subaction ) {
 			global $wpdb;
-			$results['folders']  = $wpdb->get_results( $wpdb->prepare(  "SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status = 'publish'", eazyest_gallery()->post_type  ), ARRAY_A );
-		} else if ( 'next' == $subaction ) {
+			// get folders newest first because they are most likely to have new images
+			$results['folders']  = $wpdb->get_results( $wpdb->prepare(  "SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status = 'publish' ORDER BY post_date DESC", eazyest_gallery()->post_type  ), ARRAY_A );
+		} else if ( 'next' == $subaction || 'stop' == $subaction ) {
 			$results = get_transient( 'eazyest-gallery-ajax-collect' );
 		} else {
 			echo __( 'Cheating huh?', 'eazyest-gallery' );
+			wp_die();
 		}
+		// user clicked the update meaagse, stop and send progress until now
+		if ( 'stop' == $subaction )
+			wp_send_json( $results['updated'] );
+		
+		// process next step
 		if ( count( $results['folders'] ) ) {
 			$folder = reset( $results['folders'] );
 			$new_images = eazyest_folderbase()->get_new_images( $folder['ID'] );
-			if ( 0 != $new_images ) {
-				$results['updated'][] = array( 'id' => $folder['ID'], 'images' => $new_images ); 
+			if ( $new_images['add'] || $new_images['delete'] ) {
+				$results['updated'][] = array( 'id' => $folder['ID'], 'images' => $new_images );	
 			}
-			eazyest_folderbase()->collect_images( $folder['ID'] );
-			array_shift( $results['folders'] );
-			set_transient( 'eazyest-gallery-ajax-collect', $results );
+			$shift = true;
+			if ( $transient = get_transient( 'eazyest_gallery_add_attachments' ) ) {
+				$shift = ! in_array( $folder['ID'], $transient );
+			}		
+			if ( $shift )	
+				array_shift( $results['folders'] );
 		}
-		if ( count( $results['folders'] ) ) {
+		set_transient( 'eazyest-gallery-ajax-collect', $results ); 		
+		if ( count( $results['folders'] ) ) {		
 			echo 'next';
 		} else {
 			if ( empty( $results['updated'] ) ) {
