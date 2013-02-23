@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r158)
+ * @version 0.1.0 (r160)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -885,7 +885,8 @@ class Eazyest_Frontend {
 			WHERE post_parent $post_ids  
 			AND post_type = 'attachment' 
 			AND post_status IN ('inherit', 'publish');"
-		); 
+		); 	
+		$children_count = 0;
 		if ( 'separate' == $option ) {		
 			$children_count = 0;
 			$children = eazyest_folderbase()->get_folder_children( $folder->ID );
@@ -902,11 +903,13 @@ class Eazyest_Frontend {
 			}  			
 		}
 		/* translators: %1s = number; %2s = images (text) */
+
 		$images_string   = $foldercount ? sprintf( __( '%1s %2s', 'eazyest-gallery' ), $foldercount, eazyest_gallery()->listed_as ) : '';
-		if ( 'separate' == $option )
+		if ( 'separate' == $option ) {
 			$listed_as = $foldercount ? '' : ' ' . eazyest_gallery()->listed_as;
 			/* translators: %1s = number; %2s = images (text) in subfolders */
 			$children_string = sprintf( __( '%1s%2s in subfolders', 'eazyest-gallery' ), $children_count, $listed_as );
+		}
 		?>
 		<?php if ( $foldercount ) : ?>
 		<span class="folder-count"><?php echo $images_string ?></span><br />
