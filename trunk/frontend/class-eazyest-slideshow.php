@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r155)
+ * @version 0.1.0 (r171)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -192,13 +192,18 @@ class Eazyest_Slideshow {
 	 */
 	function camera_slideshow( $query_args = array(), $id = 0, $size = 'large', $skin = 'ash' ) {
 		if ( empty( $query_args ) )
-			return;	
-					
-		$global_post = $GLOBALS['post'];
-		global $post;
+			return;
 			
 		$query = new WP_Query( $query_args );
 		
+		if ( ! $query->post_count ){
+			echo "\n<p>" . __( 'Eazyest Gallery found no attachments to build a slideshow', 'eazyest-gallery' ) . "</p>\n";
+			return;	
+		}				
+					
+		$global_post = $GLOBALS['post'];
+		global $post;
+				
 		$caption_div = '';
 		?>
 		<div class="fluid_container">
@@ -351,7 +356,6 @@ class Eazyest_Slideshow {
 			'ajax'       => 0,
 			'show'       => 1,
 		), $attr ) );
-	
 		$id = intval($id);
 		if ( ! $id )
 			$id = $GLOBALS['post']->ID;
@@ -377,7 +381,7 @@ class Eazyest_Slideshow {
 			$args['post__in'] = $post__in;
 		} else {
 			$args['post_parent'] = $id;
-		}			
+		}				
 		if ( $ajax ) {
 			$arg['size'] = $size;
 			$this->ajax_slideshow( $args, $show );

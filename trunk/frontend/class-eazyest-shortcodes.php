@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r48)
+ * @version 0.1.0 (r171)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -413,7 +413,6 @@ class Eazyest_Shortcodes {
 	 * @return string html markup for camera slideshow
 	 */
 	function slideshow_shortcode( $attr ) {
-		
 		if ( ! is_single() )
 			return '';
 			
@@ -436,8 +435,12 @@ class Eazyest_Shortcodes {
 				
 		if ( ! defined( 'LAZYEST_GALLERY_SHORTCODE' ) )
 			define( 'LAZYEST_GALLERY_SHORTCODE', true );
-	
-		eazyest_slideshow()->slideshow( $attr );			
+			
+		ob_start(); // buffer to use actions that echo content
+		eazyest_slideshow()->slideshow( $attr );
+		$output = ob_get_contents();
+		ob_end_clean();
+		return $output;			
 	}
 	
 	// functions for pre-2.0 shortcodes ------------------------------------------	
