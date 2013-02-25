@@ -1313,7 +1313,7 @@ class Eazyest_Folder_Editor {
   	?>
   	<div class="misc-pub-section">	  	
 	  	<p>
-				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MSWK36DKJ7GW4" title="<?php _e( 'Support the development of Eazyest Galery', 'eazyest-gallery' ); ?>">
+				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=22A3Y8ZUGR6PE" title="<?php _e( 'Support the development of Eazyest Galery', 'eazyest-gallery' ); ?>">
 					<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
 				</a>
 			</p>
