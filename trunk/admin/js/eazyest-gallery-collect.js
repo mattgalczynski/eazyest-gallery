@@ -33,7 +33,7 @@
 	 	$.post( ajaxurl, data, function(response){
 	 		if ( 'next' == response )
 	 			eazyest_gallery_collect_next(response);
-	 		else if ( $.isPlainObject( response ) || 0 == response )			
+	 		else if ( typeof response === 'object' || 0 == response )			
 			 	eazyest_gallery_collect_finished(response);	 			
 			else 	
 				eazyest_gallery_collect_error( response );	 	

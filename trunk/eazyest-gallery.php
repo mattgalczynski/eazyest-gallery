@@ -6,7 +6,7 @@
  * Date: February 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-1-r167
+ * Version: 0.1.0-beta-5
  * License: GNU General Public License, version 3
  */
  
