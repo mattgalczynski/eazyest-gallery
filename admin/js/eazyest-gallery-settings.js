@@ -2,9 +2,12 @@
 	
 	function thumbs_columnsChange() {
 		var columnsVal = parseInt( $('#thumbs_columns').val(), 10 );
-		$('#thumbs_page').attr( 'step', columnsVal );
 		var pageVal = parseInt( $('#thumbs_page').val(), 10 );
 		
+		if ( pageVal == 0 || columnsVal == 0 )
+			return;
+			
+		$('#thumbs_page').attr( 'step', columnsVal );
 		if ( pageVal > 0 ) {
 			lowVal  = pageVal - pageVal%columnsVal;
 			highVal = lowVal + columnsVal;
@@ -17,9 +20,13 @@
 	}
 	
 	function folder_columnsChange() {
-		var columnsVal = parseInt( $('#folders_columns').val(), 10 );
-		$('#folders_page').attr( 'step', columnsVal );
+		var columnsVal = parseInt( $('#folders_columns').val(), 10 );			
 		var pageVal = parseInt( $('#folders_page').val(), 10 );
+		
+		if ( pageVal == 0 || columnsVal == 0 )
+			return;
+		
+		$('#folders_page').attr( 'step', columnsVal );	
 		if ( pageVal > 0 ) {
 			lowVal  = pageVal - pageVal%columnsVal;
 			highVal = lowVal + columnsVal;
