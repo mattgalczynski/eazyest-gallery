@@ -6,7 +6,7 @@
  * @package Eazyest Gallery
  * @subpackage Frontend/Template Tags
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r131)
+ * @version 0.1.0 (r174)
  */ 
   
 // Exit if accessed directly
@@ -263,9 +263,11 @@ function ezg_subfolders( $post_id = 0 ) {
 }
 
 function ezg_credits() {
+	if ( is_single() ) : 
 	?>
 	<p class="eazyest-credits"><sub><?php printf( __( 'Powered by Eazyest Gallery version %s. Copyright &copy; 2012-%d %s',  'eazyest-gallery' ), eazyest_gallery()->version(), date( 'Y' ), '<a href="http://brimosoft.nl/">Brimosoft</a>' ); ?></sub></p>
 	<?php
+	endif;
 }
 
 // template tags --------------------------------------------------------------
