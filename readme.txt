@@ -88,7 +88,7 @@ The attachment view behavior depends on the code in the attachment template. Eaz
 
 == Changelog ==
 
-= 0.1.0-beta-4
+= 0.1.0-beta-4 =
 * Bug fix: Double set of thumbs in non-Twenty themes
 * Bug Fix: Out-of-execution-time error in upgrade and auto-index
 * Bug Fix: Gallery folder dropdown did noit show all folders from web root
