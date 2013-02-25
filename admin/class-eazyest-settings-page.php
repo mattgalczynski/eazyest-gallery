@@ -870,25 +870,26 @@ class Eazyest_Settings_Page {
 				'title'   => __( 'Folder Options', 'eazyest-gallery' ),
 				'content' => "\n<p>" . __( 'In the Folder Options you have a number of options to control how your folders will be displayed.', 'eazyest-gallery' ) . "</p>" .
 				             "\n\t<ul>" .
-				             "\n\t\t<li>" .     __( 'Select the number of folder icons to initially display in the "Icons per page" option.',                           'eazyest-gallery' ) . "</li>"  .
-				             "\n\t\t<li>" .     __( 'The option "Icon columns" sets the number of icons to display per row.',                                           'eazyest-gallery' ) . "<br />" .
-				                                __( 'Set this option to 0 if you want to display as many icons that fit your page.',                                    'eazyest-gallery' ) . "<br />" .
-				                                __( 'If you set any other value, Eazyest Gallery will shrink your icons when necessary.',                               'eazyest-gallery' ) . "</li>"  .
-				             "\n\t\t<li>" .     __( 'Select how you want your want to sort your folders in the "Sort folders by" option.',                              'eazyest-gallery' ) . "</li>"  .
-										 "\n\t\t<li>" .     __( 'If you want to display the number of images in your folders in the icons view, select the "Count images" option.', 'eazyest-gallery' ) . "</li>"  .
-										 "\n\t\t<li>" .     __( 'In the "Folder icons" options, you set what to display in the folder icons view.',                                 'eazyest-gallery' ) . 
+				             "\n\t\t<li>" .     __( 'Select the number of folder icons to initially display in the &#8220;Icons per page&#8221; option.',                           'eazyest-gallery' ) . "</li>"  .
+				             "\n\t\t<li>" .     __( 'The option &#8220;Icon columns&#8221; sets the number of icons to display per row.',                                           'eazyest-gallery' ) . "<br />" .
+				                                __( 'Set this option to 0 if you want to display as many icons that fit your page.',                                                'eazyest-gallery' ) . "<br />" .
+				                                __( 'If you set any other value, Eazyest Gallery will fit your icons when necessary.',                                              'eazyest-gallery' ) . "</li>"  .
+				             "\n\t\t<li>" .     __( 'Select how you want your want to sort your folders in the &#8220;Sort folders by&#8221; option.',                              'eazyest-gallery' ) . "</li>"  .
+										 "\n\t\t<li>" .     __( 'If you want to display the number of images in your folders in the icons view, select the &#8220;Count images&#8221; option.', 'eazyest-gallery' ) . "</li>"  .
+										 "\n\t\t<li>" .     __( 'In the &#8220;Folder icons&#8221; options, you set what to display in the folder icons view.',                                 'eazyest-gallery' ) . 
 										 "\n\t\t\t<ul>" . 
-										 "\n\t\t\t\t<li>" . __( '"Featured image" will display the folder featured image.',                                                         'eazyest-gallery' ) . "<br />" .
-										                    __( 'If you haven&#8217;t selected a featured image yet, Eazyest Gallery will show the first image in your folder.',         'eazyest-gallery' ) . "</li>"  .
-  									 "\n\t\t\t\t<li>" . __( '"First image in folder" will display the first image, after sorting the images.',                                  'eazyest-gallery' ) . "</li>"  .
-  									 "\n\t\t\t\t<li>" . __( '"Random image" will select a random image each time you open the folder icons page.',                              'eazyest-gallery' ) . "<br />" .
-  									                    __( 'If you want to include random images from subfolders, please select ""Include images from subfolders".',         'eazyest-gallery' ) . "</li>"  .
-  									 "\n\t\t\t\t<li>" . __( '"Folder icon" will display a standard folder icon.',                                                               'eazyest-gallery' ) . "</li>"  .
-										 "\n\t\t\t\t<li>" . __( 'If you don&#8217;t want to display an image, please select "Title only".',                                              'eazyest-gallery' ) . "</li>"  .                   
+										 "\n\t\t\t\t<li>" . __( '&#8220;Featured image&#8221; will display the folder featured image.',                                                         'eazyest-gallery' ) . "<br />" .
+										                    __( 'If you haven&#8217;t selected a featured image yet, Eazyest Gallery will show the first image in your folder.',                'eazyest-gallery' ) . "</li>"  .
+  									 "\n\t\t\t\t<li>" . __( '&#8220;First image in folder&#8221; will display the first image, after sorting the images.',                                  'eazyest-gallery' ) . "</li>"  .
+  									 "\n\t\t\t\t<li>" . __( '&#8220;Random image&#8221; will select a random image each time you open the folder icons page.',                              'eazyest-gallery' ) . "<br />" .
+  									                    __( 'If you want to include random images from subfolders, please select &#8220;Include images from subfolders&#8221;.',            'eazyest-gallery' ) . "</li>"  .
+  									 "\n\t\t\t\t<li>" . __( '&#8220;Folder icon&#8221; will display a standard folder icon.',                                                               'eazyest-gallery' ) . "</li>"  .
+										 "\n\t\t\t\t<li>" . __( 'If you don&#8217;t want to display an image, please select &#8220;Title only&#8221;.',                                         'eazyest-gallery' ) . "</li>"  .                   
   									 "\n\t\t\t</ul>" .
 										 "\n\t\t</li>" .									  
-				             "\n\t</ul>" .				             				    		             
-    		             "\n<p>" . sprintf( __( 'For Image sizes, please refer to %sWordPress Media Settings%s.',                                                   'eazyest-gallery' ), 
+				             "\n\t</ul>" .
+										 /* translators %s <a href=> %s </a> */				    		             				             				    		             
+    		             "\n<p>" . sprintf( __( 'For Image sizes, please refer to %sWordPress Media Settings%s.', 'eazyest-gallery' ), 
 										 						"<a href='$options_media'>",
 										 						"</a>" ) . 
 										 "</p>"
@@ -896,26 +897,26 @@ class Eazyest_Settings_Page {
 			'image' => array(
 				'id'      => 'image-settings',
 				'title'   => __( 'Image Options', 'eazyest-gallery' ),
-				'content' => "\n<p>" .          __( 'In the Folder Options you have a number of options to control how your images will be displayed.', 'eazyest-gallery' ) . "</p>" .
+				'content' => "\n<p>" .          __( 'In the Folder Options you have a number of options to control how your images will be displayed.',             'eazyest-gallery' ) . "</p>" .
 				             "\n\t<ul>" .
 				             
-				             "\n\t\t<li>" .     __( 'Select the number of thumbnails to initially display in the "Thumbnails per page" option.',        'eazyest-gallery' ) . "</li>"  .
-				             "\n\t\t<li>" .     __( 'The option "Thumbnail columns" sets the number of icons to display per row.',                      'eazyest-gallery' ) . "<br />" .
-				                                __( 'Set this option to 0 if you want to display as many thumbnails that fit your page.',               'eazyest-gallery' ) . "<br />" .
-				                                __( 'If you set any other value, Eazyest Gallery will shrink your thumbnails when necessary.',          'eazyest-gallery' ) . "</li>"  .
-				             "\n\t\t<li>" .     __( 'Keep your descriptions as short as possible when you select the "Descriptions" option.',           'eazyest-gallery' ) . "</li>"  .
-				             "\n\t\t<li>" .     __( 'Select how you want your want to sort your images in the "Sort images by" option.',                'eazyest-gallery' ) . "</li>"  .
-                     "\n\t\t<li>" .     __( 'Select what will happen if you click on a thumbnail image in the "Thumbnail click" option.',       'eazyest-gallery' ) .  
+				             "\n\t\t<li>" .     __( 'Select the number of thumbnails to initially display in the &#8220;Thumbnails per page&#8221; option.',        'eazyest-gallery' ) . "</li>"  .
+				             "\n\t\t<li>" .     __( 'The option &#8220;Thumbnail columns&#8221; sets the number of icons to display per row.',                      'eazyest-gallery' ) . "<br />" .
+				                                __( 'Set this option to 0 if you want to display as many thumbnails that fit your page.',                           'eazyest-gallery' ) . "<br />" .
+				                                __( 'If you set any other value, Eazyest Gallery will fit your thumbnails when necessary.',                         'eazyest-gallery' ) . "</li>"  .
+				             "\n\t\t<li>" .     __( 'Keep your descriptions as short as possible when you select the &#8220;Descriptions&#8221; option.',           'eazyest-gallery' ) . "</li>"  .
+				             "\n\t\t<li>" .     __( 'Select how you want your want to sort your images in the &#8220;Sort images by&#8221; option.',                'eazyest-gallery' ) . "</li>"  .
+                     "\n\t\t<li>" .     __( 'Select what will happen if you click on a thumbnail image in the &#8220;Thumbnail click&#8221; option.',       'eazyest-gallery' ) .  
 										 "\n\t\t\t<ul>" . 
-                     "\n\t\t\t\t<li>" . __( 'If you select "Nothing", you will stay on the thumnails page',                                     'eazyest-gallery' ) . "</li>"  .
-                     "\n\t\t\t\t<li>" . __( 'If you select "Show attachment page", you will be redirected to the attachment page.',             'eazyest-gallery' ) . "</li>"  .
-                     "\n\t\t\t\t<li>" . __( 'If you select "Show medium size image", you will see the medium sized image in your browser.(*)',  'eazyest-gallery' ) . "</li>"  .
-                     "\n\t\t\t\t<li>" . __( 'If you select "Show large size image", you will see the large sized image in your browser.(*)',    'eazyest-gallery' ) . "</li>"  .
-                     "\n\t\t\t\t<li>" . __( 'If you select "Show full size image", you will see the original image* in your browser.(*)',       'eazyest-gallery' ) . "</li>"  .
-										 "\n\t\t\t</ul>" .  __( '(*) You may want to add markup for popular popup plugins like Lightbox or Thickbox.',              'eazyest-gallery' ) . "</li>"  .
-										 "\n\t\t<li>" .     __( '"List name" displays what type of images you have in your gallery.',                               'eazyest-gallery' ) . "</li>"  .
+                     "\n\t\t\t\t<li>" . __( 'If you select &#8220;Nothing&#8221;, you will stay on the thumnails page',                                     'eazyest-gallery' ) . "</li>"  .
+                     "\n\t\t\t\t<li>" . __( 'If you select &#8220;Show attachment page&#8221;, you will be redirected to the attachment page.',             'eazyest-gallery' ) . "</li>"  .
+                     "\n\t\t\t\t<li>" . __( 'If you select &#8220;Show medium size image&#8221;, you will see the medium sized image in your browser.(*)',  'eazyest-gallery' ) . "</li>"  .
+                     "\n\t\t\t\t<li>" . __( 'If you select &#8220;Show large size image&#8221;, you will see the large sized image in your browser.(*)',    'eazyest-gallery' ) . "</li>"  .
+                     "\n\t\t\t\t<li>" . __( 'If you select &#8220;Show full size image&#8221;, you will see the original image* in your browser.(*)',       'eazyest-gallery' ) . "</li>"  .
+										 "\n\t\t\t</ul>" .  __( '(*) You may want to add markup for popular popup plugins like Lightbox or Thickbox.',                          'eazyest-gallery' ) . "</li>"  .
+										 "\n\t\t<li>" .     __( '&#8220;List name&#8221; displays what type of images you have in your gallery.',                               'eazyest-gallery' ) . "</li>"  .
 										 "\n\t</ul>" . 				             				    		             
-    		             "\n<p>" . sprintf( __( 'For Image sizes, please refer to %sWordPress Media Settings%s.',                                   'eazyest-gallery' ), 
+    		             "\n<p>" . sprintf( __( 'For Image sizes, please refer to %sWordPress Media Settings%s.',                                               'eazyest-gallery' ), 
 										 						"<a href='$options_media'>",
 										 						"</a>" ) . 
 										 "</p>"
@@ -923,11 +924,11 @@ class Eazyest_Settings_Page {
 			'advanced' => array(
 				'id'      => 'advanced-settings',
 				'title'   => __( 'Advanced Options', 'eazyest-gallery' ),
-				'content' => "\n<p>" . __( 'In Advaced Options you have a number of options for advanced use of Eazyest Gallery',                  'eazyest-gallery' ) . "</p>"   .
+				'content' => "\n<p>" . __( 'In Advaced Options you have a number of options for advanced use of Eazyest Gallery',                              'eazyest-gallery' ) . "</p>"   .
 				             "\n\t<ul>" .
-				             "\n\t\t<li>" . __('"Gallery slug" is a custom root slug to prefix your gallery with.',                                'eazyest-gallery' ) . "</li>"  .
-				             "\n\t\t<li>" . __('"Minimum viewer role" selects the minimum role/capability a user must have to view your gallery.', 'eazyest-gallery' ) . "<br />" . 
-						               sprintf( __('If you select "%s", a viewer does not have to be logged in',                                       'eazyest-gallery' ), $this->everyone() ). "</li>" 
+				             "\n\t\t<li>" . __('&#8220;Gallery slug&#8221; is a custom root slug to prefix your gallery with.',                                'eazyest-gallery' ) . "</li>"  .
+				             "\n\t\t<li>" . __('&#8220;Minimum viewer role&#8221; selects the minimum role/capability a user must have to view your gallery.', 'eazyest-gallery' ) . "<br />" . 
+						               sprintf( __('If you select &#8220;%s&#8221;, a viewer does not have to be logged in',                                       'eazyest-gallery' ), $this->everyone() ). "</li>" 
 			)
 		);
 	}
