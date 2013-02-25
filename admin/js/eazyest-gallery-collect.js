@@ -2,8 +2,8 @@
 		
 	function eazyest_gallery_collect_finished(response) {
 		if ( 0 == response ) {
-			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).delay(10000).hide(2000, 'linear', function(){
-				$(this).html('');
+			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).wrap( '<div class="updated"/>' ).delay(10000).hide(2000, 'linear', function(){
+				$(this).html('').unwrap();
 			});
 		} else {			
 			var totalCount = 0;
@@ -13,10 +13,15 @@
 				totalCount += ( folder.images['add'] - folder.images['delete'] );
 				$(tdImages).html(count);
 			});
-			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).delay(10000).hide(2000, 'linear', function(){
-				$(this).html('');
+			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).wrap( '<div class="updated"/>' ).delay(10000).hide(2000, 'linear', function(){
+				$(this).html('').unwrap();
 			});
 		}
+	}
+	
+	function eazyest_gallery_collect_error( response ) {
+		var errorString = eazyestGalleryCollect.error1 + '<br />' + eazyestGalleryCollect.error2 + ' <strong>' + response + '</strong>';
+		$('#eazyest-collect-folders').removeClass('collect-folders').html(errorString).wrap( '<div class="error"/>' );
 	}
 	
 	function eazyest_gallery_collect_next(nextFolder) {
@@ -28,8 +33,10 @@
 	 	$.post( ajaxurl, data, function(response){
 	 		if ( 'next' == response )
 	 			eazyest_gallery_collect_next(response);
-	 		else
-			 	eazyest_gallery_collect_finished(response);	
+	 		else if ( $.isPlainObject( response ) || 0 == response )			
+			 	eazyest_gallery_collect_finished(response);	 			
+			else 	
+				eazyest_gallery_collect_error( response );	 	
 	 	});			
 	}
 	

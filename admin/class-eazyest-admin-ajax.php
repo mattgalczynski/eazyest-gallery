@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r131)
+ * @version 0.1.0 (r166)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -235,7 +235,7 @@ class Eazyest_Admin_Ajax {
 	 * @uses wp_send_json() to send array of updated image counts
 	 * @return void
 	 */
-	function collect_folders() {
+	function collect_folders() {	
 		check_ajax_referer( 'collect-folders' );
 		$subaction = isset( $_POST['subaction'] ) ? $_POST['subaction'] : 'start';
 		$results = array( 'updated' => array(), 'folders' => array() );
