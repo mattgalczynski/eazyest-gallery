@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r160)
+ * @version 0.1.0 (r170)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1282,7 +1282,7 @@ class Eazyest_Frontend {
 						if ( $using_permalinks )
 							$prev_link = $folder_permalink . 'thumbnails/' . $prev_page;
 						else
-							$prev_link = add_query_arg( array( 'thumbnails', $prev_page ), $folder_permalink );							
+							$prev_link = add_query_arg( array( 'thumbnails' => $prev_page ), $folder_permalink );							
 						$navigation .= "
 						<div class='nav-previous alignleft'>
 							<a href='$prev_link'><span class='meta-nav'>&larr;</span> " . __( 'Previous thumbnails', 'eazyest-gallery' ) . "</a>
@@ -1294,7 +1294,7 @@ class Eazyest_Frontend {
 						if ( $using_permalinks )
 							$next_link = $folder_permalink . 'thumbnails/' . $next_page;
 						else
-							$next_link = add_query_arg( array( 'thumbnails', $next_page ), $folder_permalink );
+							$next_link = add_query_arg( array( 'thumbnails' => $next_page ), $folder_permalink );
 						$navigation .= "
 						<div class='nav-next alignright'>
 							<a id='next-thumbnail-$next_page' href='$next_link'>" . __( 'Next thumbnails', 'eazyest-gallery' ) . " <span class='meta-nav'>&rarr;</span></a>
