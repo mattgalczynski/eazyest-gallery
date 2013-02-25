@@ -1,5 +1,36 @@
 (function($) {
 	
+	function thumbs_columnsChange() {
+		var columnsVal = parseInt( $('#thumbs_columns').val(), 10 );
+		$('#thumbs_page').attr( 'step', columnsVal );
+		var pageVal = parseInt( $('#thumbs_page').val(), 10 );
+		
+		if ( pageVal > 0 ) {
+			lowVal  = pageVal - pageVal%columnsVal;
+			highVal = lowVal + columnsVal;
+			if ( ( pageVal - lowVal ) > ( highVal - pageVal ) )
+				pageVal = highVal;
+			else
+				pageVal = lowVal;
+			$('#thumbs_page').val( pageVal );
+		}
+	}
+	
+	function folder_columnsChange() {
+		var columnsVal = parseInt( $('#folders_columns').val(), 10 );
+		$('#folders_page').attr( 'step', columnsVal );
+		var pageVal = parseInt( $('#folders_page').val(), 10 );
+		if ( pageVal > 0 ) {
+			lowVal  = pageVal - pageVal%columnsVal;
+			highVal = lowVal + columnsVal;
+			if ( ( pageVal - lowVal ) > ( highVal - pageVal ) )
+				pageVal = highVal;
+			else
+				pageVal = lowVal;	
+			$('#folders_page').val( pageVal );
+		}
+	}
+	
 	$(document).ready(function(){
 	
 		// filetree dropdown ---------------------------------------------------------  
@@ -126,37 +157,20 @@
 		
 		// folders_columns change
 		$('#folders_columns').change(function(){
-			var columnsVal = parseInt( $('#folders_columns').val(), 10 );
-			$('#folders_page').attr( 'step', columnsVal );
-			var pageVal = parseInt( $('#folders_page').val(), 10 );
-			if ( pageVal > 0 ) {
-				lowVal  = pageVal - pageVal%columnsVal;
-				highVal = lowVal + columnsVal;
-				if ( ( pageVal - lowVal ) > ( highVal - pageVal ) )
-					pageVal = highVal;
-				else
-					pageVal = lowVal;	
-				$('#folders_page').val( pageVal );
-			}
+			folder_columnsChange()
+		});
+		$('#folders_page').change(function(){
+			folder_columnsChange()
 		});
 		
 		// thumbs_columns change
 		$('#thumbs_columns').change(function(){
-			var columnsVal = parseInt( $('#thumbs_columns').val(), 10 );
-			$('#thumbs_page').attr( 'step', columnsVal );
-			var pageVal = parseInt( $('#thumbs_page').val(), 10 );
-			
-			if ( pageVal > 0 ) {
-				lowVal  = pageVal - pageVal%columnsVal;
-				highVal = lowVal + columnsVal;
-				if ( ( pageVal - lowVal ) > ( highVal - pageVal ) )
-					pageVal = highVal;
-				else
-					pageVal = lowVal;	
-				$('#thumbs_page').val( pageVal );
-			}
+			thumbs_columnsChange()
+		});
+		$('#thumbs_page').change(function(){
+			thumbs_columnsChange()
 		});
 		
-	}); // (document).ready
+  }); // (document).ready
 		
 })(jQuery)
