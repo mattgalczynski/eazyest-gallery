@@ -175,7 +175,7 @@ class Eazyest_Settings_Page {
 	function admin_enqueue_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-filetree',          eazyest_gallery()->plugin_url . "admin/js/jquery.filetree.$j",          array( 'jquery' ),          '1.01-r134',  true );
-		wp_register_script( 'eazyest-gallery-settings', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-settings.$j", array( 'jquery-filetree' ), '0.1.0-r170', true );
+		wp_register_script( 'eazyest-gallery-settings', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-settings.$j", array( 'jquery-filetree' ), '0.1.0-r173', true );
 		
 		wp_localize_script( 'eazyest-gallery-settings', 'fileTreeSettings', $this->filetree_args() );
 	}
