@@ -6,14 +6,14 @@
  * Date: February 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-beta-4-160
+ * Version: 0.1.0-beta-4-161
  * License: GNU General Public License, version 3
  */
  
 /**
  * Eazyest Gallery is easy gallery management software for WordPress.
  * 
- * @version 0.1.0 (r160)  
+ * @version 0.1.0 (r161)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -478,24 +478,25 @@ class Eazyest_Gallery {
 	
 	/**
 	 * Eazyest_Gallery::common_root()
-	 * Get lowest comon root for upload dir and ABSPATH
+	 * Get lowest root that can be resolved for website.
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses wp_upload_dir()
+	 * @uses site_url()
 	 * @return string path
 	 */
 	function common_root() {
 		$root = str_replace( array( '/', '\\'), '/', ABSPATH );
-		$upload = wp_upload_dir();
-		$abspath_dirs = explode( '/', $root );
-		$uploads_dirs = explode( '/', str_replace( array( '/', '\\'), '/', $upload['basedir'] ) );
-		$dir = 0;
-		$root_dirs = array();
-		while( $uploads_dirs[$dir] == $abspath_dirs[$dir] ) {
-			$root_dirs[] = $uploads_dirs[$dir];
-			$dir++;
-		}	
-		$root = ! empty( $root_dirs ) ? implode( '/', $root_dirs ) . '/' : $root;
+		$url_parts = parse_url(site_url());			
+		$path_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
+		$root_parts = array_reverse( explode( '/', rtrim( $root, '/' ) ) );
+		if ( count( $path_parts ) ) {
+			foreach( $path_parts as $key => $part ) {
+				if ( $path_parts[$key] == $root_parts[0] ) {
+					array_shift( $root_parts );
+				}
+			}
+		}
+		$root = implode( '/', array_reverse( $root_parts ) ) . '/';
 		return $root;	 
 	}
 
