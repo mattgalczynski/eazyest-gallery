@@ -25,19 +25,30 @@
 	}
 	
 	function eazyest_gallery_collect_next(nextFolder) {
-	 	data = {
+	 	dataFolder = {
 	 		action     : 'eazyest_gallery_collect_folders',
 	 		subaction  : nextFolder,
 	 		_wpnonce   : eazyestGalleryCollect._wpnonce
 	 	}
-	 	$.post( ajaxurl, data, function(response){
-	 		if ( 'next' == response )
-	 			eazyest_gallery_collect_next(response);
-	 		else if ( typeof response === 'object' || 0 == response )			
-			 	eazyest_gallery_collect_finished(response);	 			
-			else 	
-				eazyest_gallery_collect_error( response );	 	
-	 	});			
+	 	$.ajax(
+			{ 
+				type : 'POST',
+		 	 	url  : ajaxurl, 
+				data :	dataFolder, 
+				success: function(response) {
+			 		if ( 'next' == response )
+			 			eazyest_gallery_collect_next(response);
+			 		else if ( typeof response === 'object' || 0 == response ) {
+			 			eazyest_gallery_collect_finished(response);	 			
+				 	}	else 	
+						eazyest_gallery_collect_error( response );	 	
+				},
+				error : function ( xhr, textStatus, errorThrown){
+					if ( 500 == xhr.status ) {					
+						eazyest_gallery_collect_error( eazyestGalleryCollect.error500 + ' - ' + errorThrown );
+					}
+				}
+			});			
 	}
 	
 	$(document).ready(function(){

@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r166)
+ * @version 0.1.0 (r169)
  * @access public
  */
 
@@ -146,7 +146,7 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function filtered_vars() {
-		$this->max_process_items = apply_filters( 'eazyest_gallery_max_process_items', 30 );
+		$this->max_process_items = apply_filters( 'eazyest_gallery_max_process_items', 20 );
 	}
 	
 	// Functions related to folders ----------------------------------------------

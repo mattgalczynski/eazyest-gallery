@@ -144,7 +144,7 @@ class Eazyest_Folder_Editor {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',        true );
 		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r96',  true );
-		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r166', true );
+		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r169', true );
 				
 		wp_localize_script( 'eazyest-gallery-admin',   'galleryfolderL10n',     $this->localize_folder_script()  );
 		wp_localize_script( 'eazyest-gallery-collect', 'eazyestGalleryCollect', $this->localize_collect_script() );
@@ -201,6 +201,7 @@ class Eazyest_Folder_Editor {
 			'foundimages' => __( 'Found %d new images in your gallery',                    'eazyest-gallery' ),
 			'error1'      => __( 'An error occurred while indexing your gallery.',         'eazyest-gallery' ),
 			'error2'      => __( 'Please check your server settings to solve this error:', 'eazyest-gallery' ),
+			'error500'    => __( '500 (Internal Server Error)',                            'eazyest-gallery' ),
 			'_wpnonce'    => wp_create_nonce( 'collect-folders' ),
 		);
 	}
