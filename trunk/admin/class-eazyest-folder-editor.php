@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r159)
+ * @version 0.1.0 (r166)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -142,9 +142,9 @@ class Eazyest_Folder_Editor {
 	 */
 	function register_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
-		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',       true );
-		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r96', true );
-		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r135', true );
+		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',        true );
+		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r96',  true );
+		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r166', true );
 				
 		wp_localize_script( 'eazyest-gallery-admin',   'galleryfolderL10n',     $this->localize_folder_script()  );
 		wp_localize_script( 'eazyest-gallery-collect', 'eazyestGalleryCollect', $this->localize_collect_script() );
@@ -194,9 +194,13 @@ class Eazyest_Folder_Editor {
 	function localize_collect_script() {
 		return array(
 			'pagenow'     => 'edit-' . eazyest_gallery()->post_type,
-			'collecting'  => '<p title="' . esc_attr__( 'Click to stop search', 'eazyest-gallery' ) . '" id="eazyest-collect-folders" class="collect-folders">' . __( 'Searching for new folders and images', 'eazyest-gallery' ) . '</p>',
-			'notfound'    => __( 'No new images found in your gallery', 'eazyest-gallery'  ),
-			'foundimages' => __( 'Found %d new images in your gallery', 'eazyest-gallery'  ),
+			'collecting'  => '<p title="' . 
+			         esc_attr__( 'Click to stop search',                                   'eazyest-gallery' ) . '" id="eazyest-collect-folders" class="collect-folders">' . 
+							         __( 'Searching for new folders and images',                   'eazyest-gallery' ) . '</p>',
+			'notfound'    => __( 'No new images found in your gallery',                    'eazyest-gallery' ),
+			'foundimages' => __( 'Found %d new images in your gallery',                    'eazyest-gallery' ),
+			'error1'      => __( 'An error occurred while indexing your gallery.',         'eazyest-gallery' ),
+			'error2'      => __( 'Please check your server settings to solve this error:', 'eazyest-gallery' ),
 			'_wpnonce'    => wp_create_nonce( 'collect-folders' ),
 		);
 	}

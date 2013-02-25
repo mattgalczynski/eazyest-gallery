@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r159)
+ * @version 0.1.0 (r166)
  * @access public
  */
 
@@ -557,6 +557,10 @@ class Eazyest_FolderBase {
 		$parent_path = ezg_get_gallery_path( $sub->post_parent );		
 		$new_path = $parent_path . '/' . basename( $sub_path );
 		
+		// check if this uploaded folder is writable
+		if ( ! is_writable( eazyest_gallery()->root() . $sub_path ) )
+			wp_die( __( 'Eazyest Gallery cannot access one or more folders on your server', 'eazyest-gallery' ) );
+		
 		// rename path in filesystem
 		if ( rename( eazyest_gallery()->root() . $sub_path, eazyest_gallery()->root() . $new_path ) ) {
 			// change metadata
@@ -574,7 +578,7 @@ class Eazyest_FolderBase {
 				}
 			}	
 		} else {
-			wp_die( __( 'Could not rename folder in file system', 'eazyest-gallery' ) );
+			wp_die( __( 'Eazyest Gallery could not rename folder in file system', 'eazyest-gallery' ) );
 		} 
 	}
 	
