@@ -2,193 +2,705 @@
 # This file is distributed under the same license as the Eazyest Gallery package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Eazyest Gallery 0.1.0\n"
+"Project-Id-Version: Eazyest Gallery 0.1.0-beta-4-162\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/eazyest-gallery\n"
-"POT-Creation-Date: 2013-02-06 15:53:11+00:00\n"
+"POT-Creation-Date: 2013-02-25 08:50:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Marcel Brinkkemper <lazyest@brimosoft.nl>\n"
-"Language-Team: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: admin/class-eazyest-admin-ajax.php:246
+#: admin/class-eazyest-about-page.php:85
+msgid "Welcome to Eazyest Gallery %s"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:86
+msgid ""
+"Thank you for installing Eazyest Galery %s! This plugin offers you the "
+"easiest way to manage your galleries in WordPress."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:87
+msgid "Version %s"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:104
+msgid "Go to Eazyest Gallery Settings"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:125
+#: admin/class-eazyest-about-page.php:248
+msgid "What&#8217;s New"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:125
+#: admin/class-eazyest-about-page.php:248
+msgid "What&#8217;s Eazyest"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:132
+#: admin/class-eazyest-about-page.php:255
+msgid "Credits"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:138
+msgid "This is what Lazyest Gallery was supposed to be"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:140
+#: admin/class-eazyest-about-page.php:179
+msgid "Integrated Uploader"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:141
+msgid "Fully Integrated in WordPress"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:142
+msgid "Folders are implemented as custom post types."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:143
+msgid "Store your images as attachments, and access them in the Media Library."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:144
+msgid "Use the WordPress Media Manager to upload images."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:145
+msgid ""
+"Eazyest Gallery is fully compatible with WP Super Cache, Jetpack, WordPress-"
+"SEO, Comments-Reloaded and other popular plugins"
+msgstr ""
+
+#. translators: %s are placeholders for link anchors
+#: admin/class-eazyest-about-page.php:148
+msgid ""
+"Please convert your Lazyest Gallery Folders, Images, Captions, Descriptions "
+"and Comments with the %sUpgrade Tool%s."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:157
+msgid "Manage Folders and Subfolders"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:159
+msgid "Drag &amp; Drop sorting"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:160
+msgid "Easily Arrange your Folders"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:161
+msgid "Easily add folders just like pages."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:162
+msgid "You can have as many folders you want."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:163
+msgid ""
+"Add titles, content, images, tags, and subfolders in the Edit Folder screen."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:164
+msgid ""
+"Sort your folders and images by date, by name, by title, or enable drag-and-"
+"drop manually sorting."
+msgstr ""
+
+#. translators: %s are placeholders for link anchors
+#: admin/class-eazyest-about-page.php:168
+msgid ""
+"Please confirm your server gallery folder in %sEazyest Gallery Settings%s."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:176
+msgid "Manage your Images"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:181
+msgid "Easily Upload and Manage your Images"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:182
+msgid "You can easily upload your images in the new Media Manager."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:183
+msgid ""
+"If you are tired of uploading photos through the Media Manager, this plugin "
+"will make it a breeze with auto-indexing integration. Just add your images "
+"on your server and Eazyest Gallery will find and use them."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:184
+msgid "Add captions and descriptions to all your images in one screen"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:189
+msgid "Display your Gallery"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:191
+msgid "Display WordPress Compatible Galleries"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:192
+msgid "Camera slideshow"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:193
+msgid ""
+"Eazyest Gallery produces WordPress gallery markup. Your gallery is ready to "
+"go without changes to your theme. If you have plugins or themes to display "
+"galleries differently, they will work for Eazyest Gallery too."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:194
+msgid "Show Beautiful Slideshows"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:195
+msgid ""
+"Eazyest Gallery includes the Camera Slideshow by Manuel Masia. You can "
+"include slideshow widgets in your sidebar"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:196
+msgid "Theme compatibility"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:197
+msgid ""
+"Eazyest Gallery includes templates for <strong>Twenty Ten</strong>, for "
+"<strong>Twenty Eleven</strong>, and for <strong>Twenty Twelve</strong>. Most "
+"features will work in other themes. You can find example templates for "
+"Gallery, Folder and Attachment pages in the plugin package."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:198
+msgid ""
+"Eazyest Gallery comes with a variety of widgets, shortcodes, and template "
+"tags to let you create the gallery you want."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:203
+msgid "Under the Hood"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:207
+msgid "Template Tags"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:208
+msgid ""
+"Use Eazyest Gallery tags to build your theme template. Show a list of all "
+"your folders with the <code>ezg_list_folders()</code> tag. Display random "
+"images with the <code>ezg_random_images()</code> tag"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:210
+msgid "All your Lazyest Gallery tags will work in Eazyest Gallery"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:215
+msgid "Integrate and Expand"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:216
+msgid ""
+"Eazyest Gallery offers a myriad of action hooks and filters to change the "
+"behavior and html output."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:220
+#: admin/class-eazyest-about-page.php:298
+msgid "External Libraries"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:222
+msgid ""
+"Eazyest Gallery includes %sTableDnD plug-in%s for JQuery by Denis Howlett to "
+"enable manually sorting, %sJQuery File Tree%s by A Beautiful Site in the "
+"Settings screen, and the %sCamera Slideshow%s by Manuel Masia."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:259
+msgid ""
+"Eazyest Gallery is created during evening hours by a lone developer "
+"supported by his family."
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:261
+msgid "Project Leader"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:266
+msgid "Lone Developer"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:270
+msgid "Contributors, Testers and Bug reporters"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:275
+msgid "Alpha tester"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:280
+#: admin/class-eazyest-about-page.php:285
+#: admin/class-eazyest-about-page.php:290
+#: admin/class-eazyest-about-page.php:295
+msgid "Bug reporter"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:305
+msgid ""
+"Hi, You&#8217;ve read all to this spot. Don&#8217;t you think the list of "
+"contributors, testers and bug reporters is way too short? Please join in and "
+"drop a note in the support forums."
+msgstr ""
+
+#: admin/class-eazyest-admin-ajax.php:249
 msgid "Cheating huh?"
 msgstr ""
 
-#: admin/class-eazyest-admin.php:224 admin/class-eazyest-admin.php:231
+#: admin/class-eazyest-admin.php:233 admin/class-eazyest-admin.php:240
 msgid "eazyest-gallery"
 msgstr ""
 
-#: admin/class-eazyest-admin.php:224
+#: admin/class-eazyest-admin.php:233
 msgid "The folder you have selected cannot be used for a gallery"
 msgstr ""
 
-#: admin/class-eazyest-admin.php:231
+#: admin/class-eazyest-admin.php:240
 msgid "The folder you have selected does not exist"
 msgstr ""
 
-#: admin/class-eazyest-admin.php:279 admin/class-eazyest-settings-page.php:966
+#: admin/class-eazyest-admin.php:290 admin/class-eazyest-settings-page.php:969
 msgid "Eazyest Gallery Settings"
 msgstr ""
 
-#: admin/class-eazyest-admin.php:288 tools/class-eazyest-tools-page.php:103
+#: admin/class-eazyest-admin.php:299 tools/class-eazyest-tools-page.php:103
 msgid "Eazyest Gallery Tools"
 msgstr ""
 
-#: admin/class-eazyest-admin.php:308
+#: admin/class-eazyest-admin.php:307 admin/class-eazyest-admin.php:316
+msgid "About Eazyest Gallery"
+msgstr ""
+
+#: admin/class-eazyest-admin.php:438
 msgid "Settings"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:170
+#: admin/class-eazyest-admin.php:440
+msgid "About"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:162
+#: admin/class-eazyest-folder-editor.php:1151
+#: admin/class-eazyest-folder-editor.php:1180
+msgid "Hidden"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:163
+#: admin/class-eazyest-folder-editor.php:1095
+#: admin/class-eazyest-folder-editor.php:1124
+msgid "Hidden Published"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:197
+msgid "Click to stop search"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:197
 msgid "Searching for new folders and images"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:171
+#: admin/class-eazyest-folder-editor.php:198
 msgid "No new images found in your gallery"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:172
+#: admin/class-eazyest-folder-editor.php:199
 msgid "Found %d new images in your gallery"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:217
+#: admin/class-eazyest-folder-editor.php:276
+msgid "Folder updated. <a href=\"%s\">View post</a>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:277
+msgid "Custom field updated."
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:278
+msgid "Custom field deleted."
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:279
+#: admin/class-eazyest-folder-editor.php:291
+msgid "Folder updated."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: admin/class-eazyest-folder-editor.php:281
+msgid "Folder restored to revision from %s"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:282
+msgid "Folder published. <a href=\"%s\">View folder</a>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:283
+msgid "Folder saved."
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:284
+msgid "Folder submitted. <a target=\"_blank\" href=\"%s\">Preview folder</a>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:285
+msgid ""
+"Folder scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"\">Preview folder</a>"
+msgstr ""
+
+#. translators: Publish box date format, see http:php.net/date
+#: admin/class-eazyest-folder-editor.php:287
+#: admin/class-eazyest-folder-editor.php:296
+#: admin/class-eazyest-folder-editor.php:1192
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:288
+msgid ""
+"Folder draft updated. <a target=\"_blank\" href=\"%s\">Preview folder</a>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:292
+msgid "Folder published."
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:293
+msgid "Folder draft updated"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:294
+msgid "Folder scheduled for: <strong>%1$s</strong>."
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:323
 msgid "Image attachment permanently deleted."
 msgid_plural "%d image attachments permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-editor.php:222
+#: admin/class-eazyest-folder-editor.php:328
 msgid "Folder moved to the Trash."
 msgid_plural "%s folders moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-editor.php:226
+#: admin/class-eazyest-folder-editor.php:332
 msgid "Undo"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:230
+#: admin/class-eazyest-folder-editor.php:336
 msgid "Folder restored from the Trash."
 msgid_plural "%s folders restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-editor.php:241
-#: includes/class-eazyest-folderbase.php:578
+#: admin/class-eazyest-folder-editor.php:347
+#: includes/class-eazyest-folderbase.php:631
 msgid "You cannot delete a parent folder"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:328
+#: admin/class-eazyest-folder-editor.php:352
+msgid ""
+"Eazyest Gallery found one or more new folders, but could not include them."
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:443
 msgid "You are not allowed to move this folder to the Trash."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:367
+#: admin/class-eazyest-folder-editor.php:482
 msgid "You are not allowed to restore this folder from the Trash."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:371
+#: admin/class-eazyest-folder-editor.php:486
 msgid "Error in restoring from Trash."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:407
+#: admin/class-eazyest-folder-editor.php:522
 msgid "You are not allowed to delete this image."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:600
+#: admin/class-eazyest-folder-editor.php:713
 #: admin/class-eazyest-media-list-table.php:77
 msgid "Draggable Column"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:601
+#: admin/class-eazyest-folder-editor.php:714
 msgctxt "column name"
 msgid "Name"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:602
+#: admin/class-eazyest-folder-editor.php:715
 msgctxt "column name"
 msgid "Caption"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:603
+#: admin/class-eazyest-folder-editor.php:716
 msgctxt "column name"
 msgid "Images"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:604
+#: admin/class-eazyest-folder-editor.php:717
 msgctxt "column name"
 msgid "Tags"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:605
+#: admin/class-eazyest-folder-editor.php:718
 #: admin/class-eazyest-media-list-table.php:81
 msgid "Comments"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:607
+#: admin/class-eazyest-folder-editor.php:720
 #: admin/class-eazyest-media-list-table.php:82
 msgctxt "column name"
 msgid "Date"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:634
+#: admin/class-eazyest-folder-editor.php:747
 msgid "to Top&nbsp;&#8593;"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:635
+#: admin/class-eazyest-folder-editor.php:748
 msgid "to Bottom&nbsp;&#8595;"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:643
+#: admin/class-eazyest-folder-editor.php:756
 msgid "Move this folder to the Trash"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:643
-#: admin/class-eazyest-folder-list-table.php:493
+#: admin/class-eazyest-folder-editor.php:756
+#: admin/class-eazyest-folder-list-table.php:532
 msgid "Trash"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:688
+#: admin/class-eazyest-folder-editor.php:801
 msgid "Posted less than one day ago"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:722
+#: admin/class-eazyest-folder-editor.php:835
 msgid "Click an hold to sort"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:750
-#: admin/class-eazyest-folder-editor.php:784
-#: admin/class-eazyest-folder-list-table.php:481
-#: admin/class-eazyest-media-list-table.php:398
-#: admin/class-eazyest-media-list-table.php:418
+#: admin/class-eazyest-folder-editor.php:863
+#: admin/class-eazyest-folder-editor.php:896
+#: admin/class-eazyest-folder-list-table.php:520
+#: admin/class-eazyest-media-list-table.php:433
+#: admin/class-eazyest-media-list-table.php:453
 msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:774
+#: admin/class-eazyest-folder-editor.php:886
 msgid "Not Saved"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:839
+#: admin/class-eazyest-folder-editor.php:951
 msgid "Save Changes"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:882
+#: admin/class-eazyest-folder-editor.php:992
 msgid "Select a view"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:883
+#: admin/class-eazyest-folder-editor.php:993
 msgid "Uploaded to this folder"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:884
+#: admin/class-eazyest-folder-editor.php:994
 msgid "Done uploading"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:932
+#: admin/class-eazyest-folder-editor.php:1030
+#: admin/class-eazyest-folder-editor.php:1248
+#: admin/class-eazyest-folder-editor.php:1249
+msgid "Publish"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1054
+msgid "Save"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1060
+msgid "Save Draft"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1062
+msgid "Save as Pending"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1071
+msgid "Preview Changes"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1075
+#: admin/class-eazyest-folder-list-table.php:539
+msgid "Preview"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1087
+msgid "Status:"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1092
+#: admin/class-eazyest-folder-editor.php:1122
+msgid "Privately Published"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1098
+#: admin/class-eazyest-folder-editor.php:1120
+#: admin/class-eazyest-folder-list-table.php:576
+msgid "Published"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1101
+#: admin/class-eazyest-folder-editor.php:1126
+#: admin/class-eazyest-folder-list-table.php:581
+msgid "Scheduled"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1104
+#: admin/class-eazyest-folder-editor.php:1128
+msgid "Pending Review"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1108
+#: admin/class-eazyest-folder-editor.php:1130
+#: admin/class-eazyest-folder-editor.php:1132
+msgid "Draft"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1114
+#: admin/class-eazyest-folder-editor.php:1165
+#: admin/class-eazyest-folder-editor.php:1215
+#: admin/class-eazyest-folder-list-table.php:526
+#: admin/class-eazyest-media-list-table.php:324
+#: includes/class-eazyest-folderbase.php:173
+#: themes/twentyeleven/content-single-galleryfolder.php:47
+#: themes/twentyeleven/eazyest-image.php:42
+#: themes/twentyten/loop-eazyest-image.php:63
+#: themes/twentyten/loop-eazyest-image.php:119
+#: themes/twentyten/loop-single-galleryfolder.php:53
+#: themes/twentytwelve/content-single-galleryfolder.php:30
+#: themes/twentytwelve/eazyest-image.php:99
+msgid "Edit"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1135
+#: admin/class-eazyest-folder-editor.php:1182
+msgid "OK"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1136
+#: admin/class-eazyest-folder-editor.php:1183
+msgid "Cancel"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1143
+msgid "Visibility:"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1148
+#: admin/class-eazyest-folder-editor.php:1179
+msgid "Private"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1154
+#: admin/class-eazyest-folder-editor.php:1177
+msgid "Password protected"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1157
+msgid "Public, Sticky"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1160
+#: admin/class-eazyest-folder-editor.php:1173
+msgid "Public"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1175
+msgid "Stick this post to the front page"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1178
+msgid "Password:"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1195
+msgid "Scheduled for: <b>%1$s</b>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1197
+msgid "Published on: <b>%1$s</b>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1199
+#: admin/class-eazyest-folder-editor.php:1207
+msgid "Publish <b>immediately</b>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1201
+msgid "Schedule for: <b>%1$s</b>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1203
+msgid "Publish on: <b>%1$s</b>"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1231
+#: admin/class-eazyest-folder-list-table.php:534
+#: admin/class-eazyest-media-list-table.php:298
+#: admin/class-eazyest-media-list-table.php:326
+msgid "Delete Permanently"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1233
+#: admin/class-eazyest-folder-list-table.php:349
+msgid "Move to Trash"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1245
+#: admin/class-eazyest-folder-editor.php:1246
+msgid "Schedule"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1252
+#: admin/class-eazyest-folder-editor.php:1253
+msgid "Submit for Review"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1257
+#: admin/class-eazyest-folder-editor.php:1258
+msgid "Update"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:1293
 msgid "Path: %s"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:951
+#: admin/class-eazyest-folder-editor.php:1312
 #: admin/class-eazyest-settings-page.php:487
 msgid "Support the development of Eazyest Galery"
 msgstr ""
@@ -201,141 +713,106 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:241
+#: admin/class-eazyest-folder-list-table.php:278
 msgid "1 folder"
 msgid_plural "%s folders"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-list-table.php:288
+#: admin/class-eazyest-folder-list-table.php:326
 msgid "Add subfolder"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:293
+#: admin/class-eazyest-folder-list-table.php:331
 msgid "1 new folder found"
 msgid_plural "%s new folders found"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-list-table.php:294
+#: admin/class-eazyest-folder-list-table.php:332
 msgid "1 missing folder"
 msgid_plural "%s missing folders"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-list-table.php:311
-msgid "Move to Trash"
-msgstr ""
-
-#: admin/class-eazyest-folder-list-table.php:375
-#: admin/class-eazyest-media-list-table.php:208
+#: admin/class-eazyest-folder-list-table.php:413
+#: admin/class-eazyest-media-list-table.php:243
 msgid "Bulk Actions"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:385
-#: admin/class-eazyest-media-list-table.php:220
+#: admin/class-eazyest-folder-list-table.php:423
+#: admin/class-eazyest-media-list-table.php:255
 msgid "Apply"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:450
-#: admin/class-eazyest-media-list-table.php:382
+#: admin/class-eazyest-folder-list-table.php:489
+#: admin/class-eazyest-media-list-table.php:417
 msgid "Select %s"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:487
+#: admin/class-eazyest-folder-list-table.php:526
 msgid "Edit this item"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:487
-#: admin/class-eazyest-media-list-table.php:289
-#: includes/class-eazyest-folderbase.php:164
-#: themes/twentyeleven/content-single-galleryfolder.php:47
-#: themes/twentyeleven/eazyest-image.php:42
-#: themes/twentyten/loop-eazyest-image.php:63
-#: themes/twentyten/loop-eazyest-image.php:116
-#: themes/twentyten/loop-single-galleryfolder.php:53
-#: themes/twentytwelve/content-single-galleryfolder.php:30
-#: themes/twentytwelve/eazyest-image.php:98
-msgid "Edit"
-msgstr ""
-
-#: admin/class-eazyest-folder-list-table.php:491
+#: admin/class-eazyest-folder-list-table.php:530
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:491
+#: admin/class-eazyest-folder-list-table.php:530
 msgid "Restore"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:493
+#: admin/class-eazyest-folder-list-table.php:532
 msgid "Move this item to the Trash"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:495
+#: admin/class-eazyest-folder-list-table.php:534
 msgid "Delete this item permanently"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:495
-#: admin/class-eazyest-media-list-table.php:263
-#: admin/class-eazyest-media-list-table.php:291
-msgid "Delete Permanently"
-msgstr ""
-
-#: admin/class-eazyest-folder-list-table.php:500
+#: admin/class-eazyest-folder-list-table.php:539
 msgid "Preview &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:500
-msgid "Preview"
-msgstr ""
-
-#: admin/class-eazyest-folder-list-table.php:502
-#: admin/class-eazyest-media-list-table.php:292
+#: admin/class-eazyest-folder-list-table.php:541
+#: admin/class-eazyest-media-list-table.php:327
 msgid "View &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:502
-#: admin/class-eazyest-media-list-table.php:292
+#: admin/class-eazyest-folder-list-table.php:541
+#: admin/class-eazyest-media-list-table.php:327
 msgid "View"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:515
-#: admin/class-eazyest-media-list-table.php:503
+#: admin/class-eazyest-folder-list-table.php:554
+#: admin/class-eazyest-media-list-table.php:538
 msgid "Unpublished"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:518
+#: admin/class-eazyest-folder-list-table.php:557
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:525
-#: admin/class-eazyest-media-list-table.php:511
+#: admin/class-eazyest-folder-list-table.php:564
+#: admin/class-eazyest-media-list-table.php:546
 msgid "%s ago"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:527
-#: admin/class-eazyest-media-list-table.php:513
+#: admin/class-eazyest-folder-list-table.php:566
+#: admin/class-eazyest-media-list-table.php:548
 msgid "Y/m/d"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:537
-msgid "Published"
-msgstr ""
-
-#: admin/class-eazyest-folder-list-table.php:540
+#: admin/class-eazyest-folder-list-table.php:579
 msgid "Missed schedule"
 msgstr ""
 
-#: admin/class-eazyest-folder-list-table.php:542
-msgid "Scheduled"
-msgstr ""
-
-#: admin/class-eazyest-folder-list-table.php:544
+#: admin/class-eazyest-folder-list-table.php:583
 msgid "Last Modified"
 msgstr ""
 
 #. translators: used between list items, there is a space after the comma
-#: admin/class-eazyest-folder-list-table.php:593
+#: admin/class-eazyest-folder-list-table.php:632
 #: themes/twentyeleven/content-single-galleryfolder.php:30
 msgid ", "
 msgstr ""
@@ -360,19 +837,19 @@ msgctxt "column name"
 msgid "Content"
 msgstr ""
 
-#: admin/class-eazyest-media-list-table.php:244
+#: admin/class-eazyest-media-list-table.php:279
 msgid "1 new image found"
 msgid_plural "%s new images found"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-media-list-table.php:245
+#: admin/class-eazyest-media-list-table.php:280
 msgid "1 missing image"
 msgid_plural "%s missing images"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-media-list-table.php:509
+#: admin/class-eazyest-media-list-table.php:544
 msgid "%s from now"
 msgstr ""
 
@@ -399,7 +876,7 @@ msgid "Could not create folder %s."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:236
-#: admin/class-eazyest-settings-page.php:859
+#: admin/class-eazyest-settings-page.php:861
 msgid "Main Settings"
 msgstr ""
 
@@ -408,7 +885,7 @@ msgid "Main gallery settings to select your gallery"
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:240
-#: admin/class-eazyest-settings-page.php:868
+#: admin/class-eazyest-settings-page.php:870
 msgid "Folder Options"
 msgstr ""
 
@@ -417,7 +894,7 @@ msgid "How your folders will be displayed"
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:244
-#: admin/class-eazyest-settings-page.php:896
+#: admin/class-eazyest-settings-page.php:899
 msgid "Image Options"
 msgstr ""
 
@@ -426,7 +903,7 @@ msgid "How your images will be displayed"
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:248
-#: admin/class-eazyest-settings-page.php:923
+#: admin/class-eazyest-settings-page.php:926
 msgid "Advanced Options"
 msgstr ""
 
@@ -453,11 +930,11 @@ msgid "Support Eazyest Gallery"
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:288
-msgid "Icons per page"
+msgid "Icon columns"
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:291
-msgid "Icon columns"
+msgid "Icons per page"
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:294
@@ -472,7 +949,7 @@ msgstr ""
 msgid "Folder icons"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:305
+#: admin/class-eazyest-settings-page.php:308
 msgid "Thumbnails per page"
 msgstr ""
 
@@ -516,393 +993,405 @@ msgstr ""
 msgid "Review and rate Eazyest Gallery"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:506
-#: admin/class-eazyest-settings-page.php:629
+#: admin/class-eazyest-settings-page.php:507
+#: admin/class-eazyest-settings-page.php:631
 msgid "per page"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:521
-#: admin/class-eazyest-settings-page.php:644
+#: admin/class-eazyest-settings-page.php:522
+#: admin/class-eazyest-settings-page.php:646
 msgid "columns"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:534
+#: admin/class-eazyest-settings-page.php:535
 msgid "Name, ascending (A-Z)"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:535
+#: admin/class-eazyest-settings-page.php:536
 msgid "Name, descending (Z-A)"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:536
+#: admin/class-eazyest-settings-page.php:537
 msgid "Caption, ascending (A-Z)"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:537
+#: admin/class-eazyest-settings-page.php:538
 msgid "Caption, descending (Z-A)"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:538
+#: admin/class-eazyest-settings-page.php:539
 msgid "Date, oldest first"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:539
+#: admin/class-eazyest-settings-page.php:540
 msgid "Date, newest first"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:540
+#: admin/class-eazyest-settings-page.php:541
 msgid "Manually"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:573
+#: admin/class-eazyest-settings-page.php:574
 msgid "Show number of images in folder only"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:574
+#: admin/class-eazyest-settings-page.php:575
 msgid "Show number of images in folder including subfolders"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:575
+#: admin/class-eazyest-settings-page.php:576
 msgid "Show number of images in folder and subfolders separately"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:576
+#: admin/class-eazyest-settings-page.php:577
 msgid "Do not show number of images in folder"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:598
+#: admin/class-eazyest-settings-page.php:599
 msgid "Featured image"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:599
+#: admin/class-eazyest-settings-page.php:600
 msgid "First image in folder"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:600
+#: admin/class-eazyest-settings-page.php:601
 msgid "Random Image"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:601
-#: frontend/class-eazyest-frontend.php:596
+#: admin/class-eazyest-settings-page.php:602
+#: frontend/class-eazyest-frontend.php:626
 msgid "Folder Icon"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:602
+#: admin/class-eazyest-settings-page.php:603
 msgid "Title only"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:612
+#: admin/class-eazyest-settings-page.php:613
 msgid "Include images from subfolders"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:659
+#: admin/class-eazyest-settings-page.php:661
 msgid "Show captions in thumbnail view"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:684
+#: admin/class-eazyest-settings-page.php:686
 msgid "Just display the image"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:685
+#: admin/class-eazyest-settings-page.php:687
 msgid "Add lightbox markup"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:686
+#: admin/class-eazyest-settings-page.php:688
 msgid "Add thickbox markup"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:687
+#: admin/class-eazyest-settings-page.php:689
 msgid "Add fancybox markup"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:688
+#: admin/class-eazyest-settings-page.php:690
 msgid "Add shadowbox markup"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:705
-#: admin/class-eazyest-settings-page.php:745
+#: admin/class-eazyest-settings-page.php:707
+#: admin/class-eazyest-settings-page.php:747
 msgid "Nothing"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:706
+#: admin/class-eazyest-settings-page.php:708
 msgid "Show attachment page"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:707
+#: admin/class-eazyest-settings-page.php:709
 msgid "Show medium size image"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:708
+#: admin/class-eazyest-settings-page.php:710
 msgid "Show large size image"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:709
-#: admin/class-eazyest-settings-page.php:744
+#: admin/class-eazyest-settings-page.php:711
+#: admin/class-eazyest-settings-page.php:746
 msgid "Show full size image"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:742
+#: admin/class-eazyest-settings-page.php:744
 msgid "Theme default"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:743
+#: admin/class-eazyest-settings-page.php:745
 msgid "Go to next image"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:801
+#: admin/class-eazyest-settings-page.php:803
 msgid "Everyone"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:851
+#: admin/class-eazyest-settings-page.php:853
 msgid "Overview"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:852
+#: admin/class-eazyest-settings-page.php:854
 msgid "This screen provides access to all of the Eazyest Gallery settings."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:853
+#: admin/class-eazyest-settings-page.php:855
 msgid ""
 "Please see the additional help tabs for more information on each indiviual "
 "section."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:855
-#: admin/class-eazyest-settings-page.php:889
-#: admin/class-eazyest-settings-page.php:916
+#: admin/class-eazyest-settings-page.php:857
+#: admin/class-eazyest-settings-page.php:892
+#: admin/class-eazyest-settings-page.php:919
 msgid "For Image sizes, please refer to %sWordPress Media Settings%s."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:860
+#: admin/class-eazyest-settings-page.php:862
 msgid "In the Main Settings you set the server directory for your gallery."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:861
+#: admin/class-eazyest-settings-page.php:863
 msgid "Eazyest Gallery will not work if this directory does not exist."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:862
+#: admin/class-eazyest-settings-page.php:864
 msgid "You cannot change this directory after you add folders to it."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:863
+#: admin/class-eazyest-settings-page.php:865
 msgid "Set a title for your gallery archive page"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:864
+#: admin/class-eazyest-settings-page.php:866
 msgid "Please donate to support the development of Eazyest Gallery"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:869
+#: admin/class-eazyest-settings-page.php:871
 msgid ""
 "In the Folder Options you have a number of options to control how your "
 "folders will be displayed."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:871
-msgid ""
-"Select the number of folder icons to initially display in the \"Icons per "
-"page\" option."
-msgstr ""
-
-#: admin/class-eazyest-settings-page.php:872
-msgid ""
-"The option \"Icon columns\" sets the number of icons to display per row."
-msgstr ""
-
 #: admin/class-eazyest-settings-page.php:873
 msgid ""
-"Set this option to 0 if you want to display as many icons that fit your page."
+"Select the number of folder icons to initially display in the &#8220;Icons "
+"per page&#8221; option."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:874
 msgid ""
-"If you set any other value, Eazyest Gallery will shrink your icons when "
-"necessary."
+"The option &#8220;Icon columns&#8221; sets the number of icons to display "
+"per row."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:875
 msgid ""
-"Select how you want your want to sort your folders in the \"Sort folders by"
-"\" option."
+"Set this option to 0 if you want to display as many icons that fit your page."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:876
 msgid ""
-"If you want to display the number of images in your folders in the icons "
-"view, select the \"Count images\" option."
+"If you set any other value, Eazyest Gallery will fit your icons when "
+"necessary."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:877
 msgid ""
-"In the \"Folder icons\" options, you set what to display in the folder icons "
-"view."
+"Select how you want your want to sort your folders in the &#8220;Sort "
+"folders by&#8221; option."
+msgstr ""
+
+#: admin/class-eazyest-settings-page.php:878
+msgid ""
+"If you want to display the number of images in your folders in the icons "
+"view, select the &#8220;Count images&#8221; option."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:879
-msgid "\"Featured image\" will display the folder featured image."
-msgstr ""
-
-#: admin/class-eazyest-settings-page.php:880
 msgid ""
-"If you haven't selected a featured image yet, Eazyest Gallery will show the "
-"first image in your folder."
+"In the &#8220;Folder icons&#8221; options, you set what to display in the "
+"folder icons view."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:881
-msgid ""
-"\"First image in folder\" will display the first image, after sorting the "
-"images."
+msgid "&#8220;Featured image&#8221; will display the folder featured image."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:882
 msgid ""
-"\"Random image\" will select a random image each time you open the folder "
-"icons page."
+"If you haven&#8217;t selected a featured image yet, Eazyest Gallery will "
+"show the first image in your folder."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:883
 msgid ""
-"If you want to include random images from subfolders, please select "
-"\"\"Include images from subfolders\"."
+"&#8220;First image in folder&#8221; will display the first image, after "
+"sorting the images."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:884
-msgid "\"Folder icon\" will display a standard folder icon."
+msgid ""
+"&#8220;Random image&#8221; will select a random image each time you open the "
+"folder icons page."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:885
-msgid "If you don't want to display an image, please select \"Title only\"."
+msgid ""
+"If you want to include random images from subfolders, please select &#8220;"
+"Include images from subfolders&#8221;."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:897
+#: admin/class-eazyest-settings-page.php:886
+msgid "&#8220;Folder icon&#8221; will display a standard folder icon."
+msgstr ""
+
+#: admin/class-eazyest-settings-page.php:887
+msgid ""
+"If you don&#8217;t want to display an image, please select &#8220;Title "
+"only&#8221;."
+msgstr ""
+
+#: admin/class-eazyest-settings-page.php:900
 msgid ""
 "In the Folder Options you have a number of options to control how your "
 "images will be displayed."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:900
+#: admin/class-eazyest-settings-page.php:903
 msgid ""
-"Select the number of thumbnails to initially display in the \"Thumbnails per "
-"page\" option."
+"Select the number of thumbnails to initially display in the &#8220;"
+"Thumbnails per page&#8221; option."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:901
+#: admin/class-eazyest-settings-page.php:904
 msgid ""
-"The option \"Thumbnail columns\" sets the number of icons to display per row."
+"The option &#8220;Thumbnail columns&#8221; sets the number of icons to "
+"display per row."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:902
+#: admin/class-eazyest-settings-page.php:905
 msgid ""
 "Set this option to 0 if you want to display as many thumbnails that fit your "
 "page."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:903
+#: admin/class-eazyest-settings-page.php:906
 msgid ""
-"If you set any other value, Eazyest Gallery will shrink your thumbnails when "
+"If you set any other value, Eazyest Gallery will fit your thumbnails when "
 "necessary."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:904
+#: admin/class-eazyest-settings-page.php:907
 msgid ""
-"Keep your descriptions as short as possible when you select the "
-"\"Descriptions\" option."
-msgstr ""
-
-#: admin/class-eazyest-settings-page.php:905
-msgid ""
-"Select how you want your want to sort your images in the \"Sort images by\" "
-"option."
-msgstr ""
-
-#: admin/class-eazyest-settings-page.php:906
-msgid ""
-"Select what will happen if you click on a thumbnail image in the \"Thumbnail "
-"click\" option."
+"Keep your descriptions as short as possible when you select the &#8220;"
+"Descriptions&#8221; option."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:908
-msgid "If you select \"Nothing\", you will stay on the thumnails page"
+msgid ""
+"Select how you want your want to sort your images in the &#8220;Sort images "
+"by&#8221; option."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:909
 msgid ""
-"If you select \"Show attachment page\", you will be redirected to the "
-"attachment page."
-msgstr ""
-
-#: admin/class-eazyest-settings-page.php:910
-msgid ""
-"If you select \"Show medium size image\", you will see the medium sized "
-"image in your browser.(*)"
+"Select what will happen if you click on a thumbnail image in the &#8220;"
+"Thumbnail click&#8221; option."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:911
 msgid ""
-"If you select \"Show large size image\", you will see the large sized image "
-"in your browser.(*)"
+"If you select &#8220;Nothing&#8221;, you will stay on the thumnails page"
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:912
 msgid ""
-"If you select \"Show full size image\", you will see the original image* in "
-"your browser.(*)"
+"If you select &#8220;Show attachment page&#8221;, you will be redirected to "
+"the attachment page."
 msgstr ""
 
 #: admin/class-eazyest-settings-page.php:913
+msgid ""
+"If you select &#8220;Show medium size image&#8221;, you will see the medium "
+"sized image in your browser.(*)"
+msgstr ""
+
+#: admin/class-eazyest-settings-page.php:914
+msgid ""
+"If you select &#8220;Show large size image&#8221;, you will see the large "
+"sized image in your browser.(*)"
+msgstr ""
+
+#: admin/class-eazyest-settings-page.php:915
+msgid ""
+"If you select &#8220;Show full size image&#8221;, you will see the original "
+"image* in your browser.(*)"
+msgstr ""
+
+#: admin/class-eazyest-settings-page.php:916
 msgid ""
 "(*) You may want to add markup for popular popup plugins like Lightbox or "
 "Thickbox."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:914
-msgid "\"List name\" displays what type of images you have in your gallery."
+#: admin/class-eazyest-settings-page.php:917
+msgid ""
+"&#8220;List name&#8221; displays what type of images you have in your "
+"gallery."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:924
+#: admin/class-eazyest-settings-page.php:927
 msgid ""
 "In Advaced Options you have a number of options for advanced use of Eazyest "
 "Gallery"
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:926
-msgid "\"Gallery slug\" is a custom root slug to prefix your gallery with."
-msgstr ""
-
-#: admin/class-eazyest-settings-page.php:927
+#: admin/class-eazyest-settings-page.php:929
 msgid ""
-"\"Minimum viewer role\" selects the minimum role/capability a user must have "
-"to view your gallery."
+"&#8220;Gallery slug&#8221; is a custom root slug to prefix your gallery with."
 msgstr ""
 
-#: admin/class-eazyest-settings-page.php:928
-msgid "If you select \"%s\", a viewer does not have to be logged in"
+#: admin/class-eazyest-settings-page.php:930
+msgid ""
+"&#8220;Minimum viewer role&#8221; selects the minimum role/capability a user "
+"must have to view your gallery."
 msgstr ""
 
-#: eazyest-gallery.php:81 eazyest-gallery.php:87
+#: admin/class-eazyest-settings-page.php:931
+msgid "If you select &#8220;%s&#8221;, a viewer does not have to be logged in"
+msgstr ""
+
+#: eazyest-gallery.php:84 eazyest-gallery.php:90
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (Eazyest Gallery 0.1.0-beta-1-r92)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Eazyest Gallery 0.1.0-beta-4-162)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: eazyest-gallery.php:366
+#: eazyest-gallery.php:370
 msgid "Eazyest Gallery"
 msgstr ""
 
-#: eazyest-gallery.php:380
+#: eazyest-gallery.php:384
 msgid "Gallery"
 msgstr ""
 
-#: eazyest-gallery.php:734
+#: eazyest-gallery.php:757
 msgid ""
 "Eazyest Gallery requires WordPress 3.5 or higher. The plugin has now "
 "disabled itself."
 msgstr ""
 
-#: frontend/class-eazyest-frontend.php:415
-#: frontend/class-eazyest-frontend.php:1289
-#: frontend/class-eazyest-shortcodes.php:222 frontend/template-tags.php:433
+#: frontend/class-eazyest-frontend.php:260
+msgid "More thumbnails"
+msgstr ""
+
+#: frontend/class-eazyest-frontend.php:446
+#: frontend/class-eazyest-frontend.php:1404
+#: frontend/class-eazyest-shortcodes.php:222 frontend/template-tags.php:453
 #: themes/twentyeleven/content-galleryfolder.php:18
 #: themes/twentyten/loop-archive-galleryfolder.php:48
 #: themes/twentytwelve/content-galleryfolder.php:18
@@ -910,33 +1399,49 @@ msgid "View folder &#8220;%s&#8221;"
 msgstr ""
 
 #. translators: %1s = number; %2s = images (text)
-#: frontend/class-eazyest-frontend.php:877
+#: frontend/class-eazyest-frontend.php:907
 msgid "%1s %2s"
 msgstr ""
 
-#. translators: number of images in subfolders
-#: frontend/class-eazyest-frontend.php:880
-msgid "%s in subfolders"
-msgstr ""
-
-#: frontend/class-eazyest-frontend.php:926
-msgid "Slideshow"
-msgstr ""
-
-#: frontend/class-eazyest-frontend.php:927
-msgid "Thumbnails"
+#. translators: %1s = number; %2s = images (text) in subfolders
+#: frontend/class-eazyest-frontend.php:911
+msgid "%1s%2s in subfolders"
 msgstr ""
 
 #: frontend/class-eazyest-frontend.php:962
+msgid "Slideshow"
+msgstr ""
+
+#: frontend/class-eazyest-frontend.php:963
+msgid "Thumbnails"
+msgstr ""
+
+#: frontend/class-eazyest-frontend.php:998
 msgid "Home"
 msgstr ""
 
+#: frontend/class-eazyest-frontend.php:1011
+msgid "This folder is not available"
+msgstr ""
+
 #. translators: breadcrumb trail separator
-#: frontend/class-eazyest-frontend.php:976
+#: frontend/class-eazyest-frontend.php:1019
 msgid "&rsaquo;"
 msgstr ""
 
-#: frontend/class-eazyest-frontend.php:1280
+#: frontend/class-eazyest-frontend.php:1278
+msgid "Thumbnail navigation"
+msgstr ""
+
+#: frontend/class-eazyest-frontend.php:1288
+msgid "Previous thumbnails"
+msgstr ""
+
+#: frontend/class-eazyest-frontend.php:1300
+msgid "Next thumbnails"
+msgstr ""
+
+#: frontend/class-eazyest-frontend.php:1395
 msgid "Subfolders"
 msgstr ""
 
@@ -999,7 +1504,7 @@ msgid ""
 "%2$s with no alternative available."
 msgstr ""
 
-#: frontend/template-tags.php:247
+#: frontend/template-tags.php:267
 msgid "Powered by Eazyest Gallery version %s. Copyright &copy; 2012-%d %s"
 msgstr ""
 
@@ -1056,7 +1561,7 @@ msgid "Delete this field"
 msgstr ""
 
 #: includes/class-eazyest-extra-fields.php:551
-#: includes/class-eazyest-folderbase.php:160
+#: includes/class-eazyest-folderbase.php:169
 msgid "Folder"
 msgstr ""
 
@@ -1064,56 +1569,71 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:161
+#: includes/class-eazyest-folderbase.php:170
 msgid "All Folders"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:162
+#: includes/class-eazyest-folderbase.php:171
 msgid "Add New"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:163
+#: includes/class-eazyest-folderbase.php:172
 msgid "Create New Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:165
+#: includes/class-eazyest-folderbase.php:174
 msgid "Edit Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:166
+#: includes/class-eazyest-folderbase.php:175
 msgid "New Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:167
-#: includes/class-eazyest-folderbase.php:168
+#: includes/class-eazyest-folderbase.php:176
+#: includes/class-eazyest-folderbase.php:177
 msgid "View Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:169
+#: includes/class-eazyest-folderbase.php:178
 msgid "Search Folders"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:170
+#: includes/class-eazyest-folderbase.php:179
 msgid "No folders found"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:171
+#: includes/class-eazyest-folderbase.php:180
 msgid "No folders found in Trash"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:172
+#: includes/class-eazyest-folderbase.php:181
 msgid "Parent Folder:"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:198
+#: includes/class-eazyest-folderbase.php:206
 msgid "Eazyest Gallery Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:524
+#: includes/class-eazyest-folderbase.php:238
+msgctxt "post status"
+msgid "Hidden"
+msgstr ""
+
+#: includes/class-eazyest-folderbase.php:243
+msgid "Hidden <span class=\"count\">(%s)</span>"
+msgid_plural "Hidden <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-eazyest-folderbase.php:577
 msgid "Could not rename folder in file system"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:964
+#: includes/class-eazyest-folderbase.php:1019
+msgid "Something went terribly wrong while trying to rename a gallery folder."
+msgstr ""
+
+#: includes/class-eazyest-folderbase.php:1035
 msgid "Could not rename folder from %1$s to %2$s"
 msgstr ""
 
@@ -2072,11 +2592,11 @@ msgid ""
 msgstr ""
 
 #: themes/twentyeleven/content-single-galleryfolder.php:24
-#: themes/twentyeleven/eazyest-image.php:95
-#: themes/twentyten/loop-eazyest-image.php:110
+#: themes/twentyeleven/eazyest-image.php:96
+#: themes/twentyten/loop-eazyest-image.php:113
 #: themes/twentyten/loop-single-galleryfolder.php:31
 #: themes/twentytwelve/content-single-galleryfolder.php:25
-#: themes/twentytwelve/eazyest-image.php:80
+#: themes/twentytwelve/eazyest-image.php:81
 msgid "Pages:"
 msgstr ""
 
@@ -2201,7 +2721,7 @@ msgstr ""
 msgid "Link to full-size image"
 msgstr ""
 
-#: themes/twentyten/loop-eazyest-image.php:108
+#: themes/twentyten/loop-eazyest-image.php:111
 #: themes/twentytwelve/content-single-galleryfolder.php:23
 msgid "Continue reading <span class=\"meta-nav\">&rarr;</span>"
 msgstr ""
@@ -2237,7 +2757,7 @@ msgstr ""
 msgid "% Replies"
 msgstr ""
 
-#: themes/twentytwelve/eazyest-image.php:87
+#: themes/twentytwelve/eazyest-image.php:88
 msgid ""
 "<span class=\"meta-prep meta-prep-entry-date\">Published </span> <span class="
 "\"entry-date\"><time class=\"entry-date\" datetime=\"%1$s\">%2$s</time></"
@@ -2299,7 +2819,9 @@ msgid "No upgrade required"
 msgstr ""
 
 #: tools/class-eazyest-upgrader.php:299
-msgid "Your database holds a secure version of Eazyest Gallery (%s), good job!"
+msgid ""
+"You don&#8217;t need to update this version of Eazyest Gallery (%s), good "
+"job!"
 msgstr ""
 
 #: tools/class-eazyest-upgrader.php:316
@@ -2335,103 +2857,132 @@ msgid "Images limit"
 msgstr ""
 
 #: tools/class-eazyest-upgrader.php:355
+msgid "Slides and Thumbs"
+msgstr ""
+
+#: tools/class-eazyest-upgrader.php:358
 msgid "Caption files"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:418
+#: tools/class-eazyest-upgrader.php:421
 msgid "Delete my gallery page and use the slug for my new gallery"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:420
+#: tools/class-eazyest-upgrader.php:423
 msgid ""
 "If you select to delete your page, comments on the gallery root cannot be re-"
 "linked and will be discarded"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:425
+#: tools/class-eazyest-upgrader.php:428
 msgid "Keep my gallery page as an extra gallery"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:443
+#: tools/class-eazyest-upgrader.php:446
 msgid "Comments will be re-linked to custom post types"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:458
+#: tools/class-eazyest-upgrader.php:461
 msgid "images to process at a time"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:459
+#: tools/class-eazyest-upgrader.php:462
 msgid "Keep this low if you experience out-of-memory issues."
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:474
-msgid "Discard captions.xml files after upgrade"
+#: tools/class-eazyest-upgrader.php:476
+msgid "Remove slides and thumbs after upgrade"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:533
+#: tools/class-eazyest-upgrader.php:491
+msgid "Remove captions.xml files after upgrade"
+msgstr ""
+
+#: tools/class-eazyest-upgrader.php:550
 msgid "Upgrade from Lazyest Gallery"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:534
+#: tools/class-eazyest-upgrader.php:551
 msgid ""
 "Eazyest Gallery uses custom post types and stores all information in the "
 "WordPress database."
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:535
+#: tools/class-eazyest-upgrader.php:552
 msgid "You have to convert your gallery to custom post types."
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:540
+#: tools/class-eazyest-upgrader.php:553
+msgid ""
+"Please backup your database and your gallery before you start upgrading."
+msgstr ""
+
+#: tools/class-eazyest-upgrader.php:554
+msgid ""
+"Be aware that importing and renaming folders and images and importing and "
+"linking comments is a time consuming task."
+msgstr ""
+
+#: tools/class-eazyest-upgrader.php:555
+msgid ""
+"Importing large galleries containing hundreds of folders could well take "
+"hours to complete."
+msgstr ""
+
+#: tools/class-eazyest-upgrader.php:560
 msgid "Start"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:543
+#: tools/class-eazyest-upgrader.php:563
 msgid "Upgrade progress"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:544
+#: tools/class-eazyest-upgrader.php:564
 msgid ""
 "Something went terribly wrong in the upgrade process. Please check your "
 "settings above."
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:545
+#: tools/class-eazyest-upgrader.php:565
 msgid "Converting folder %s of %s"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:546
+#: tools/class-eazyest-upgrader.php:566
+msgid "Busy converting a large folder. Imported %s images in this folder."
+msgstr ""
+
+#: tools/class-eazyest-upgrader.php:567
 msgid "Converting your Gallery Page"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:547
+#: tools/class-eazyest-upgrader.php:568
 msgid "Updating your settings"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:548
+#: tools/class-eazyest-upgrader.php:569
 msgid "Cleanup and Remove Lazyest Gallery plugin"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:549
+#: tools/class-eazyest-upgrader.php:570
 msgid "Successfully upgraded Eazyest Gallery"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:549
-msgid "Please check your Settings"
+#: tools/class-eazyest-upgrader.php:570
+msgid "Check out what&#8217;s new"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:552
+#: tools/class-eazyest-upgrader.php:573
 msgid "Skip"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:553
-msgid "Don't upgrade"
+#: tools/class-eazyest-upgrader.php:574
+msgid "Don&#8217;t upgrade"
 msgstr ""
 
-#: tools/class-eazyest-upgrader.php:554
+#: tools/class-eazyest-upgrader.php:575
 msgid ""
-"Don't save any content, just let Eazyest Gallery automatically import my "
-"folders and images."
+"Don&#8217;t save any content, just let Eazyest Gallery automatically import "
+"my folders and images."
 msgstr ""
 
 #. Plugin URI of the plugin/theme
