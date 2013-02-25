@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-beta-3
+Stable tag: 0.1.0-beta-4
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -83,10 +83,21 @@ The attachment view behavior depends on the code in the attachment template. Eaz
 
 == Upgrade Notice ==
 
-= 0.1.0-beta-3 =
-* More bugs fixed (see changelog)  
+= 0.1.0-beta-4 =
+* More bugs fixed and things changed (see changelog)  
 
 == Changelog ==
+
+= 0.1.0-beta-4
+* Bug fix: Double set of thumbs in non-Twenty themes
+* Bug Fix: Out-of-execution-time error in upgrade and auto-index
+* Bug Fix: Gallery folder dropdown did noit show all folders from web root
+* Bug Fix: Could not find resized images
+* Changed: More information during upgrade/import/auto-index processes
+* Changed: Auto-index script is stoppable
+* Changed: Aspect ratio for slideshow
+* Changed: Do not show -Insert from URL- in media view
+
 
 = 0.1.0-beta-3 =
 * Bug Fix: Zombie folders came back as published after they were permanently deleted
