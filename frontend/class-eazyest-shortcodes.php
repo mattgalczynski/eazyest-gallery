@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r171)
+ * @version 0.1.0 (r175)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -413,7 +413,7 @@ class Eazyest_Shortcodes {
 	 * @return string html markup for camera slideshow
 	 */
 	function slideshow_shortcode( $attr ) {
-		if ( ! is_single() )
+		if ( ! is_single() && ! is_page() )
 			return '';
 			
 		if ( isset( $attr['folder'] ) && ! isset( $attr['id'] ) ) {			

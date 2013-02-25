@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r170)
+ * @version 0.1.0 (r175)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1224,7 +1224,7 @@ class Eazyest_Frontend {
 		
 		$ids = '';
 		
-		if ( ! is_single() && ! defined( 'DOING_AJAX' ) ) {
+		if ( ! is_single() && ! is_page() && ! defined( 'DOING_AJAX' ) ) {
 			$selector = ezg_selector( true, false );
 			$html = $this->gallery_style( $selector, $columns );
 			$html .= '<div id="' . ezg_selector( false, false ) . '" class="gallery eazyest-gallery gallery-size-thumbnail"><' . 
