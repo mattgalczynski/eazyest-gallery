@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r175)
+ * @version 0.1.0 (r177)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1258,14 +1258,19 @@ class Eazyest_Frontend {
 				if ( $current_user && $current_user->ID == get_post( $post_id )->post_author )
 					$post_status[] = 'private';
 					
+				$option = explode( '-', eazyest_gallery()->sort_by('thumbnails') );
+				$order_by = $option[0] == 'menu_order' ? 'menu_order' :  substr( $option[0], 5 );
+					
 				$args = array(
 					'post_type'      => 'attachment',
 					'post_parent'    => $post_id,
 					'posts_per_page' => eazyest_gallery()->thumbs_page,
 					'post_status'    => $post_status,
+					'orderby'        => $order_by,
+					'order'          => $option[1],
 					'paged'          => $page,
 					'fields'         => 'ids', 
-				);
+				);			
 				$query = new WP_Query( $args );
 				$post_ids = "ids='" . implode( ',', $query->posts ) . "'";
 				
