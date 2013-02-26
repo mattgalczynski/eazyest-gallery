@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r169)
+ * @version 0.1.0 (r178)
  * @access public
  */
 
@@ -123,18 +123,19 @@ class Eazyest_FolderBase {
 	 */
 	function filters() {
 		// filters related to folders
-		add_filter( 'pre_get_posts',              array( $this, 'pre_get_posts'              ),  10    );
+		add_filter( 'pre_get_posts',                   array( $this, 'pre_get_posts'                ),  10    );
 		// filters related to metadata 
-		add_filter( 'get_attached_file',          array( $this, 'get_attached_file'          ),  20, 2 );
-		add_filter( 'wp_get_attachment_url',      array( $this, 'get_attachment_url'         ),  20, 2 );
-		add_filter( 'update_post_metadata',       array( $this, 'update_attachment_metadata' ),  20, 5 );
-		add_filter( 'wp_get_attachment_metadata', array( $this, 'get_attachment_metadata'    ),  10, 2 );
-		add_filter( 'image_downsize',             array( $this, 'image_downsize'             ),  10, 3 );
+		add_filter( 'get_attached_file',               array( $this, 'get_attached_file'            ),  20, 2 );
+		add_filter( 'wp_get_attachment_url',           array( $this, 'get_attachment_url'           ),  20, 2 );
+		add_filter( 'update_post_metadata',            array( $this, 'update_attachment_metadata'   ),  20, 5 );
+		add_filter( 'wp_get_attachment_metadata',      array( $this, 'get_attachment_metadata'      ),  10, 2 );
+		add_filter( 'wp_generate_attachment_metadata', array( $this, 'generate_attachment_metadata' ),   1, 2 );
+		add_filter( 'image_downsize',                  array( $this, 'image_downsize'               ),  10, 3 );
 		// filters related to image editing 
-		add_filter( 'wp_image_editors',           array( $this, 'image_editors'              ), 999    );
-		add_filter( 'wp_save_image_editor_file',  array( $this, 'save_image_editor_file'     ),  20, 5 );
+		add_filter( 'wp_image_editors',                array( $this, 'image_editors'                ), 999    );
+		add_filter( 'wp_save_image_editor_file',       array( $this, 'save_image_editor_file'       ),  20, 5 );
 		// other filters 
-		add_filter( 'wp_create_file_in_uploads',  array( $this, 'create_file_in_uploads'     ),  10, 2 );
+		add_filter( 'wp_create_file_in_uploads',       array( $this, 'create_file_in_uploads'       ),  10, 2 );
 	}
 	
 	/**
@@ -1921,6 +1922,30 @@ class Eazyest_FolderBase {
 		// now update the metadata
 		$wpdb->update( $wpdb->postmeta, $data, $where );
 		return true;		
+	}
+	
+	/**
+	 * Eazyest_FolderBase::generate_attachment_metadata()
+	 * Changes the resized image filenames because they are stored in the _cache directory.
+	 * 
+	 * @since 0.1.0 (r178)
+	 * @param array $metadata
+	 * @param int $post_id
+	 * @return array
+	 */
+	function generate_attachment_metadata( $metadata, $post_id ) {
+		if ( $this->is_gallery_image( $post_id ) ) {
+			if ( ! empty( $metadata ) ) {
+				if ( isset( $metadata['sizes'] ) && count( $metadata['sizes'] ) ) {
+					foreach( $metadata['sizes'] as $size => $data ) {
+						if ( isset( $data['file'] ) )
+							if ( false == strpos( $data['file'], '_cache' ) )
+								$metadata['sizes'][$size]['file'] = '_cache/' . $metadata['sizes'][$size]['file'];
+					}
+				}
+			}
+		} 
+		return $metadata;
 	} 
 	
 	/**
