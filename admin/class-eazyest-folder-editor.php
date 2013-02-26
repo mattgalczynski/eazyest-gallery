@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r166)
+ * @version 0.1.0 (r179)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -242,9 +242,11 @@ class Eazyest_Folder_Editor {
    */
   function fix_content_messages() {
   	
-		if ( $this->bail() )
+  	$is_image = isset( $_POST['post'] ) &&  ezg_is_gallery_image( $_POST['post'] ); 
+		
+		if ( $this->bail && ! $is_image )
 			return;
-			
+				
   	// remove action for  Shadowbox JS missing source files message.
   	if ( get_option ( 'shadowbox-js-missing-src' ) )
   		delete_option( 'shadowbox-js-missing-src' );
