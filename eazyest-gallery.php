@@ -342,13 +342,9 @@ class Eazyest_Gallery {
 	 * hook WordPress filters
 	 * 
 	 * @since lazyest-gallery 1.2.0
-	 * @uses register_activation_hook()
-	 * @uses add_action()
-	 * @uses add_filter()
 	 * @return void
 	 */
-	function filters() {
-	}
+	function filters() {}
 	
 	/**
 	 * Eazyest_Gallery::gallery_slug()
