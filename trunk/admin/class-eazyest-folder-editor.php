@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r179)
+ * @version 0.1.0 (r184)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -244,7 +244,7 @@ class Eazyest_Folder_Editor {
   	
   	$is_image = isset( $_POST['post'] ) &&  ezg_is_gallery_image( $_POST['post'] ); 
 		
-		if ( $this->bail && ! $is_image )
+		if ( $this->bail() && ! $is_image )
 			return;
 				
   	// remove action for  Shadowbox JS missing source files message.
