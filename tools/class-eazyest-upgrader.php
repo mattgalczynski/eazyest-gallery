@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r159)
+ * @version 0.1.0 (r182)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -563,7 +563,7 @@ class Eazyest_Gallery_Upgrader {
 					<h3 id="upgrade-process-title"><?php _e( 'Upgrade progress', 'eazyest-gallery' ); ?></h3>
 					<p id="upgrade-error" class="hidden-upgrader"><?php _e( 'Something went terribly wrong in the upgrade process. Please check your settings above.', 'eazyest-gallery' ); ?></p>
 					<p id="folder-counter" class="hidden-upgrader"><span class="spinner" style="float:left;"></span><?php printf( __( 'Converting folder %s of %s', 'eazyest-gallery' ), '<span id="current-folder"></span>', '<span id="all-folders"></span>' ); ?></p>
-					<p id="image-counter" class="hidden-upgrader"><?php printf( __( 'Busy converting a large folder. Imported %s images in this folder.', 'eazyest-gallery' ), '<span id="image-batch"></span>'  ) ?></p>
+					<p id="image-counter" class="hidden-upgrader"><?php printf( __( 'Busy converting a large folder. Imported more than %s images in this folder.', 'eazyest-gallery' ), '<span id="image-batch"></span>'  ) ?></p>
 					<p id="upgrade_page" class="hidden-upgrader"><?php _e( 'Converting your Gallery Page', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-settings" class="hidden-upgrader"><?php _e( 'Updating your settings', 'eazyest-gallery' ); ?></p>
 					<p id="upgrade-cleanup" class="hidden-upgrader"><?php _e( 'Cleanup and Remove Lazyest Gallery plugin', 'eazyest-gallery' ); ?></p>
