@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r178)
+ * @version 0.1.0 (r181)
  * @access public
  */
 
@@ -501,7 +501,7 @@ class Eazyest_FolderBase {
 			foreach( $_POST['attachment'] as $item_id => $fields ) {
 				$attachment = get_post( $item_id );
 				foreach( $fields as $field => $value ) {
-					$attachment->$field = sanitize_text_field( $value );
+					$attachment->$field = stripslashes( sanitize_text_field( $value ) );
 					if ( $reordered )
 						$attachment->menu_order = array_search( $attachment->ID, explode( ' ', $_POST['gallery-order-media'] ) );
 				}

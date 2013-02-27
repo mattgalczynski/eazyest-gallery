@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r150) 
+ * @version 0.1.0 (r181) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public
@@ -489,6 +489,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 									$caption = $item->post_excerpt;
 									if ( empty( $caption ) )
 										$caption = $item->post_title;
+									$caption = stripslashes( $caption );	
 									?>
 									<input type="text" class="attachment-excerpt" name="attachment[<?php echo $item->ID ?>][post_excerpt]" size="30" value="<?php echo esc_textarea( $caption ); ?>" id="title-<?php echo $item->ID ?>" autocomplete="off" tabindex="<?php echo $tabindex ?>" />								
 									<?php
