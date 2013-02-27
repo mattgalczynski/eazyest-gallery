@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r181)
+ * @version 0.1.0 (r185)
  * @access public
  */
 
@@ -1729,6 +1729,7 @@ class Eazyest_FolderBase {
 			}
 		}
 		
+		$is_intermediate = false;
 		// get image name from metadata					
 		if ( isset( $metadata['sizes'] ) ) {
 			// check again we could have changed $size
@@ -1738,11 +1739,12 @@ class Eazyest_FolderBase {
 					$width  = $metadata['sizes'][$size]['width'];
 					$height = $metadata['sizes'][$size]['height'];
 					$dir = $dir . '/' . dirname( $metadata['sizes'][$size]['file'] );
+					$is_intermediate = true;
 				}
 			}
 		}
 		$img_url = eazyest_gallery()->address . $dir .'/' . $name;
-		return array( $img_url, $width, $height, false ); 
+		return array( $img_url, $width, $height, $is_intermediate ); 
 	}
 	
 	/**
