@@ -272,7 +272,7 @@ class Eazyest_About_Page {
 				<li class="wp-person" id="wp-person-audrey">
 					<img src="http://2.gravatar.com/avatar/0bb825e2d9dc951bca98b3afe7ff2b79?s=60" class="gravatar" alt="Audrey" />
 					<a class="web">Audrey</a>
-					<span class="title"><?php _e( 'Alpha tester', 'eazyest-gallery' ); ?></span>
+					<span class="title"><?php _e( 'Tester', 'eazyest-gallery' ); ?></span>
 				</li>
 				<li class="wp-person" id="wp-person-blogbata">
 					<img src="http://2.gravatar.com/avatar/f504f7cecb236d61336f643c2bd3e2da?s=60" class="gravatar" alt="Blogbata" />
@@ -293,6 +293,11 @@ class Eazyest_About_Page {
 					<img src="http://www.gravatar.com/avatar/4a7d696eb3c30f87d83e1dc63ac04048?s=60&d=monsterid&r=g" class="gravatar" alt="nino-b" />
 					<a href="http://wordpress.org/support/profile/nino-b" class="web">nino-b</a>
 					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>
+				<li class="wp-person" id="wp-person-patdtn">
+					<img src="http://www.gravatar.com/avatar/feec71ac24545388823abae5ae4dce53?s=60&d=monsterid&r=g" class="gravatar" alt="patdtn" />
+					<a href="http://wordpress.org/support/profile/patdtn" class="web">patdtn</a>
+					<span class="title"><?php _e( 'Reviewer and Bug reporter', 'eazyest-gallery' ); ?></span>
 				</li>
 			</ul>
 			<h4 class="wp-people-group"><?php _e( 'External Libraries', 'eazyest-gallery' ); ?></h4>
