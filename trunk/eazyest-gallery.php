@@ -1,19 +1,18 @@
 <?php  
-/*
+/** 
+ * Eazyest Gallery is easy gallery management software for WordPress.
+ * 
  * Plugin Name: Eazyest Gallery
  * Plugin URI: http://brimosoft.nl/eazyest/gallery/
- * Description: Easy Gallery management plugin for Wordpress
+ * Description: Easiest Gallery management plugin for Wordpress
  * Date: February 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-1-r186
+ * Version: 0.1.0-RC-1-187
+ * Text Domain: eazyest-gallery
  * License: GNU General Public License, version 3
- */
- 
-/**
- * Eazyest Gallery is easy gallery management software for WordPress.
- * 
- * @version 0.1.0 (r186)  
+ *
+ * @version 0.1.0 (r187)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -23,7 +22,6 @@
  * @copyright 2008-2013 Marcel Brinkkemper       (lazyest-gallery + eazyest-gallery)
  * @license GNU General Public License, version 3
  * @license http://www.gnu.org/licenses/
- * 
  * 
  * @uses TableDnD plug-in for JQuery,
  * @copyright (c) Denis Howlett
@@ -37,7 +35,7 @@
  * @uses Jigsoar icons, Handcrafted by Benjamin Humphrey for Jigsoar
  * @copyright www.jigsoaricons.com
  * 
- * In this plugin source code, phpDoc @uses refer to WordPress functions for compatibility checks
+ * In this plugin source code, phpDoc @uses refers to WordPress functions for compatibility checks
  */
 
 // Exit if accessed directly
