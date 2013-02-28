@@ -6,7 +6,7 @@
  * @package Eazyest Gallery
  * @subpackage Frontend/Template Tags
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r174)
+ * @version 0.1.0 (r193)
  */ 
   
 // Exit if accessed directly
@@ -82,16 +82,11 @@ function ezg_gallery_class( $type = 'archive' ) {
  * <code>'use_default_gallery_style'</code> (bool)
  * 
  * @since 0.1.0 (r2)
- * @uses apply_filters()
  * @return string style element
  */
-function ezg_gallery_style() {
-	// bail if themes do not use default style
-	if ( apply_filters( 'use_default_gallery_style', false ) )
-		return;
-		
+function ezg_gallery_style() {	
 	$selector = ezg_selector( true, false );
-	echo eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );
+	echo eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );	
 }
 
 /**

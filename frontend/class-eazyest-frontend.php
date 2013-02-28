@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r180)
+ * @version 0.1.0 (r193)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -706,40 +706,45 @@ class Eazyest_Frontend {
 	 * @return string &lt;style&gt; element
 	 */
 	function gallery_style( $selector, $columns = 3 ) {
-		$columns = absint( $columns );
-		$width = $columns > 0 ? floor( 100 / $columns ) : intval( get_option( 'thumbnail_size_w' ) ) + 20;
-		$px = $columns > 0 ? '%' : 'px';
-		$itemwidth = $width . $px;
-		$float = is_rtl() ? 'right' : 'left';
-		$itemheight = $columns == 0 ? intval( get_option( 'thumbnail_size_h' ) ) + 22 : 0;
-		$imgheight = get_option( 'thumbnail_size_h' ) . 'px';
-			
-		$style = "
-			<style type='text/css'>
-				#{$selector} {
-					margin: auto;
-				}
-				#{$selector} .gallery-item {
-					float: {$float};
-					margin-top: 10px;
-					text-align: center;
-					width: {$itemwidth};
-					min-height: {$itemheight}px;
-				}
-				#{$selector} .gallery-icon {
-					max-width: 100%;
-				}
-				#{$selector} .gallery-icon img {
-					max-width: 90%;
-				}	
-				#{$selector} .gallery-caption {
-					margin-left: 0;
-				}
-				#{$selector} .gallery-caption p {
-					margin-bottom: 0;
-				}
-			</style>";
-		wp_enqueue_script( 'eazyest-frontend' );	
+		
+		$style = '';
+		if ( apply_filters( 'use_default_gallery_style', true ) ) {		
+			$columns = absint( $columns );
+			$width = $columns > 0 ? floor( 100 / $columns ) : intval( get_option( 'thumbnail_size_w' ) ) + 20;
+			$px = $columns > 0 ? '%' : 'px';
+			$itemwidth = $width . $px;
+			$float = is_rtl() ? 'right' : 'left';
+			$itemheight = $columns == 0 ? intval( get_option( 'thumbnail_size_h' ) ) + 22 : 0;
+			$imgheight = get_option( 'thumbnail_size_h' ) . 'px';
+				
+			$style = "
+				<style type='text/css'>
+					#{$selector} {
+						margin: auto;
+					}
+					#{$selector} .gallery-item {
+						float: {$float};
+						margin-top: 10px;
+						text-align: center;
+						width: {$itemwidth};
+						min-height: {$itemheight}px;
+					}
+					#{$selector} .gallery-icon {
+						max-width: 100%;
+					}
+					#{$selector} .gallery-icon img {
+						max-width: 90%;
+					}	
+					#{$selector} .gallery-caption {
+						margin-left: 0;
+					}
+					#{$selector} .gallery-caption p {
+						margin-bottom: 0;
+					}
+				</style>";	
+		}
+		
+		wp_enqueue_script( 'eazyest-frontend' );
 		return apply_filters( 'eazyest_gallery_style', $style );			
 	}
 	
@@ -764,9 +769,9 @@ class Eazyest_Frontend {
 		 
 		$classes = array( 'eazyest-gallery', 'gallery' );
 		$classes[] = "gallery-{$id}";
-		$folder_columns = eazyest_gallery()->folder_columns;
+		$folders_columns = eazyest_gallery()->folders_columns;
 		if ( 'archive' == $type ) {
-			$classes[] = "gallery-columns-{$folder_columns}";
+			$classes[] = "gallery-columns-{$folders_columns}";
 			if ( $id )
 				$classes[] = "folder-{$id}";	
 			$classes[] = 'folders';			
@@ -1150,7 +1155,8 @@ class Eazyest_Frontend {
 		$output .= "
 				<br style='clear: both;' />
 			</div>\n";
-	
+			
+		wp_enqueue_script( 'eazyest_frontend' );
 		return $output;
 	}
 	

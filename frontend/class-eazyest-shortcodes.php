@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r175)
+ * @version 0.1.0 (r193)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -97,7 +97,6 @@ class Eazyest_Shortcodes {
 	 * <code>'eazyest_gallery'</code>
 	 * 
 	 * WordPress filters used:
-	 * <code>'use_default_gallery_style'</code>
 	 * <code>'gallery_style'</code>
 	 * 
 	 * Action to <strong>echo</strong> content:
@@ -200,8 +199,7 @@ class Eazyest_Shortcodes {
 		$selector = "gallery-{$instance}";
 	
 		$gallery_style = $gallery_div = '';
-		if ( apply_filters( 'use_default_lazyest_gallery_style', true ) )
-			$gallery_style = eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );
+		$gallery_style = eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );
 		$classes = eazyest_frontend()->gallery_class( 'archive' );
 		$gallery_div = "<div id='$selector' class='$classes'>";
 		
@@ -273,8 +271,8 @@ class Eazyest_Shortcodes {
 					<div class='nav-previous alignleft'>$prevpage_link</div>
 					<div class='nav-next alignright'>$nextpage_link</div>
 				</nav>
-			";
-
+			";			
+		wp_enqueue_script( 'eazyest_frontend' );
 		return $output;			
 	}
 	
