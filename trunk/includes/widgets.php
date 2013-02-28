@@ -4,11 +4,12 @@
  * Widgets for Eazyest Gallery.
  * 
  * This file holds the widgets for Eazyest Gallery
- * It includes (replacements for) the widgets in pre-2.0 versions of Eazyest Gallery
- * It includes also (replacements for) the widgets from the Eazyest Widgets plugin
+ * It includes (replacements for) the widgets in Lazyest Gallery
+ * It includes also (replacements for) the widgets from the Lazyest Widgets plugin
  *  
  * @package Eazyest Gallery
  * @subpackage Widgets
+ * @version 0.1.0 (r196)
  * 
  * @link http://codex.wordpress.org/Widgets_API for WordPress Widgets API
  * @link http://core.trac.wordpress.org/browser/tags/3.5/wp-includes/widgets.php for WP_Widget class
