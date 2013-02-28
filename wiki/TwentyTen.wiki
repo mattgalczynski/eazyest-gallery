@@ -1,0 +1,3 @@
+#summary The 2010 theme for WordPress is stylish, customizable, simple, and readable.
+
+More information on [http://wordpress.org/extend/themes/twentyten WordPress.org]
