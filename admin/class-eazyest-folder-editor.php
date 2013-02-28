@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r184)
+ * @version 0.1.0 (r187)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -291,7 +291,7 @@ class Eazyest_Folder_Editor {
 			 8 => sprintf( __('Folder submitted. <a target="_blank" href="%s">Preview folder</a>', 'eazyest-gallery' ), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
 			 9 => sprintf( __('Folder scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview folder</a>', 'eazyest-gallery' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
+				date_i18n( __( 'M j, Y @ G:i', 'eazyest-gallery' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
 			10 => sprintf( __('Folder draft updated. <a target="_blank" href="%s">Preview folder</a>', 'eazyest-gallery' ), esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
 		);
 		if ( 'hidden' == $post->post_status ) {
@@ -300,7 +300,7 @@ class Eazyest_Folder_Editor {
 			$messages['post'][10] = __('Folder draft updated', 'eazyest-gallery' );
 			$messages['post'][9]  = sprintf( __('Folder scheduled for: <strong>%1$s</strong>.', 'eazyest-gallery' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) );
+				date_i18n( __( 'M j, Y @ G:i', 'eazyest-gallery' ), strtotime( $post->post_date ) ) );
 		}
 		return $messages;
 	}
@@ -1034,7 +1034,7 @@ class Eazyest_Folder_Editor {
   function submit_meta_box(){
   	remove_meta_box( 'submitdiv', eazyest_gallery()->post_type, 'side' );
   	// re-add submitdiv with priority high because WordPress will ignore removed core meta boxes
-  	add_meta_box( 'submitdiv', __( 'Publish' ), array( $this, 'folder_submit_meta_box' ), eazyest_gallery()->post_type, 'side', 'high' );
+  	add_meta_box( 'submitdiv', __( 'Publish', 'eazyest-gallery' ), array( $this, 'folder_submit_meta_box' ), eazyest_gallery()->post_type, 'side', 'high' );
   }
 	
 	/**
@@ -1058,13 +1058,13 @@ class Eazyest_Folder_Editor {
 		
 		<?php // Hidden submit button early on so that the browser chooses the right button when form is submitted with Return key ?>
 		<div style="display:none;">
-		<?php submit_button( __( 'Save' ), 'button', 'save' ); ?>
+		<?php submit_button( __( 'Save', 'eazyest-gallery' ), 'button', 'save' ); ?>
 		</div>
 		
 		<div id="minor-publishing-actions">
 		<div id="save-action">
 		<?php if ( 'publish' != $post->post_status && 'future' != $post->post_status && 'pending' != $post->post_status ) { ?>
-		<input <?php if ( 'private' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft'); ?>" class="button" />
+		<input <?php if ( 'private' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft', 'eazyest-gallery' ); ?>" class="button" />
 		<?php } elseif ( 'pending' == $post->post_status && $can_publish ) { ?>
 		<input type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save as Pending', 'eazyest-gallery' ); ?>" class="button" />
 		<?php } ?>
@@ -1147,7 +1147,7 @@ class Eazyest_Folder_Editor {
 		</div><!-- .misc-pub-section -->
 		
 		<div class="misc-pub-section" id="visibility">
-		<?php _e( 'Visibility:'); ?> <span id="post-visibility-display"><?php
+		<?php _e( 'Visibility:', 'eazyest-gallery' ); ?> <span id="post-visibility-display"><?php
 		
 		if ( 'private' == $post->post_status ) {
 			$post->post_password = '';
@@ -1182,7 +1182,7 @@ class Eazyest_Folder_Editor {
 		<span id="sticky-span"><input id="sticky" name="sticky" type="checkbox" value="sticky" <?php checked( is_sticky( $post->ID ) ); ?> /> <label for="sticky" class="selectit"><?php _e( 'Stick this post to the front page', 'eazyest-gallery' ); ?></label><br /></span>
 		<?php endif; ?>
 		<input type="radio" name="visibility" id="visibility-radio-password" value="password" <?php checked( $visibility, 'password' ); ?> /> <label for="visibility-radio-password" class="selectit"><?php _e( 'Password protected', 'eazyest-gallery' ); ?></label><br />
-		<span id="password-span"><label for="post_password"><?php _e( 'Password:'); ?></label> <input type="text" name="post_password" id="post_password" value="<?php echo esc_attr($post->post_password); ?>" /><br /></span>
+		<span id="password-span"><label for="post_password"><?php _e( 'Password:', 'eazyest-gallery' ); ?></label> <input type="text" name="post_password" id="post_password" value="<?php echo esc_attr($post->post_password); ?>" /><br /></span>
 		<input type="radio" name="visibility" id="visibility-radio-private" value="private" <?php checked( $visibility, 'private' ); ?> /> <label for="visibility-radio-private" class="selectit"><?php _e( 'Private', 'eazyest-gallery' ); ?></label><br />
 		<input type="radio" name="visibility" id="visibility-radio-hidden" value="hidden" <?php checked( $visibility, 'hidden' ); ?> /> <label for="visibility-radio-hidden" class="selectit"><?php _e( 'Hidden', 'eazyest-gallery' ); ?></label><br />
 		<p>
@@ -1256,7 +1256,7 @@ class Eazyest_Folder_Editor {
 				<?php submit_button( __( 'Publish', 'eazyest-gallery' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'p' ) ); ?>
 		<?php	endif;
 			else : ?>
-				<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Submit for Review') ?>" />
+				<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Submit for Review', 'eazyest-gallery' ) ?>" />
 				<?php submit_button( __( 'Submit for Review', 'eazyest-gallery' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'p' ) ); ?>
 		<?php
 			endif;

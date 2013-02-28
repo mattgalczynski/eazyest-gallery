@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r103)
- * @version 0.1.0 (r148)
+ * @version 0.1.0 (r187)
  * @access public
  */
 class Eazyest_About_Page {
@@ -142,7 +142,7 @@ class Eazyest_About_Page {
 					<p><?php _e( 'Folders are implemented as custom post types.', 'eazyest-gallery' ); ?><br />
 					   <?php _e( 'Store your images as attachments, and access them in the Media Library.', 'eazyest-gallery' ); ?></p>
 		   		<p><?php _e( 'Use the WordPress Media Manager to upload images.', 'eazyest-gallery' ); ?></p>
-				 	<p><?php _e( 'Eazyest Gallery is fully compatible with WP Super Cache, Jetpack, WordPress-SEO, Comments-Reloaded and other popular plugins','eazyest-galery' ); ?></p>
+				 	<p><?php _e( 'Eazyest Gallery is fully compatible with WP Super Cache, Jetpack, WordPress-SEO, Comments-Reloaded and other popular plugins','eazyest-gallery' ); ?></p>
 				 	<?php if( $should_upgrade ) : ?>
 				 	<p class="attention"><strong><?php // translators: %s are placeholders for link anchors
 					          printf( __( 'Please convert your Lazyest Gallery Folders, Images, Captions, Descriptions and Comments with the %sUpgrade Tool%s.', 'eazyest-gallery' ),
@@ -195,12 +195,12 @@ class Eazyest_About_Page {
 					<p><?php _e( 'Eazyest Gallery includes the Camera Slideshow by Manuel Masia. You can include slideshow widgets in your sidebar', 'eazyest-gallery' ) ?></p>
 					<h4><?php _e( 'Theme compatibility', 'eazyest-gallery' ) ?></h4>							
 					<p><?php _e( 'Eazyest Gallery includes templates for <strong>Twenty Ten</strong>, for <strong>Twenty Eleven</strong>, and for <strong>Twenty Twelve</strong>. Most features will work in other themes. You can find example templates for Gallery, Folder and Attachment pages in the plugin package.', 'eazyest-gallery' ) ?></p>
-					<p><?php _e( 'Eazyest Gallery comes with a variety of widgets, shortcodes, and template tags to let you create the gallery you want.') ?></p>
+					<p><?php _e( 'Eazyest Gallery comes with a variety of widgets, shortcodes, and template tags to let you create the gallery you want.', 'eazyest-gallery' ) ?></p>
 				</div>
 			</div>
 			
 			<div class="changelog">
-				<h3><?php _e( 'Under the Hood', 'bbpress' ); ?></h3>
+				<h3><?php _e( 'Under the Hood', 'eazyest-gallery' ); ?></h3>
 				<div class="feature-section col three-col">
 				
 					<div>
