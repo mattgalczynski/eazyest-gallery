@@ -1,0 +1,3 @@
+#summary The 2012 theme for WordPress is a fully responsive theme that looks great on any device.
+
+More information on [http://wordpress.org/extend/themes/twentytwelve WordPress.org]
