@@ -1,10 +1,10 @@
-# Copyright (C) 2013 Eazyest Gallery
+# Copyright (C) 2013 Brimosoft
 # This file is distributed under the same license as the Eazyest Gallery package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Eazyest Gallery 0.1.0-beta-4-162\n"
+"Project-Id-Version: Eazyest Gallery 0.1.0-RC-1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/eazyest-gallery\n"
-"POT-Creation-Date: 2013-02-25 08:50:56+00:00\n"
+"POT-Creation-Date: 2013-02-28 08:02:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -220,7 +220,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-eazyest-about-page.php:220
-#: admin/class-eazyest-about-page.php:298
+#: admin/class-eazyest-about-page.php:303
 msgid "External Libraries"
 msgstr ""
 
@@ -250,7 +250,7 @@ msgid "Contributors, Testers and Bug reporters"
 msgstr ""
 
 #: admin/class-eazyest-about-page.php:275
-msgid "Alpha tester"
+msgid "Tester"
 msgstr ""
 
 #: admin/class-eazyest-about-page.php:280
@@ -260,7 +260,11 @@ msgstr ""
 msgid "Bug reporter"
 msgstr ""
 
-#: admin/class-eazyest-about-page.php:305
+#: admin/class-eazyest-about-page.php:300
+msgid "Reviewer and Bug reporter"
+msgstr ""
+
+#: admin/class-eazyest-about-page.php:310
 msgid ""
 "Hi, You&#8217;ve read all to this spot. Don&#8217;t you think the list of "
 "contributors, testers and bug reporters is way too short? Please join in and "
@@ -304,299 +308,311 @@ msgid "About"
 msgstr ""
 
 #: admin/class-eazyest-folder-editor.php:162
-#: admin/class-eazyest-folder-editor.php:1151
-#: admin/class-eazyest-folder-editor.php:1180
+#: admin/class-eazyest-folder-editor.php:1158
+#: admin/class-eazyest-folder-editor.php:1187
 msgid "Hidden"
 msgstr ""
 
 #: admin/class-eazyest-folder-editor.php:163
-#: admin/class-eazyest-folder-editor.php:1095
-#: admin/class-eazyest-folder-editor.php:1124
+#: admin/class-eazyest-folder-editor.php:1102
+#: admin/class-eazyest-folder-editor.php:1131
 msgid "Hidden Published"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:197
+#: admin/class-eazyest-folder-editor.php:198
 msgid "Click to stop search"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:197
+#: admin/class-eazyest-folder-editor.php:199
 msgid "Searching for new folders and images"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:198
+#: admin/class-eazyest-folder-editor.php:200
 msgid "No new images found in your gallery"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:199
+#: admin/class-eazyest-folder-editor.php:201
 msgid "Found %d new images in your gallery"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:276
+#: admin/class-eazyest-folder-editor.php:202
+msgid "An error occurred while indexing your gallery."
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:203
+msgid "Please check your server settings to solve this error:"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:204
+msgid "500 (Internal Server Error)"
+msgstr ""
+
+#: admin/class-eazyest-folder-editor.php:283
 msgid "Folder updated. <a href=\"%s\">View post</a>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:277
+#: admin/class-eazyest-folder-editor.php:284
 msgid "Custom field updated."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:278
+#: admin/class-eazyest-folder-editor.php:285
 msgid "Custom field deleted."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:279
-#: admin/class-eazyest-folder-editor.php:291
+#: admin/class-eazyest-folder-editor.php:286
+#: admin/class-eazyest-folder-editor.php:298
 msgid "Folder updated."
 msgstr ""
 
 #. translators: %s: date and time of the revision
-#: admin/class-eazyest-folder-editor.php:281
+#: admin/class-eazyest-folder-editor.php:288
 msgid "Folder restored to revision from %s"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:282
+#: admin/class-eazyest-folder-editor.php:289
 msgid "Folder published. <a href=\"%s\">View folder</a>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:283
+#: admin/class-eazyest-folder-editor.php:290
 msgid "Folder saved."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:284
+#: admin/class-eazyest-folder-editor.php:291
 msgid "Folder submitted. <a target=\"_blank\" href=\"%s\">Preview folder</a>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:285
+#: admin/class-eazyest-folder-editor.php:292
 msgid ""
 "Folder scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
 "\">Preview folder</a>"
 msgstr ""
 
 #. translators: Publish box date format, see http:php.net/date
-#: admin/class-eazyest-folder-editor.php:287
-#: admin/class-eazyest-folder-editor.php:296
-#: admin/class-eazyest-folder-editor.php:1192
+#: admin/class-eazyest-folder-editor.php:294
+#: admin/class-eazyest-folder-editor.php:303
+#: admin/class-eazyest-folder-editor.php:1199
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:288
+#: admin/class-eazyest-folder-editor.php:295
 msgid ""
 "Folder draft updated. <a target=\"_blank\" href=\"%s\">Preview folder</a>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:292
+#: admin/class-eazyest-folder-editor.php:299
 msgid "Folder published."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:293
+#: admin/class-eazyest-folder-editor.php:300
 msgid "Folder draft updated"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:294
+#: admin/class-eazyest-folder-editor.php:301
 msgid "Folder scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:323
+#: admin/class-eazyest-folder-editor.php:330
 msgid "Image attachment permanently deleted."
 msgid_plural "%d image attachments permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-editor.php:328
+#: admin/class-eazyest-folder-editor.php:335
 msgid "Folder moved to the Trash."
 msgid_plural "%s folders moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-editor.php:332
+#: admin/class-eazyest-folder-editor.php:339
 msgid "Undo"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:336
+#: admin/class-eazyest-folder-editor.php:343
 msgid "Folder restored from the Trash."
 msgid_plural "%s folders restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-folder-editor.php:347
-#: includes/class-eazyest-folderbase.php:631
+#: admin/class-eazyest-folder-editor.php:354
+#: includes/class-eazyest-folderbase.php:636
 msgid "You cannot delete a parent folder"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:352
+#: admin/class-eazyest-folder-editor.php:359
 msgid ""
 "Eazyest Gallery found one or more new folders, but could not include them."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:443
+#: admin/class-eazyest-folder-editor.php:450
 msgid "You are not allowed to move this folder to the Trash."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:482
+#: admin/class-eazyest-folder-editor.php:489
 msgid "You are not allowed to restore this folder from the Trash."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:486
+#: admin/class-eazyest-folder-editor.php:493
 msgid "Error in restoring from Trash."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:522
+#: admin/class-eazyest-folder-editor.php:529
 msgid "You are not allowed to delete this image."
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:713
+#: admin/class-eazyest-folder-editor.php:720
 #: admin/class-eazyest-media-list-table.php:77
 msgid "Draggable Column"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:714
+#: admin/class-eazyest-folder-editor.php:721
 msgctxt "column name"
 msgid "Name"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:715
+#: admin/class-eazyest-folder-editor.php:722
 msgctxt "column name"
 msgid "Caption"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:716
+#: admin/class-eazyest-folder-editor.php:723
 msgctxt "column name"
 msgid "Images"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:717
+#: admin/class-eazyest-folder-editor.php:724
 msgctxt "column name"
 msgid "Tags"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:718
+#: admin/class-eazyest-folder-editor.php:725
 #: admin/class-eazyest-media-list-table.php:81
 msgid "Comments"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:720
+#: admin/class-eazyest-folder-editor.php:727
 #: admin/class-eazyest-media-list-table.php:82
 msgctxt "column name"
 msgid "Date"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:747
+#: admin/class-eazyest-folder-editor.php:754
 msgid "to Top&nbsp;&#8593;"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:748
+#: admin/class-eazyest-folder-editor.php:755
 msgid "to Bottom&nbsp;&#8595;"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:756
+#: admin/class-eazyest-folder-editor.php:763
 msgid "Move this folder to the Trash"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:756
+#: admin/class-eazyest-folder-editor.php:763
 #: admin/class-eazyest-folder-list-table.php:532
 msgid "Trash"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:801
+#: admin/class-eazyest-folder-editor.php:808
 msgid "Posted less than one day ago"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:835
+#: admin/class-eazyest-folder-editor.php:842
 msgid "Click an hold to sort"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:863
-#: admin/class-eazyest-folder-editor.php:896
+#: admin/class-eazyest-folder-editor.php:870
+#: admin/class-eazyest-folder-editor.php:903
 #: admin/class-eazyest-folder-list-table.php:520
 #: admin/class-eazyest-media-list-table.php:433
 #: admin/class-eazyest-media-list-table.php:453
 msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:886
+#: admin/class-eazyest-folder-editor.php:893
 msgid "Not Saved"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:951
+#: admin/class-eazyest-folder-editor.php:958
 msgid "Save Changes"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:992
+#: admin/class-eazyest-folder-editor.php:999
 msgid "Select a view"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:993
+#: admin/class-eazyest-folder-editor.php:1000
 msgid "Uploaded to this folder"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:994
+#: admin/class-eazyest-folder-editor.php:1001
 msgid "Done uploading"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1030
-#: admin/class-eazyest-folder-editor.php:1248
-#: admin/class-eazyest-folder-editor.php:1249
+#: admin/class-eazyest-folder-editor.php:1037
+#: admin/class-eazyest-folder-editor.php:1255
+#: admin/class-eazyest-folder-editor.php:1256
 msgid "Publish"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1054
+#: admin/class-eazyest-folder-editor.php:1061
 msgid "Save"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1060
+#: admin/class-eazyest-folder-editor.php:1067
 msgid "Save Draft"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1062
+#: admin/class-eazyest-folder-editor.php:1069
 msgid "Save as Pending"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1071
+#: admin/class-eazyest-folder-editor.php:1078
 msgid "Preview Changes"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1075
+#: admin/class-eazyest-folder-editor.php:1082
 #: admin/class-eazyest-folder-list-table.php:539
 msgid "Preview"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1087
+#: admin/class-eazyest-folder-editor.php:1094
 msgid "Status:"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1092
-#: admin/class-eazyest-folder-editor.php:1122
+#: admin/class-eazyest-folder-editor.php:1099
+#: admin/class-eazyest-folder-editor.php:1129
 msgid "Privately Published"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1098
-#: admin/class-eazyest-folder-editor.php:1120
+#: admin/class-eazyest-folder-editor.php:1105
+#: admin/class-eazyest-folder-editor.php:1127
 #: admin/class-eazyest-folder-list-table.php:576
 msgid "Published"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1101
-#: admin/class-eazyest-folder-editor.php:1126
+#: admin/class-eazyest-folder-editor.php:1108
+#: admin/class-eazyest-folder-editor.php:1133
 #: admin/class-eazyest-folder-list-table.php:581
 msgid "Scheduled"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1104
-#: admin/class-eazyest-folder-editor.php:1128
+#: admin/class-eazyest-folder-editor.php:1111
+#: admin/class-eazyest-folder-editor.php:1135
 msgid "Pending Review"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1108
-#: admin/class-eazyest-folder-editor.php:1130
-#: admin/class-eazyest-folder-editor.php:1132
+#: admin/class-eazyest-folder-editor.php:1115
+#: admin/class-eazyest-folder-editor.php:1137
+#: admin/class-eazyest-folder-editor.php:1139
 msgid "Draft"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1114
-#: admin/class-eazyest-folder-editor.php:1165
-#: admin/class-eazyest-folder-editor.php:1215
+#: admin/class-eazyest-folder-editor.php:1121
+#: admin/class-eazyest-folder-editor.php:1172
+#: admin/class-eazyest-folder-editor.php:1222
 #: admin/class-eazyest-folder-list-table.php:526
 #: admin/class-eazyest-media-list-table.php:324
-#: includes/class-eazyest-folderbase.php:173
+#: includes/class-eazyest-folderbase.php:174
 #: themes/twentyeleven/content-single-galleryfolder.php:47
 #: themes/twentyeleven/eazyest-image.php:42
 #: themes/twentyten/loop-eazyest-image.php:63
@@ -607,100 +623,100 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1135
-#: admin/class-eazyest-folder-editor.php:1182
+#: admin/class-eazyest-folder-editor.php:1142
+#: admin/class-eazyest-folder-editor.php:1189
 msgid "OK"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1136
-#: admin/class-eazyest-folder-editor.php:1183
+#: admin/class-eazyest-folder-editor.php:1143
+#: admin/class-eazyest-folder-editor.php:1190
 msgid "Cancel"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1143
+#: admin/class-eazyest-folder-editor.php:1150
 msgid "Visibility:"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1148
-#: admin/class-eazyest-folder-editor.php:1179
+#: admin/class-eazyest-folder-editor.php:1155
+#: admin/class-eazyest-folder-editor.php:1186
 msgid "Private"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1154
-#: admin/class-eazyest-folder-editor.php:1177
+#: admin/class-eazyest-folder-editor.php:1161
+#: admin/class-eazyest-folder-editor.php:1184
 msgid "Password protected"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1157
+#: admin/class-eazyest-folder-editor.php:1164
 msgid "Public, Sticky"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1160
-#: admin/class-eazyest-folder-editor.php:1173
+#: admin/class-eazyest-folder-editor.php:1167
+#: admin/class-eazyest-folder-editor.php:1180
 msgid "Public"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1175
+#: admin/class-eazyest-folder-editor.php:1182
 msgid "Stick this post to the front page"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1178
+#: admin/class-eazyest-folder-editor.php:1185
 msgid "Password:"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1195
+#: admin/class-eazyest-folder-editor.php:1202
 msgid "Scheduled for: <b>%1$s</b>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1197
+#: admin/class-eazyest-folder-editor.php:1204
 msgid "Published on: <b>%1$s</b>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1199
-#: admin/class-eazyest-folder-editor.php:1207
+#: admin/class-eazyest-folder-editor.php:1206
+#: admin/class-eazyest-folder-editor.php:1214
 msgid "Publish <b>immediately</b>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1201
+#: admin/class-eazyest-folder-editor.php:1208
 msgid "Schedule for: <b>%1$s</b>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1203
+#: admin/class-eazyest-folder-editor.php:1210
 msgid "Publish on: <b>%1$s</b>"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1231
+#: admin/class-eazyest-folder-editor.php:1238
 #: admin/class-eazyest-folder-list-table.php:534
 #: admin/class-eazyest-media-list-table.php:298
 #: admin/class-eazyest-media-list-table.php:326
 msgid "Delete Permanently"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1233
+#: admin/class-eazyest-folder-editor.php:1240
 #: admin/class-eazyest-folder-list-table.php:349
 msgid "Move to Trash"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1245
-#: admin/class-eazyest-folder-editor.php:1246
+#: admin/class-eazyest-folder-editor.php:1252
+#: admin/class-eazyest-folder-editor.php:1253
 msgid "Schedule"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1252
-#: admin/class-eazyest-folder-editor.php:1253
+#: admin/class-eazyest-folder-editor.php:1259
+#: admin/class-eazyest-folder-editor.php:1260
 msgid "Submit for Review"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1257
-#: admin/class-eazyest-folder-editor.php:1258
+#: admin/class-eazyest-folder-editor.php:1264
+#: admin/class-eazyest-folder-editor.php:1265
 msgid "Update"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1293
+#: admin/class-eazyest-folder-editor.php:1300
 msgid "Path: %s"
 msgstr ""
 
-#: admin/class-eazyest-folder-editor.php:1312
+#: admin/class-eazyest-folder-editor.php:1319
 #: admin/class-eazyest-settings-page.php:487
 msgid "Support the development of Eazyest Galery"
 msgstr ""
@@ -785,7 +801,7 @@ msgid "View"
 msgstr ""
 
 #: admin/class-eazyest-folder-list-table.php:554
-#: admin/class-eazyest-media-list-table.php:538
+#: admin/class-eazyest-media-list-table.php:539
 msgid "Unpublished"
 msgstr ""
 
@@ -794,12 +810,12 @@ msgid "Y/m/d g:i:s A"
 msgstr ""
 
 #: admin/class-eazyest-folder-list-table.php:564
-#: admin/class-eazyest-media-list-table.php:546
+#: admin/class-eazyest-media-list-table.php:547
 msgid "%s ago"
 msgstr ""
 
 #: admin/class-eazyest-folder-list-table.php:566
-#: admin/class-eazyest-media-list-table.php:548
+#: admin/class-eazyest-media-list-table.php:549
 msgid "Y/m/d"
 msgstr ""
 
@@ -849,7 +865,7 @@ msgid_plural "%s missing images"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-eazyest-media-list-table.php:544
+#: admin/class-eazyest-media-list-table.php:545
 msgid "%s from now"
 msgstr ""
 
@@ -1365,21 +1381,21 @@ msgstr ""
 msgid "If you select &#8220;%s&#8221;, a viewer does not have to be logged in"
 msgstr ""
 
-#: eazyest-gallery.php:84 eazyest-gallery.php:90
+#: eazyest-gallery.php:82 eazyest-gallery.php:88
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#. #-#-#-#-#  plugin.pot (Eazyest Gallery 0.1.0-beta-4-162)  #-#-#-#-#
+#. #-#-#-#-#  plugin.pot (Eazyest Gallery 0.1.0-RC-1-187)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: eazyest-gallery.php:370
+#: eazyest-gallery.php:364
 msgid "Eazyest Gallery"
 msgstr ""
 
-#: eazyest-gallery.php:384
+#: eazyest-gallery.php:378
 msgid "Gallery"
 msgstr ""
 
-#: eazyest-gallery.php:757
+#: eazyest-gallery.php:751
 msgid ""
 "Eazyest Gallery requires WordPress 3.5 or higher. The plugin has now "
 "disabled itself."
@@ -1390,8 +1406,8 @@ msgid "More thumbnails"
 msgstr ""
 
 #: frontend/class-eazyest-frontend.php:446
-#: frontend/class-eazyest-frontend.php:1404
-#: frontend/class-eazyest-shortcodes.php:222 frontend/template-tags.php:453
+#: frontend/class-eazyest-frontend.php:1409
+#: frontend/class-eazyest-shortcodes.php:222 frontend/template-tags.php:455
 #: themes/twentyeleven/content-galleryfolder.php:18
 #: themes/twentyten/loop-archive-galleryfolder.php:48
 #: themes/twentytwelve/content-galleryfolder.php:18
@@ -1429,19 +1445,19 @@ msgstr ""
 msgid "&rsaquo;"
 msgstr ""
 
-#: frontend/class-eazyest-frontend.php:1278
+#: frontend/class-eazyest-frontend.php:1283
 msgid "Thumbnail navigation"
 msgstr ""
 
-#: frontend/class-eazyest-frontend.php:1288
+#: frontend/class-eazyest-frontend.php:1293
 msgid "Previous thumbnails"
 msgstr ""
 
-#: frontend/class-eazyest-frontend.php:1300
+#: frontend/class-eazyest-frontend.php:1305
 msgid "Next thumbnails"
 msgstr ""
 
-#: frontend/class-eazyest-frontend.php:1395
+#: frontend/class-eazyest-frontend.php:1400
 msgid "Subfolders"
 msgstr ""
 
@@ -1462,34 +1478,38 @@ msgid "Folder navigation"
 msgstr ""
 
 #: frontend/class-eazyest-shortcodes.php:313
-#: frontend/class-eazyest-shortcodes.php:424
+#: frontend/class-eazyest-shortcodes.php:423
 msgid ""
 "Apologies, but no results were found for folder &#8220;%s&#8221; in "
 "shortcode <code>[%s folder=\"%s\"]</code>."
 msgstr ""
 
 #: frontend/class-eazyest-shortcodes.php:319
-#: frontend/class-eazyest-shortcodes.php:432
+#: frontend/class-eazyest-shortcodes.php:431
 msgid ""
 "Apologies, but no folder could be matched in shortcode <code>[%s]</code>"
 msgstr ""
 
-#: frontend/class-eazyest-shortcodes.php:528
+#: frontend/class-eazyest-shortcodes.php:531
 msgid ""
 "Apologies, but no folder could be matched in shortcode <code>[lg_image "
 "folder=\"%s\" image=\"%s\"]</code>"
 msgstr ""
 
-#: frontend/class-eazyest-shortcodes.php:556
+#: frontend/class-eazyest-shortcodes.php:559
 msgid ""
 "Apologies, but no image could be matched in shortcode <code>[lg_image folder="
 "\"%s\" image=\"%s\"]</code>"
 msgstr ""
 
-#: frontend/class-eazyest-shortcodes.php:579
+#: frontend/class-eazyest-shortcodes.php:582
 msgid ""
 "Apologies, but no folder nor an image could be matched in shortcode <code>"
 "[lg_image]</code>"
+msgstr ""
+
+#: frontend/class-eazyest-slideshow.php:200
+msgid "Eazyest Gallery found no attachments to build a slideshow"
 msgstr ""
 
 #: frontend/deprecated-tags.php:33
@@ -1504,7 +1524,7 @@ msgid ""
 "%2$s with no alternative available."
 msgstr ""
 
-#: frontend/template-tags.php:267
+#: frontend/template-tags.php:268
 msgid "Powered by Eazyest Gallery version %s. Copyright &copy; 2012-%d %s"
 msgstr ""
 
@@ -1561,7 +1581,7 @@ msgid "Delete this field"
 msgstr ""
 
 #: includes/class-eazyest-extra-fields.php:551
-#: includes/class-eazyest-folderbase.php:169
+#: includes/class-eazyest-folderbase.php:170
 msgid "Folder"
 msgstr ""
 
@@ -1569,71 +1589,75 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:170
+#: includes/class-eazyest-folderbase.php:171
 msgid "All Folders"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:171
+#: includes/class-eazyest-folderbase.php:172
 msgid "Add New"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:172
+#: includes/class-eazyest-folderbase.php:173
 msgid "Create New Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:174
+#: includes/class-eazyest-folderbase.php:175
 msgid "Edit Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:175
+#: includes/class-eazyest-folderbase.php:176
 msgid "New Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:176
 #: includes/class-eazyest-folderbase.php:177
+#: includes/class-eazyest-folderbase.php:178
 msgid "View Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:178
+#: includes/class-eazyest-folderbase.php:179
 msgid "Search Folders"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:179
+#: includes/class-eazyest-folderbase.php:180
 msgid "No folders found"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:180
+#: includes/class-eazyest-folderbase.php:181
 msgid "No folders found in Trash"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:181
+#: includes/class-eazyest-folderbase.php:182
 msgid "Parent Folder:"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:206
+#: includes/class-eazyest-folderbase.php:207
 msgid "Eazyest Gallery Folder"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:238
+#: includes/class-eazyest-folderbase.php:239
 msgctxt "post status"
 msgid "Hidden"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:243
+#: includes/class-eazyest-folderbase.php:244
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-eazyest-folderbase.php:577
-msgid "Could not rename folder in file system"
+#: includes/class-eazyest-folderbase.php:563
+msgid "Eazyest Gallery cannot access one or more folders on your server"
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:1019
+#: includes/class-eazyest-folderbase.php:582
+msgid "Eazyest Gallery could not rename folder in file system"
+msgstr ""
+
+#: includes/class-eazyest-folderbase.php:1024
 msgid "Something went terribly wrong while trying to rename a gallery folder."
 msgstr ""
 
-#: includes/class-eazyest-folderbase.php:1035
+#: includes/class-eazyest-folderbase.php:1040
 msgid "Could not rename folder from %1$s to %2$s"
 msgstr ""
 
@@ -2948,7 +2972,8 @@ msgid "Converting folder %s of %s"
 msgstr ""
 
 #: tools/class-eazyest-upgrader.php:566
-msgid "Busy converting a large folder. Imported %s images in this folder."
+msgid ""
+"Busy converting a large folder. Imported more than %s images in this folder."
 msgstr ""
 
 #: tools/class-eazyest-upgrader.php:567
@@ -2990,7 +3015,7 @@ msgid "http://brimosoft.nl/eazyest/gallery/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Easy Gallery management plugin for Wordpress"
+msgid "Easiest Gallery management plugin for Wordpress"
 msgstr ""
 
 #. Author of the plugin/theme
