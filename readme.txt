@@ -4,18 +4,15 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-beta-5
+Stable tag: 0.1.0-RC-1
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
 
 == Description ==
-Eazyest Gallery extends WordPress media by adding folders and subfolders.
+Eazyest Gallery extends WordPress Media by adding folders and subfolders.
 
-Eazyest Gallery 0.1.0-beta is almost finished software, but not quite. 
-Please use this version at your own risks, or for test purposes only. If you run into bugs, please add your findings to the [support forum](http://wordpress.org/support/plugin/eazyest-gallery).
-
-Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/)
+Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/). Lazyest Gallery users please read [how to upgrade to Eazyest Gallery](http://brimosoft.nl/2013/02/27/how-to-move-from-lazyest-gallery-to-eazyest-gallery/)
 
 = Eazyest Gallery features =
 * __Fully integrated in Admin and Media management__ 
@@ -80,13 +77,26 @@ The attachment view behavior depends on the code in the attachment template. Eaz
 4. Upload images with the WordPress Media uploader
 5. A Gallery folder in Twenty Twelve with random image widget
 6. Camera slideshow by [Manuel Masia](http://www.pixedelic.com/plugins/camera/) included
+7. Upgrade tool for Lazyest Gallery users
 
 == Upgrade Notice ==
 
-= 0.1.0-beta-5 =
-* More bugs fixed (see changelog)  
+= 0.1.0-RC-1 =
+* Release Candidate 1  
 
 == Changelog ==
+
+= 0.1.0-RC-1 =
+* Bug Fix: Only full size image could be inserted in posts
+* Bug Fix: Auto-index did not start in minified javascript
+* Bug Fix: Strip slashes in image captions 
+* Bug Fix: Thumbnail sorting settings in Frontend
+* Bug Fix: Thumbnails view for shortcodes in Pages
+* Bug Fix: Output buffer for slideshow shortcode
+* Bug Fix: Thumbnail navigation for non-pretty-permalinks
+* Changed: Batch size for importing images to prevent out-of-execution-time errors
+* Added: Filter to accomodate Watermark plugins
+* Localizations: __String Freeze__
 
 = 0.1.0-beta-5 =
 * Bug Fix: Error in auto-index message
