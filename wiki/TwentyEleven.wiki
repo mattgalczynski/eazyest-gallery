@@ -1,0 +1,3 @@
+#summary The 2011 theme for WordPress is sophisticated, lightweight, and adaptable.
+
+More information on [http://wordpress.org/extend/themes/twentyeleven WordPress.org]
