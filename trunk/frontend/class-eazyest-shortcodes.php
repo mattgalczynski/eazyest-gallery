@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r193)
+ * @version 0.1.0 (r197)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -128,8 +128,9 @@ class Eazyest_Shortcodes {
 				$attr['orderby'] = 'post__in';
 			$attr['include'] = $attr['ids'];
 		}
-		if ( ! defined( 'LAZYEST_GALLERY_SHORTCODE' ) )
-			define( 'LAZYEST_GALLERY_SHORTCODE', true );
+		global $ezg_doing_shortcode;
+		$ezg_doing_shortcode = true;
+		
 		// Allow plugins/themes to override the default gallery template.
 		$output = apply_filters( 'eazyest_gallery', '', $attr );
 		if ( $output != '' )
@@ -206,8 +207,8 @@ class Eazyest_Shortcodes {
 		$output =  apply_filters( 'eazyest_gallery_shortcode_title', '<h3>' . eazyest_gallery()->gallery_title() . '</h3>' );
 		$output .= apply_filters( 'gallery_style', $gallery_style . "\n\t\t" . $gallery_div );
 		
-		if ( ! defined( 'DOING_GALLERYFOLDERS' ) )
-			define( 'DOING_GALLERYFOLDERS', true );
+		global $ezg_doing_folders;
+		$ezg_doing_folders = true;
 		$i = 0;
 		
 		$global_post = $GLOBALS['post'];
@@ -273,6 +274,9 @@ class Eazyest_Shortcodes {
 				</nav>
 			";			
 		wp_enqueue_script( 'eazyest_frontend' );
+		
+		$ezg_doing_folders    = false;
+		$ezg_doing_shortcode  = false;
 		return $output;			
 	}
 	
@@ -317,9 +321,9 @@ class Eazyest_Shortcodes {
 					return '<p class="error">' . sprintf( __( 'Apologies, but no folder could be matched in shortcode <code>[%s]</code>', 'eazyest-gallery' ), $attr[0] ) . '</p>';
 				}
 			}
-		}		
-		if ( ! defined( 'LAZYEST_GALLERY_SHORTCODE' ) )
-			define( 'LAZYEST_GALLERY_SHORTCODE', true );
+		}	
+		global $ezg_doing_shortcode;
+		$ezg_doing_shortcode = true;
 		
 		$output = apply_filters( 'eazyest_folder', '', $attr );
 		if ( $output != '' )
@@ -383,6 +387,8 @@ class Eazyest_Shortcodes {
 		}
 		$GLOBALS['post'] = $global_post;
 		
+		$ezg_doing_shortcode = false;
+		
 		return $output;
 	}
 	
@@ -429,15 +435,17 @@ class Eazyest_Shortcodes {
 					return '<p class="error">' . sprintf( __( 'Apologies, but no folder could be matched in shortcode <code>[%s]</code>', 'eazyest-gallery' ), $attr[0] ) . '</p>';
 				}
 			}
-		}
-				
-		if ( ! defined( 'LAZYEST_GALLERY_SHORTCODE' ) )
-			define( 'LAZYEST_GALLERY_SHORTCODE', true );
+		}				
+		
+		global $ezg_doing_shortcode;
+		$ezg_doing_shortcode = true;
 			
 		ob_start(); // buffer to use actions that echo content
 		eazyest_slideshow()->slideshow( $attr );
 		$output = ob_get_contents();
 		ob_end_clean();
+		
+		$ezg_doing_shortcode = false;
 		return $output;			
 	}
 	
@@ -561,10 +569,10 @@ class Eazyest_Shortcodes {
 				$caption = $attachment->post_excerpt;
 			if ( empty( $caption ) )
 				$caption = $attachment->post_title;
-			$caption = esc_html( $caption );		
-						
-			if ( ! defined( 'LAZYEST_GALLERY_SHORTCODE' ) )
-				define( 'LAZYEST_GALLERY_SHORTCODE', true );
+			$caption = esc_html( $caption );						
+				
+			global $ezg_doing_shortcode;
+			$ezg_doing_shortcode = true;
 			
 			$wp_sr = eazyest_folderbase()->get_attachment_image_src( $attachment->ID, $display );
 			$width = 10 + $wp_src[1];
@@ -575,6 +583,8 @@ class Eazyest_Shortcodes {
 				<p class='wp-caption-text'>$caption</p>
 			</div>
 			";
+			
+			$ezg_doing_shortcode = false;
 			return $output;	
 		}
 		return '<p class="error">' . __( 'Apologies, but no folder nor an image could be matched in shortcode <code>[lg_image]</code>', 'eazyest-gallery' ) . '</p>';

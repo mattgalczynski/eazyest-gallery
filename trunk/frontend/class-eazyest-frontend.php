@@ -536,7 +536,8 @@ class Eazyest_Frontend {
 		if ( eazyest_gallery()->post_type != get_post_type( $post_id ) || '_thumbnail_id' != $key )		
 			return $id;
 		
-		if ( is_single() && ! defined( 'DOING_GALLERYFOLDERS' ) )
+		global $ezg_doing_folders;
+		if ( is_single() && ! $ezg_doing_folders )
 			return $id;
 	
 		global $wpdb;
@@ -641,7 +642,8 @@ class Eazyest_Frontend {
 	 */
 	function post_thumbnail_html( $html, $post_id ) {
 		if ( eazyest_gallery()->post_type == get_post_type( $post_id ) ) {
-			if ( ! is_single() || defined( 'DOING_GALLERYFOLDERS' ) ) {
+			global $ezg_doing_folders;
+			if ( ! is_single() || $ezg_doing_folders ) {
 				$attr = $this->post_thumbnail_attr( $post_id );
 				$html = empty( $attr['src'] ) ? '' : sprintf( '<img width="%d" height="%d" src="%s" class="attachment-thumbnail wp-post-image folder-icon" alt="%s" />',
 					$attr['width'],
@@ -1398,8 +1400,8 @@ class Eazyest_Frontend {
 		$query = new WP_Query( $args );
 		
 		if ( $query->have_posts() ) :
-		if ( ! defined( 'DOING_GALLERYFOLDERS' ) )
-			define( 'DOING_GALLERYFOLDERS', true );
+			global $ezg_doing_folders;
+			$ezg_doing_folders = true;
 		?>
 			<?php	echo $this->gallery_style( ezg_selector( true, false ), eazyest_gallery()->folders_columns ); ?>
 			<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
@@ -1425,7 +1427,8 @@ class Eazyest_Frontend {
 					<br style="clear: both;"/>
 					<?php do_action( 'eazyest_gallery_end_of_subfolders' ); ?>			
 			</div>
-		<?php
+			<?php
+			$ezg_doing_folders = false;
 		endif;
 		
 		wp_reset_query();
@@ -1544,7 +1547,13 @@ class Eazyest_Frontend {
 			return $link;	
 		// bail if parent is not a folder	
 		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
-			return $link;							
+			return $link;			
+		
+		global $ezg_doing_popup;
+		// do not add attributes if we are not outputting the actual attachment link					
+		if ( is_attachment() && ! $ezg_doing_popup )
+			return $link;
+		
 		if ( is_attachment() && $post_id != $GLOBALS['post']->ID )
 			// do not change other attachments links on an attachment page
 			return $link;
@@ -1552,9 +1561,10 @@ class Eazyest_Frontend {
 		$attachment = get_post( $post_id );				
 		$post_type = eazyest_gallery()->post_type;
 		$class_attr = $rel_attr = array();
-		$option = '';		
+		$option = '';	
+		global $ezg_doing_shortcode;	
 		// change links when we are showing an eazyest gallery
-		if ( is_singular( $post_type ) || is_attachment() || defined( 'LAZYEST_GALLERY_SHORTCODE' ) ) {
+		if ( is_singular( $post_type ) || is_attachment() || $ezg_doing_shortcode ) {
 			// get the on_click option
 			$option = ( is_attachment() ) ? eazyest_gallery()->on_slide_click : eazyest_gallery()->on_thumb_click;
 			// add filters if for onclick class and rel
@@ -1614,6 +1624,24 @@ class Eazyest_Frontend {
 	}	
 
 } // class Eazyest_Frontend;
+
+/**
+ * @var bool $ezg_doing_folders set to true if displaying folder thumbnails
+ * @since 0.1.0 (r197)
+ */  
+$ezg_doing_folders = false;
+
+/**
+ * @var bool $ezg_doing_popup set to true if displaying image link for attachment page
+ * @since 0.1.0 (r197)
+ */ 
+$ezg_doing_popup = false;
+
+/**
+ * @var bool $ezg_doing_shortcode set to true if compiling a shortcode link for attachment page
+ * @since 0.1.0 (r197)
+ */
+$ezg_doing_shortcode = false;
 
 /**
  * eazyest_frontend()
