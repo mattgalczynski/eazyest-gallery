@@ -484,7 +484,6 @@ class Eazyest_Widget_Random_Slideshow extends WP_Widget {
 	 * @return void
 	 */
 	function widget( $args, $instance ) {
-		global $lg_gallery;	
 		extract($args);
 		$title = apply_filters( 'widget_title', empty($instance['title']) ? __( 'Random Image Slideshow', 'eazyest-gallery' ) : $instance['title'], $instance, $this->id_base );
 		
