@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r195)
+ * @version 0.1.0 (r200)
  * @access public
  */
 
@@ -1635,7 +1635,7 @@ class Eazyest_FolderBase {
 			}
 		}
 		if ( ! empty( $delete_later ) ) {
-			if ( $transient = get_tansient( 'eazyest_gallery_delete_attachments' ) ) {
+			if ( $transient = get_transient( 'eazyest_gallery_delete_attachments' ) ) {
 				$delete_later = array_merge( $delete_later, $transient );
 			}
 			set_transient(  'eazyest_gallery_delete_attachments', $delete_later );
