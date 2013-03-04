@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r159)
+ * @version 0.1.0 (r203)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -221,7 +221,7 @@ class Eazyest_Admin {
   		$old_options = get_option( 'eazyest-gallery' );
   		$old_options['gallery_folder'] = $options['gallery_folder'];
   		$old_options['gallery_title']  = $options['gallery_title'];
-			$old_options['show_credits']   = $options['show_credits'];
+			$old_options['show_credits']   = isset( $options['show_credits'] ) ? $options['show_credits'] : false;
 			unset( $old_options['new_install'] );
 			$options = $old_options; 
   	}
