@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r200)
+ * @version 0.1.0 (r201)
  * @access public
  */
 
@@ -451,6 +451,11 @@ class Eazyest_FolderBase {
 	 */
 	function save_gallery_path( $post_id ) {
 		
+		// don't process if gallery_path is already set'
+		$current_path = ezg_get_gallery_path( $post_id );
+		if ( ! empty( $current_path ) )
+			return;
+			
 		$gallery_path = isset( $_POST['gallery_path'] ) ? $_POST['gallery_path'] : '';
 		 
 		// when gallery path is not set, construct one		
