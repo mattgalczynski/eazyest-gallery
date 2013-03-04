@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r103)
- * @version 0.1.0 (r187)
+ * @version 0.1.0 (r204)
  * @access public
  */
 class Eazyest_About_Page {
@@ -84,7 +84,7 @@ class Eazyest_About_Page {
 		<div class="wrap about-wrap">
 			<h1><?php printf( __( 'Welcome to Eazyest Gallery %s', 'eazyest-gallery' ), $display_version ); ?></h1>
 			<div class="about-text"><?php printf( __( 'Thank you for installing Eazyest Galery %s! This plugin offers you the easiest way to manage your galleries in WordPress.', 'eazyest-gallery'  ), $display_version ); ?></div>
-			<div class="eazyest-badge"><?php printf( __( 'Version %s', 'eazyest-gallery' ), $display_version ); ?></div>
+			<div class="eazyest-badge" title="<?php echo esc_attr( eazyest_gallery()->version() ) ?>"><?php printf( __( 'Version %s', 'eazyest-gallery' ), $display_version ); ?></div>
 		<?php		
 	}
 	
@@ -272,7 +272,7 @@ class Eazyest_About_Page {
 				<li class="wp-person" id="wp-person-audrey">
 					<img src="http://2.gravatar.com/avatar/0bb825e2d9dc951bca98b3afe7ff2b79?s=60" class="gravatar" alt="Audrey" />
 					<a class="web">Audrey</a>
-					<span class="title"><?php _e( 'Tester', 'eazyest-gallery' ); ?></span>
+					<span class="title"><?php _e( 'Advanced user and Tester', 'eazyest-gallery' ); ?></span>
 				</li>
 				<li class="wp-person" id="wp-person-blogbata">
 					<img src="http://2.gravatar.com/avatar/f504f7cecb236d61336f643c2bd3e2da?s=60" class="gravatar" alt="Blogbata" />
