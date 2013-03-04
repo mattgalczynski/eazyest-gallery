@@ -6,7 +6,7 @@
  * @package Eazyest Gallery
  * @subpackage Frontend/Template Tags
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r193)
+ * @version 0.1.0 (r202)
  */ 
   
 // Exit if accessed directly
@@ -422,10 +422,10 @@ function ezg_recent_folders( $attr = array() ) {
 	
 	$args = array(
 		'post_type'   => eazyest_gallery()->post_type,
-		'post_status'    => 'publish',
-		'orderby'        => 'post_date',
-		'order'          => 'DESC',
-		'posts_per_page' => $number,
+		'post_status'      => 'publish',
+		'orderby'          => 'post_date',
+		'order'            => 'DESC',
+		'posts_per_page'   => $number,
 		'suppress_filters' => true,
 	);
 	global $ezg_doing_folders;
@@ -437,7 +437,7 @@ function ezg_recent_folders( $attr = array() ) {
 	$global_post = $GLOBALS['post'];
 	global $post;
 	
-	$posts = get_pages( $args );
+	$query = new WP_Query( $args );
 	
 	$i = 0;		
 	$selector = ezg_selector( true, false );
@@ -445,7 +445,7 @@ function ezg_recent_folders( $attr = array() ) {
 	?>
 	
 	<div id="<?php echo $selector; ?>" class="eazyest-gallery gallery gallery-columns-<?php echo $columns ?> gallery-size-thumbnail">
-	<?php foreach( $posts as $post ) : setup_postdata($post); ?>							
+	<?php while( $query->have_posts() ) : $query->the_post(); ?>							
 		<<?php ezg_itemtag(); ?> class="gallery-item folder-item">
 	
 		<?php do_action( 'eazyest_gallery_before_folder_icon' ); ?>
@@ -460,7 +460,7 @@ function ezg_recent_folders( $attr = array() ) {
 	
 		</<?php ezg_itemtag(); ?>>
 		<?php ezg_folders_break( ++$i ); ?>	
-	<?php endforeach; ?>
+	<?php endwhile; ?>
 	</div>
 	
 	<?php		
