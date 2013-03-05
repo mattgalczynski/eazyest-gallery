@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r206)
+ * @version 0.1.0 (r208)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1268,6 +1268,12 @@ class Eazyest_Frontend {
 				$using_permalinks = $wp_rewrite->using_permalinks();
 				if( $query->max_num_pages > 1 ) {
 					$navigation = "
+					<style type='text/css'>
+						.assistive-text {
+							position: absolute !important;
+							clip: rect(1px, 1px, 1px, 1px);
+						}
+					</style>	
 					<nav id='thumbnail-nav-$post_id' class='navigation thumbnail-navigation' role='navigation'>
 						<h3 class='assistive-text'>" . __( 'Thumbnail navigation', 'eazyest-gallery' ) . "</h3>";
 					if ( $page > 1 ) {
