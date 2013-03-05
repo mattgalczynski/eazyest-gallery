@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-RC-3
+Stable tag: 0.1.0-RC-4
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -81,10 +81,13 @@ The attachment view behavior depends on the code in the attachment template. Eaz
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-3 =
-* Release Candidate 3  
+= 0.1.0-RC-4 =
+* Release Candidate 4 adds support for Weaver II
 
 == Changelog ==
+
+= 0.1.0-RC-4 =
+* Added: Support for Weaver II
 
 = 0.1.0-RC-3 =
 * Bug fix: Auto-index did not remove attachments from database
