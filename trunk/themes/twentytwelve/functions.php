@@ -6,9 +6,7 @@
  * @subpackage Twenty_Twelve
  * @since 0.1.0 (r2)
  */
-
-/**
- */
+ 
 /**
  * eazyestgallery_content_nav()
  * Display navigation to next/previous pages when applicable
