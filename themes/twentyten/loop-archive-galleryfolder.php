@@ -36,7 +36,7 @@
 
 <?php ezg_gallery_style() ?>
 <div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
-	<?php $i = 0; ?>
+	<?php $ezg_i = 0; ?>
 	<?php /* Start the Loop. */ ?>
 	<?php while ( have_posts() ) : the_post(); ?>
 	
@@ -53,7 +53,7 @@
 			<?php do_action( 'eazyest_gallery_after_folder_icon', $post->ID ); ?>
 			
 		</<?php ezg_itemtag(); ?>>
-	<?php ezg_folders_break( ++$i ); ?>
+	<?php ezg_folders_break( ++$ezg_i ); ?>
 	<?php endwhile; // End the loop ?>
 	<br style="clear: both;"/>
 	<?php do_action( 'eazyest_gallery_end_of_gallery' ); ?>

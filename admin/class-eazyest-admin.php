@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r203)
+ * @version 0.1.0 (r206)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -108,20 +108,6 @@ class Eazyest_Admin {
 		}
 		$this->folder_editor();
   }
-	
-	/**
-	 * Eazyest_Admin::theme_compatible()
-	 * 
-	 * @since 0.1.0 (r61)
-	 * @return string|bool name of theme when compatible theme is used | false if not
-	 */
-	function theme_compatible() {		
-		$theme = basename( TEMPLATEPATH );
-		if ( in_array( $theme, array( 'twentyten', 'twentyeleven', 'twentytwelve' ) ) )
-			return $theme;
-		else
-			return false;	
-	}
   
   /**
    * Eazyest_Admin::includes()
@@ -133,9 +119,6 @@ class Eazyest_Admin {
   function includes() {
   	// tools
   	include( eazyest_gallery()->plugin_dir . 'tools/class-eazyest-upgrader.php' );
-  	if ( $theme = $this->theme_compatible() ) {
-  		include( eazyest_gallery()->plugin_dir . 'themes/' . $theme . '/functions.php' );
-  	}
   }
   
   /**

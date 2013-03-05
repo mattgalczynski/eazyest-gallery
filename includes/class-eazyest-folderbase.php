@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r202)
+ * @version 0.1.0 (r206)
  * @access public
  */
 
@@ -71,6 +71,7 @@ class Eazyest_FolderBase {
    * @return void
    */
   private function init() {
+  	$this->includes();
   	$this->actions();
 		$this->filters();
 		$this->register_post_types();
@@ -90,6 +91,12 @@ class Eazyest_FolderBase {
 			self::$instance->init();
 		}
 		return self::$instance;  	
+  }
+  
+  function includes() {  	
+  	if ( $theme = ezg_theme_compatible() ) {
+  		include( eazyest_gallery()->plugin_dir . 'themes/' . $theme . '/functions.php' );
+  	}
   }
 	
 	/**
@@ -2194,6 +2201,18 @@ class Eazyest_FolderBase {
 	}
 	
 } // Eazyest_FolderBase
+
+
+function ezg_theme_compatible() {		
+	$theme = basename( TEMPLATEPATH );
+	$compatible_themes = array( 'twentyten', 'twentyeleven', 'twentytwelve', 'weaver-ii', 'weaver-ii-pro' );
+	if ( in_array( $theme, $compatible_themes ) ) {
+		if ( 'weaver-ii-pro' == $theme )
+			$theme = 'weaver-ii';
+		return $theme;
+	}
+	return false;	
+}
 
 /**
  * ezg_is_gallery_image()

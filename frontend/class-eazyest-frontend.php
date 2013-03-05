@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r194)
+ * @version 0.1.0 (r206)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -264,21 +264,6 @@ class Eazyest_Frontend {
 	}	
 	
 	// template functions	--------------------------------------------------------
-	/**
-	 * Eazyest_Frontend::theme_compatible()
-	 * Check if team is compatible 
-	 * Eazyest Gallery includes templates and template parts for compatible themes
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @return bool
-	 */
-	function theme_compatible() {		
-		$theme = basename( TEMPLATEPATH );
-		if ( in_array( $theme, array( 'twentyten', 'twentyeleven', 'twentytwelve' ) ) )
-			return $theme;
-		else
-			return false;	
-	}
 	
 	/**
 	 * Eazyest_Frontend::default_theme_base()
@@ -306,7 +291,7 @@ class Eazyest_Frontend {
 	 * @return mixed string when path exists, bool false if not found
 	 */
 	function theme_dir() {
-		if ( $theme = $this->theme_compatible() ) {
+		if ( $theme = ezg_theme_compatible() ) {
 			$theme_dir = eazyest_gallery()->plugin_dir . "themes/$theme";
 			return apply_filters( 'eazyest_gallery_theme_dir', $theme_dir, $theme );
 		}
@@ -348,10 +333,6 @@ class Eazyest_Frontend {
 				if ( file_exists( $theme_dir . $template_name ) ) {
 					$template = $theme_dir . $template_name;
 				}
-			} 
-			if ( $theme_dir = $this->theme_dir()  ){
-				if ( file_exists( $theme_dir . '/functions.php' ) )
-					include( $theme_dir . '/functions.php' );
 			}
 		}		
 		return $template;		
@@ -505,7 +486,7 @@ class Eazyest_Frontend {
 		if ( eazyest_gallery()->post_type != $post->post_type )
 			return $content;
 				
-		if ( current_theme_supports( 'eazyest-gallery' ) || $this->theme_compatible() || file_exists( STYLESHEETPATH . '/single-galleryfolder.php' ) )
+		if ( current_theme_supports( 'eazyest-gallery' ) || ezg_theme_compatible() || file_exists( STYLESHEETPATH . '/single-galleryfolder.php' ) )
 			return $content; 
 			
 		if ( is_single() )

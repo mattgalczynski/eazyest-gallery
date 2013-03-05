@@ -26,7 +26,7 @@ get_header(); ?>
 				<?php eazyestgallery_content_nav( 'nav-above' ); ?>
 				<?php ezg_gallery_style() ?>
 				<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
-					<?php $i = 0; ?>
+					<?php $ezg_i = 0; ?>
 					<?php /* Start the Loop */ ?>
 					<?php while ( have_posts() ) : the_post(); ?>
 	
@@ -37,7 +37,7 @@ get_header(); ?>
 							 */							 
 							ezg_get_template_part( 'content', 'galleryfolder' );
 						?>
-					<?php ezg_folders_break( ++$i ); ?>	
+					<?php ezg_folders_break( ++$ezg_i ); ?>	
 					<?php endwhile; ?>
 					<br style="clear: both;"/>
 					<?php do_action( 'eazyest_gallery_end_of_gallery' ); ?>
