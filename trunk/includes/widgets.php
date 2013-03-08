@@ -9,7 +9,7 @@
  *  
  * @package Eazyest Gallery
  * @subpackage Widgets
- * @version 0.1.0 (r196)
+ * @version 0.1.0 (r213)
  * 
  * @link http://codex.wordpress.org/Widgets_API for WordPress Widgets API
  * @link http://core.trac.wordpress.org/browser/tags/3.5/wp-includes/widgets.php for WP_Widget class
@@ -355,7 +355,7 @@ class Eazyest_Widget_Random_Images extends WP_Widget {
 	function widget($args, $instance) {
 		global $lg_gallery;
 		extract($args);
-		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Really Random Images', 'eazyest-gallery' ) : $instance['title'], $instance, $this->id_base );
+		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Random Images', 'eazyest-gallery' ) : $instance['title'], $instance, $this->id_base );
 		
 		if ( ! $number = absint( $instance['number'] ) )
 			// number of random images to show
@@ -581,7 +581,7 @@ class Eazyest_Widget_List_Folders extends WP_Widget {
 	function widget( $args, $instance ) {
 		global $lg_gallery;	
 		extract( $args );
-		$title = apply_filters( 'widget_title', empty($instance['title']) ? __( 'Gallery folders List', 'eazyest-gallery' ) : $instance['title'], $instance, $this->id_base ); 		
+		$title = apply_filters( 'widget_title', empty($instance['title']) ? __( 'Gallery List', 'eazyest-gallery' ) : $instance['title'], $instance, $this->id_base ); 		
 		?>		
 		<?php echo $before_widget; ?>
 		<?php if ( $title ) echo $before_title . $title . $after_title; ?>
