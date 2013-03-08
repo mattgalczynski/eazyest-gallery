@@ -16,7 +16,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r150)
+ * @version 0.1.0 (r210)
  * @access public 
  * @see WordPress WP_List_Table
  * @link http://codex.wordpress.org/Class_Reference/WP_List_Table
@@ -230,10 +230,10 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 		global $wpdb, $post;
 		if ( isset( $_REQUEST['folder_orderby'] ) ) {
 			switch( $_REQUEST['folder_orderby'] ) {
-			 	case 'title' :
+			 	case 'folder_title' :
 			 		$sort_field = "UPPER({$wpdb->posts}.post_title)";
 			 		break;
-		 		case 'date' :
+		 		case 'folder_date' :
 		 			$sort_field = 'post_date';
 		 			break;
 			}
@@ -251,7 +251,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 			AND {$wpdb->posts}.post_type = '{$post_type}'
 			AND ( {$wpdb->posts}.post_status = 'publish' OR {$wpdb->posts}.post_status = 'inherit' )
 			ORDER BY {$sort_field} {$sort_order}
-		";							
+		";									
 		$this->items = $wpdb->get_results( $querystr, OBJECT );
 		
 		$total_items = count( $this->items );
@@ -378,11 +378,11 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 	 */
 	function views() {
 		$views = $this->get_views();
-		$views = apply_filters( 'views_galleryfolder', $views );				
-
+		$views = apply_filters( 'views_galleryfolder', $views );	
+		$views['save-sort'] = eazyest_admin()->folder_editor()->hidden_order_field( $this->items );			
 		echo "<ul class='subsubsub'>\n";
 		foreach ( $views as $class => $view ) {
-			$views[ $class ] = "\t<li class='$class'>$view";
+			$views[$class] = "\t<li class='$class'>$view";
 		}
 		echo implode( " |</li>\n", $views ) . "</li>\n";
 		echo "</ul>";
@@ -471,7 +471,9 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 		list( $columns, $hidden ) = $this->get_column_info();
 
 		foreach ( $columns as $column_name => $column_display_name ) {
-			$class_name = false === strpos( $column_name, 'folder_') ? $column_name : substr( $column_name, 7 );
+			$class_name = $column_name;
+			if ( 'galleryfolder_drag' != $column_name )			
+				$class_name = false === strpos( $column_name, 'folder_') ? $column_name : substr( $column_name, 7 );
 			$class = "class=\"$class_name column-$class_name\"";
 
 			$style = '';

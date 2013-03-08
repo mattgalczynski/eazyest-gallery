@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r206)
+ * @version 0.1.0 (r210)
  * @access public
  */
 
@@ -348,13 +348,17 @@ class Eazyest_FolderBase {
 			return;
 		// don't  run if not initiated from edit post	
 		if ( ! isset( $_POST['action'] ) )	
-			return;				
+			return;
+		$action = $_POST['action'];
+		unset( $_POST['action'] );			
 		if ( isset( $_POST['post_type'] ) && $_POST['post_type'] == eazyest_gallery()->post_type ) {
 			// only do this for post type galleryfolder 
 			$this->save_gallery_path( $post_id );
 			$this->save_attachments( $post_id );
+			$this->save_subfolders( $post_id );
 			$this->save_post_status( $post_id );
 		}
+		$_POST['action'] = $action;
 	}
 	
 	/**
@@ -541,7 +545,8 @@ class Eazyest_FolderBase {
 	 */
 	function save_subfolders( $post_id ) {
 		if ( isset( $_POST['gallery-changed-pages'] ) && $_POST['gallery-changed-pages'] ) {
-			foreach( $_POST['gallery-order-pages'] as $menu_order => $item_id ) {
+			$gallery_order = explode( ' ', $_POST['gallery-order-pages'] );
+			foreach( $gallery_order as $menu_order => $item_id ) {				
 				$subfolder = get_post( $item_id );
 				if ( $menu_order != $subfolder->menu_order ) {
 					$subfolder->menu_order = $menu_order;
