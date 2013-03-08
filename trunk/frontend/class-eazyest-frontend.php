@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r208)
+ * @version 0.1.0 (r214)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -699,7 +699,16 @@ class Eazyest_Frontend {
 			$float = is_rtl() ? 'right' : 'left';
 			$itemheight = $columns == 0 ? intval( get_option( 'thumbnail_size_h' ) ) + 22 : 0;
 			$imgheight = get_option( 'thumbnail_size_h' ) . 'px';
-				
+			$hide_caption = '';
+			if ( ! isset( eazyest_gallery()->thumb_caption ) || ! eazyest_gallery()->thumb_caption )
+				$hide_caption = "
+				#{$selector} .gallery-caption {
+					display:none;
+				}
+				#{$selector} .gallery-caption.folder-caption {
+					display:block;
+				}
+			";	
 			$style = "
 				<style type='text/css'>
 					#{$selector} {
@@ -724,6 +733,7 @@ class Eazyest_Frontend {
 					#{$selector} .gallery-caption p {
 						margin-bottom: 0;
 					}
+					$hide_caption
 				</style>";	
 		}
 		
