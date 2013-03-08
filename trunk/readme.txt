@@ -81,10 +81,16 @@ The attachment view behavior depends on the code in the attachment template. Eaz
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-4 =
-* Release Candidate 4 adds support for Weaver II
+= 0.1.0-RC-5 =
+* Release Candidate 5 fixes more bugs
 
 == Changelog ==
+
+= 0.1.0-RC-5 =
+* Bug fix: Incorrect filename for auto-indexed images
+* Bug fix: Could not manually sort subfolders in Edit Folder screen
+* Bug Fix: [lg_folder] shortcode did not resolve folder option
+* Bug Fix: Hide navigation text in non-Twenty... themes
 
 = 0.1.0-RC-4 =
 * Added: Support for Weaver II
