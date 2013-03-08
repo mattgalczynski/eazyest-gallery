@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r210)
+ * @version 0.1.0 (r211)
  * @access public
  */
 
@@ -1519,9 +1519,8 @@ class Eazyest_FolderBase {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses wp_check_filetype()
-	 * @uses wp_upload_dir()
 	 * @uses trailingslashit()
-	 * @uses wp_insert_attachment() to store attachemnt in database
+	 * @uses wp_insert_attachment() to store attachment in database
 	 * @uses wp_read_image_metadata() to get exif and iptc data
 	 * @uses wp_update_attachment_metadata() to store exif and iptc data
 	 * @param int $post_id
@@ -1532,10 +1531,12 @@ class Eazyest_FolderBase {
 	function insert_image( $post_id, $filename, $title ) {
 		$gallery_path = ezg_get_gallery_path( $post_id );
 		$wp_filetype = wp_check_filetype( basename( $filename ), null );
-  	$wp_upload_dir = wp_upload_dir(); 
 		$title = preg_replace( '/\.[^.]+$/', '', basename( $title ) );
 		if ( $this->replace_dashes() )
 			$title = str_replace( array( '-', '_' ), ' ', $title );
+		// set $_POST values as if we are uploading an image in Edit Folder screen	
+		$_POST['post_type'] = eazyest_gallery()->post_type;
+		$_POST['post_id']   = $post_id;	
   	$attachment = array(
      'guid' => eazyest_gallery()->address()  . $gallery_path . '/' . basename( $filename ),
      'post_mime_type' => $wp_filetype['type'],
@@ -1870,7 +1871,14 @@ class Eazyest_FolderBase {
 				$metadata = $cache;
 				delete_transient( 'eazyest_gallery_created_cache' );
 			} 				
-		}						
+		}	
+lg_db(array(
+'metadata'=>$metadata,
+'guid'=>$guid,
+'address'=>eazyest_gallery()->address(),
+'root'=>eazyest_gallery()->root(),
+));		
+		$gallery_path = ezg_get_gallery_path( $attachment->post_parent );						
 		$pathinfo = pathinfo( $guid );
 		if ( false === strpos( $metadata, $pathinfo['filename'] ) )
 			$metadata = $gallery_path . '/' . $pathinfo['basename'];
@@ -1880,7 +1888,6 @@ class Eazyest_FolderBase {
 			
 		if ( false !== strpos( $metadata, eazyest_gallery()->root() ) )
 			$metadata = substr( $metadata, strlen( eazyest_gallery()->root() ) );
-			
 		return $metadata;		
 	}
 	
