@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r214)
+ * @version 0.1.0 (r216)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -120,13 +120,13 @@ class Eazyest_Frontend {
 	 * Hook WordPress actions.
 	 * These are the actions called in the gallery templates.
 	 * @example if you want to remove parts:
-	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_breadcrumb', 5);
-	 * @example remove_action('eazyest_gallery_after_folder_icon', 'ezg_folder_icon_caption', 5);
-	 * @example remove_action('eazyest_gallery_after_folder_icon_caption', 'ezg_folder_attachments_count', 5);
-	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_breadcrumb', 5);
-	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_thumbnails', 10);
-	 * @example remove_action('eazyest_gallery_after_folder_content', 'ezg_subfolders', 5);
-	 * @example remove_action('eazyest_gallery_before_attachment', 'ezg_breadcrumb', 5); 
+	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_breadcrumb', 5); to remove breadcrumb from folder listing
+	 * @example remove_action('eazyest_gallery_after_folder_icon', 'ezg_folder_icon_caption', 5); to remove captions from folder listing 
+	 * @example remove_action('eazyest_gallery_after_folder_icon_caption', 'ezg_folder_attachments_count', 5); to remove image count in folder listing
+	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_breadcrumb', 5); to remove breadcrumb from folder
+	 * @example remove_action('eazyest_gallery_before_folder_content', 'ezg_folder', 10); to remove thumbnails and/or slideshow
+	 * @example remove_action('eazyest_gallery_after_folder_content', 'ezg_subfolders', 5); to remove subfolder listing
+	 * @example remove_action('eazyest_gallery_before_attachment', 'ezg_breadcrumb', 5);  to remove breadcrumb from attachment page
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses add_action()
