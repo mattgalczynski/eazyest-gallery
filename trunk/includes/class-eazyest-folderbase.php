@@ -4,11 +4,11 @@
  * Handels all functions related to post_type galleryfolder and their attachments
  * 
  * @package Eazyest Gallery
- * @subpackage Folders
+ * @subpackage Folderbase
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r211)
+ * @version 0.1.0 (r215)
  * @access public
  */
 
@@ -1871,13 +1871,7 @@ class Eazyest_FolderBase {
 				$metadata = $cache;
 				delete_transient( 'eazyest_gallery_created_cache' );
 			} 				
-		}	
-lg_db(array(
-'metadata'=>$metadata,
-'guid'=>$guid,
-'address'=>eazyest_gallery()->address(),
-'root'=>eazyest_gallery()->root(),
-));		
+		}		
 		$gallery_path = ezg_get_gallery_path( $attachment->post_parent );						
 		$pathinfo = pathinfo( $guid );
 		if ( false === strpos( $metadata, $pathinfo['filename'] ) )
