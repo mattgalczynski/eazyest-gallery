@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r219)
+ * @version 0.1.0 (r220)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -95,7 +95,7 @@ class Eazyest_Folder_Editor {
   	add_action( 'edit_form_after_editor',            array( $this, 'list_table_folders'      ),  2, 1 );
   	add_action( 'add_meta_boxes',                    array( $this, 'submit_meta_box'         )        );
   	add_action( 'post_submitbox_misc_actions',       array( $this, 'folder_information'      ),  8    );
-  	add_action( 'post_submitbox_misc_actions',       array( $this, 'donate'                  ),  9    );
+  	add_action( 'post_submitbox_misc_actions',                     'ezg_donate',                 9    );
   	add_action( $manage_action,                      array( $this, 'custom_column'           ), 10, 2 );
   	
   	add_action( 'eazyest_gallery_before_list_items', array( $this, $before_list_items_action ), 10, 1 );
@@ -1319,8 +1319,9 @@ class Eazyest_Folder_Editor {
   	?>
   	<div class="misc-pub-section">	  	
 	  	<p>
-				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=22A3Y8ZUGR6PE" title="<?php _e( 'Support the development of Eazyest Galery', 'eazyest-gallery' ); ?>">
-					<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="PayPal - The safer, easier way to pay online!" />
+				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=22A3Y8ZUGR6PE" title="<?php esc_attr_e( 'Support the development of Eazyest Galery', 'eazyest-gallery' ); ?>">
+					<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="PayPal - The safer, easier way to pay online!" /><br />
+					<?php _e(  'Support the development of Eazyest Galery', 'eazyest-gallery' ); ?>
 				</a>
 			</p>
   	</div>
@@ -1427,3 +1428,14 @@ class Eazyest_Folder_Editor {
 		return $upload;
 	}
 } // Eazyest_Folder_Editor
+
+/**
+ * ezg_donate()
+ * Adds a donate button to the Publish box
+ * 
+ * @since 0.1.0 (r220)
+ * @return void
+ */
+function ezg_donate() {
+	eazyest_admin()->folder_editor()->donate();
+}
