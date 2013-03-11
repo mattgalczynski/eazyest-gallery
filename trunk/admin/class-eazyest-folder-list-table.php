@@ -16,7 +16,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r210)
+ * @version 0.1.0 (r218)
  * @access public 
  * @see WordPress WP_List_Table
  * @link http://codex.wordpress.org/Class_Reference/WP_List_Table
@@ -321,11 +321,13 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 	function extra_tablenav( $which ) {
 		$collected = eazyest_folderbase()->folders_collected();
 		global $post;
+		if ( ! in_array( $post->post_status, array('new', 'auto-draft', 'draft', 'trash' ) ) ) :		
 		?>	
 			<div class="tablenav-pages add-new">
 				<a href="post-new.php?post_type=<?php echo eazyest_gallery()->post_type ?>&post_parent=<?php echo $post->ID ?>" class="add-subfolder"><?php _e( 'Add subfolder', 'eazyest-gallery' ) ?></a>
 			</div>	
 		<?php
+		endif;
 		if ( $collected ) {
 			$collected_message = 0 < $collected ? 
 				sprintf( _n( '1 new folder found', '%s new folders found', $collected, 'eazyest-gallery'), number_format_i18n( $collected )  ) :
