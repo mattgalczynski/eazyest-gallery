@@ -357,7 +357,7 @@ class Eazyest_Folder_Editor {
 		
 		if ( $errors = get_transient( 'eazyest_gallery_rename_errors' ) ) {
 			$message .= '<p><strong>' . __( 'Eazyest Gallery found one or more new folders, but could not include them.', 'eazyest-gallery' ) . '<strong>';
-			foreach( errors as $error ) {
+			foreach( $errors as $error ) {
 				$message .= '<br />' . $error->get_error_message();
 			}
 			$message .= '<p>';

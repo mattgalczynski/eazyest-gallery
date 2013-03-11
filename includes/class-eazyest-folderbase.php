@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r215)
+ * @version 0.1.0 (r217)
  * @access public
  */
 
@@ -999,11 +999,12 @@ class Eazyest_FolderBase {
 	 * Get the post id based on a folder path 
 	 * 
 	 * @since 0.1.0 (r2)
+	 * @uses untrailingslashit()
 	 * @param string $folder_path
 	 * @return int post_id for parent folder
 	 */
 	function get_parent( $folder_path ) {
-		$parent_path = substr( $folder_path, 0, -strlen( basename( $folder_path ) ) -1 );
+		$parent_path = untrailingslashit( substr( $folder_path, 0, - strlen( basename( $folder_path ) ) -1 ) );
 		return $this->get_folder_by_path( $parent_path );
 	}
 	
@@ -1244,6 +1245,7 @@ class Eazyest_FolderBase {
 	 */
 	public function collect_folders( $post_id = 0 ) {
 		$new_folders = $this->get_new_folders( $post_id );
+		
 		$this->folders_collected = $new_folders['add'] - $new_folders['delete']; 	
 		return $this->folders_collected;
 	}
