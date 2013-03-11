@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r187)
+ * @version 0.1.0 (r219)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -1288,11 +1288,14 @@ class Eazyest_Folder_Editor {
   	global $post;
   	$folder = $post;
   	$gallery_path = ezg_get_gallery_path( $post->ID );	
-  	$path[] = $this->get_folder_path_display( $folder->ID, 'meta' ); 		  	
+  	$path[] = $this->get_folder_path_display( $folder->ID, 'meta' );
+  	if ( empty( $gallery_path ) && isset( $_GET['post_parent'] ) ) {
+  		$folder->post_parent = absint( $_GET['post_parent'] );
+  	}
   	while ( 0 < $folder->post_parent ) {
   		$folder = get_post( $folder->post_parent );
   		$path[] = $this->get_folder_path_display( $folder->ID, 'metabox' ); 		  	
-  	}
+  	}  	
   	$path = array_reverse( $path );
   	$gallery_display = implode( '/', $path );
   	?>
