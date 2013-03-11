@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r175)
+ * @version 0.1.0 (r221)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -119,7 +119,7 @@ class Eazyest_Slideshow {
 		// slideshow runs only for single posts or pages
 		if ( ! is_single() && ! is_page() )
 			return;
-		wp_enqueue_style( 'eazyest-slideshow', eazyest_gallery()->plugin_url . '/frontend/css/camera.css', '0.1.0-r2' );		
+		wp_enqueue_style( 'eazyest-slideshow', eazyest_gallery()->plugin_url . 'frontend/css/camera.css', '0.1.0-r2' );		
 	}
 	
 	/**
