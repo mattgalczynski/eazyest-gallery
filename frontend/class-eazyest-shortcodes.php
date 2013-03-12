@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r209)
+ * @version 0.1.0 (r222)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -347,7 +347,8 @@ class Eazyest_Shortcodes {
 			'icontag'    => 'dt',
 			'captiontag' => 'dd',
 			'columns'    => eazyest_gallery()->thumbs_columns,
-			'size'       => 'thumbnail'
+			'size'       => 'thumbnail',
+			'count'      => eazyest_gallery()->thumbs_page,
 		), $attr ) );
 	
 		$id = intval( $id );
@@ -357,9 +358,11 @@ class Eazyest_Shortcodes {
 		if ( $orderby != $default_orderby ) {
 			if ( ! in_array( $orderby, array( 'none', 'menu_order' ) ) )
 				$orderby = 'post_' . $orderby;
-		}
+		}		
 		eazyest_gallery()->sort_thumbnails = "$orderby-$order";
-		eazyest_gallery()->thumbs_columnsm =  $columns;
+		eazyest_gallery()->thumbs_columns  =  $columns;
+		eazyest_gallery()->thumbs_page     =  $count;
+		
 		eazyest_frontend()->itemtag    = $itemtag;
 		eazyest_frontend()->icontag    = $icontag;
 		eazyest_frontend()->captiontag = $captiontag;
@@ -388,7 +391,7 @@ class Eazyest_Shortcodes {
 		$GLOBALS['post'] = $global_post;
 		
 		$ezg_doing_shortcode = false;
-		
+		eazyest_gallery()->load_options();
 		return $output;
 	}
 	

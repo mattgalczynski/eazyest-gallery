@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r216)
+ * @version 0.1.0 (r222)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -984,9 +984,10 @@ class Eazyest_Frontend {
 	 * @return void
 	 */
 	function breadcrumb( $post_id = 0 ) {
-			
-		if ( defined( 'LAZYEST_GALLERY_SHORTCODE' ) && apply_filters( 'eazyest_gallery_shortcode_breadcrumb', true ) )
-			return '';
+		
+		global $ezg_doing_shortcode;	
+		if ( $ezg_doing_shortcode && ! apply_filters( 'eazyest_gallery_shortcode_breadcrumb', false ) )
+			return;
 			
 		if ( $post_id == 0 )
 			$post_id = get_the_ID();
@@ -1245,7 +1246,7 @@ class Eazyest_Frontend {
 				
 			$navigation = ''; 
 			// check if we should display a paged thumbnail gallery
-			if ( eazyest_gallery()->post_type == get_post_type( $post_id ) && eazyest_gallery()->thumbs_page ) {
+			if ( eazyest_gallery()->thumbs_page ) {
 				global $wp_query;
 				
 				// check if we should show a sub page
@@ -1379,9 +1380,11 @@ class Eazyest_Frontend {
 	 * @param integer $post_id
 	 * @return void
 	 */
-	function subfolders( $post_id = 0 ) {		
-		if ( defined( 'LAZYEST_GALLERY_SHORTCODE' ) && ! apply_filters( 'eazyest_gallery_shortcode_subfolders', false ) )
-			return false;
+	function subfolders( $post_id = 0 ) {	
+		
+		global $ezg_doing_shortcode;
+		if ( $ezg_doing_shortcode && ! apply_filters( 'eazyest_gallery_shortcode_subfolders', false ) )
+			return;;
 			
 		if ( $post_id == 0 )
 			$post_id = get_the_ID();
