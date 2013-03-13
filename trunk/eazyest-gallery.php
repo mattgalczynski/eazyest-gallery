@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-7-224
+ * Version: 0.1.0-RC-7-225
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r224)  
+ * @version 0.1.0 (r225)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -183,11 +183,12 @@ class Eazyest_Gallery {
 	 * Assign defaults if not found
 	 * 
 	 * @since 0.1.0 (r2)
+	 * @access private
 	 * @uses get_option()
 	 * @uses add_option()
 	 * @return void
 	 */
-	function load_options() {
+	private function load_options() {
 		
 		$options = get_option( 'eazyest-gallery' );
 		
