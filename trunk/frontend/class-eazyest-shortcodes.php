@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r223)
+ * @version 0.1.0 (r224)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -203,7 +203,9 @@ class Eazyest_Shortcodes {
 		$classes = eazyest_frontend()->gallery_class( 'archive' );
 		$gallery_div = "<div id='$selector' class='$classes'>";
 		
-		$output =  apply_filters( 'eazyest_gallery_shortcode_title', '<h3>' . eazyest_gallery()->gallery_title() . '</h3>' );
+		if ( apply_filters( 'eazyest_gallery_do_shortcode_title', false ) ) {
+			$output =  apply_filters( 'eazyest_gallery_shortcode_title', '<h3>' . eazyest_gallery()->gallery_title() . '</h3>' );
+		}
 		$output .= apply_filters( 'gallery_style', $gallery_style . "\n\t\t" . $gallery_div );
 		
 		global $ezg_doing_folders;
