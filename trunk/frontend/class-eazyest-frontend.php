@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r222)
+ * @version 0.1.0 (r223)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -48,17 +48,8 @@ class Eazyest_Frontend {
 	 *
 	 * @since 0.1.0 (r2)
 	 */
-	public function __get( $key ) { 
-		switch( $key ) {
-			case 'folder_columns' :
-				$columns = isset( $this->data['folder_columns'] ) ? $this->data['folder_columns'] : eazyest_gallery()->folders_columns;
-				return intval( $columns );
-			case 'thumbnail_columns' :	
-				$columns = isset( $this->data['thumbnail_columns'] ) ? $this->data['thumbnail_columns'] : eazyest_gallery()->thumbs_columns;
-				return intval( $columns ); 
-			default :	
-				return isset( $this->data[$key] ) ? $this->data[$key] : null;
-		} 
+	public function __get( $key ) {
+		return isset( $this->data[$key] ) ? $this->data[$key] : null;
 	}
 
 	/**
@@ -67,8 +58,6 @@ class Eazyest_Frontend {
 	 * @since 0.1.0 (r2)
 	 */
 	public function __set( $key, $value ) { 
-		if ( in_array( $key, array( 'folder_columns', 'thumbs_columns' ) ) )
-			$value = absint( $value );
 		$this->data[$key] = $value; 
 	}
 	
@@ -671,7 +660,7 @@ class Eazyest_Frontend {
 	 */
 	function folders_break( $count ) {
 		$output = '';
-		$columns = $this->folder_columns;
+		$columns = eazyest_gallery()->folders_columns;
 		if ( $columns > 0 && $count % $columns == 0 )
 			$output .= '<br style="clear: both" />';
 		return $output;		 
@@ -1216,7 +1205,7 @@ class Eazyest_Frontend {
 		list( $orderby, $order ) = explode( '-', eazyest_gallery()->sort_thumbnails );
 		$orderby = $orderby == 'post_id' ? 'ID' : $orderby;
 		
-		$columns = $this->thumbnail_columns = eazyest_gallery()->thumbs_columns;
+		$columns = eazyest_gallery()->thumbs_columns;
 		
 		$itemtag    = $this->itemtag();
 		$icontag    = $this->icontag();

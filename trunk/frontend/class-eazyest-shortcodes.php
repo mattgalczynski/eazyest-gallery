@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r222)
+ * @version 0.1.0 (r223)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -119,8 +119,7 @@ class Eazyest_Shortcodes {
 	 */
 	function gallery_shortcode( $attr ) {	
 		
-		static $instance = 0;
-		$instance++;
+		$instance = ezg_instance();
 	
 		if ( ! empty( $attr['ids'] ) ) {
 			// 'ids' is explicitly ordered, unless you specify otherwise.
@@ -169,7 +168,7 @@ class Eazyest_Shortcodes {
 			$id = eazyest_folderbase()->get_folder_by_string( $root );
 		}
 		
-		eazyest_frontend()->thumbnail_columns = $columns;		
+		eazyest_gallery()->folders_columns = $columns;		
 				
 		$args = array (
 			'post_type'      => eazyest_gallery()->post_type,
@@ -197,7 +196,7 @@ class Eazyest_Shortcodes {
 		eazyest_frontend()->icontag    = $icontag;
 		eazyest_frontend()->captiontag = $captiontag;
 	
-		$selector = "gallery-{$instance}";
+		$selector = "eazyest-gallery-{$instance}";
 	
 		$gallery_style = $gallery_div = '';
 		$gallery_style = eazyest_frontend()->gallery_style( $selector, eazyest_gallery()->folders_columns );
@@ -277,6 +276,10 @@ class Eazyest_Shortcodes {
 		
 		$ezg_doing_folders    = false;
 		$ezg_doing_shortcode  = false;
+		
+		// restore settings
+		$options = get_option( 'eazyest-gallery' );
+		eazyest_gallery()->folders_columns = $options['folders_columns'];
 		return $output;			
 	}
 	
@@ -390,8 +393,14 @@ class Eazyest_Shortcodes {
 		}
 		$GLOBALS['post'] = $global_post;
 		
-		$ezg_doing_shortcode = false;
-		eazyest_gallery()->load_options();
+		$ezg_doing_shortcode = false;		
+		
+		// restore settings
+		$options = get_option( 'eazyest-gallery' );
+		eazyest_gallery()->sort_thumbnails = $options['sort_thumbnails'];
+		eazyest_gallery()->thumbs_columns  = $options['thumbs_columns'];
+		eazyest_gallery()->thumbs_page     = $options['thumbs_page'];
+		
 		return $output;
 	}
 	

@@ -41,6 +41,19 @@ function ezg_gallery_title() {
 	echo eazyest_gallery()->gallery_title();
 }
 
+
+/**
+ * ezg_instance()
+ * Generate id number for galleries.
+ * 
+ * @since 0.1.0 (r223)
+ * @return integer
+ */
+function ezg_instance() {
+	static $instance = 0;
+	$instance++;
+	return $instance;
+}
 /**
  * ezg_selector()
  * Returns selector for gallery element
@@ -52,8 +65,10 @@ function ezg_gallery_title() {
  */
 function ezg_selector( $increase= true, $echo = true ) {
 	static $instance = 0;
+	
 	if ( $increase )
-		$instance++;
+		$instance = ezg_instance();
+		
 	$selector = "eazyest-gallery-{$instance}";
 	
 	if ( $echo )
@@ -338,7 +353,6 @@ function ezg_random_images( $attr = array() ) {
 		$id = eazyest_folderbase()->get_folder_by_string( $folder );
 		
 	$ids = implode( ', ', eazyest_folderbase()->random_images( $id, $number, $subfolders ) );
-	
 	$itemtag    = eazyest_frontend()->itemtag();
 	$icontag    = eazyest_frontend()->icontag();
 	$captiontag = eazyest_frontend()->captiontag();
