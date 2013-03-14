@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r223)
+ * @version 0.1.0 (r226)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1250,16 +1250,17 @@ class Eazyest_Frontend {
 				$option = explode( '-', eazyest_gallery()->sort_by('thumbnails') );
 				$order_by = $option[0] == 'menu_order' ? 'menu_order' :  substr( $option[0], 5 );
 					
+				$posts_per_page = eazyest_gallery()->thumbs_page > 0 ? eazyest_gallery()->thumbs_page : -1;	
 				$args = array(
 					'post_type'      => 'attachment',
 					'post_parent'    => $post_id,
-					'posts_per_page' => eazyest_gallery()->thumbs_page,
+					'posts_per_page' => $posts_per_page,
 					'post_status'    => $post_status,
 					'orderby'        => $order_by,
 					'order'          => $option[1],
 					'paged'          => $page,
 					'fields'         => 'ids', 
-				);			
+				);					
 				$query = new WP_Query( $args );
 				$post_ids = "ids='" . implode( ',', $query->posts ) . "'";
 				
@@ -1381,14 +1382,60 @@ class Eazyest_Frontend {
 		$global_post = $GLOBALS['post'];
 		global $post;
 		
+		$posts_per_page = eazyest_gallery()->folders_page > 0 ? eazyest_gallery()->folders_page : -1; 
+		// check if we should show a sub page
+		global $wp_query;
+		$page = isset( $wp_query->query_vars['folders'] ) ? $wp_query->query_vars['folders'] : 1;
 		$args = array(
-			'post_type'   => eazyest_gallery()->post_type,
-			'post_parent' => $post_id
-		);
-		
+			'post_type'      => eazyest_gallery()->post_type,
+			'post_parent'    => $post_id,
+			'posts_per_page' => $posts_per_page,
+			'paged'          => $page,
+		);	
 		$query = new WP_Query( $args );
-		
 		if ( $query->have_posts() ) :
+			$folder_permalink = get_permalink( $post_id );
+			global $wp_rewrite;
+			$using_permalinks = $wp_rewrite->using_permalinks();
+			$navigation = '';
+			if( $query->max_num_pages > 1 ) {
+				$navigation = "
+				<style type='text/css'>
+					.assistive-text {
+						position: absolute !important;
+						clip: rect(1px, 1px, 1px, 1px);
+					}
+				</style>	
+				<nav id='folder-nav-$post_id' class='navigation folder-navigation' role='navigation'>
+					<h3 class='assistive-text'>" . __( 'Folder navigation', 'eazyest-gallery' ) . "</h3>";
+				if ( $page > 1 ) {
+					// add navigation to previous page of folders
+					$prev_page =  strval( $page - 1 );
+					if ( $using_permalinks )
+						$prev_link = $folder_permalink . 'folders/' . $prev_page;
+					else
+						$prev_link = add_query_arg( array( 'folders' => $prev_page ), $folder_permalink );							
+					$navigation .= "
+					<div class='nav-previous alignleft'>
+						<a href='$prev_link'><span class='meta-nav'>&larr;</span> " . __( 'Previous folders', 'eazyest-gallery' ) . "</a>
+					</div>";
+				}
+				if ( $page < $query->max_num_pages ) {
+					// add navigation to next page of folders
+					$next_page = strval( $page + 1 );
+					if ( $using_permalinks )
+						$next_link = $folder_permalink . 'folders/' . $next_page;
+					else
+						$next_link = add_query_arg( array( 'folders' => $next_page ), $folder_permalink );
+					$navigation .= "
+					<div class='nav-next alignright'>
+						<a id='next-folder-$next_page' href='$next_link'>" . __( 'Next folders', 'eazyest-gallery' ) . " <span class='meta-nav'>&rarr;</span></a>
+					</div>";
+					
+				}
+				$navigation .= " 
+				</nav>";	
+			}
 			global $ezg_doing_folders;
 			$ezg_doing_folders = true;
 		?>
@@ -1414,6 +1461,7 @@ class Eazyest_Frontend {
 						<?php ezg_folders_break( ++$i ); ?>	
 					<?php endwhile; ?>
 					<br style="clear: both;"/>
+					<?php echo $navigation; ?>
 					<?php do_action( 'eazyest_gallery_end_of_subfolders' ); ?>			
 			</div>
 			<?php

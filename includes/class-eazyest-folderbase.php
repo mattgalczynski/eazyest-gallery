@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r217)
+ * @version 0.1.0 (r226)
  * @access public
  */
 
@@ -267,6 +267,8 @@ class Eazyest_FolderBase {
 		add_rewrite_endpoint( 'slideshow', EP_PERMALINK );
 		// rewrite endpoint for thumbnail pages /thumbnails/2 (2nd argument is page)
 		add_rewrite_endpoint( 'thumbnails', EP_PERMALINK );
+		// rewrite endpoint for folder pages /folders/2 (2nd argument is page)
+		add_rewrite_endpoint( 'folders', EP_PERMALINK );
 	}
 	
 	/**
