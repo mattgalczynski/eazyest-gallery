@@ -66,7 +66,11 @@ $attachment_size = apply_filters( 'twentytwelve_attachment_size', array( 960, 96
 // we need to add popup markup
 $next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
 ?>
-								<?php	echo $next_link; ?>
+								<?php								
+								$ezg_doing_attachment = true;
+								echo $next_link; 
+								$ezg_doing_attachment = false;
+								?>
 								<?php if ( ! empty( $post->post_excerpt ) ) : ?>
 								<div class="entry-caption">
 									<?php the_excerpt(); ?>
@@ -94,7 +98,7 @@ $next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . t
 									esc_url( get_permalink( $post->post_parent ) ),
 									esc_attr( strip_tags( get_the_title( $post->post_parent ) ) ),
 									get_the_title( $post->post_parent )
-								);
+								);								
 							?>
 							<?php edit_post_link( __( 'Edit', 'eazyest-gallery' ), '<span class="edit-link">', '</span>' ); ?>
 						</footer><!-- .entry-meta -->
