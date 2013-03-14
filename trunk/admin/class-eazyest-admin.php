@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r206)
+ * @version 0.1.0 (r229)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -235,11 +235,18 @@ class Eazyest_Admin {
 				case 'listed_as' :
 					$options[$setting]	= esc_html( $options[$setting] );
 					break;
-				case 'gallery_slug' :
+				case 'gallery_slug' :	
+					$options[$setting]	= sanitize_title( $options[$setting] );
+					eazyest_gallery()->galleryfolder = $options['gallery_folder'];
+lg_db( ABSPATH . $options[$setting] );				
+					if ( eazyest_gallery()->address() == home_url() . '/' . $options[$setting] . '/' || file_exists( ABSPATH . $options[$setting] ) ) {
+						$options[$setting] == eazyest_gallery()->gallery_slug;
+						add_settings_error( __( 'eazyest-gallery', 'eazyest-gallery' ), 'gallery_slug', __( 'You cannot use this slug for your gallery', 'eazyest-galery' ), 'error' );
+					}
+														
 					if ( $options[$setting] != eazyest_gallery()->gallery_slug ) {
 						set_transient( 'eazyest-gallery-flush-rewrite-rules', true, 0 );
 					}
-					$options[$setting]	= sanitize_title( $options[$setting] );
 					break;
 				case 'new_install' :
 				case 'show_credits' :
