@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r226)
+ * @version 0.1.0 (r227)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1028,7 +1028,7 @@ class Eazyest_Frontend {
 	 * @param array $attr
 	 * @return html markup for gallery
 	 */
-	function post_gallery( $attr ) {
+	function post_gallery( $gallery = '', $attr ) {
 		$post = get_post();
 	
 		static $instance = 0;
@@ -1047,7 +1047,6 @@ class Eazyest_Frontend {
 			if ( !$attr['orderby'] )
 				unset( $attr['orderby'] );
 		}
-	
 		extract(shortcode_atts(array(
 			'order'      => 'ASC',
 			'orderby'    => 'menu_order ID',
@@ -1230,7 +1229,7 @@ class Eazyest_Frontend {
 		} else {
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// use a gallery with filtered captions if thumb_description or eazyest_fields enabled 
-				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 ); // priority 2000 to override other plugins
+				add_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000, 2 ); // priority 2000 to override other plugins
 			
 				
 			$navigation = ''; 
@@ -1260,7 +1259,7 @@ class Eazyest_Frontend {
 					'order'          => $option[1],
 					'paged'          => $page,
 					'fields'         => 'ids', 
-				);					
+				);						
 				$query = new WP_Query( $args );
 				$post_ids = "ids='" . implode( ',', $query->posts ) . "'";
 				
@@ -1307,8 +1306,7 @@ class Eazyest_Frontend {
 				}
 			} else {			
 				$post_ids = "id='$post_id' order='$order' orderby='$orderby'";
-			}
-			
+			}	
 			// add filter for eazyest-gallery style	
 			add_filter( 'gallery_style', array( $this, 'style_div' ) );
 			
