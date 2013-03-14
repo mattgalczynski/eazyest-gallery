@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r227)
+ * @version 0.1.0 (r228)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1524,8 +1524,13 @@ class Eazyest_Frontend {
 		if ( is_attachment() ) {
 			if ( $post_id != $GLOBALS['post']->ID ) {
 				// do not change other attachments links on an attachment page
+				return $link;				
+			}	
+			// if the actual image link is not processed
+			global $ezg_doing_attachment;
+			if ( ! $ezg_doing_attachment )
 				return $link;
-			}		
+					
 			// displaying an image click link according to settings
 			$option = eazyest_gallery()->on_slide_click;
 		}	else {
@@ -1584,10 +1589,14 @@ class Eazyest_Frontend {
 		if ( ! eazyest_folderbase()->is_gallery_image( $post_id ) )
 			return $link;			
 		
-		global $ezg_doing_popup;
+		global $ezg_doing_popup, $ezg_doing_attachment;
 		// do not add attributes if we are not outputting the actual attachment link					
-		if ( is_attachment() && ! $ezg_doing_popup )
-			return $link;
+		if ( is_attachment() ) {
+			if ( ! $ezg_doing_popup )
+				return $link;
+			if ( ! $ezg_doing_attachment )
+				return $link;	
+		}
 		
 		if ( is_attachment() && $post_id != $GLOBALS['post']->ID )
 			// do not change other attachments links on an attachment page
@@ -1677,6 +1686,12 @@ $ezg_doing_popup = false;
  * @since 0.1.0 (r197)
  */
 $ezg_doing_shortcode = false;
+
+/**
+ * @var bool $ezg_doing_attachment set to true if echoing the attachment link/image for attachment page
+ * @since 0.1.0 (r228)
+ */
+$ezg_doing_attachment = false;
 
 /**
  * eazyest_frontend()

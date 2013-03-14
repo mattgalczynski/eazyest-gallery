@@ -81,7 +81,11 @@ $attachment_size  = array( $attachment_width, 1024 );
 // we need to add popup markup
 $next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
 ?>
-									<?php echo $next_link; ?>
+									<?php 
+									$ezg_doing_attachment = true;
+									echo $next_link;									
+									$ezg_doing_attachment = false; 
+									?>
 									<?php if ( ! empty( $post->post_excerpt ) ) : ?>
 									<div class="entry-caption">
 										<?php the_excerpt(); ?>

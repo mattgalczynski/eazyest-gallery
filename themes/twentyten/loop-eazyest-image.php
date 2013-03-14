@@ -96,7 +96,11 @@
 	$next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>'; 
 		
 ?>
-						<p class="attachment"><?php echo $next_link ?></p>
+						<p class="attachment"><?php								
+								$ezg_doing_attachment = true;
+								echo $next_link; 
+								$ezg_doing_attachment = false;
+								?></p>
 
 						<div id="nav-below" class="navigation">
 							<div class="nav-previous"><?php previous_image_link( false ); ?></div>
