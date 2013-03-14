@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r229)
+ * @version 0.1.0 (r231)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -237,11 +237,10 @@ class Eazyest_Admin {
 					break;
 				case 'gallery_slug' :	
 					$options[$setting]	= sanitize_title( $options[$setting] );
-					eazyest_gallery()->galleryfolder = $options['gallery_folder'];
-lg_db( ABSPATH . $options[$setting] );				
-					if ( eazyest_gallery()->address() == home_url() . '/' . $options[$setting] . '/' || file_exists( ABSPATH . $options[$setting] ) ) {
-						$options[$setting] == eazyest_gallery()->gallery_slug;
-						add_settings_error( __( 'eazyest-gallery', 'eazyest-gallery' ), 'gallery_slug', __( 'You cannot use this slug for your gallery', 'eazyest-galery' ), 'error' );
+					eazyest_gallery()->galleryfolder = $options['gallery_folder'];			
+					if ( file_exists( eazyest_gallery()->home_dir() . $options[$setting] ) ) {
+						$options[$setting] = eazyest_gallery()->gallery_slug;
+						add_settings_error( __( 'eazyest-gallery', 'eazyest-gallery' ), 'gallery_slug', __( 'The slug you selected cannot be used', 'eazyest-galery' ), 'error' );
 					}
 														
 					if ( $options[$setting] != eazyest_gallery()->gallery_slug ) {
