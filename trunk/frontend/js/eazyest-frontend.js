@@ -38,8 +38,31 @@
 		}		
 	}
 	
+	function eazyestFolderButton() {
+		if ( $('nav.folder-navigation').length ) {
+			$('nav.folder-navigation .nav-previous').remove();
+			$('nav.folder-navigation .nav-next').removeClass('nav-next alignright').addClass('nav-more alignleft');
+			$('nav.folder-navigation .nav-more a').addClass('button').html( eazyestFrontend.moreFolders );
+			$('nav.folder-navigation .nav-more').on( 'click', 'a', function() {
+				$(this).html( eazyestFrontend.moreFolders + '&hellip;' );
+				foldersPage = $(this).attr('id').substr(12);
+				var data = {
+					action : 'eazyest_gallery_more_folders',
+					page   : foldersPage,
+					folder : $(this).closest('nav.folder-navigation').attr('id').substr(11)
+				};
+				$.post( eazyestFrontend.ajaxurl, data, function(response){
+					$('nav.folder-navigation').replaceWith(response);
+					eazyestFolderButton();
+				})
+				return false;
+			});
+		}		
+	}
+	
 	$(document).ready(function() {
-		eazyestMoreButton();		
+		eazyestMoreButton();
+		eazyestFolderButton()		
 	});
 	
 })(jQuery)

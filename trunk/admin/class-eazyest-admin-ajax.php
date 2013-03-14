@@ -75,6 +75,7 @@ class Eazyest_Admin_Ajax {
 			// frontend logged in
 			'next_slideshow',
 			'more_thumbnails',
+			'more_folders',
 		);
 		$nopriv = array(
 			// frontend not logged in
@@ -342,5 +343,23 @@ class Eazyest_Admin_Ajax {
 		}
 		wp_die();
 	}
+	
+	function more_folders() {
+		$site_url = site_url();
+		$this_site = substr( $site_url, strpos( $site_url, '://' ) + 3 );
+		if ( strpos( wp_get_referer(), $this_site ) ) {
+			$post = get_post( $_POST['folder'] );
+			if ( $post ) {
+				$GLOBALS['post'] = $post;		
+				include_once( eazyest_gallery()->plugin_dir . 'frontend/class-eazyest-frontend.php' );
+				eazyest_frontend()->setup_tags();
+				eazyest_frontend()->subfolders( $_POST['folder'], $_POST['page'] );	 
+			}
+		} else {
+			echo 0;
+		}
+		wp_die();
+	}
+	
 	
 } // Eazyest_Ajax

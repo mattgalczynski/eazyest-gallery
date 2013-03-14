@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r228)
+ * @version 0.1.0 (r232)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -233,7 +233,7 @@ class Eazyest_Frontend {
 	 */
 	function register_scripts() {		
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
-		wp_register_script( 'eazyest-frontend', eazyest_gallery()->plugin_url . "frontend/js/eazyest-frontend.$j", array( 'jquery' ), '0.1.0-r131', true );
+		wp_register_script( 'eazyest-frontend', eazyest_gallery()->plugin_url . "frontend/js/eazyest-frontend.$j", array( 'jquery' ), '0.1.0-r232', true );
 		wp_localize_script( 'eazyest-frontend', 'eazyestFrontend', $this->localize_script() );
 	}
 	
@@ -246,9 +246,10 @@ class Eazyest_Frontend {
 	 */
 	function localize_script() {
 		return array(
-			'moreButton' => __( 'More thumbnails', 'eazyest-gallery' ),
-			'spinner'    => '<img src="' . eazyest_gallery()->plugin_url . 'frontend/images/ajax-loader.gif' . '" /> ',
-			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+			'moreButton'  => __( 'More thumbnails', 'eazyest-gallery' ),
+			'moreFolders' => __( 'More folders',    'eazyest-gallery' ),
+			'spinner'     => '<img src="' . eazyest_gallery()->plugin_url . 'frontend/images/ajax-loader.gif' . '" /> ',
+			'ajaxurl'     => admin_url( 'admin-ajax.php' ),
 		);
 	}	
 	
@@ -1368,7 +1369,7 @@ class Eazyest_Frontend {
 	 * @param integer $post_id
 	 * @return void
 	 */
-	function subfolders( $post_id = 0 ) {	
+	function subfolders( $post_id = 0, $page = 1 ) {	
 		
 		global $ezg_doing_shortcode;
 		if ( $ezg_doing_shortcode && ! apply_filters( 'eazyest_gallery_shortcode_subfolders', false ) )
@@ -1383,7 +1384,7 @@ class Eazyest_Frontend {
 		$posts_per_page = eazyest_gallery()->folders_page > 0 ? eazyest_gallery()->folders_page : -1; 
 		// check if we should show a sub page
 		global $wp_query;
-		$page = isset( $wp_query->query_vars['folders'] ) ? $wp_query->query_vars['folders'] : 1;
+		$page = isset( $wp_query->query_vars['folders'] ) ? $wp_query->query_vars['folders'] : $page;
 		$args = array(
 			'post_type'      => eazyest_gallery()->post_type,
 			'post_parent'    => $post_id,
@@ -1439,7 +1440,9 @@ class Eazyest_Frontend {
 		?>
 			<?php	echo $this->gallery_style( ezg_selector( true, false ), eazyest_gallery()->folders_columns ); ?>
 			<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
+				<?php if ( ! defined( 'DOING_AJAX' ) ) : ?>
 				<h3 class="subfolders"><?php _e( 'Subfolders', 'eazyest-gallery' ); ?></h3>
+				<?php endif; ?>
 					<?php $i = 0; ?>
 					<?php  /* Start the Loop */ 
 								while ( $query->have_posts() ) : $query->the_post(); ?>								
