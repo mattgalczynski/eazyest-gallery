@@ -57,19 +57,19 @@ else :
 	// or, if there's only 1 image, get the URL of the image
 	$next_attachment_url = wp_get_attachment_url();
 endif;
-
+						
+$ezg_doing_attachment = true;
 if ( 'default' != eazyest_gallery()->on_slide_click ) :
 	$next_attachment_url = wp_get_attachment_url();
 endif;
 
 $attachment_size = apply_filters( 'twentytwelve_attachment_size', array( 960, 960 ) );
-// we need to add popup markup
+// we need to add popup markup	
 $next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
+$ezg_doing_attachment = false;
 ?>
-								<?php								
-								$ezg_doing_attachment = true;
-								echo $next_link; 
-								$ezg_doing_attachment = false;
+								<?php	
+								echo $next_link;
 								?>
 								<?php if ( ! empty( $post->post_excerpt ) ) : ?>
 								<div class="entry-caption">
