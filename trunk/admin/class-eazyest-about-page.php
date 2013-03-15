@@ -271,8 +271,18 @@ class Eazyest_About_Page {
 			<ul class="wp-people-group " id="wp-people-group-project-testers">
 				<li class="wp-person" id="wp-person-audrey">
 					<img src="http://2.gravatar.com/avatar/0bb825e2d9dc951bca98b3afe7ff2b79?s=60" class="gravatar" alt="Audrey" />
-					<a class="web">Audrey</a>
+					<a class="web" href="http://wordpress.org/support/profile/crackedjar">Audrey</a>
 					<span class="title"><?php _e( 'Advanced user and Tester', 'eazyest-gallery' ); ?></span>
+				</li>			
+				<li class="wp-person" id="wp-person-barfux">
+					<img src="http://www.gravatar.com/avatar/a7aee800031b1cdc25ef3eb5e1d04ade?s=60&d=monsterid&r=g" class="gravatar" alt="barfux" />
+					<a href="http://wordpress.org/support/profile/barfux" class="web">barfux</a>
+					<span class="title"><?php _e( 'Tester and Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>
+				<li class="wp-person" id="wp-person-joyously">
+					<img src="http://www.gravatar.com/avatar/aa8e5a3c12d13b8a152e6fb1862cb0b4?s=60&d=monsterid&r=g" class="gravatar" alt="joyously" />
+					<a href="http://wordpress.org/support/profile/joyously" class="web">joy</a>
+					<span class="title"><?php _e( 'Thought support', 'eazyest-gallery' ); ?></span>
 				</li>
 				<li class="wp-person" id="wp-person-blogbata">
 					<img src="http://2.gravatar.com/avatar/f504f7cecb236d61336f643c2bd3e2da?s=60" class="gravatar" alt="Blogbata" />
@@ -298,6 +308,11 @@ class Eazyest_About_Page {
 					<img src="http://www.gravatar.com/avatar/feec71ac24545388823abae5ae4dce53?s=60&d=monsterid&r=g" class="gravatar" alt="patdtn" />
 					<a href="http://wordpress.org/support/profile/patdtn" class="web">patdtn</a>
 					<span class="title"><?php _e( 'Reviewer and Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>
+					<li class="wp-person" id="wp-person-klihelp">
+					<img src="http://www.gravatar.com/avatar/ec2466269881b11803d5c7e847e8ecee?s=60&d=monsterid&r=g" class="gravatar" alt="klihelp" />
+					<a href="http://wordpress.org/support/profile/klihelp" class="web">klihelp</a>
+					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
 				</li>
 			</ul>
 			<h4 class="wp-people-group"><?php _e( 'External Libraries', 'eazyest-gallery' ); ?></h4>
