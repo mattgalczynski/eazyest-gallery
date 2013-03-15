@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-RC-6
+Stable tag: 0.1.0-RC-7
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -69,6 +69,15 @@ Eazyest Gallery will index your new folders when you open the __All Folders__ me
 
 The attachment view behavior depends on the code in the attachment template. Eazyest Gallery searches for a template called `eazyest-image.php`. Please copy a template from a theme in `eazyest-gallery/themes` as an example to build a template for your theme.
 
+= How do I remove the Eazyest Gallery breadcrumb trail? =
+
+Add this code to your child theme functions.php:
+`function remove_eazyest_gallery_breadcrumb() {
+  remove_action('eazyest_gallery_before_attachment',     'ezg_breadcrumb', 5);
+  remove_action('eazyest_gallery_before_folder_content', 'ezg_breadcrumb', 5);
+}
+add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_breadcrumb', 1 );` 
+
 == Screenshots ==
 
 1. Eazyest Gallery menu, below WordPress Media menu
@@ -81,17 +90,33 @@ The attachment view behavior depends on the code in the attachment template. Eaz
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-6 =
-* Release Candidate 5 fixes a fatal error
+= 0.1.0-RC-7 =
+* More bugs fixed in Release candidate 7
 
 == Changelog ==
 
+= 0.1.0-RC-7 =
+* Bug Fix: Auto index made subfolders root folders
+* Bug Fix: Incorrect number of columns when more than one gallry/folder/widget on one page
+* Bug Fix: Wrong canonical permalink for attachment pages
+* Bug Fix: Delete cross did not woirk for extra fields admin
+* Bug Fix: Setting for number of folders did not apply to subfolders
+* Bug Fix: Thumbnails pagination when extra-fields enabled
+* Bug Fix: Double thumbnail display when single-galleryfolder.php is in child theme only
+* Changed: H3 Gallery title does not show for `[eazyest_gallery]` or `[lg_gallery]` shortcodes
+* Changed: No 'Add subfolder' link for draft folders
+* Added: Parent folder link for draft subfolders 
+* Added: Pagination for subfolders
+* Added: Check if slug is not an existing directory
+* Added: Count option for `[eazyest_folder]` and `[lg_folder]` shortcodes 
+
+
  = 0.1.0-RC-6 =
- * Bug Fix: Fatal error due to leftover debug func. 
+* Bug Fix: Fatal error due to leftover debug func. 
 
 = 0.1.0-RC-5 =
-* Bug fix: Incorrect filename for auto-indexed images
-* Bug fix: Could not manually sort subfolders in Edit Folder screen
+* Bug Fix: Incorrect filename for auto-indexed images
+* Bug Fix: Could not manually sort subfolders in Edit Folder screen
 * Bug Fix: [lg_folder] shortcode did not resolve folder option
 * Bug Fix: Hide navigation text in non-Twenty... themes
 
@@ -156,7 +181,7 @@ The attachment view behavior depends on the code in the attachment template. Eaz
 * Added: About page
 * Added: post_status 'hidden'
 * Added: Include folders in post tag archives
-* Added Sliddshow button for folders in frontend
+* Added Slideshow button for folders in frontend
 * Added: Exif on attachment page
 * Added: Support for header images from eazyest gallery images
 * Changed: Lazyest Gallery cache slides/ thumbs/ will not be deleted
