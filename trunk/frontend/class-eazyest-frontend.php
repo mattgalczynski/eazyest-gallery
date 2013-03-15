@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r232)
+ * @version 0.1.0 (r233)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -476,7 +476,7 @@ class Eazyest_Frontend {
 		if ( eazyest_gallery()->post_type != $post->post_type )
 			return $content;
 				
-		if ( current_theme_supports( 'eazyest-gallery' ) || ezg_theme_compatible() || file_exists( STYLESHEETPATH . '/single-galleryfolder.php' ) )
+		if ( current_theme_supports( 'eazyest-gallery' ) || ezg_theme_compatible() || file_exists( STYLESHEETPATH . '/single-galleryfolder.php' ) || file_exists( TEMPLATEPATH . '/single-galleryfolder.php' ) )
 			return $content; 
 			
 		if ( is_single() )
