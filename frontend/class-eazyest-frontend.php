@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r233)
+ * @version 0.1.0 (r236)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -165,6 +165,9 @@ class Eazyest_Frontend {
 		// content filters
 		add_filter( 'the_content',            array( $this, 'folder_content'      ), 99    );
 		add_filter( 'the_excerpt',            array( $this, 'folder_content'      ), 99    );
+		// widget_filters
+		add_filter( 'widget_comments_args',   array( $this, 'widget_comments'     )        );
+		add_filter( 'widget_posts_args',      array( $this, 'widget_posts'        )        );
 	}	
 	
 	/**
@@ -1668,7 +1671,47 @@ class Eazyest_Frontend {
 			}
 		}	 			
 		return $link;
-	}	
+	}
+	
+	
+	/**
+	 * Eazyest_Frontend::widget_comments()
+	 * Enables comments on attachments to show in Recent Comments widget.
+	 * 
+	 * @since 0.1.0 (r236)
+	 * @uses apply_filters() - 'eazyest_gallery_filter_widget_comments', true - to enable/disable comments on attachments to show
+	 * @param array $args
+	 * @return array
+	 */
+	function widget_comments( $args ) {
+		if ( apply_filters( 'eazyest_gallery_filter_widget_comments', true ) )
+			unset( $args['post_status'] );
+		return $args;	
+	}
+	
+	/**
+	 * Eazyest_Frontend::widget_posts()
+	 * Enables Folders to show in Recent Posts widget.
+	 * 
+	 * @since 0.1.0 (r236)
+	 * @uses apply_filters() - 'eazyest_gallery_filter_widget_posts', true - to enable/disable folders in recent posts
+	 * @param array $args
+	 * @return array
+	 */
+	function widget_posts( $args ) {		
+		if ( apply_filters( 'eazyest_gallery_filter_widget_posts', true ) ) {
+			if ( ( $args['post_type'] ) ) {
+				if ( is_array( $args['post_type'] ) ) {
+					$args['post_type'][] = eazyest_gallery()->post_type;
+				} else {
+					$args['post_type'] = array( $args['post_type'], eazyest_gallery()->post_type );
+				}
+			} else {
+				 $args['post_type'] = array( 'post', eazyest_gallery()->post_type );
+			}
+		}
+		return $args;	
+	}
 
 } // class Eazyest_Frontend;
 
