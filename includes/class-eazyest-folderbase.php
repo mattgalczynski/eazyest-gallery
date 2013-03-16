@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r238)
+ * @version 0.1.0 (r240)
  * @access public
  */
 
@@ -2041,15 +2041,16 @@ class Eazyest_FolderBase {
 	 */
 	function featured_image( $post_id ) {
 		global $wpdb;
-		$results = $wpdb->get_results( "
-			SELECT meta_value 
+		$query = $wpdb->prepare(
+			"SELECT meta_value 
 			FROM $wpdb->postmeta 
-			WHERE meta_key = 'thumbnail_id' 
-			AND 'post_id' = $post_id;", 
-			ARRAY_A 
+			WHERE meta_key = '_thumbnail_id' 
+			AND post_id = %s", 
+			$post_id 
 		);			
+		$results = $wpdb->get_results( $query, ARRAY_A );	
 		if ( ! empty( $results ) )
-		 return $results[0]['ID'];	
+ 		return $results[0]['meta_value'];	
 		else
 			return $this->first_image( $post_id );
 	}
