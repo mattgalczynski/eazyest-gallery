@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r240)
+ * @version 0.1.0 (r241)
  * @access public
  */
 
@@ -654,7 +654,8 @@ class Eazyest_FolderBase {
 			// do not delete folder if it has sibbling WP_Posts
 			if ( $this->has_subfolders( $post_id ) ) {	
 				wp_die( __( 'You cannot delete a parent folder', 'eazyest-gallery' ) );
-			}
+			}						
+			$gallery_path = ezg_get_gallery_path( $post_id );
 			// if it has subdirectories, but folder has changed parent, relocate directory and attachments
 			// links in posts will be broken, but images still exist
 			$subdirectories = $this->get_subdirectories( $post_id );
@@ -684,7 +685,6 @@ class Eazyest_FolderBase {
 				}
 				set_transient(  'eazyest_gallery_delete_attachments', $attachment_transient );	
 			} 
-			$gallery_path = ezg_get_gallery_path( $post_id );
 			$delete_dir = eazyest_gallery()->root() . $gallery_path;
 			// now remove the folder and all files from the server
 			$this->clear_dir( $delete_dir ); 	
@@ -702,7 +702,9 @@ class Eazyest_FolderBase {
 	 */
 	public function get_subdirectories( $post_id ) {
 		$directory = ezg_get_gallery_path( $post_id );	
-		$paths = $this->get_folder_paths();
+		if ( ! file_exists( eazyest_gallery()->root() . $directory ) )
+			return null;
+		$paths = $this->get_folder_paths( $post_id );
 		foreach( $paths as $key => $path ) {
 			if ( false === strpos( $path, $directory ) || strlen( $path ) == strlen( $directory ) )
 				unset( $paths[ $key] );
@@ -1197,6 +1199,8 @@ class Eazyest_FolderBase {
 			// reverse array, we want to start to delete sibblings first
 			$posted_paths = array_reverse( $this->posted_paths['folders'] );
 			foreach( $posted_paths as $key => $path_name ) {
+				if ( file_exists( eazyest_gallery()->root() . $path_name ) )
+					continue;
 				if ( ! in_array( $path_name, $this->folder_paths['folders'] ) ) {
 					$folder_id = $this->get_folder_by_path( $path_name );
 					if ( $folder_id )	
