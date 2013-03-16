@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r236)
+ * @version 0.1.0 (r239)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1700,7 +1700,7 @@ class Eazyest_Frontend {
 	 */
 	function widget_posts( $args ) {		
 		if ( apply_filters( 'eazyest_gallery_filter_widget_posts', true ) ) {
-			if ( ( $args['post_type'] ) ) {
+			if ( isset( $args['post_type'] ) ) {
 				if ( is_array( $args['post_type'] ) ) {
 					$args['post_type'][] = eazyest_gallery()->post_type;
 				} else {
