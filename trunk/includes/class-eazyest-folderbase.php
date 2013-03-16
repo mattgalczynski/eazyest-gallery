@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r226)
+ * @version 0.1.0 (r238)
  * @access public
  */
 
@@ -1712,6 +1712,8 @@ class Eazyest_FolderBase {
 		if ( ! $this->is_gallery_image( $post_id ) )
 			return false;
 			
+		$defaults = array( 'thumbnail', 'medium', 'large' );	
+			
 		$metadata = wp_get_attachment_metadata( $post_id );
 		$attached = get_post_meta( $post_id, '_wp_attached_file', true );
 		
@@ -1728,7 +1730,7 @@ class Eazyest_FolderBase {
 			$height = $metadata['height'];
 		} else {
 			list( $width, $height ) = getimagesize( eazyest_gallery()->root() . $attached );
-		}
+		}		
 		
 		// $size is array, find corresponding size string
 		if ( is_array( $size ) ) {
@@ -1740,7 +1742,6 @@ class Eazyest_FolderBase {
 				$name = $size_name;
 			} else {
 				// find default size that fits best
-				$defaults = array( 'thumbnail', 'medium', 'large' );
 				foreach( $defaults as $default ) {
 					if ( $size[0] <= intval( get_option("{$default}_size_w" ) ) && $size[1] <= intval( get_option("{$default}_size_h" ) ) ) {
 						$size = $default;
@@ -1751,7 +1752,6 @@ class Eazyest_FolderBase {
 					$size = 'full';
 			}
 		}
-		
 		$is_intermediate = false;
 		// get image name from metadata					
 		if ( isset( $metadata['sizes'] ) ) {
@@ -1766,7 +1766,9 @@ class Eazyest_FolderBase {
 				}
 			}
 		}
-		$img_url = eazyest_gallery()->address . $dir .'/' . $name;
+		$img_url = eazyest_gallery()->address . $dir .'/' . $name;				
+		list( $width, $height ) = image_constrain_size_for_editor( $width, $height, $size );
+		
 		return array( $img_url, $width, $height, $is_intermediate ); 
 	}
 	
