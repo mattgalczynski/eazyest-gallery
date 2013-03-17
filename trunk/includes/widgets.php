@@ -9,7 +9,7 @@
  *  
  * @package Eazyest Gallery
  * @subpackage Widgets
- * @version 0.1.0 (r213)
+ * @version 0.1.0 (r242)
  * 
  * @link http://codex.wordpress.org/Widgets_API for WordPress Widgets API
  * @link http://core.trac.wordpress.org/browser/tags/3.5/wp-includes/widgets.php for WP_Widget class
@@ -420,6 +420,7 @@ class Eazyest_Widget_Random_Images extends WP_Widget {
 			foreach( $folders as $folder ) {
 				$gallery_path = ezg_get_gallery_path( $folder->ID );
 				$post_title = esc_html( $folder->post_title );
+				$post_title = str_repeat( '&#8212; ', substr_count( $gallery_path, '/' ) ) . $post_title;			
 				$options .= "<option value'$folder->ID'";
 				if ( $post_id == $folder->ID )
 					$options .= "selected='selected'";
@@ -502,6 +503,22 @@ class Eazyest_Widget_Random_Slideshow extends WP_Widget {
 	}
 	
 	/**
+	 * Eazyest_Widget_Random_Slideshow::update()
+	 * 
+	 * @since 0.1.0 (r242)
+	 * @param mixed $new_instance
+	 * @param mixed $old_instance
+	 * @return
+	 */
+	function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+		$instance['title']      = strip_tags( $new_instance['title'] );
+		$instance['post_id']    = absint( $new_instance['post_id'] );
+		$instance['subfolders'] = $new_instance['subfolders'];
+		return $instance;
+	}
+	
+	/**
 	 * Eazyest_Widget_Random_Slideshow::form()
 	 * 
 	 * @param mixed $instance
@@ -519,12 +536,13 @@ class Eazyest_Widget_Random_Slideshow extends WP_Widget {
 			if ( 0 == $post_id )
 				$options .= "selected='selected'";
 		$options .= ">" . __( 'All folders', 'eazyest-gallery' ) . "</option>\n";		
-		$folders = get_posts( array( 'post_type' => eazyest_gallery()->post_type ) );
+		$folders = get_pages( array( 'post_type' => eazyest_gallery()->post_type, 'posts_per_page' => -1,  ) );
 		if ( ! empty( $folders ) ) {
 			foreach( $folders as $folder ) {
 				$gallery_path = ezg_get_gallery_path( $folder->ID );
 				$post_title = esc_html( $folder->post_title );
-				$options .= "<option value'$folder->ID'";
+				$post_title = str_repeat( '&#8212; ', substr_count( $gallery_path, '/' ) ) . $post_title;				
+				$options .= "<option value='$folder->ID'";
 				if ( $post_id == $folder->ID )
 					$options .= "selected='selected'";
 				$options .= ">$post_title</option>\n";	
