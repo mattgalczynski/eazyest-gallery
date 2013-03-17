@@ -551,6 +551,7 @@ class Eazyest_Gallery_Upgrader {
 				<p><?php          _e( 'Eazyest Gallery uses custom post types and stores all information in the WordPress database.',                         'eazyest-gallery' ); ?></p>
 				<p><?php          _e( 'You have to convert your gallery to custom post types.',                                                               'eazyest-gallery' ); ?></p>
 				<p><strong><?php  _e( 'Please backup your database and your gallery before you start upgrading.',                                             'eazyest-gallery' ); ?></strong></p>
+				<p><strong><?php  _e( 'Eazyest Gallery will remove the Lazyest Gallery plugin and its data.',                                                 'eazyest-gallery' ); ?></strong></p>
 				<p><em><?php      _e( 'Be aware that importing and renaming folders and images and importing and linking comments is a time consuming task.', 'eazyest-gallery' ); ?></em></p>
 				<p><em><?php      _e( 'Importing large galleries containing hundreds of folders could well take hours to complete.',                          'eazyest-gallery' ); ?></em></p>
 				<?php foreach( $this->sections() as $section => $parts ) : ?>
@@ -571,8 +572,13 @@ class Eazyest_Gallery_Upgrader {
 				</div>
 				<div class="submit" id="skip">
 					<a href="#skip_upgrade" class="button button-secondary" id="skip_upgrade"><?php echo esc_attr_e( 'Skip', 'eazyest-gallery'); ?></a>
-					<label for="skip_upgrade"><?php _e( 'Don&#8217;t upgrade', 'eazyest-gallery' ); ?></label>
+					<label for="skip_upgrade"><?php _e( 'Don&#8217;t import', 'eazyest-gallery' ); ?></label>
 					<p class="description"><?php _e( 'Don&#8217;t save any content, just let Eazyest Gallery automatically import my folders and images.', 'eazyest-gallery' ) ?></p>
+				</div>				
+				<div class="submit" id="abort">
+					<a href="<?php echo admin_url( 'plugins.php' ) ?>" class="button button-primary" id="abort_upgrade"><?php echo esc_attr_e( 'Abort', 'eazyest-gallery'); ?></a>
+					<label for="skip_upgrade"><?php _e( 'Don&#8217;t use Eazyest Gallery', 'eazyest-gallery' ); ?></label>
+					<p class="description"><?php _e( 'Bring me back to the plugin page, I want to keep Lazyest Gallery.', 'eazyest-gallery' ) ?></p>
 				</div>
 			</form>
 		<?php	

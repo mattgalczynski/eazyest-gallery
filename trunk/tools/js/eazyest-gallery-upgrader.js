@@ -90,6 +90,7 @@
 	function eazyestUpgrader() {
 		if ( ! eazyestUpgraderRunning ) {
 			$('#skip').hide();
+			$('#abort').hide();
 			$('#upgrade-process').show();
 			$('#upgrade-error').hide();
 			$('#start-upgrade').html( eazyestUpgraderSettings.stop );
