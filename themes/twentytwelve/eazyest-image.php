@@ -65,7 +65,7 @@ endif;
 
 $attachment_size = apply_filters( 'twentytwelve_attachment_size', array( 960, 960 ) );
 // we need to add popup markup	
-$next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
+$next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute( 'echo=0' ) . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';
 $ezg_doing_attachment = false;
 ?>
 								<?php	
