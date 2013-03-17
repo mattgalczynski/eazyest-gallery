@@ -82,7 +82,7 @@ if ( 'default' != eazyest_gallery()->on_slide_click ) {
 $attachment_width = apply_filters( 'twentyeleven_attachment_size', 848 );
 $attachment_size  = array( $attachment_width, 1024 );
 // we need to add popup markup
-$next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute() . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';								
+$next_link = ezg_add_popup( '<a href="' . $next_attachment_url . '" title="' . the_title_attribute( 'echo=0' ) . '" rel="attachment">', $post->ID ) . wp_get_attachment_image( $post->ID, $attachment_size ) . '</a>';								
 $ezg_doing_attachment = false; 
 ?>
 									<?php 
