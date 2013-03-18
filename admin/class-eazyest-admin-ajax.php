@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r227)
+ * @version 0.1.0 (r245)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -334,6 +334,9 @@ class Eazyest_Admin_Ajax {
 			$post = get_post( $_POST['folder'] );
 			if ( $post ) {
 				$GLOBALS['post'] = $post;		
+				eazyest_gallery()->thumbs_page    = absint( $_POST['posts']   );
+				eazyest_gallery()->thumbs_columns = absint( $_POST['columns'] );
+				
 				include_once( eazyest_gallery()->plugin_dir . 'frontend/class-eazyest-frontend.php' );
 				eazyest_frontend()->setup_tags();
 				eazyest_frontend()->thumbnails( $_POST['folder'], $_POST['page'] );	 

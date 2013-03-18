@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r239)
+ * @version 0.1.0 (r245)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -236,7 +236,7 @@ class Eazyest_Frontend {
 	 */
 	function register_scripts() {		
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';		
-		wp_register_script( 'eazyest-frontend', eazyest_gallery()->plugin_url . "frontend/js/eazyest-frontend.$j", array( 'jquery' ), '0.1.0-r232', true );
+		wp_register_script( 'eazyest-frontend', eazyest_gallery()->plugin_url . "frontend/js/eazyest-frontend.$j", array( 'jquery' ), '0.1.0-r245', true );
 		wp_localize_script( 'eazyest-frontend', 'eazyestFrontend', $this->localize_script() );
 	}
 	
@@ -1301,7 +1301,7 @@ class Eazyest_Frontend {
 							$next_link = add_query_arg( array( 'thumbnails' => $next_page ), $folder_permalink );
 						$navigation .= "
 						<div class='nav-next alignright'>
-							<a id='next-thumbnail-$next_page' href='$next_link'>" . __( 'Next thumbnails', 'eazyest-gallery' ) . " <span class='meta-nav'>&rarr;</span></a>
+							<a id='next-thumbnail-$next_page' class='attr-{$columns}-{$posts_per_page}' href='$next_link'>" . __( 'Next thumbnails', 'eazyest-gallery' ) . " <span class='meta-nav'>&rarr;</span></a>
 						</div>";
 						
 					}
@@ -1322,6 +1322,7 @@ class Eazyest_Frontend {
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// remove filter for other shortcodes in post
 				remove_filter( 'post_gallery', array( $this, 'post_gallery' ), 2000 );
+			
 			
 			$gallery .= $navigation;
 						
