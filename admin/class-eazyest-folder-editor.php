@@ -665,6 +665,9 @@ class Eazyest_Folder_Editor {
 				margin-bottom: 10px;
 				width: 90%;
 			}
+			.attachment-excerpt {
+				width:90%;
+			}
 			.tablenav .tablenav-pages a.add-subfolder {
 				font-family: sans-serif;
 				font-weight:  normal;
