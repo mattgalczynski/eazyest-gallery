@@ -44,7 +44,7 @@
 			doDragTable( '.wp-list-table.media' );			
 		}
 		
-		$( '.media-button-insert' ).live( 'click', function(){
+		$(document).on( 'click', '.media-button-insert', function(){
 			var data = {
 				action : 'eazyest_gallery_upload',
 				_wpnonce : $( '#_wpnonce' ).val(),
