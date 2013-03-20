@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r159)
+ * @version 0.1.0 (r247)
  * @access public
  */
 class Eazyest_Upgrade_Engine {
@@ -389,10 +389,24 @@ class Eazyest_Upgrade_Engine {
 	 * @uses remove_role()
 	 * @return void
 	 */
-	function remove_roles() {		
-    remove_role( 'lazyest_manager' );
-		remove_role( 'lazyest_editor'  );
-		remove_role( 'lazyest_author'  );	
+	function remove_roles() {
+		$lazyest_roles = array(
+			 'lazyest_manager',
+			 'lazyest_editor',
+			 'lazyest_author',
+		);
+		foreach( $lazyest_roles as $lazyest_role ) {
+			$args = array(
+				'role'   => $lazyest_role,
+			);
+			$users = get_users( $args );
+			if ( ! empty( $users ) ) {
+				foreach( $users as $user ) {
+					$user->remove_role( $lazyest_role );
+				}
+			}
+			remove_role( $lazyest_role );
+		}	
 	}
 	
 	/**
