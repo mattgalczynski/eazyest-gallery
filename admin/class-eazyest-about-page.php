@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r103)
- * @version 0.1.0 (r204)
+ * @version 0.1.0 (r248)
  * @access public
  */
 class Eazyest_About_Page {
@@ -308,10 +308,20 @@ class Eazyest_About_Page {
 					<img src="http://www.gravatar.com/avatar/feec71ac24545388823abae5ae4dce53?s=60&d=monsterid&r=g" class="gravatar" alt="patdtn" />
 					<a href="http://wordpress.org/support/profile/patdtn" class="web">patdtn</a>
 					<span class="title"><?php _e( 'Reviewer and Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>				
+				<li class="wp-person" id="wp-person-emburr">
+					<img src="http://www.gravatar.com/avatar/b9a7a79bb10c44ab01260ad8ec51a33e?s=60&d=monsterid&r=g" class="gravatar" alt="emburr" />
+					<a href="http://wordpress.org/support/profile/emburr" class="web">eMBurr</a>
+					<span class="title"><?php _e( 'Bug reporter and patch supplier', 'eazyest-gallery' ); ?></span>
 				</li>
-					<li class="wp-person" id="wp-person-klihelp">
+				<li class="wp-person" id="wp-person-klihelp">
 					<img src="http://www.gravatar.com/avatar/ec2466269881b11803d5c7e847e8ecee?s=60&d=monsterid&r=g" class="gravatar" alt="klihelp" />
 					<a href="http://wordpress.org/support/profile/klihelp" class="web">klihelp</a>
+					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
+				</li>
+				<li class="wp-person" id="wp-person-rs58">
+					<img src="http://www.gravatar.com/avatar/5f62d7fb65289ae46d84cb6564914054?s=60&d=monsterid&r=g" class="gravatar" alt="rs58" />
+					<a href="http://wordpress.org/support/profile/rs58" class="web">RS58</a>
 					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
 				</li>
 			</ul>
