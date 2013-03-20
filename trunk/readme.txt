@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-RC-7
+Stable tag: 0.1.0-RC-8
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -90,10 +90,22 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_breadcrumb', 1 );`
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-7 =
-* More bugs fixed in Release candidate 7
+= 0.1.0-RC-8 =
+* More bugs fixed in Release candidate 8
 
 == Changelog ==
+
+= 0.1.0-RC-8 =
+* Bug Fix: Users had unusable Lazyest Gallery roles after upgrade
+* Bug Fix: Incorrect number of images and columns after clicking More Thumbnails in shortcode
+* Bug Fix: Attachment caption displayed on top and bottom of attachment image.
+* Bug fix: Random Image widget did not save options.
+* Bug Fix: Directories get inadvertently deleted when a directory scan fails
+* Bug Fix: Featured Image shows full size in Folder Editor
+* Bug Fix: Attachment on-click setting were not used 
+* Added: Attachments and Folders show in Recent Posts Widget
+* Added: Attachments and Folders show in Recent Comments Widget
+* Added: Warning message in Upgrade Screen
 
 = 0.1.0-RC-7 =
 * Bug Fix: Auto index made subfolders root folders
