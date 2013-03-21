@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r241)
+ * @version 0.1.0 (r252)
  * @access public
  */
 
@@ -319,12 +319,6 @@ class Eazyest_FolderBase {
 				$query->set( 'post_parent', 0 );		
 		}
 		
-		// show only images attached to folder if query-attachments
-		if ( isset( $_REQUEST['action'] ) && 'query-attachments' == $_REQUEST['action'] ) {
-			$post_id = $this->refered_by_folder();
-			if ( $post_id )
-				$query->set( 'post_parent', $post_id ); 
-		}
 		if ( is_tag() ) {
 			$post_types = $query->get( 'post_type' );
 			if ( ! $post_types || 'post' == $post_types )
