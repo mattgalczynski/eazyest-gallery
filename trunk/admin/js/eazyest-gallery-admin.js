@@ -45,8 +45,8 @@
 			doDragTable( '.wp-list-table.media' );			
 		}
 		
-		// refresh media table when media editor closes
-		var media = wp.media.editor.add('content'); 
+		var media = wp.media.editor.add('content');
+		// refresh media table when media editor closes 
 		media.on( 'close', function() { 
 			var data = {
 				action : 'eazyest_gallery_upload',
@@ -58,7 +58,21 @@
 				doDragTable( '.wp-list-table.media' );
 			});
 			return false;
-		}); 		
+		});
+		
+		// if insert media for editor, show uploaded images only
+		media.on( 'open', function(){
+			if( $('.attachment-filters').length ) {
+				$('.attachment-filters').children( 'option').each(function(){
+					var value = $(this).val();
+					if ( 'uploaded' != value )
+						$(this).remove();
+					else
+						$(this).attr('selected', 'selected' );	
+				});					
+			}
+			$('.attachment-filters').trigger('change');				
+		});	
 		
 		// handle changes in post status including 'hidden'
 		$('.save-post-visibility', '#post-visibility-select').click(function () { // crazyhorse - multiple ok cancels
