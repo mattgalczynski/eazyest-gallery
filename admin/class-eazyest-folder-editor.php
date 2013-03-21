@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r252)
+ * @version 0.1.0 (r253)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -218,12 +218,14 @@ class Eazyest_Folder_Editor {
 		if ( isset( $_GET['post_type'] ) && ( $_GET['post_type'] == eazyest_gallery()->post_type ) )
 			return false;
 			
-		$screen = get_current_screen();
-		
-		if ( ( ! isset( $screen->post_type ) ) || ( eazyest_gallery()->post_type != $screen->post_type ) )
-			return true;			
+		if( isset( $_GET['post'] ) && eazyest_gallery()->post_type == get_post_type( absint( $_GET['post'] ) ) )
+			return false;
 			
-		return false;
+		$screen = get_current_screen();
+		if ( ( isset( $screen->post_type ) ) && ( eazyest_gallery()->post_type == $screen->post_type ) )
+			return false;			
+			
+		return true;
 	}
   
   
@@ -589,8 +591,11 @@ class Eazyest_Folder_Editor {
 	 */
 	function collect_folders() {
 		if ( $this->bail() )
-			return;						
-		$post_id = isset( get_current_screen()->post_ID ) ? get_current_screen()->post_ID : 0; 	
+			return;
+		$post_id = isset( get_current_screen()->post_ID ) ? get_current_screen()->post_ID : 0;
+		if ( ! $post_id && isset( $_GET['post'] ) )
+			$post_id = absint( $_GET['post'] );
+			
 		eazyest_folderbase()->collect_folders( $post_id );
 	}
 	
