@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r252)
+ * @version 0.1.0 (r254)
  * @access public
  */
 
@@ -650,6 +650,10 @@ class Eazyest_FolderBase {
 				wp_die( __( 'You cannot delete a parent folder', 'eazyest-gallery' ) );
 			}						
 			$gallery_path = ezg_get_gallery_path( $post_id );
+			// if gallery_path is not set do not delete anything
+			if ( empty( $gallery_path ) )
+				return;
+				
 			// if it has subdirectories, but folder has changed parent, relocate directory and attachments
 			// links in posts will be broken, but images still exist
 			$subdirectories = $this->get_subdirectories( $post_id );
