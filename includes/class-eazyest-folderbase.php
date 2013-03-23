@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r254)
+ * @version 0.1.0 (r255)
  * @access public
  */
 
@@ -611,6 +611,15 @@ class Eazyest_FolderBase {
 			return;
 			
 		$directory = trailingslashit( $directory );
+		
+		// never delete when not in gallery
+		if ( false === strpos( $directory, eazyest_gallery()->root() ) )
+			return;
+		
+		// never delete when directory is gallery root
+		if ( $directory == eazyest_gallery()->root() )
+			return;
+			
 		if ( file_exists( $directory ) ) {
 			if ( $handle = opendir( $directory ) ) {
 				while( $file = readdir( $handle ) ) {
