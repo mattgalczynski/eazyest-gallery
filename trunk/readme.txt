@@ -98,9 +98,9 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_breadcrumb', 1 );`
 = 0.1.0-RC-9 =
 * Bug Fix: Update subfolders on opening Edit - Folder screen
 * Changed: When file system directory does not exist, or cannot be read, Folder post gets trashed instead of premanently deleted.
-* Changed: More checks before delting folders from file system
-* Changed: Do not use deprecated jQuery `.live()`
+* Changed: More checks before deleting folders from file system
 * Changed: Allow users to select featured image from all images in Wordpress media 
+* Changed: Do not use deprecated jQuery `.live()`
 
 = 0.1.0-RC-8 =
 * Bug Fix: Users had unusable Lazyest Gallery roles after upgrade
