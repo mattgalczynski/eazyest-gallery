@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r256)
+ * @version 0.1.0 (r259)
  * @access public
  */
 
@@ -652,6 +652,7 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	public function before_delete_post( $post_id ) {
+lg_db('before_delete_post');		
 		// check delete post for post_type galleryfolder
 		if ( eazyest_gallery()->post_type == get_post_type( $post_id ) ) {
 			// do not delete folder if it has sibbling WP_Posts
@@ -1212,7 +1213,7 @@ class Eazyest_FolderBase {
 					$folder_id = $this->get_folder_by_path( $path_name );
 					if ( $folder_id )	
 						// trash folder
-						wp_delete_post( $folder_id, false );
+						wp_trash_post( $folder_id, false );
 					$deleted++;
 				}
 			}
