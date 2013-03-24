@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r255)
+ * @version 0.1.0 (r256)
  * @access public
  */
 
@@ -1211,7 +1211,8 @@ class Eazyest_FolderBase {
 				if ( ! in_array( $path_name, $this->folder_paths['folders'] ) ) {
 					$folder_id = $this->get_folder_by_path( $path_name );
 					if ( $folder_id )	
-						wp_delete_post( $folder_id, true );
+						// trash folder
+						wp_delete_post( $folder_id, false );
 					$deleted++;
 				}
 			}
