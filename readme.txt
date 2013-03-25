@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-RC-11
+Stable tag: 0.1.0-RC-12
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -90,10 +90,13 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_breadcrumb', 1 );`
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-11 =
-* Sorry, left some debug stuff in the plugin
+= 0.1.0-RC-12 =
+* Bug Fix: Do not allow upload directory as gallery folder
 
 == Changelog ==
+
+= 0.1.0-RC-12 =
+* Bug Fix: Do not allow upload directory as gallery folder
 
 = 0.1.0-RC-11 =
 * Bug Fix: Fatal error due to debug function
