@@ -52,16 +52,12 @@
 	}
 	
 	$(document).ready(function(){
-		
-		if ( pagenow == eazyestGalleryCollect.pagenow ) {
-			$( eazyestGalleryCollect.collecting ).insertBefore('#posts-filter table.wp-list-table');
-			$('#eazyest-collect-folders').show('fast',function(){
-		 		eazyest_gallery_collect_next('start');
-		 	}).click(function(){
-				$(this).css('color','red');	
-				eazyest_gallery_collect_next('stop');
-			});
-		}
-		
+		$( eazyestGalleryCollect.collecting ).insertBefore('#posts-filter table.wp-list-table');
+		$('#eazyest-collect-folders').show('fast',function(){
+	 		eazyest_gallery_collect_next('start');
+	 	}).click(function(){
+			$(this).css('color','red');	
+			eazyest_gallery_collect_next('stop');
+		});		
 	}); // $(document).load
 })(jQuery)
