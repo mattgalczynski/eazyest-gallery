@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r170)
+ * @version 0.1.0 (r262)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -452,6 +452,10 @@ class Eazyest_Settings_Page {
 			<?php endif; ?>
 			<div id="eazyest-ajax-response" class="hidden"></div>
 			<p><a id="create-folder" class="<?php echo $buttonclass ?>" href="#"><?php _e( 'Create folder', 'eazyest-gallery' ); ?></a></p>
+			<p class="description">
+				<?php _e( 'Relative to your WordPress installation.', 'eazyest-gallery' ); ?><br />
+				<?php printf( __( 'Your current setting maps to %s', 'eazyest-gallery' ), '<code>' . eazyest_gallery()->root() . '</code>' ) ?>
+			</p>
 		</div>	
 		<?php
 		wp_enqueue_script( 'eazyest-gallery-settings' );
