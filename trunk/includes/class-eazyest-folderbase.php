@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r265)
+ * @version 0.1.0 (r266)
  * @access public
  */
 
@@ -834,7 +834,7 @@ class Eazyest_FolderBase {
 		// WordPress core dirs
 		$dangerous = array(	'wp-admin',	'wp-includes'	);
 		foreach( $content_dirs as $dir )
-			$dangerous[] = 'wp-content/' . $dir;
+			$dangerous[] = 'wp-content/' . $dir;			
 		return apply_filters( 'eazyest_dangerous_paths', $dangerous );
 	}
 
@@ -853,7 +853,6 @@ class Eazyest_FolderBase {
 		// check if gallery folder is not on server root
 		if ( $directory == '/' )
 	 		return true;
-		
 		// see if gallery is not in a WordPress core directory
 		$dangerous = $this->_dangerous();				
 		foreach ( $dangerous as $path ) {
@@ -862,12 +861,23 @@ class Eazyest_FolderBase {
 				return true;				
 		}
 		
-		// check if gallery is not WordPress wp-content
+		if ( defined(  'WP_CONTENT_DIR' ) ) {
+			$content_dir = trailingslashit( str_replace( '\\', '/', WP_CONTENT_DIR ) );
+			if ( $directory == $content_dir )
+				return true;
+		}		
+		
+		// check if gallery is not WordPress wp-content even if it is not WP_CONTENT_DIR
 		if ( strlen( $directory ) > 11 ) {
 			if ( 'wp-content' == basename( untrailingslashit( $directory ) ) )
 				return true;
 		}
-			
+		
+		$upload_dir = wp_upload_dir();
+		$basedir = trailingslashit( str_replace( '\\', '/', $upload_dir['basedir'] ) );
+		if ( $directory == $basedir )
+			return true;
+						
 		// check if WordPress is not in a gallery subirectory
 		$subdirs = $this->get_folder_paths( $directory );
 		if ( ! empty( $subdirs ) ) {
