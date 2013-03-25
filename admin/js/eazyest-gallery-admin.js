@@ -60,20 +60,6 @@
 			return false;
 		});
 		
-		// if insert media for editor, show uploaded images only
-		media.on( 'open', function(){
-			if( $('.attachment-filters').length ) {
-				$('.attachment-filters').children( 'option').each(function(){
-					var value = $(this).val();
-					if ( 'uploaded' != value )
-						$(this).remove();
-					else
-						$(this).attr('selected', 'selected' );	
-				});					
-			}
-			$('.attachment-filters').trigger('change');				
-		});	
-		
 		// handle changes in post status including 'hidden'
 		$('.save-post-visibility', '#post-visibility-select').click(function () { // crazyhorse - multiple ok cancels
 			var pvSelect = $('#post-visibility-select');

@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r253)
+ * @version 0.1.0 (r260)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -143,7 +143,7 @@ class Eazyest_Folder_Editor {
 	function register_scripts() {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',        true );
-		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r252', true );
+		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r260', true );
 		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r169', true );
 				
 		wp_localize_script( 'eazyest-gallery-admin',   'galleryfolderL10n',     $this->localize_folder_script()  );
@@ -999,11 +999,11 @@ class Eazyest_Folder_Editor {
    * @return array
    */
   function media_view_strings( $strings, $post ) {
-		if ( isset( $post ) && eazyest_gallery()->post_type == $post->post_type ) { 		
+		if ( isset( $post ) && eazyest_gallery()->post_type == $post->post_type ) { 	
 	 		// disable some views that have no purpose in Eazyest Gallery
 	 		$disabled = array( 'selectFiles', 'createNewGallery', 'insertFromUrlTitle', 'createGalleryTitle' );
 	 		foreach( $disabled as $string )
-	 			$strings[$string] = '';
+	 			unset( $strings[$string] );
 	 		$strings['allMediaItems']      = __( 'Select a view', 'eazyest-gallery'           );	
 	 		$strings['uploadedToThisPost'] = __( 'Uploaded to this folder', 'eazyest-gallery' );
 			$strings['insertIntoPost']     = __( 'Done uploading', 'eazyest-gallery'          );	
