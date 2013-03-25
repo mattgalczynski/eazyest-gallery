@@ -90,7 +90,7 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_breadcrumb', 1 );`
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-9 =
+= 0.1.0-RC-10 =
 * Fixes issues in the upload popup.
 
 == Changelog ==
@@ -98,7 +98,7 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_breadcrumb', 1 );`
 = 0.1.0-RC-10 =
 * Bug Fix: Broken thumbnails in Upload screen.
 * Added: Collect images on the Media Library screen.
-* Added: Display fill gallery folder path in Settings screen.
+* Added: Display full gallery folder path in Settings screen.
 
 = 0.1.0-RC-9 =
 * Bug Fix: Update subfolders on opening Edit - Folder screen
