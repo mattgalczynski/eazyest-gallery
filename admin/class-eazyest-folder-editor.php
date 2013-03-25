@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r260)
+ * @version 0.1.0 (r261)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -79,6 +79,7 @@ class Eazyest_Folder_Editor {
   	add_action( 'admin_enqueue_scripts',             array( $this, 'enqueue_scripts'         ), 20    );
   	add_action( 'admin_head',                        array( $this, 'fix_content_messages'    )        );
   	add_action( 'admin_head',                        array( $this, 'admin_style'             )        );
+  	add_action( 'admin_head',                        array( $this, 'collect_style'           )        );
   	
   	add_action( 'admin_action_save_gallery',         array( $this, 'save_gallery'            )        );
   	add_action( 'admin_action_move_folder',          array( $this, 'move_folder'             )        );
@@ -144,7 +145,7 @@ class Eazyest_Folder_Editor {
 		$j = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? 'js' : 'min.js';
 		wp_register_script( 'jquery-tablednd',         eazyest_gallery()->plugin_url . "admin/js/jquery.tablednd.$j",         array( 'jquery' ),          '0.7',        true );
 		wp_register_script( 'eazyest-gallery-admin',   eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-admin.$j",   array( 'jquery-tablednd' ), '0.1.0-r260', true );
-		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r169', true );
+		wp_register_script( 'eazyest-gallery-collect', eazyest_gallery()->plugin_url . "admin/js/eazyest-gallery-collect.$j", array( 'jquery' ),          '0.1.0-r261', true );
 				
 		wp_localize_script( 'eazyest-gallery-admin',   'galleryfolderL10n',     $this->localize_folder_script()  );
 		wp_localize_script( 'eazyest-gallery-collect', 'eazyestGalleryCollect', $this->localize_collect_script() );
@@ -176,10 +177,10 @@ class Eazyest_Folder_Editor {
 	 * @return void
 	 */
 	function enqueue_scripts() {
-		if ( $this->bail() )
-			return;
-		if ( apply_filters( 'eazyest_gallery_ajax_collect', true ) && ! isset( $_REQUEST['collect-refresh'] ) ) {
-			wp_enqueue_script( 'eazyest-gallery-collect' );
+    if ( in_array( get_current_screen()->id, array( 'upload', 'edit-' . eazyest_gallery()->post_type ) ) ) {
+			if ( apply_filters( 'eazyest_gallery_ajax_collect', true ) && ! isset( $_REQUEST['collect-refresh'] ) ) {
+				wp_enqueue_script( 'eazyest-gallery-collect' );
+			}
 		}
 	}
 	
@@ -193,10 +194,9 @@ class Eazyest_Folder_Editor {
 	 */
 	function localize_collect_script() {
 		return array(
-			'pagenow'     => 'edit-' . eazyest_gallery()->post_type,
 			'collecting'  => '<p title="' . 
 			         esc_attr__( 'Click to stop search',                                   'eazyest-gallery' ) . '" id="eazyest-collect-folders" class="collect-folders">' . 
-							         __( 'Searching for new folders and images',                   'eazyest-gallery' ) . '</p>',
+							         __( 'Searching for new images in Eazyest Gallery',            'eazyest-gallery' ) . '</p>',
 			'notfound'    => __( 'No new images found in your gallery',                    'eazyest-gallery' ),
 			'foundimages' => __( 'Found %d new images in your gallery',                    'eazyest-gallery' ),
 			'error1'      => __( 'An error occurred while indexing your gallery.',         'eazyest-gallery' ),
@@ -694,6 +694,21 @@ class Eazyest_Folder_Editor {
 			.media-menu-item:empty {
 				display: none;
 			}
+		</style>
+		<?php	
+	}
+	
+	/**
+	 * Eazyest_Folder_Editor::collect_style()
+	 * Adds style rules for the image collector.
+	 * 
+	 * @since 0.1.0 (r261)
+	 * @return void
+	 */
+	function collect_style() {
+    if ( in_array( get_current_screen()->id, array( 'upload', 'edit-' . eazyest_gallery()->post_type ) ) ) :
+		?>
+		<style type="text/css">
 			.collect-folders {
 				background: url(images/wpspin_light.gif) no-repeat;
 				background-size: 16px 16px;
@@ -702,8 +717,9 @@ class Eazyest_Folder_Editor {
 			#eazyest-collect-folders {
 				cursor:pointer;
 			}
-		</style>
-		<?php	
+		</style>	
+		<?php
+		endif;
 	}
 	
 	/**
