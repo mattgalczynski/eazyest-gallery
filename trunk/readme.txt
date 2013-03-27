@@ -78,6 +78,13 @@ Add this code to your child theme functions.php:
 }
 add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_breadcrumb', 1 );` 
 
+= How do I remove the Slideshow link/button? =
+Add this code to your child theme functions.php:
+`function remove_eazyest_gallery_slideshow_button() {
+  remove_action('eazyest_gallery_before_folder_content', 'ezg_slideshow_button', 9);
+}
+add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 1 );`
+
 == Screenshots ==
 
 1. Eazyest Gallery menu, below WordPress Media menu
