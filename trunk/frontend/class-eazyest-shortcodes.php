@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r224)
+ * @version 0.1.0 (r269)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -268,7 +268,13 @@ class Eazyest_Shortcodes {
 		}
 		if ( ! empty( $nextpage_link ) || ! empty( $prevpage_link ) )
 			$output .= "
-				<nav id='nav-below'>
+				<style type='text/css'>
+					.assistive-text {
+						position: absolute !important;
+						clip: rect(1px, 1px, 1px, 1px);
+					}
+				</style>	
+				<nav id='folder-nav-{$post->ID}' class='navigation' role='navigation'>
 					<h3 class='assistive-text'>" . __( 'Folder navigation', 'eazyest-gallery' ) . "</h3>
 					<div class='nav-previous alignleft'>$prevpage_link</div>
 					<div class='nav-next alignright'>$nextpage_link</div>
