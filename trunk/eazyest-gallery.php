@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-12
+ * Version: 0.1.0-RC-13-268
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r266)  
+ * @version 0.1.0 (r268)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -53,7 +53,7 @@ define('EZG_SECURE_VERSION', '0.1.0');
  * Holds the options and basic functions
  * 
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r119)
+ * @version 0.1.0 (r268)
  * @access public
  */
 class Eazyest_Gallery {
@@ -483,10 +483,16 @@ class Eazyest_Gallery {
 	 */
 	function home_dir() {		
 		$root = str_replace( array( '/', '\\'), '/', ABSPATH );
-		$url_parts = parse_url( home_url() );			
-		$home_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
-		$url_parts = parse_url( site_url() );	
-		$site_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
+		$url_parts = parse_url( home_url() );
+		$home_parts = array();
+		if ( isset( $url_parts['path'] ) )
+			$home_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
+		
+		$site_parts = array();	
+		$url_parts = parse_url( site_url() );
+		if ( isset( $url_parts['path'] ) )	
+			$site_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
+			
 		$root_parts = array_reverse( explode( '/', rtrim( $root, '/' ) ) );
 		while( $root_parts[0] == $site_parts[0] && $site_parts[0] != $home_parts[0] ) {
 			array_shift( $root_parts );
@@ -506,8 +512,12 @@ class Eazyest_Gallery {
 	 */
 	function common_root() {
 		$root = str_replace( array( '/', '\\'), '/', ABSPATH );
-		$url_parts = parse_url( site_url() );			
-		$path_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
+		
+		$url_parts = parse_url( site_url() );		
+		$path_parts = array();
+		if ( isset( $url_parts['path'] ) )			
+			$path_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
+			
 		$root_parts = array_reverse( explode( '/', rtrim( $root, '/' ) ) );
 		if ( count( $path_parts ) ) {
 			foreach( $path_parts as $key => $part ) {
