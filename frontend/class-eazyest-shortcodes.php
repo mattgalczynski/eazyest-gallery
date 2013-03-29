@@ -168,14 +168,15 @@ class Eazyest_Shortcodes {
 			$id = eazyest_folderbase()->get_folder_by_string( $root );
 		}
 		
-		eazyest_gallery()->folders_columns = $columns;		
+		eazyest_gallery()->folders_columns = $columns;
+		$folders_per_page = eazyest_gallery()->folders_page ? eazyest_gallery()->folders_page : -1;	
 				
 		$args = array (
 			'post_type'      => eazyest_gallery()->post_type,
 			'post_parent'    => $id,
 			'order'          => $order,
 			'orderby'        => $orderby,
-			'posts_per_page' => eazyest_gallery()->folders_page,
+			'posts_per_page' => $folders_per_page,
 		);
 		
 		if ( ! empty( $include ) ) {
