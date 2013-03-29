@@ -40,8 +40,14 @@
 			 			eazyest_gallery_collect_next(response);
 			 		else if ( typeof response === 'object' || 0 == response ) {
 			 			eazyest_gallery_collect_finished(response);	 			
-				 	}	else 	
-						eazyest_gallery_collect_error( response );	 	
+				 	}	else 	{
+				 		var trimmed = $.trim( response );
+				 		if ( 'next' == trimmed ) {
+				 			eazyest_gallery_collect_next(trimmed);
+						} else {
+							eazyest_gallery_collect_error( response );
+						}
+					}	 	
 				},
 				error : function ( xhr, textStatus, errorThrown){
 					if ( 500 == xhr.status ) {					
