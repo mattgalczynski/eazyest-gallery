@@ -1208,10 +1208,10 @@ class Eazyest_FolderBase {
 	
 	/**
 	 * Eazyest_FolderBase::delete_folders()
-	 * Delete folders from wpdb when user has (ftp)  delete folders
+	 * Trashes folders when user has (ftp) deleted folders
 	 * 
 	 * @since 0.1.0 (r2)
-	 * @uses wp_delete_post
+	 * @uses wp_trash_post
 	 * @param integer $post_id
 	 * @return integer number of folders deleted
 	 */
@@ -1671,8 +1671,7 @@ class Eazyest_FolderBase {
 		$this->get_folder_images( $post_id );
 		$deleted = 0;
 		$delete_later = array();		
-		if ( ! empty( $this->posted_images['images'] ) ) {			
-			$gallery_path = ezg_get_gallery_path( $post_id );
+		if ( ! empty( $this->posted_images['images'] ) ) {	
 			foreach( $this->posted_images['images'] as $key => $image_name  ) {
 				if ( ! in_array( $image_name, $this->folder_images['images'] ) ) {
 					$attachment_id = $this->get_attachment_by_filename( $image_name ); 
