@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-13-270
+ * Version: 0.1.0-RC-13-271
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r270)  
+ * @version 0.1.0 (r271)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -130,7 +130,7 @@ class Eazyest_Gallery {
 		$this->set_gallery_folder();	
 		$this->actions();    
 		$this->filters();
-		eazyest_widgets();
+		eazyest_widgets();		
 	}
 
 	/**
@@ -623,7 +623,8 @@ $this->home_dir();
 	 * @return string;
 	 */
 	private function _default_dir() {
-		$basedir = str_replace( '\\', '/', WP_CONTENT_DIR );
+		$uploads = wp_upload_dir();
+		$basedir = $uploads['basedir'];
 		$abspath = str_replace( '\\', '/', ABSPATH );
 		$relative = $this->get_relative_path( $abspath, $basedir );
 		return apply_filters( 'eazyest_gallery_directory', $relative . '/gallery/' );
