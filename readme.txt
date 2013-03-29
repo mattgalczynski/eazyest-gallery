@@ -17,7 +17,7 @@ Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/exten
 = Eazyest Gallery features =
 * __Fully integrated in Admin and Media management__ 
 	
-	The plugin stores your all your folder information in the WordPress database as custom post types. This will allow you to easily find, retrieve, edit, and show your folders. You can add post tags. The folders will display in tag archives. All images link to the folders as normal WordPress attachments. You can access all images in the WordPress media manager. You can even build WordPress default galleries from Eazyest Gallery images. The plugin uses the WordPress Image Editor and Media Manager. If uploading and re-sizing works in WordPress, it will work in Eazyest Gallery. The plugin includes templates for the WordPress default themes TwentyTen, TwentyEleven and TwentyTwelve. You may copy and adjust these templates to your (child) theme.
+	The plugin stores your all your folder information in the WordPress database as custom post types. This will allow you to easily find, retrieve, edit, and show your folders. You can add tags to your folders. The folders will display in tag archives. All images link to the folders as normal WordPress attachments. You can access all images in the WordPress media manager. You can even build WordPress default galleries from Eazyest Gallery images. The plugin uses the WordPress Image Editor and Media Manager. If uploading and re-sizing works in WordPress, it will work in Eazyest Gallery. The plugin includes templates for the WordPress default themes TwentyTen, TwentyEleven and TwentyTwelve. You may copy and adjust these templates to your (child) theme.
 
 * __Unlimited number of images in unlimited number of nested folders__
 	
