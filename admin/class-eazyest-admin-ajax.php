@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r245)
+ * @version 0.1.0 (r277)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -128,7 +128,7 @@ class Eazyest_Admin_Ajax {
 		$content_dir = str_replace( '\\', '/', WP_CONTENT_DIR );
 		if ( check_ajax_referer( 'file-tree-nonce' ) ) {
 			$dir = urldecode( $_POST['dir'] );
-			if( file_exists( $dir ) ) {
+			if( is_dir( $dir ) ) {
 				$files = scandir( $dir );
 				natcasesort( $files );
 				 // the 2 accounts for . and .. 
@@ -137,7 +137,7 @@ class Eazyest_Admin_Ajax {
 					// All dirs
 					foreach( $files as $file ) {
 						$file = str_replace( '\\', '/', $file );
-						if( file_exists( $dir . $file ) ) {
+						if( is_dir( $dir . $file ) ) {
 							if ( eazyest_folderbase()->valid_dir( $dir . $file ) ) {									
 								echo "<li class='directory collapsed'><a href='#' rel='" . htmlentities( $dir . $file ) . "/'>" . htmlentities( $file ) . "</a></li>";
 							}								
@@ -162,7 +162,7 @@ class Eazyest_Admin_Ajax {
 	function select_dir() {
 		if ( check_ajax_referer( 'file-tree-nonce' ) ) {
 			$dir = urldecode( $_POST['dir'] );
-			if ( file_exists( $dir ) ) {
+			if ( is_dir( $dir ) ) {
 				$abspath = str_replace( '\\', '/', ABSPATH );
 				$rel_dir = eazyest_gallery()->get_relative_path( $abspath, $dir );
 				eazyest_gallery()->gallery_folder = $rel_dir;
@@ -215,9 +215,9 @@ class Eazyest_Admin_Ajax {
 		$root = str_replace( '\\', '/', trailingslashit( eazyest_gallery()->get_absolute_path( ABSPATH . $_POST['gallery_folder'] ) ) );
 		$response = array( 'result' => 0, 'folder' => $_POST['gallery_folder'] );
 		if ( ! eazyest_folderbase()->is_dangerous( $root ) ) {
-			if ( ! file_exists( $root ) )
+			if ( ! is_dir( $root ) )
 				wp_mkdir_p( $root );
-			if ( ! file_exists( $root ) ) {
+			if ( ! is_dir( $root ) ) {
 				$response['result'] = 1;
 				$response['folder'] = eazyest_gallery()->gallery_folder;
 			}	

@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r266)
+ * @version 0.1.0 (r277)
  * @access public
  */
 
@@ -496,9 +496,9 @@ class Eazyest_FolderBase {
 			
 			// check directory on file system
 			$new_directory = eazyest_gallery()->root() . $gallery_path;
-			if ( ! file_exists( $new_directory ) )
+			if ( ! is_dir( $new_directory ) )
 				wp_mkdir_p( $new_directory );
-			if ( file_exists( $new_directory ) ) {
+			if ( is_dir( $new_directory ) ) {
 				// only save when gallery path exists
 				ezg_update_gallery_path( $post_id, $gallery_path ); 			
 			}			
@@ -627,7 +627,7 @@ class Eazyest_FolderBase {
 		if ( $directory == eazyest_gallery()->root() )
 			return;
 			
-		if ( file_exists( $directory ) ) {
+		if ( is_dir( $directory ) ) {
 			if ( $handle = opendir( $directory ) ) {
 				while( $file = readdir( $handle ) ) {
 					if (	!	in_array(	$file, array(	'.', '..'	)	)	) {
@@ -667,7 +667,7 @@ class Eazyest_FolderBase {
 			}						
 			$gallery_path = ezg_get_gallery_path( $post_id );
 			// if gallery_path is not set do not delete anything
-			if ( empty( $gallery_path ) )
+			if ( empty( $gallery_path )  || ! is_dir( eazyest_gallery()->root() . $gallery_path ) )
 				return;
 				
 			// if it has subdirectories, but folder has changed parent, relocate directory and attachments
@@ -716,7 +716,7 @@ class Eazyest_FolderBase {
 	 */
 	public function get_subdirectories( $post_id ) {
 		$directory = ezg_get_gallery_path( $post_id );	
-		if ( ! file_exists( eazyest_gallery()->root() . $directory ) )
+		if ( ! is_dir( eazyest_gallery()->root() . $directory ) )
 			return null;
 		$paths = $this->get_folder_paths( $post_id );
 		foreach( $paths as $key => $path ) {
@@ -1223,7 +1223,7 @@ class Eazyest_FolderBase {
 			// reverse array, we want to start to delete sibblings first
 			$posted_paths = array_reverse( $this->posted_paths['folders'] );
 			foreach( $posted_paths as $key => $path_name ) {
-				if ( file_exists( eazyest_gallery()->root() . $path_name ) )
+				if ( is_dir( eazyest_gallery()->root() . $path_name ) )
 					continue;
 				if ( ! in_array( $path_name, $this->folder_paths['folders'] ) ) {
 					$folder_id = $this->get_folder_by_path( $path_name );
@@ -2025,7 +2025,7 @@ class Eazyest_FolderBase {
 			
 		$gallery_path = ezg_get_gallery_path( get_post( $post_id )->post_parent );
 		$dirname = eazyest_gallery()->root() . $gallery_path . '/_cache';
-		if ( ! file_exists( $dirname ) )
+		if ( ! is_dir( $dirname ) )
 			wp_mkdir_p( $dirname );
 			
 		$filename = trailingslashit( $dirname ) . basename( $filename );

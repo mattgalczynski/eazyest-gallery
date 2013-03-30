@@ -13,7 +13,7 @@ else
  * Eazyest_Image_Editor
  * 
  * @since 0.1.0 (r36)
- * @version 0.1.0 (r58)
+ * @version 0.1.0 (r277)
  * @package Eazyest Gallery
  * @subpackage Image Editor
  * @see WP_Image_Editor 
@@ -43,7 +43,7 @@ class Eazyest_Image_Editor extends _Eazyest_Image_Editor {
 		$name   = basename( $filename );	
 			
 		$dest_path = $dir . '/_cache';
-		if ( ! file_exists( $dest_path ) )
+		if ( ! is_dir( $dest_path ) )
 			wp_mkdir_p( $dest_path );
 			
 		return trailingslashit( $dest_path ) . $name;	
