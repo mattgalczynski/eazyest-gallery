@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-13-276
+ * Version: 0.1.0-RC-13-277
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r276)  
+ * @version 0.1.0 (r277)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -429,7 +429,7 @@ class Eazyest_Gallery {
 	 * @return bool
 	 */
 	function right_path() {
-		return ! empty( $this->root ) && '/' != $this->root && file_exists( $this->root );
+		return ! empty( $this->root ) && '/' != $this->root && is_dir( $this->root );
 	}
 
 	/**
@@ -538,7 +538,7 @@ $this->home_dir();
 	 * @return bool
 	 */
 	function valid() {
-		return isset( $this->root ) && file_exists( $this->root );
+		return isset( $this->root ) && is_dir( $this->root );
 	}
 	
 	/**

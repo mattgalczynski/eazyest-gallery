@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin
  * @author Marcel Brinkkemper
  * @copyright 2010-2013 Brimosoft
- * @version 0.1.0 (r231)
+ * @version 0.1.0 (r277)
  * @access public
  * @since lazyest-gallery 0.16.0
  * 
@@ -217,7 +217,7 @@ class Eazyest_Admin {
 		}
   	
 		// if gallery folder does not exist, user should visit settings page again
-		if ( ! file_exists( eazyest_gallery()->get_absolute_path( ABSPATH . $options['gallery_folder'] ) ) ) {			
+		if ( ! is_dir( eazyest_gallery()->get_absolute_path( ABSPATH . $options['gallery_folder'] ) ) ) {			
 			$options['new_install']    = true;
   		$options['gallery_folder'] = $defaults['gallery_folder'];
 			add_settings_error( __( 'eazyest-gallery', 'eazyest-gallery' ), 'gallery_folder', __( 'The folder you have selected does not exist', 'eazyest-gallery'), 'error' );
@@ -238,7 +238,7 @@ class Eazyest_Admin {
 				case 'gallery_slug' :	
 					$options[$setting]	= sanitize_title( $options[$setting] );
 					eazyest_gallery()->galleryfolder = $options['gallery_folder'];			
-					if ( file_exists( eazyest_gallery()->home_dir() . $options[$setting] ) ) {
+					if ( is_dir( eazyest_gallery()->home_dir() . $options[$setting] ) ) {
 						$options[$setting] = eazyest_gallery()->gallery_slug;
 						add_settings_error( __( 'eazyest-gallery', 'eazyest-gallery' ), 'gallery_slug', __( 'The slug you selected cannot be used', 'eazyest-galery' ), 'error' );
 					}
