@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-13-274
+ * Version: 0.1.0-RC-13-275
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r274)  
+ * @version 0.1.0 (r275)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -771,6 +771,23 @@ $this->home_dir();
 		return false != $sort_by ? $sort_by : 'post_date-DESC';
 	}
 } // Eazyest_Gallery class
+
+/**
+ * uninstall_eazyest_gallery()
+ * Removes the eazyest-gallery option from the options table and flushes the rewrite rules.
+ * 
+ * @since 0.1.0 (r275)
+ * @uses delete_option()
+ * @uses flush_rewrite_rules()
+ * @return void
+ */
+function uninstall_eazyest_gallery() {
+	if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )
+		exit ();
+	delete_option( 'eazyest-galery' );
+	flush_rewrite_rules();	
+}
+register_uninstall_hook( __FILE__, 'uninstall_eazyest_gallery' );
 
 /**
  * eazyest_gallery()
