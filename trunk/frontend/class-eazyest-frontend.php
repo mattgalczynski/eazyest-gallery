@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r274)
+ * @version 0.1.0 (r276)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1224,7 +1224,7 @@ class Eazyest_Frontend {
 				$this->icontag() . ' class="gallery-icon">' . 
 				$this->post_thumbnail_html( '', $post_id ) . '</' . 
 				$this->icontag() . '></' . 
-				$this->itemtag() . '><br style="clear:both"</div>';
+				$this->itemtag() . '><br style="clear:both"/></div>';
 			if ( $echo ) {
 				echo $html;
 				return;
