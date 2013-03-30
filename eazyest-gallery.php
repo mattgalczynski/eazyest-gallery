@@ -784,7 +784,7 @@ $this->home_dir();
 function uninstall_eazyest_gallery() {
 	if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )
 		exit ();
-	delete_option( 'eazyest-galery' );
+	delete_option( 'eazyest-gallery' );
 	flush_rewrite_rules();	
 }
 register_uninstall_hook( __FILE__, 'uninstall_eazyest_gallery' );
