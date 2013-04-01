@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r269)
+ * @version 0.1.0 (r278)
  * @access public
  */
 class Eazyest_Shortcodes {
@@ -182,11 +182,14 @@ class Eazyest_Shortcodes {
 		if ( ! empty( $include ) ) {
 			$include = str_replace( ' ', '', $include );
 			$args['post__in'] = explode( ',', $include );
+			// do not set post_parent if particular ids have been given	 
+			unset( $args['post_parent'] );
 		}
 		if ( ! empty( $exclude ) ) {
 			$exclude = str_replace( ' ', '', $exclude );
 			$args['post__not_in'] = explode( ',', $exclude );
 		}
+		
 		global $paged;
 		if ( ! $paged )
 			$paged = 1;
