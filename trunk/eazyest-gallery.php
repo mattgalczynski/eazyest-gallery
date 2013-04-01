@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-13-280
+ * Version: 0.1.0-RC-13-281
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r280)  
+ * @version 0.1.0 (r281)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -796,7 +796,7 @@ function uninstall_eazyest_gallery() {
 		// remove folders
 		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = %s", $post_type ) );
 		// remove folders metadata
-		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN (%s)" ), $folder_ids );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN (%s)" , $folder_ids ) );
 		// get folders attachments
 		$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN (%s)", $folder_ids ), ARRAY_A );
 		if ( ! empty( $attachments ) ) {
@@ -812,14 +812,8 @@ function uninstall_eazyest_gallery() {
 		}
 	}	
 	delete_option( 'eazyest-gallery' );
+	delete_option( 'eazyest-fields'  );
 	
-	// remove extra fields information
-	if ( $fields = get_option( 'eazyest-fields'  ) ) {
-		foreach( $fields as $field ) {
-			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND post_id IN (%s)", "_eazyest-field_{$field}" ,$folder_ids ) );
-		}
-		delete_option( 'eazyest-fields'  );
-	}
 	flush_rewrite_rules();	
 }
 register_uninstall_hook( __FILE__, 'uninstall_eazyest_gallery' );
