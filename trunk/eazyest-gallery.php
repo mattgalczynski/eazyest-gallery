@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-13-279
+ * Version: 0.1.0-RC-13-280
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r279)  
+ * @version 0.1.0 (r280)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -782,29 +782,44 @@ $this->home_dir();
  * @return void
  */
 function uninstall_eazyest_gallery() {
-	if ( !defined( 'WP_UNINSTALL_PLUGIN' ) )
-		exit ();
+	
 	$post_type = apply_filters( 'eazyest_gallery_post_type', 'galleryfolder' );
 	global $wpdb;	
 	$folders = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", $post_type ), ARRAY_A );
 	// folders exist, delete them from wpdb and handLe attachments
 	if ( ! empty( $folders ) ) {
 		// save ids to handle attachments
-		$ids = implode( ',', array_values( $folders ) );
+		$ids = array();
+		foreach( $folders as $folder )
+			$ids[] = $folder['ID'];
+		$folder_ids = implode( ',', $ids );
 		// remove folders
 		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = %s", $post_type ) );
 		// remove folders metadata
-		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN (%s)" ), $ids );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN (%s)" ), $folder_ids );
 		// get folders attachments
-		$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN (%s)", $ids ), ARRAY_A );
+		$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN (%s)", $folder_ids ), ARRAY_A );
 		if ( ! empty( $attachments ) ) {
-			$att_ids = implode( ',', array_values( $attachments ) );
+			$ids = array();
+			foreach( $attachments as $attachment)
+				$ids[] = $attachment['ID'];
+			$attachment_ids = implode( ',', array_values( $ids ) );			
 			// remove attachment metadata because they point to wrong directories if eazyest gallery is uninstalled
-			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND post_id IN (%s)" ,      $att_ids ) );		
-			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_wp_attachment_metadata' AND post_id IN (%s)", $att_ids ) );
+			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND post_id IN (%s)" ,      $attachment_ids ) );		
+			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = '_wp_attachment_metadata' AND post_id IN (%s)", $attachment_ids ) );			
+			// set attachment post_parent to 0
+			$wpdb->query($wpdb->prepare( "UPDATE $wpdb->posts SET post_parent=0 WHERE ID IN (%s)", $attachment_ids ) );
 		}
 	}	
 	delete_option( 'eazyest-gallery' );
+	
+	// remove extra fields information
+	if ( $fields = get_option( 'eazyest-fields'  ) ) {
+		foreach( $fields as $field ) {
+			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = %s AND post_id IN (%s)", "_eazyest-field_{$field}" ,$folder_ids ) );
+		}
+		delete_option( 'eazyest-fields'  );
+	}
 	flush_rewrite_rules();	
 }
 register_uninstall_hook( __FILE__, 'uninstall_eazyest_gallery' );
