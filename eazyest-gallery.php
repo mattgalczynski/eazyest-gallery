@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-13-281
+ * Version: 0.1.0-RC-13-285
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r281)  
+ * @version 0.1.0 (r285)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -796,18 +796,18 @@ function uninstall_eazyest_gallery() {
 		// remove folders
 		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = %s", $post_type ) );
 		// remove folders metadata
-		$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN (%s)" , $folder_ids ) );
-		// get folders attachments
-		$attachments = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN (%s)", $folder_ids ), ARRAY_A );
+		$wpdb->query( "DELETE FROM $wpdb->postmeta WHERE post_id IN ($folder_ids)" );
+		// get folders attachments	
+		$attachments = $wpdb->get_results( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN ($folder_ids)", ARRAY_A );
 		if ( ! empty( $attachments ) ) {
 			$ids = array();
 			foreach( $attachments as $attachment )
 				$ids[] = $attachment['ID'];
 			$attachment_ids = implode( ',', array_values( $ids ) );			
-			// remove attachment metadata 		
-			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN (%s)", $attachment_ids ) );			
-			// remove attachments
-			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN (%s)", $folder_ids ) );
+			// remove attachment metadata		 		
+			$wpdb->query( "DELETE FROM $wpdb->postmeta WHERE post_id IN ($attachment_ids)" );			
+			// remove attachments			
+			$wpdb->query( "DELETE FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN ($folder_ids)" );
 		}
 	}	
 	delete_option( 'eazyest-gallery'             );
