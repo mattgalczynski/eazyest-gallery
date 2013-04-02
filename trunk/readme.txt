@@ -115,6 +115,7 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 
 * Changed: Default gallery folder is now `wp-content/uploads/gallery`
 * Changed: By default, new Gallery Folders will not appear in Recent Posts widgets
 * Changed: Use should confirm gallery folder even when default folder exists.
+* For more information about this release, please check the [Plugin Blog](http://brimosoft.nl/2013/04/02/eazyest-gallery-0-1-0-rc-13/)
 
 = 0.1.0-RC-12 =
 * Bug Fix: Do not allow upload directory as gallery folder
