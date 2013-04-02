@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r182)
+ * @version 0.1.0 (r286)
  * @access public
  */
 class Eazyest_Gallery_Upgrader {
@@ -209,7 +209,7 @@ class Eazyest_Gallery_Upgrader {
 	 * @return void
 	 */
 	function hide_folders() {
-		if ( $this->should_upgrade() || ! eazyest_gallery()->right_path() ) {
+		if ( $this->should_upgrade() || ! eazyest_gallery()->right_path() || eazyest_gallery()->new_install ) {
 			$post_type = eazyest_gallery()->post_type;
 		echo "
 		<style type='text/css' media='screen'>
