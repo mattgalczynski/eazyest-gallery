@@ -410,7 +410,7 @@ class Eazyest_Folder_Editor {
 	 * @since 0.1.0 (r2) 
 	 * @return void
 	 */
-	function do_bulk_actions() {		
+	function do_bulk_actions() {
 		$buttons = array( 'attachment_action', 'attachment_action2', 'folder_action', 'folder_action2' );
 		$return = true;
 		foreach( $buttons as $button )
@@ -592,6 +592,10 @@ class Eazyest_Folder_Editor {
 	function collect_folders() {
 		if ( $this->bail() )
 			return;
+		
+		if ( isset( $_GET['bulk-edit'] ) )
+			return;
+			
 		$post_id = isset( get_current_screen()->post_ID ) ? get_current_screen()->post_ID : 0;
 		if ( ! $post_id && isset( $_GET['post'] ) )
 			$post_id = absint( $_GET['post'] );
