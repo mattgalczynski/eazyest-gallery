@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r277)
+ * @version 0.1.0 (r288)
  * @access public
  */
 
@@ -346,11 +346,15 @@ class Eazyest_FolderBase {
 	 * @return void
 	 */
 	function save_post( $post_id ) {
-		// don't run on autosave
+		// don't run on autosave	
 		if ( defined( 'DOING_AUTOSAVE' ) || defined( 'LAZYEST_GALLERY_UPGRADING' ) )
 			return;
 		// don't  run if not initiated from edit post	
-		if ( ! isset( $_POST['action'] ) )	
+		if ( ! isset( $_POST['action'] ) )
+			return;
+		
+		// do not handle bulk edits here
+		if ( isset( $POST['bulk-edit'] ) )
 			return;
 		$action = $_POST['action'];
 		unset( $_POST['action'] );			
@@ -763,13 +767,7 @@ class Eazyest_FolderBase {
 	 */
 	private function get_posted_paths( $post_id = '', $cached = 'cached' ) {
 		
-		if ( 'cached' == $cached && ! empty( $this->posted_paths ) ) {
-			if ( $this->posted_paths['post_id'] == $post_id )
-				return ( $this->posted_paths['folders'] );
-		}
-		unset( $this->posted_paths );
 		global $wpdb;
-		
 		$query = "SELECT {$wpdb->postmeta}.meta_value FROM {$wpdb->postmeta}, {$wpdb->posts} 
 							WHERE $wpdb->posts.ID=$wpdb->postmeta.post_id";
 		if ( '' != $post_id )
@@ -1145,6 +1143,9 @@ class Eazyest_FolderBase {
 			return $folder_path;
 		}
 		
+		if ( $post_id = $this->get_folder_by_path( $folder_path ) )
+			return $post_id; 
+			
 		if ( ! $post_parent ) {
 			if ( strlen( basename( $folder_path ) ) < strlen( $folder_path )  ) {
 				$post_parent = $this->get_parent( $folder_path );
