@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-RC-13
+Stable tag: 0.1.0-RC-14
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -16,7 +16,6 @@ Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/exten
 
 Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyest-gallery/user-guide-eazyest-gallery/) on the Plugin Web Site.
 
-For more information about this release, please check the [Plugin Blog](http://brimosoft.nl/2013/04/02/eazyest-gallery-0-1-0-rc-13/)
 
 = Eazyest Gallery features =
 * __Fully integrated in Admin and Media management__ 
@@ -101,10 +100,14 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-13 =
-* 0.1.0-RC-13 Includes an improved uninstall procedure
+= 0.1.0-RC-14 =
+* __0.1.0-RC-14 Fixes a critical bug__
 
 == Changelog ==
+
+= 0.1.0-RC-14 =
+* Bug Fix: Duplicate entries in folder table after bulk edit
+* Bug Fix: PHP notice in home_dir() function
 
 = 0.1.0-RC-13 =
 * Bug Fix: Prevent PHP notices on path functions
