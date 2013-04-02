@@ -8,12 +8,12 @@
  * Date: March 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-14-288
+ * Version: 0.1.0-RC-14-289
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r288)  
+ * @version 0.1.0 (r289)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -479,7 +479,7 @@ class Eazyest_Gallery {
 	 * @since 0.1.0 (r231)
 	 * @uses home_url()
 	 * @uses site_url()
-	 * @return string file syste path for home directory
+	 * @return string file system path for home directory
 	 */
 	function home_dir() {		
 		$root = str_replace( array( '/', '\\'), '/', ABSPATH );
@@ -494,7 +494,7 @@ class Eazyest_Gallery {
 			$site_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
 			
 		$root_parts = array_reverse( explode( '/', rtrim( $root, '/' ) ) );
-		while( $root_parts[0] == $site_parts[0] && $site_parts[0] != $home_parts[0] ) {
+		while( isset( $root_parts[0] ) && isset( $site_parts[0] ) && $root_parts[0] == $site_parts[0] && $site_parts[0] != $home_parts[0] ) {
 			array_shift( $root_parts );
 			array_shift( $site_parts );	
 		}
@@ -527,7 +527,6 @@ class Eazyest_Gallery {
 			}
 		}
 		$root = implode( '/', array_reverse( $root_parts ) ) . '/';
-$this->home_dir();		
 		return $root;	 
 	}
 
