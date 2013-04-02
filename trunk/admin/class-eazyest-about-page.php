@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r103)
- * @version 0.1.0 (r248)
+ * @version 0.1.0 (r286)
  * @access public
  */
 class Eazyest_About_Page {
@@ -162,7 +162,7 @@ class Eazyest_About_Page {
 					   <?php _e( 'You can have as many folders you want.', 'eazyest-gallery' ); ?><br />
 					   <?php _e( 'Add titles, content, images, tags, and subfolders in the Edit Folder screen.', 'eazyest-gallery' ); ?><br />
 					   <?php _e( 'Sort your folders and images by date, by name, by title, or enable drag-and-drop manually sorting.', 'eazyest-gallery' )?></p>
-		   		<?php if ( ! eazyest_gallery()->right_path() ) : ?>
+		   		<?php if ( ! eazyest_gallery()->right_path() || eazyest_gallery()->new_install ) : ?>
 		   		<p class="attention"><strong><?php 
 					 					// translators: %s are placeholders for link anchors
 		   		          printf( __( 'Please confirm your server gallery folder in %sEazyest Gallery Settings%s.', 'eazyest-gallery' ),
