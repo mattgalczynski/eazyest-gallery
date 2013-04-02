@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-RC-12
+Stable tag: 0.1.0-RC-13
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -13,6 +13,10 @@ Eazyest Gallery extends WordPress media featuring folders, subfolders, comments,
 Eazyest Gallery extends WordPress Media by adding folders and subfolders.
 
 Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/). Lazyest Gallery users please read [how to upgrade to Eazyest Gallery](http://brimosoft.nl/2013/02/27/how-to-move-from-lazyest-gallery-to-eazyest-gallery/)
+
+Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyest-gallery/user-guide-eazyest-gallery/) on the Plugin Web Site.
+
+For more information about this release, please check the [Plugin Blog](http://brimosoft.nl/2013/04/02/eazyest-gallery-0-1-0-rc-13/)
 
 = Eazyest Gallery features =
 * __Fully integrated in Admin and Media management__ 
@@ -97,10 +101,20 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-12 =
-* Bug Fix: Do not allow upload directory as gallery folder
+= 0.1.0-RC-13 =
+* 0.1.0-RC-13 Includes an improved uninstall procedure
 
 == Changelog ==
+
+= 0.1.0-RC-13 =
+* Bug Fix: Prevent PHP notices on path functions
+* Bug Fix: Hide Folder Navigation title in non-twenty themes
+* Bug Fix: If number of folders is set to 0 `[eazyest_gallery]` shortcode should show all folders
+* Bug Fix: Message "Please check your server settings to solve this error: next"
+* Bug fix: HTML error in folder thumbnail on archive pages (props mr_sven)
+* Changed: Default gallery folder is now `wp-content/uploads/gallery`
+* Changed: By default, new Gallery Folders will not appear in Recent Posts widgets
+* Changed: Use should confirm gallery folder even when default folder exists.
 
 = 0.1.0-RC-12 =
 * Bug Fix: Do not allow upload directory as gallery folder
