@@ -807,7 +807,7 @@ function uninstall_eazyest_gallery() {
 			// remove attachment metadata 		
 			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE post_id IN (%s)", $attachment_ids ) );			
 			// remove attachments
-			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = 'attachment' ID IN (%s)", $attachment_ids ) );
+			$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->posts WHERE post_type = 'attachment' AND post_parent IN (%s)", $folder_ids ) );
 		}
 	}	
 	delete_option( 'eazyest-gallery'             );
