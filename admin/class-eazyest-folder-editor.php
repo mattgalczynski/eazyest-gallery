@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r273)
+ * @version 0.1.0 (r294)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -603,7 +603,17 @@ class Eazyest_Folder_Editor {
 		eazyest_folderbase()->collect_folders( $post_id );
 	}
 	
+	/**
+	 * Eazyest_Folder_Editor::collect_folders_action()
+	 * Run the action 'eazyest_gallery_collect_folders'
+	 * 
+	 * @since 0.1.0 (r2)
+	 * @uses do_action()
+	 * @return void
+	 */
 	function collect_folders_action() {
+		if ( defined( 'DOING_AJAX' ) )
+			return;
 		do_action( 'eazyest_gallery_collect_folders' );
 	}
 	
