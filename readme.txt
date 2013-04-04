@@ -55,7 +55,7 @@ Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyes
 
 * __Many actions and filters to interact with Eazyest Gallery__
 	
-	The plugin offers theme and plugin builders a myriad of action hooks and filters to interact with the inner workings.
+	The plugin offers theme and plugin builders many action [hooks and filters](http://brimosoft.nl/eazyest/gallery/actions-and-filters-for-eazyest-gallery/) to interact with the inner workings and output.
 
 == Installation ==
 
@@ -257,9 +257,7 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 
 
 == Copyright ==
 
-* Copyright (c) 2004        Nicholas Bruun Jespersen (lazy-gallery)
-* Copyright (c) 2005 - 2006 Valerio Chiodino (lazyest-gallery)
-* Copyright (c) 2008 - 2013 Marcel Brinkkemper (lazyest-gallery and eazyest-gallery)
+* Copyright (c) 2013 Marcel Brinkkemper
 * TableDnD plug-in for JQuery, Copyright (c) Denis Howlett
 * JQuery File Tree, Copyright (c) 2008, A Beautiful Site, LLC
 * Camera slideshow v1.3.3, Copyright (c) 2012 by Manuel Masia - www.pixedelic.com
