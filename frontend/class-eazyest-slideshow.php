@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r295)
+ * @version 0.1.0 (r296)
  * @access public
  */
 class Eazyest_Slideshow {
@@ -353,7 +353,7 @@ class Eazyest_Slideshow {
 			'subfolders' => 0,
 			'number'     => -1,
 			'size'       => 'large',
-			'skin'       => 'ash',
+			'skin'       => apply_filters( 'eazyest_gallery_camera_slideshow_skin', 'ash'),
 			'ajax'       => 0,
 			'show'       => 1,
 		), $attr ) );
