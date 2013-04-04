@@ -96,6 +96,7 @@ class Eazyest_About_Page {
 	 * @uses esc_url()
 	 * @uses admin_url()
 	 * @uses add_query_arg()
+	 * @uses update_option()
 	 * @return void
 	 */
 	function about_footer() {
@@ -106,6 +107,8 @@ class Eazyest_About_Page {
 							
 		</div>	
 		<?php
+		// set option to not show about page anymore
+		update_option( 'eazyest-gallery-about', true );
 	}
 	
 	/**
