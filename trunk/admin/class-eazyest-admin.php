@@ -162,13 +162,18 @@ class Eazyest_Admin {
    * @since 0.1.0 (r74)
    * @uses delete_transient()
    * @uses wp_redirect()
-	 * @uses admin_url() 
+	 * @uses admin_url()
+	 * @uses get_option() to check if about page has to show 
    * @return void
    */
   function after_activation() {
   	if ( $activated = get_transient( 'eazyest-gallery-activated' ) ) {
   		delete_transient( 'eazyest-gallery-activated' );
-  		if ( ! eazyest_gallery_upgrader()->should_upgrade() ){
+  		if ( ! eazyest_gallery_upgrader()->should_upgrade() ) {
+  			
+  			if ( ! get_option( 'eazyest-gallery-about' ) )
+  				return;
+  				
  				wp_redirect( admin_url( 'index.php?page=eazyest-gallery-about' ) );
   			exit;
 			}
