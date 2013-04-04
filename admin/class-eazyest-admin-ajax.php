@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r277)
+ * @version 0.1.0 (r297)
  * @access public
  */
 class Eazyest_Admin_Ajax {
@@ -81,6 +81,7 @@ class Eazyest_Admin_Ajax {
 			// frontend not logged in
 			'next_slideshow',
 			'more_thumbnails',
+			'more_folders',
 		);
 				
 		foreach( $ajax as $action ) {
