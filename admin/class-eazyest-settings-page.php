@@ -534,12 +534,31 @@ class Eazyest_Settings_Page {
 	 * @since 0.1.0 (r2)
 	 * @return array
 	 */
-	private function sort_options() {
+	private function folder_sort_options() {
 		return array( 
 			'post_name-ASC'   => __( 'Name, ascending (A-Z)',     'eazyest-gallery' ), 
 			'post_name-DESC'  => __( 'Name, descending (Z-A)',    'eazyest-gallery' ),
 			'post_title-ASC'  => __( 'Caption, ascending (A-Z)',  'eazyest-gallery' ), 
 			'post_title-DESC' => __( 'Caption, descending (Z-A)', 'eazyest-gallery' ),
+			'post_date-ASC'   => __( 'Date, oldest first',        'eazyest-gallery' ), 
+			'post_date-DESC'  => __( 'Date, newest first',        'eazyest-gallery' ), 
+			'menu_order-ASC'  => __( 'Manually',                  'eazyest-gallery' )
+		);
+	}
+	
+	
+	/**
+	 * Eazyest_Settings_Page::thumbnail_sort_options()
+	 * 
+	 * @since 0.1.0 (r298)
+	 * @return array
+	 */
+	private function thumbnail_sort_options() {
+		return array( 
+			'post_name-ASC'   => __( 'Name, ascending (A-Z)',     'eazyest-gallery' ), 
+			'post_name-DESC'  => __( 'Name, descending (Z-A)',    'eazyest-gallery' ),
+			'post_excerpt-ASC'  => __( 'Caption, ascending (A-Z)',  'eazyest-gallery' ), 
+			'post_excerpt-DESC' => __( 'Caption, descending (Z-A)', 'eazyest-gallery' ),
 			'post_date-ASC'   => __( 'Date, oldest first',        'eazyest-gallery' ), 
 			'post_date-DESC'  => __( 'Date, newest first',        'eazyest-gallery' ), 
 			'menu_order-ASC'  => __( 'Manually',                  'eazyest-gallery' )
@@ -555,7 +574,7 @@ class Eazyest_Settings_Page {
 	 */
 	function sort_folders() {
 		$sort_folders = eazyest_gallery()->sort_folders;
-		$options = $this->sort_options(); 
+		$options = $this->folder_sort_options(); 
 		?>
 		<select id="sort_folders" name="eazyest-gallery[sort_folders]">
 			<?php foreach( $options as $value => $option) : ?>
@@ -675,7 +694,7 @@ class Eazyest_Settings_Page {
 	 */
 	function sort_thumbnails() {
 		$sort_thumbnails = eazyest_gallery()->sort_thumbnails;
-		$options = $this->sort_options(); 
+		$options = $this->thumbnail_sort_options(); 
 		?>
 		<select id="sort_thumbnails" name="eazyest-gallery[sort_thumbnails]">
 			<?php foreach( $options as $value => $option) : ?>
