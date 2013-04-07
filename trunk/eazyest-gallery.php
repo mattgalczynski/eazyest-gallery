@@ -8,12 +8,12 @@
  * Date: April 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.1.0-RC-14-297
+ * Version: 0.1.0-RC-14-298
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.1.0 (r297)  
+ * @version 0.1.0 (r298)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -51,7 +51,7 @@ define('EZG_SECURE_VERSION', '0.1.0');
  * Holds the options and basic functions
  * 
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r268)
+ * @version 0.1.0 (r298)
  * @access public
  */
 class Eazyest_Gallery {
@@ -696,7 +696,11 @@ class Eazyest_Gallery {
 	 * 'show_credits'      : show "powered by Eazyest Gallery"
 	 * 'folders_page'      : folders per page
 	 * 'folders_columns'   : folders per row
-	 * 'sort_folders'      : see 'sort_thumbnails'
+	 * 'sort_folders'      : dfolder sort options:  
+	 *                       post_name-ASC = name ascending, post_name-DESC = name descending, 
+	 *                       post_title-ASC = caption ascending, post_title-DESC = caption descending, 
+	 *                       post_date-ASC = date ascending, post_date-DESC = date descending, 
+	 *                       menu_order-ASC = manually
 	 * 'count_subfolders'  : none, include, separate, nothing
 	 * 'folder_image'      : what to show per folder: 
 	 *                       featured_image, first_image, random_image, icon, none
@@ -706,7 +710,7 @@ class Eazyest_Gallery {
 	 * 'thumb_caption'     : show caption in thumbnail view
 	 * 'sort_thumbnails'   : thumbnail sort options: 
 	 *                       post_name-ASC = name ascending, post_name-DESC = name descending, 
-	 *                       post_title-ASC = caption ascending, post_title-DESC = caption descending, 
+	 *                       post_excerpt-ASC = caption ascending, post_excerpt-DESC = caption descending, 
 	 *                       post_date-ASC = date ascending, post_date-DESC = date descending, 
 	 *                       menu_order-ASC = manually
 	 * 'on_thumb_click'    : nothing, attachment, medium, large, full

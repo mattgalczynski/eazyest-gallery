@@ -787,7 +787,6 @@ class Eazyest_FolderBase {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses apply_filters()
-	 * @uses get_intermediate_image_sizes()
 	 * @return array
 	 */
 	function excluded_folders() {			
