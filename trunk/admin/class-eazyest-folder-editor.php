@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r300)
+ * @version 0.1.0 (r310)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -918,6 +918,34 @@ class Eazyest_Folder_Editor {
 	}	
 	
 	/**
+	 * Eazyest_Folder_Editor::folder_level()
+	 * Returns hierarchy level for a folder.
+	 * 
+	 * @since 0.1.0 (r320)
+	 * @param integer $post_id
+	 * @param integer $parent_id
+	 * @return integer
+	 */
+	function folder_level( $post_id, $parent_id = 0 ) {
+		$level = 0;		
+		$folder = get_post( $post_id );
+		if ( (int) $folder->post_parent > 0 ) {
+			//sent level 0 by accident, by default, or because we don't know the actual level
+			$find_main_page = (int) $folder->post_parent;
+			while ( $find_main_page > 0 && $find_main_page != $parent_id ) {
+				$parent = get_post( $find_main_page );
+	
+				if ( is_null( $parent ) )
+					break;
+	
+				$level++;
+				$find_main_page = (int) $parent->post_parent;	
+			}
+		}	
+		return $level;
+	}
+	
+	/**
 	 * Eazyest_Folder_Editor::get_folder_path_display()
 	 * Get display text for folder path
 	 * 
@@ -927,18 +955,18 @@ class Eazyest_Folder_Editor {
 	 */
 	function get_folder_path_display( $post_id, $for = 'table' ) {
 		global $post;
-  	$gallery_path = ezg_get_gallery_path( $post_id );
 		$display = __( 'Not Saved', 'eazyest-gallery' );
-		
+		$gallery_path = ezg_get_gallery_path( $post_id );
+		$parent_id = ( isset( $_GET['post'] ) ) ?	absint( $_GET['post'] ) : 0;
 		if ( ! empty( $gallery_path ) ) {
-			$edit_name = basename( $gallery_path ); 
+			$edit_name = get_post( $post_id )->post_name; 
 			if ( 'table' == $for )
-				$edit_name  = str_repeat( '&#8212; ', substr_count( $gallery_path, '/' ) ) . $edit_name;
+				$edit_name  = str_repeat( '&#8212; ', $this->folder_level( $post_id, $parent_id ) ) . $edit_name;
 			if ( ( $post->ID == $post_id && 'table' != $for ) || ! current_user_can( 'edit_post', $post_id ) ) {
 				$display    = " <strong>$edit_name</strong> ";
 			} else {
 				$edit_link  = get_edit_post_link( $post_id, true );
-				$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $gallery_path ) );
+				$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $edit_name ) );
 				$display    = " <strong><a href='$edit_link' title='$edit_title'>$edit_name</a></strong> ";
 			}
 			
