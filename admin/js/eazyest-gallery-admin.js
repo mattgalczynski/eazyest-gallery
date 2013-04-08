@@ -45,20 +45,22 @@
 			doDragTable( '.wp-list-table.media' );			
 		}
 		
-		var media = wp.media.editor.add('content');
-		// refresh media table when media editor closes 
-		media.on( 'close', function() { 
-			var data = {
-				action : 'eazyest_gallery_upload',
-				_wpnonce : $( '#_wpnonce' ).val(),
-				post     : $( '#post_ID' ).val(),
-			};
-			$.post( ajaxurl, data, function( response ){
-				$( '.attached-images' ).html( response );
-				doDragTable( '.wp-list-table.media' );
+		if ( $('.wp-editor-area').length ) {
+			var media = wp.media.editor.add('content');
+			// refresh media table when media editor closes 
+			media.on( 'close', function() { 
+				var data = {
+					action : 'eazyest_gallery_upload',
+					_wpnonce : $( '#_wpnonce' ).val(),
+					post     : $( '#post_ID' ).val(),
+				};
+				$.post( ajaxurl, data, function( response ){
+					$( '.attached-images' ).html( response );
+					doDragTable( '.wp-list-table.media' );
+				});
+				return false;
 			});
-			return false;
-		});
+		}
 		
 		// handle changes in post status including 'hidden'
 		$('.save-post-visibility', '#post-visibility-select').click(function () { // crazyhorse - multiple ok cancels
