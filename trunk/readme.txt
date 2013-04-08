@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.0-RC-14
+Stable tag: 0.1.0
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -100,10 +100,27 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 
 
 == Upgrade Notice ==
 
-= 0.1.0-RC-14 =
-* __0.1.0-RC-14 Fixes a critical bug__
+= 0.1.0 =
+* __0.1.0__ is stable enough
 
 == Changelog ==
+
+= 0.1.0 = 
+* Bug Fix: Match new or deleted folders when folder has new parent
+* Bug Fix: Output of Thumbnails and Breadcrumb trail when post is password protected
+* Bug Fix: Javascript error in All Folders screen
+* Bug Fix: Link is broken when Folder icon is set to 'Title only'
+* Bug Fix: Allow thumbnails to be ordered by excerpt (caption).
+* Bug Fix: Allow not-logged-in users to use the More Folders - AJAX refresh.
+* Bug Fix: do not collect folders when doing ajax
+* Changed: Use post name instead of gallery path for Path display
+* Changed: Do not output gallery-caption when content is empty
+* Changed: Show About page only at first activation. 
+* Changed: Remove link anchors when on-click is set to 'nothing' 
+* Changed: Use simpleFade as single transition effect for slideshow, crop images for complete fill and set timing to 5 seconds.
+* Added: Filters for tables in Edit - Folder
+* Added: Filter for Camera Slideshow skin.
+* Removed: Option to not show captions in thumbnail view, because WordPress offers no filters
 
 = 0.1.0-RC-14 =
 * Bug Fix: Duplicate entries in folder table after bulk edit
