@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
  * @since 0.1.0 (r103)
- * @version 0.1.0 (r286)
+ * @version 0.1.0 (r309)
  * @access public
  */
 class Eazyest_About_Page {
@@ -320,7 +320,7 @@ class Eazyest_About_Page {
 				<li class="wp-person" id="wp-person-klihelp">
 					<img src="http://www.gravatar.com/avatar/ec2466269881b11803d5c7e847e8ecee?s=60&d=monsterid&r=g" class="gravatar" alt="klihelp" />
 					<a href="http://wordpress.org/support/profile/klihelp" class="web">klihelp</a>
-					<span class="title"><?php _e( 'Bug reporter', 'eazyest-gallery' ); ?></span>
+					<span class="title"><?php _e( 'Champion Tester, Bug reporter', 'eazyest-gallery' ); ?></span>
 				</li>
 				<li class="wp-person" id="wp-person-rs58">
 					<img src="http://www.gravatar.com/avatar/5f62d7fb65289ae46d84cb6564914054?s=60&d=monsterid&r=g" class="gravatar" alt="rs58" />
