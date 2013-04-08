@@ -16,7 +16,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r218)
+ * @version 0.1.0 (r310)
  * @access public 
  * @see WordPress WP_List_Table
  * @link http://codex.wordpress.org/Class_Reference/WP_List_Table
@@ -501,22 +501,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 				if ( $this->hierarchical_display ) {
 					$attributes = 'class="post-title page-title column-title"' . $style;
 
-					if ( 0 == $level && (int) $post->post_parent > 0 ) {
-						//sent level 0 by accident, by default, or because we don't know the actual level
-						$find_main_page = (int) $post->post_parent;
-						while ( $find_main_page > 0 ) {
-							$parent = get_post( $find_main_page );
-
-							if ( is_null( $parent ) )
-								break;
-
-							$level++;
-							$find_main_page = (int) $parent->post_parent;
-
-							if ( !isset( $parent_name ) )
-								$parent_name = apply_filters( 'the_title', $parent->post_title, $parent->ID );
-						}
-					}
+					$level = eazyest_admin()->folder_editor()->folder_level( $post->ID, $post->post_parent );
 
 					$pad = str_repeat( '&#8212; ', $level );					
 					?>
