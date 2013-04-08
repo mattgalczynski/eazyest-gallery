@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r288)
+ * @version 0.1.0 (r307)
  * @access public
  */
 
@@ -1182,8 +1182,8 @@ class Eazyest_FolderBase {
 	 * @return integer number of folders added
 	 */
 	function add_folders( $post_id ) {
-		$this->get_posted_paths( $post_id );
-		$this->get_folder_paths( $post_id );	
+		$this->get_posted_paths();
+		$this->get_folder_paths( $post_id );
 		$added = 0;
 		$errors = array();
 		if ( ! empty( $this->folder_paths['folders'] ) ) {
