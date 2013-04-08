@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r306)
+ * @version 0.1.0 (r311)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -825,13 +825,24 @@ class Eazyest_Frontend {
 		}
 		$title = get_the_title( $folder->ID );
 		$tag = $this->captiontag();
+		$title_span = '';
+		if ( 'none' != eazyest_gallery()->folder_image )
+			$title_span = "<span class='folder-title'>$title</span>";
+		ob_start();
+		do_action( 'eazyest_gallery_after_folder_icon_caption', $post_id );			
+		$caption_span = ob_get_clean();
 		?>
-	 	<<?php echo $tag; ?> class="wp-caption-text gallery-caption folder-caption">
-	 		<?php if ( 'none' != eazyest_gallery()->folder_image ) : ?>
-	 		<span class="folder-title"><?php echo $title; ?></span><br/>
+	 	<?php if ( ! empty( $title_span ) || ! empty( $caption_span) ) : ?>
+	 	<<?php echo $tag; ?> class="wp-caption-text gallery-caption folder-caption">	 		
+	 		<?php echo $title_span; ?>
+	 		<?php if ( ! empty( $caption_span ) ) : ?>
+	 			<?php if ( ! empty( $title_span ) ) : ?>
+	 			<br />
+	 			<?php endif; ?>
+	 		<?php echo $caption_span; ?>
 	 		<?php endif; ?>
-	 		<?php do_action( 'eazyest_gallery_after_folder_icon_caption', $post_id ); ?>
-	  </<?php echo $tag; ?>>
+	  </<?php echo $tag; ?>>	  
+ 		<?php endif; ?>
 	  <?php
 	}
 	
@@ -904,6 +915,9 @@ class Eazyest_Frontend {
 			/* translators: %1s = number; %2s = images (text) in subfolders */
 			$children_string = sprintf( __( '%1s%2s in subfolders', 'eazyest-gallery' ), $children_count, $listed_as );
 		}
+		// do not output if no attachments counted
+		if ( ! $foldercount && ! $children_count )
+			return;
 		?>
 		<?php if ( $foldercount ) : ?>
 		<span class="folder-count"><?php echo $images_string ?></span><br />
