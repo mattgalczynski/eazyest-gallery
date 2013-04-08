@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r276)
+ * @version 0.1.0 (r299)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -638,6 +638,7 @@ class Eazyest_Frontend {
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses WP_Post
+	 * @uses get_the_title() to display title if no image selected
 	 * @param integer $post_id
 	 * @return string
 	 */
@@ -646,7 +647,7 @@ class Eazyest_Frontend {
 		$post_id = 0 != $post_id ? $post_id : $post->ID;
 		
 		$attr = $this->post_thumbnail_attr( $post_id );
-		$html = empty( $attr['src'] ) ? '' : sprintf( '<img src="%s" class="attachment-thumbnail" alt="%s" />',
+		$html = empty( $attr['src'] ) ?  get_the_title( $post_id ): sprintf( '<img src="%s" class="attachment-thumbnail" alt="%s" />',
 			$attr['src'],
 			$attr['alt']
 		);
@@ -826,7 +827,9 @@ class Eazyest_Frontend {
 		$tag = $this->captiontag();
 		?>
 	 	<<?php echo $tag; ?> class="wp-caption-text gallery-caption folder-caption">
+	 		<?php if ( 'none' != eazyest_gallery()->folder_image ) : ?>
 	 		<span class="folder-title"><?php echo $title; ?></span><br/>
+	 		<?php endif; ?>
 	 		<?php do_action( 'eazyest_gallery_after_folder_icon_caption', $post_id ); ?>
 	  </<?php echo $tag; ?>>
 	  <?php
