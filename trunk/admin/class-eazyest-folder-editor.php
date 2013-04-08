@@ -7,7 +7,7 @@
  * @subpackage Admin/Folder Editor
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
- * @version 0.1.0 (r312)
+ * @version 0.1.0 (r313)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -883,7 +883,7 @@ class Eazyest_Folder_Editor {
 	}
 	
 	/**
-	 * Eazyest_Folder_Editor::display_subdirectories()
+	 * Eazyest_Folder_Editor::display_subfolders()
 	 * Display a list of sub-directories in admin list table
 	 * 
 	 * @since 0.1.0 (r2)
@@ -891,22 +891,28 @@ class Eazyest_Folder_Editor {
 	 * @uses get_edit_post_link()
 	 * @uses esc_attr()
 	 * @param integer $post_id
-	 * @return html markup of unordered list of subdirectories
+	 * @return html markup of unordered list of subfolders
 	 */
-	function display_subdirectories( $post_id ) {
-		$subdirectories = eazyest_folderbase()->get_subdirectories( $post_id );
+	function display_subfolders( $post_id ) {	
+		
+		$subfolders = get_pages( array(
+			'child_of'    => $post_id,
+			'sort_column' => 'menu_order',
+			'post_type'   => eazyest_gallery()->post_type,
+		) );
 		$display = '';
-		if ( ! empty( $subdirectories ) ){
+		if ( ! empty( $subfolders ) ){
+			
 			$display .= "\n<ul class='sub-directories'>";
-			foreach( $subdirectories as $directory ) {
+			
+			foreach( $subfolders as $folder ) {
 				$display .= "\n\t<li>";
-				$edit_name = basename( $directory );				
-				$edit_name  = str_repeat( '&#8212; ', substr_count( $directory, '/' ) ) . $edit_name;
-				$sub_id = eazyest_folderbase()->get_folder_by_path( $directory );
-				if ( current_user_can( 'edit_post', $sub_id ) ) {					
-					$edit_link  = get_edit_post_link( $sub_id, true );
-					$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $directory ) );
-					$display   .= "<a href='$edit_link' title='$edit_title'>$edit_name</a> ";
+				$edit_name = $folder->post_name;				
+				$edit_name  = str_repeat( '&#8212; ', $this->folder_level( $folder->ID, $post_id ) + 1 ) . $edit_name;
+				if ( current_user_can( 'edit_post', $folder->ID ) ) {					
+					$edit_link  = get_edit_post_link( $folder->ID, true );
+					$edit_title = esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'eazyest-gallery' ), $edit_name ) );
+					$display   .= "<a href='$edit_link' title='$edit_title'>$edit_name</a>";
 				} else {
 					$display .= "$edit_name"; 
 				}
@@ -972,7 +978,7 @@ class Eazyest_Folder_Editor {
 			
 			// show sub-directories in manually sorted lists
 			if ( 'table' == $for && eazyest_gallery()->sort_by() == 'menu_order-ASC' )
-				$display .= $this->display_subdirectories( $post_id );				
+				$display .= $this->display_subfolders( $post_id );				
 		}			
 		return $display;		
 	}
