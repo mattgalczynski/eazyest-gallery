@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r262)
+ * @version 0.1.0 (r301)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -307,9 +307,11 @@ class Eazyest_Settings_Page {
 			'thumbs_page' => array(
 				'title' => __( 'Thumbnails per page', 'eazyest-gallery' )					
 			),
-			'thumb_caption' => array(
-				'title' => __( 'Captions', 'eazyest-gallery' )
-			),
+			// do not set this until native WordPress gallery offers filter for attachment excerpt
+			/* 
+			  'thumb_caption' => array(
+			 	'title' => __( 'Captions', 'eazyest-gallery' )
+			), */
 			'sort_thumbnails' => array(
 				'title' => __( 'Sort images by', 'eazyest-gallery' )
 			),
