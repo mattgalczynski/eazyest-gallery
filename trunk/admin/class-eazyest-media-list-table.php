@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r181) 
+ * @version 0.1.0 (r304) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public
@@ -80,7 +80,7 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		$columns['description']  = _x( 'Content', 'column name', 'eazyest-gallery' );
 		$columns['comments']     = '<span><span class="vers"><div title="' . esc_attr__( 'Comments', 'eazyest-gallery' ) . '" class="comment-grey-bubble"></div></span></span>';
 		$columns['date']         = _x( 'Date', 'column name', 'eazyest-gallery' );
-		return $columns;
+		return apply_filters( 'eazyest_gallery_images_columns', $columns );
 	}
 	
 	/**
@@ -207,7 +207,8 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		return array(
 			'file'         => array( 'file',    $file_asc    ),
 			'date'         => array( 'date',    $date_asc    ),
-			'description'  => array( 'description', $content_asc )
+			'description'  => array( 'description', $content_asc ),
+			'comments'     => array( 'comments', 'DESC' ),
 		);
 	}
 		

@@ -80,7 +80,7 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 	 * @return
 	 */
 	function get_columns() {	  
-		return eazyest_admin()->folder_editor()->folder_columns( array() );
+		return apply_filters( 'eazyest_gallery_subfolders_columns', eazyest_admin()->folder_editor()->folder_columns( array() ) );
 	}
 
 	/**
