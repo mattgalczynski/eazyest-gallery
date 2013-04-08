@@ -2,9 +2,7 @@
 		
 	function eazyest_gallery_collect_finished(response) {
 		if ( 0 == response ) {
-			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).wrap( '<div class="updated"/>' ).delay(10000).hide(2000, 'linear', function(){
-				$(this).html('').unwrap();
-			});
+			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).wrap( '<div class="updated"/>' );
 		} else {			
 			var totalCount = 0;
 			$.each( response, function(key, folder){
@@ -13,9 +11,7 @@
 				totalCount += ( folder.images['add'] - folder.images['delete'] );
 				$(tdImages).html(count);
 			});
-			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).wrap( '<div class="updated"/>' ).delay(10000).hide(2000, 'linear', function(){
-				$(this).html('').unwrap();
-			});
+			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).wrap( '<div class="updated"/>' );
 		}
 	}
 	
