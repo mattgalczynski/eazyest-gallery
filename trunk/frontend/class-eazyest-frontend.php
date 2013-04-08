@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r305)
+ * @version 0.1.0 (r306)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -930,7 +930,7 @@ class Eazyest_Frontend {
 	 */
 	function slideshow_button( $echo = true ) {		
 		// only show slideshow button on single posts/pages/galleryfolders
-		if ( ! is_single() )
+		if ( ! is_single() || post_password_required() )
 			return;
 		
 		global $wp_query, $post;
@@ -980,6 +980,9 @@ class Eazyest_Frontend {
 	 * @return void
 	 */
 	function breadcrumb( $post_id = 0 ) {
+		
+		if ( post_password_required( $post_id ) )
+			return '';
 		
 		global $ezg_doing_shortcode;	
 		if ( $ezg_doing_shortcode && ! apply_filters( 'eazyest_gallery_shortcode_breadcrumb', false ) )
@@ -1220,8 +1223,11 @@ class Eazyest_Frontend {
 	 */
 	function thumbnails( $post_id = 0, $page = 1, $echo = true ) {
 		if ( $post_id == 0 )
-			$post_id = get_the_ID();
-			
+			$post_id = get_the_ID();		
+		
+		if ( post_password_required( $post_id ) )
+			return '';
+				
 		list( $orderby, $order ) = explode( '-', eazyest_gallery()->sort_thumbnails );
 		$orderby = $orderby == 'post_id' ? 'ID' : $orderby;
 		
