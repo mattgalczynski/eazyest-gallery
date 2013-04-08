@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r307)
+ * @version 0.1.0 (r308)
  * @access public
  */
 
@@ -1217,7 +1217,7 @@ class Eazyest_FolderBase {
 	 */
 	function delete_folders( $post_id ) {
 		$this->get_posted_paths( $post_id );
-		$this->get_folder_paths( $post_id );
+		$this->get_folder_paths();
 		$deleted = 0;
 		if ( ! empty( $this->posted_paths['folders'] ) ) {
 			// reverse array, we want to start to delete sibblings first
