@@ -14,7 +14,8 @@ Eazyest Gallery extends WordPress Media by adding folders and subfolders.
 
 Eazyest Gallery is the successor to [Lazyest Gallery](http://wordpress.org/extend/plugins/lazyest-gallery/). Lazyest Gallery users please read [how to upgrade to Eazyest Gallery](http://brimosoft.nl/2013/02/27/how-to-move-from-lazyest-gallery-to-eazyest-gallery/)
 
-Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyest-gallery/user-guide-eazyest-gallery/) on the Plugin Web Site.
+Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyest-gallery/user-guide-eazyest-gallery/) and the [Release Post](http://brimosoft.nl/2013/04/09/eazyest-gallery-0-1-0-is-out/) at the Plugin Web Site.
+
 
 
 = Eazyest Gallery features =
@@ -48,7 +49,10 @@ Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyes
 * __Automatic indexing of (ftp) uploaded folders and images__
 	
 	You don't have to use the WordPress media manager to add folders or to upload images. The plugin indexes folders and images as soon as you open the the Eazyest Gallery menu. It will sanitize folder names and image file names to create 'clean' permalinks for folders and images, and will use the unsanitized version as folder or image title. *Please be aware that WordPress should have write access to your FTP uploaded folders.*
-
+	
+* __Expandable by plugins and themes__
+  Eazyest Gallery uses the WordPress `[gallery]` function to output the thumbnails views. Plugins that change the gallery display, like [Jetpack](http://wordpress.org/extend/plugins/jetpack/) and [Eazyest Slides](http://wordpress.org/extend/plugins/eazyest-slides/), will work also with Eazyest Gallery. 	
+	
 * __Upgrade/Import tool for Lazyest Gallery__
 	
 	I won't develop new features for Lazyest Gallery, in favor of Eazyest Gallery. The plugin includes an updater to import all your Lazyest Gallery content and comments to the new custom post-type folder structure.
@@ -63,6 +67,11 @@ Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyes
 2. Confirm your Gallery folder in Settings -> Eazyest Gallery
 
 == Frequently Asked Questions ==
+
+= My thumbnail gallery does not display as expected =
+Eazyest Gallery uses the gallery shortcode function of WordPress to display the images in a folder. This makes it easier for you to use plugins or themes to change the appearance. [Jetpack](http://wordpress.org/extend/plugins/jetpack/) and [Eazyest Slides](http://wordpress.org/extend/plugins/eazyest-slides/) have nice slideshows that work with your galleries.
+However, some themes override the gallery output in a way it overrides your columns setting or your sort order. 
+If something seems wrong, please try first with a default theme like [TwentyTwelve](http://wordpress.org/extend/themes/twentytwelve) before you start a new support thread.
 
 = My FTP uploaded folders do not show up in Eazyest Gallery =
 
@@ -112,8 +121,11 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 
 * Bug Fix: Link is broken when Folder icon is set to 'Title only'
 * Bug Fix: Allow thumbnails to be ordered by excerpt (caption).
 * Bug Fix: Allow not-logged-in users to use the More Folders - AJAX refresh.
-* Bug Fix: do not collect folders when doing ajax
-* Changed: Use post name instead of gallery path for Path display
+* Bug Fix: Do not collect folders when doing ajax
+* Changed: Improved information from AJAX collect images script
+* Changed: Do not slideUp after ajax images collect 
+* Changed: Show subfolders instead of subdirectories in manually ordered Admin tables.
+* Changed: Use post name instead of gallery path for Edit-Folder Path display
 * Changed: Do not output gallery-caption when content is empty
 * Changed: Show About page only at first activation. 
 * Changed: Remove link anchors when on-click is set to 'nothing' 
