@@ -2,7 +2,7 @@
 		
 	function eazyest_gallery_collect_finished(response) {
 		if ( 0 == response ) {
-			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).wrap( '<div class="updated"/>' );
+			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).wrap( '<div class="updated"/>' ).attr( 'title', '' );
 		} else {			
 			var totalNew = 0;
 			var totalDel = 0;
