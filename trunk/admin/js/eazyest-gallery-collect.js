@@ -4,14 +4,28 @@
 		if ( 0 == response ) {
 			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.notfound).wrap( '<div class="updated"/>' );
 		} else {			
-			var totalCount = 0;
+			var totalNew = 0;
+			var totalDel = 0;
 			$.each( response, function(key, folder){
 				tdImages = 'tr#post-' + folder.id + ' td.galleryfolder_images';
 				var count = parseInt( $(tdImages).html(), 10 ) + folder.images['add'] - folder.images['delete'];
-				totalCount += ( folder.images['add'] - folder.images['delete'] );
 				$(tdImages).html(count);
+				totalNew +=  folder.images['add'];
+				totalDel +=  folder.images['delete'];
 			});
-			$('#eazyest-collect-folders').removeClass('collect-folders').html(eazyestGalleryCollect.foundimages.replace('%d', totalCount ) ).wrap( '<div class="updated"/>' );
+			$('#eazyest-collect-folders').removeClass('collect-folders').html('').wrap( '<div class="updated"/>' ).attr( 'title', '' );
+			if ( 0 < totalNew )
+				$('#eazyest-collect-folders').append( eazyestGalleryCollect.foundimages.replace('%d', totalNew ) );
+			if ( 0 < totalDel )	{
+				if ( 0 < totalNew )
+					$('#eazyest-collect-folders').append( '<br />' );
+				$('#eazyest-collect-folders').append( eazyestGalleryCollect.missedimages.replace('%d', totalDel ) );
+			}			
+			if ( $('table.wp-list-table.media').length ) {
+				if ( 0 < totalDel || 0 < totalNew )
+					$('#eazyest-collect-folders').append( '<br />' );
+				$('#eazyest-collect-folders').append( eazyestGalleryCollect.refresh );
+			}
 		}
 	}
 	
