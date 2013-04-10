@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.1.0 (r308)
+ * @version 0.2.0 (r322)
  * @access public
  */
 
@@ -1851,9 +1851,8 @@ class Eazyest_FolderBase {
 	 */
 	function sizes_metadata( $metadata, $attachment_id ) {
 		if ( ! $this->is_gallery_image( $attachment_id ) )
-			return $metadata;	
-		
-		
+			return $metadata;
+				
 		$file = get_post_meta( $attachment_id, '_wp_attached_file', true );
 		if ( false !== strpos( $file, eazyest_gallery()->root() ) )
 			$file = substr( $file, strlen( eazyest_gallery()->root() ) );
@@ -1861,11 +1860,36 @@ class Eazyest_FolderBase {
 		if ( ! isset( $metadata['file'] ) || $file != $metadata['file'] )
 			$metadata['file'] = $file;
   	
+  	$orientation = 0;
+		if ( function_exists( 'exif_read_data' ) ) {
+			if ( ! isset( $metadata['eazyest_exif'] ) ) {
+				if ( $exif = exif_read_data( eazyest_gallery()->root() . $file ) ) {
+					$orientation = isset ( $exif['Orientation'] ) ? $exif['Orientation'] : 0;
+					if ( $orientation && apply_filters( 'eazyest_gallery_rotate_original', true ) ) {
+						$image = wp_get_image_editor( eazyest_gallery()->root() . $file );
+						$image->save( eazyest_gallery()->root() . $file ); 
+					}
+				}
+			}
+		}
+		
+		if ( in_array( $orientation, array( 6, 8) ) ) {
+			$width = $metadata['width'];
+			$metadata['width']  = $metadata['height'];
+			$metadata['height'] = $width; 
+		}
+  	
   	if ( isset( $metadata['sizes'] ) ) {
   		foreach( $metadata['sizes'] as $key => $size ) {
   			$metadata['sizes'][$key]['file'] = '_cache/' . basename( $metadata['sizes'][$key]['file'] );
+  			if ( in_array( $orientation, array( 6, 8) ) ) {
+					$width = $metadata['sizes'][$key]['width'];
+					$metadata['sizes'][$key]['width']  = $metadata['sizes'][$key]['height'];
+					$metadata['sizes'][$key]['height'] = $width; 
+				}
   		}
   	}
+  	$metadata['eazyest_exif'] = 1;
 		return $metadata;			
 	}
 	
