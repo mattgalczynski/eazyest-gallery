@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.2.0 (r319)
+ * @version 0.2.0 (r320)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1486,11 +1486,12 @@ class Eazyest_Frontend {
 			}
 			global $ezg_doing_folders;
 			$ezg_doing_folders = true;
+			$subfolder_title = apply_filters( 'eazyest_gallery_subfolders_title', '<h3 class="subfolders">' . __( 'Subfolders', 'eazyest-gallery' ) . '</h3>' ); 
 		?>
 			<?php	echo $this->gallery_style( ezg_selector( true, false ), eazyest_gallery()->folders_columns ); ?>
 			<div id="<?php ezg_selector( false ) ?>" class="<?php ezg_gallery_class( 'archive' ); ?>">
 				<?php if ( ! defined( 'DOING_AJAX' ) ) : ?>
-				<h3 class="subfolders"><?php _e( 'Subfolders', 'eazyest-gallery' ); ?></h3>
+				<?php echo $subfolder_title; ?>
 				<?php endif; ?>
 					<?php $i = 0; ?>
 					<?php  /* Start the Loop */ 
