@@ -13,12 +13,33 @@ else
  * Eazyest_Image_Editor
  * 
  * @since 0.1.0 (r36)
- * @version 0.1.0 (r277)
+ * @version 0.2.0 (r322)
  * @package Eazyest Gallery
  * @subpackage Image Editor
  * @see WP_Image_Editor 
  */
 class Eazyest_Image_Editor extends _Eazyest_Image_Editor {
+	
+		
+	/**
+	 * Eazyest_Image_Editor::load()
+	 * Apply exif orientation after image loaded in memory.
+	 * 
+	 * @since 0.2.0 (r322)
+	 * @access public
+	 * @return bool
+	 */
+	public function load() {
+		if ( $this->image )
+		 return true;	
+		if( $load = parent::load() ) {
+			if ( ( false === strpos( $this->file, eazyest_gallery()->address() ) ) && ( false === strpos( $this->file, eazyest_gallery()->root() ) ) )
+				return true;
+			$this->exif_orientation();
+			return true;	 
+		}
+		return $load;
+	}
 
 	/**
 	 * Builds an output filename based on current file
@@ -47,6 +68,39 @@ class Eazyest_Image_Editor extends _Eazyest_Image_Editor {
 			wp_mkdir_p( $dest_path );
 			
 		return trailingslashit( $dest_path ) . $name;	
+	}
+	
+	/**
+	 * Eazyest_Image_Editor::exif_orientation()
+	 * Re-orient resized images based on exif orientation in source file.
+	 * 
+	 * @since 0.2.0 (r322)
+	 * @access protected
+	 * @return void
+	 */
+	protected function exif_orientation() {
+		if ( apply_filters( 'eazyest_gallery_skip_exif_orientation', false ) )
+			return;
+		
+		if ( ! function_exists( 'exif_read_data' ) )
+			return;
+			
+		if ( $exif = exif_read_data( $this->file ) ) {
+			$orientation = isset ( $exif['Orientation'] ) ? $exif['Orientation'] : false;
+			if ( $orientation ) {
+				switch( $orientation ) {
+					case 3: // 180 rotate left				
+						$this->rotate( 180 );				
+						break;				
+					case 6: // 90 rotate right				
+						$this->rotate( -90 );				
+						break;				
+					case 8: // 90 rotate left				
+						$this->rotate( 90 );				
+						break;				
+				}	
+			}
+		}	
 	}
 	
 		/**
@@ -82,7 +136,7 @@ class Eazyest_Image_Editor extends _Eazyest_Image_Editor {
 			}
 								
 			$filename = $dirname . '/' . basename( $filename );
-		}				
+		}			
 		return parent::save( $filename, $mime_type );		
 	}
 } // Eazyest_Image_Editor
