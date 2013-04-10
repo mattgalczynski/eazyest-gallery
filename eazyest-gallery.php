@@ -8,12 +8,12 @@
  * Date: April 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.2.0-alpha-320
+ * Version: 0.2.0-alpha-321
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.2.0 (r320)  
+ * @version 0.2.0 (r321)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -51,7 +51,7 @@ define('EZG_SECURE_VERSION', '0.1.0');
  * Holds the options and basic functions
  * 
  * @since lazyest-gallery 0.16.0
- * @version 0.2.0 (r318)
+ * @version 0.2.0 (r321)
  * @access public
  */
 class Eazyest_Gallery {
@@ -482,7 +482,7 @@ class Eazyest_Gallery {
 	 */
 	function home_dir() {		
 		if ( isset( $_SERVER['DOCUMENT_ROOT'] ) )
-			return trailingslashit( str_replace( array( '/', '\\'), '/', $_SERVER['DOCUMENT_ROOT'] ) );
+			return trailingslashit( str_replace( array( '/', '\\'), '/', realpath( $_SERVER['DOCUMENT_ROOT'] ) ) );
 		
 		// document root is not set, try to find root from settings
 		$root = str_replace( array( '/', '\\'), '/', ABSPATH );
