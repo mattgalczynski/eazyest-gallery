@@ -16,7 +16,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
  * @since 0.1.0 (r2)
- * @version 0.1.0 (r310)
+ * @version 0.2.0 (r323)
  * @access public 
  * @see WordPress WP_List_Table
  * @link http://codex.wordpress.org/Class_Reference/WP_List_Table
@@ -209,6 +209,30 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 	}
 	
 	/**
+	 * Eazyest_Folder_List_Table::get_subfolders()
+	 * Get all subfolders for use in Edit Folder screen.
+	 * 
+	 * @since 0.2.0 (r323)
+	 * @access private
+	 * @uses WP_Query
+	 * @return WP_Query object
+	 */
+	private function get_subfolders() {		
+		$option = explode( '-', eazyest_gallery()->sort_by( 'folders' ) );		
+		$sort_field = $option[0] == 'menu_order' ? 'menu_order' :  substr( $option[0], 5 );
+		$sort_order = $option[1];
+		global $post;
+		$args = array(
+			'post_type'   => eazyest_gallery()->post_type,
+			'post_parent' => $post->ID,
+			'post_status' => array( 'publish', 'inherit' ),
+		  'orderby'     => $sort_field,
+		  'order'       => $sort_order,
+		);
+		return new WP_Query( $args );		
+	}
+	
+	/**
 	 * Eazyest_Folder_List_Table::prepare_items()
 	 * 
 	 * @since 0.1.0 (r2)
@@ -226,12 +250,11 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 		$option = explode( '-', eazyest_gallery()->sort_by( 'folders' ) );		
 		$sort_field = $option[0];
 		$sort_order = $option[1];
-		
 		global $wpdb, $post;
 		if ( isset( $_REQUEST['folder_orderby'] ) ) {
 			switch( $_REQUEST['folder_orderby'] ) {
 			 	case 'folder_title' :
-			 		$sort_field = "UPPER({$wpdb->posts}.post_title)";
+			 		$sort_field = "post_title";
 			 		break;
 		 		case 'folder_date' :
 		 			$sort_field = 'post_date';
@@ -241,24 +264,14 @@ class Eazyest_Folder_List_Table extends WP_List_Table {
 		if ( isset( $_REQUEST['folder_orderby'] ) && isset( $_REQUEST['order'] ) ) {
 			$sort_order = strtoupper( $_REQUEST['order'] );
 		}
-		$post_type = eazyest_gallery()->post_type;
-		$querystr = "
-			SELECT {$wpdb->posts}.*, {$wpdb->postmeta}.meta_value
-			FROM {$wpdb->posts}, {$wpdb->postmeta}
-			WHERE {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id
-			AND {$wpdb->posts}.post_parent = {$post->ID}
-			AND {$wpdb->postmeta}.meta_key = '_gallery_path'
-			AND {$wpdb->posts}.post_type = '{$post_type}'
-			AND ( {$wpdb->posts}.post_status = 'publish' OR {$wpdb->posts}.post_status = 'inherit' )
-			ORDER BY {$sort_field} {$sort_order}
-		";									
-		$this->items = $wpdb->get_results( $querystr, OBJECT );
+		eazyest_gallery()->sort_folders = "{$sort_field}-{$sort_order}";
+		$query = $this->get_subfolders();
 		
-		$total_items = count( $this->items );
+		$this->items = $query->posts;
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,
+			'total_items' => $query->post_count,
 			'total_pages' => 1,
-			'per_page' => $total_items
+			'per_page'    => $query->post_count,
 		) );
 	}
 	

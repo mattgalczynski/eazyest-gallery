@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) )
  * @subpackage List Table
  * @author Marcel Brinkkemper
  * @copyright 2012 Brimosoft
- * @version 0.1.0 (r304) 
+ * @version 0.2.0 (r323) 
  * @since 0.1.0 (r2)
  * @uses WP_List_Table
  * @access public
@@ -119,6 +119,42 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 	}
 	
 	/**
+	 * Eazyest_Media_List_Table::get_attached_images()
+	 * Get all attached images for use in Edit Folder screen.
+	 * 
+	 * @since 0.2.0 (r232)
+	 * @acces private
+	 * @uses add_filter() to add filter for 'posts_orderby'
+	 * @uses WP_Query
+	 * @uses remove_filter()
+	 * @return WP_Query object
+	 */
+	private function get_attached_images() {
+		
+		$option = explode( '-', eazyest_gallery()->sort_by( 'thumbnails' ) );		
+		$sort_field = $option[0];
+		$sort_order = $option[1];
+				
+		global $post;
+		
+		$args = array(
+			 'post_type'      => 'attachment',
+			 'post_parent'    => $post->ID,
+			 'post_status'    => array( 'inherit', 'publish' ),
+			 'post_mime_type' => 'image',
+			 'orderby'        => $sort_field,
+			 'order'          => $sort_order,
+			 'posts_per_page' => -1, 
+		);
+		
+		add_filter( 'posts_orderby', array( eazyest_folderbase(), 'thumbnails_orderby' ) );
+		$query = new WP_Query( $args );		
+		remove_filter( 'posts_orderby', array( eazyest_folderbase(), 'thumbnails_orderby' ) );
+		
+		return $query;
+	}
+	
+	/**
 	 * Eazyest_Media_List_Table::prepare_items()
 	 * 
 	 * @since 0.1.0 (r2)
@@ -137,15 +173,14 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		
 		$mode = empty( $_REQUEST['mode'] ) ? 'list' : $_REQUEST['mode'];
 		
-		$option = explode( '-', eazyest_gallery()->sort_by( 'thumbnails' ) );		
+		$option = explode( '-', eazyest_gallery()->sort_by( 'thumbnails' ) );
 		$sort_field = $option[0];
 		$sort_order = $option[1];
 		
-		global $wpdb, $post;
 		if ( isset( $_REQUEST['orderby'] ) ) {
 			switch( $_REQUEST['orderby'] ) {
 			 	case 'description' :
-			 		$sort_field = "UPPER({$wpdb->posts}.post_excerpt)";
+			 		$sort_field = "post_excerpt";
 			 		break;
 		 		case 'date' :
 		 			$sort_field = 'post_date';
@@ -155,21 +190,15 @@ class Eazyest_Media_List_Table extends WP_List_Table {
 		if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
 			$sort_order = strtoupper( $_REQUEST['order'] );
 		}
-		$querystr = "
-			SELECT *
-			FROM {$wpdb->posts}
-			WHERE post_parent = {$post->ID}
-			AND post_type = 'attachment' 
-			AND post_status IN ('inherit', 'publish') 
-			AND post_mime_type REGEXP 'image'
-			ORDER BY {$sort_field} {$sort_order}
-		";				
-		$this->items = $wpdb->get_results( $querystr, OBJECT );
+		eazyest_gallery()->sort_thumbnails = "{$sort_field}-{$sort_order}";
+		
+		$query = $this->get_attached_images();						
+		$this->items = $query->posts;
 		$total_items = count( $this->items );
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,
+			'total_items' => $query->post_count,
 			'total_pages' => 1,
-			'per_page' => $total_items
+			'per_page' => $query->post_count,
 		) );
 	}
 	
