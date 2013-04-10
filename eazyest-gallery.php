@@ -8,12 +8,12 @@
  * Date: April 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.2.0-alpha
+ * Version: 0.2.0-alpha-318
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.2.0 (r317)  
+ * @version 0.2.0 (r318)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -51,7 +51,7 @@ define('EZG_SECURE_VERSION', '0.1.0');
  * Holds the options and basic functions
  * 
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r298)
+ * @version 0.2.0 (r318)
  * @access public
  */
 class Eazyest_Gallery {
@@ -128,7 +128,7 @@ class Eazyest_Gallery {
 		$this->set_gallery_folder();	
 		$this->actions();    
 		$this->filters();
-		eazyest_widgets();		
+		eazyest_widgets();
 	}
 
 	/**
@@ -391,7 +391,9 @@ class Eazyest_Gallery {
 	private function set_gallery_folder() {
 		$gallery_folder = $this->gallery_folder;
   	$this->root = str_replace( '\\', '/', trailingslashit( $this->get_absolute_path( ABSPATH . $gallery_folder ) ) );
-  	$this->address = trailingslashit( $this->_resolve_href( trailingslashit( get_option( 'siteurl' ) ), $gallery_folder ) ) ;
+  	
+  	$http = isset( $_SERVER['HTTPS'] ) && 'off' != $_SERVER['HTTPS'] ? 'https://' : 'http://';
+  	$this->address = trailingslashit( $this->_resolve_href( trailingslashit( $http . $_SERVER['HTTP_HOST'] ), substr( $this->root, strlen( $this->home_dir() ) ) ) );
 	}
 	
 	/**
@@ -465,8 +467,7 @@ class Eazyest_Gallery {
 			} elseif ( $part != "" ) {
 				$parts[] = $part;
 			} 
-		$port = isset( $base_parsed['port'] ) ? ':' . $base_parsed['port'] : ''; 
-
+		$port = isset( $base_parsed['port'] ) ? ':' . $base_parsed['port'] : '';
 		return ( ( array_key_exists( 'scheme', $base_parsed ) ) ? $base_parsed['scheme'] . '://' . $base_parsed['host']:"" ) . "/" . implode( "/", $parts );
 	}
 	
@@ -480,6 +481,10 @@ class Eazyest_Gallery {
 	 * @return string file system path for home directory
 	 */
 	function home_dir() {		
+		if ( isset( $_SERVER['DOCUMENT_ROOT'] ) )
+			return trailingslashit( str_replace( array( '/', '\\'), '/', $_SERVER['DOCUMENT_ROOT'] ) );
+		
+		// document root is not set, try to find root from settings
 		$root = str_replace( array( '/', '\\'), '/', ABSPATH );
 		$url_parts = parse_url( home_url() );
 		$home_parts = array();
@@ -500,34 +505,6 @@ class Eazyest_Gallery {
 		return $home;
 	}
 	
-	/**
-	 * Eazyest_Gallery::common_root()
-	 * Get lowest root that can be resolved for website.
-	 * 
-	 * @since 0.1.0 (r2)
-	 * @uses site_url()
-	 * @return string path
-	 */
-	function common_root() {
-		$root = str_replace( array( '/', '\\'), '/', ABSPATH );
-		
-		$url_parts = parse_url( site_url() );		
-		$path_parts = array();
-		if ( isset( $url_parts['path'] ) )			
-			$path_parts = array_reverse( explode( '/', ( ltrim( $url_parts['path'], '/' ) ) ) );
-			
-		$root_parts = array_reverse( explode( '/', rtrim( $root, '/' ) ) );
-		if ( count( $path_parts ) ) {
-			foreach( $path_parts as $key => $part ) {
-				if ( $path_parts[$key] == $root_parts[0] ) {
-					array_shift( $root_parts );
-				}
-			}
-		}
-		$root = implode( '/', array_reverse( $root_parts ) ) . '/';
-		return $root;	 
-	}
-
 	/**
 	 * Eazyest_Gallery::valid()
 	 * Check if the gallery root directory is set, andd if it exists

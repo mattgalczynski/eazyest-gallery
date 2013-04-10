@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Admin/Settings
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r301)
+ * @version 0.2.0 (r318)
  * @since 0.1.0 (r2)
  * @access public
  */
@@ -208,7 +208,7 @@ class Eazyest_Settings_Page {
 	 */
 	function filetree_args() {	
 		return array(
-			'root'             => eazyest_gallery()->common_root(),
+			'root'             => eazyest_gallery()->home_dir(),
 			'script'           => admin_url( 'admin-ajax.php' ),
 			'loadMessage'      => __( 'Loading..',                               'eazyest-gallery' ),
 			'errorMessage'     => __( 'You cannot use %s for a gallery folder.', 'eazyest-gallery' ),
