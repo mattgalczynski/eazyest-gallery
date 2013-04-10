@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.1.0 (r311)
+ * @version 0.2.0 (r319)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1355,7 +1355,8 @@ class Eazyest_Frontend {
 			// add filter for eazyest-gallery style	
 			add_filter( 'gallery_style', array( $this, 'style_div' ) );
 			
-			$gallery = do_shortcode( "[gallery $post_ids columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag' size='thumbnail']" );
+			$thumbnail_size = apply_filters( 'eazyest_gallery_thumbnail_size', 'thumbnail' );
+			$gallery = do_shortcode( "[gallery $post_ids columns='$columns' itemtag='$itemtag' icontag='$icontag' captiontag='$captiontag' size='$thumbnail_size']" );
 			
 			// remove the filter because the page could have 'normal' WordPress galleries			
 			remove_filter( 'gallery_style', array( $this, 'style_div' ) );

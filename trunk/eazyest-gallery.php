@@ -8,12 +8,12 @@
  * Date: April 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.2.0-alpha-318
+ * Version: 0.2.0-alpha-319
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.2.0 (r318)  
+ * @version 0.2.0 (r319)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
