@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.2.0 (r322)
+ * @version 0.2.0 (r323)
  * @access public
  */
 
@@ -291,6 +291,20 @@ class Eazyest_FolderBase {
 				}
 		}		
 		return $post_id;	
+	}
+	
+	/**
+	 * Eazyest_FolderBase::thumbnails_orderby()
+	 * Changes the orderby partameter because WP_Query does not allow to order by post_excerpt
+	 * 
+	 * @since 0.1.0 (r298) moved from Eazyest_Frontend @since 0.2.0 (323)
+	 * @uses wpdb
+	 * @param string $orderby
+	 * @return string
+	 */
+	function thumbnails_orderby( $orderby ) {	
+		global $wpdb;
+		return $wpdb->posts . '.' . str_replace( '-', ' ', eazyest_gallery()->sort_by('thumbnails') );	
 	}
 	
 	/**

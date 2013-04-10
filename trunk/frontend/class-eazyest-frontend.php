@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * This class contains all Frontend functions and actions for Eazyest Gallery
  *
  * @since lazyest-gallery 0.16.0
- * @version 0.2.0 (r320)
+ * @version 0.2.0 (r323)
  * @package Eazyest Gallery
  * @subpackage Frontend
  * @author Marcel Brinkkemper
@@ -1205,20 +1205,6 @@ class Eazyest_Frontend {
 	}
 	
 	/**
-	 * Eazyest_Frontend::thumbnails_orderby()
-	 * Changes the orderby partameter because WP_Query does not allow to order by post_excerpt
-	 * 
-	 * @since 0.1.0 (r298)
-	 * @uses wpdb
-	 * @param string $orderby
-	 * @return string
-	 */
-	function thumbnails_orderby( $orderby ) {	
-		global $wpdb;
-		return $wpdb->posts . '.' . str_replace( '-', ' ', eazyest_gallery()->sort_by('thumbnails') );	
-	}
-	
-	/**
 	 * Eazyest_Frontend::thumbnails()
 	 * Echo or Return folder thumbnails gallery
 	 * If you don't have extra fields, the function puts out a WordPress <code>[gallery]</code> tag.
@@ -1270,7 +1256,7 @@ class Eazyest_Frontend {
 		} else {
 			
 			// add filter because WP_Query does not allow order by excerpt
-			add_filter( 'posts_orderby', array( $this, 'thumbnails_orderby' ) );
+			add_filter( 'posts_orderby', array( eazyest_folderbase(), 'thumbnails_orderby' ) );
 			
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// use a gallery with filtered captions if thumb_description or eazyest_fields enabled 
@@ -1362,7 +1348,7 @@ class Eazyest_Frontend {
 			remove_filter( 'gallery_style', array( $this, 'style_div' ) );
 			
 			// remove orderby filter
-			remove_filter( 'posts_orderby', array( $this, 'thumbnails_orderby' ) );		
+			remove_filter( 'posts_orderby', array( eazyest_folderbase(), 'thumbnails_orderby' ) );		
 					
 			if ( eazyest_gallery()->thumb_description || eazyest_extra_fields()->enabled() )
 				// remove filter for other shortcodes in post
