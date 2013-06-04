@@ -8,12 +8,12 @@
  * Date: April 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.2.0-alpha-324
+ * Version: 0.2.0-alpha-325
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.2.0 (r324)  
+ * @version 0.2.0 (r325)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -392,7 +392,7 @@ class Eazyest_Gallery {
 		$gallery_folder = $this->gallery_folder;
   	$this->root = str_replace( '\\', '/', trailingslashit( $this->get_absolute_path( ABSPATH . $gallery_folder ) ) );
   	
-  	$http = isset( $_SERVER['HTTPS'] ) && 'off' != $_SERVER['HTTPS'] ? 'https://' : 'http://';
+  	$http = empty( $_SERVER['HTTPS'] ) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
   	$this->address = trailingslashit( $this->_resolve_href( trailingslashit( $http . $_SERVER['HTTP_HOST'] ), substr( $this->root, strlen( $this->home_dir() ) ) ) );
 	}
 	
