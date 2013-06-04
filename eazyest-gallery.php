@@ -8,12 +8,12 @@
  * Date: April 2013
  * Author: Brimosoft
  * Author URI: http://brimosoft.nl
- * Version: 0.2.0-alpha-325
+ * Version: 0.2.0-alpha-327
  * Text Domain: eazyest-gallery
  * Domain Path: /languages/
  * License: GNU General Public License, version 3
  *
- * @version 0.2.0 (r325)  
+ * @version 0.2.0 (r327)  
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
@@ -51,7 +51,7 @@ define('EZG_SECURE_VERSION', '0.1.0');
  * Holds the options and basic functions
  * 
  * @since lazyest-gallery 0.16.0
- * @version 0.2.0 (r321)
+ * @version 0.2.0 (r327)
  * @access public
  */
 class Eazyest_Gallery {
