@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * @subpackage Plugins/Exif
  * @author Marcel Brinkkemper
  * @copyright 2013 Brimosoft
- * @version 0.1.0 (r78)
+ * @version 0.1.0 (r324)
  * @since 01.10 (r2)
  * @access public
  */
@@ -65,10 +65,11 @@ class Eazyest_Gallery_Exif {
 	 * @return void
 	 */
 	function actions() {
-		// only add actions when user has checked option
+		// only add frontend actions when user has checked option
 		if ( eazyest_gallery()->enable_exif ) {
 			add_action( 'eazyest_gallery_after_attachment', array( $this, 'show_exif' ) );
-		}
+		}					
+		add_action( 'eazyest_gallery_before_rotation', 'ezg_get_exif' );
 	}
 	
 	/**
@@ -79,7 +80,7 @@ class Eazyest_Gallery_Exif {
 	 * @return void
 	 */
 	function filters() {
-		add_filter( 'eazyest_gallery_image_settings', array( $this, 'exif_option' ) );
+		add_filter( 'eazyest_gallery_image_settings',  array( $this, 'exif_option' ) );	
 	}
 	
 	/**
@@ -113,6 +114,91 @@ class Eazyest_Gallery_Exif {
 		<input type="checkbox" id="enable_exif" name="eazyest-gallery[enable_exif]" value="1" <?php checked( $enable_exif ) ?> />
 		<label for="enable_exif"><?php _e( 'Show Exif information on the attachment page', 'eazyest-gallery' ) ?> </label>
 		<?php
+	}
+	
+	// exif administration functions ---------------------------------------------
+	
+	/**
+	 * Eazyest_Gallery_Exif::get_exif_data()
+	 * Read Exif data from image file.
+	 * For Eazyest Gallery images, store Exif data as postmeta record to preserve data when original file gets changed.
+	 * 
+	 * @since 0.2.0 (r324)
+	 * @access public
+	 * @uses get_post_meta() to read exif from wpdb
+	 * @uses get_attached_file() to get filename
+	 * @uses update_post_meta() to store exif in wpdb
+	 * @param int $attachment_id
+	 * @return array exif data extracted from image
+	 */
+	public function get_exif_data( $attachment_id ) {
+		
+		$exif = get_post_meta( $attachment_id, '_eazyest_exif_data', true );
+		
+		if ( ! empty( $exif ) )
+			return $exif;
+		
+		$exif = array();
+		$attached_file = get_attached_file( $attachment_id );
+		if ( $exif = @read_exif_data( $attached_file ) ) {
+			
+			// extra field of compiled GPS data for use with Google Maps
+			$exif['gps']       = $this->get_geodata( $attachment_id, $exif );
+			
+			// store postmeta if image is in Eazyest Gallery
+			if ( eazyest_folderbase()->is_gallery_image( $attachment_id ) )
+				update_post_meta( $attachment_id,  '_eazyest_exif_data', $exif );	
+		}
+		return $exif;	
+	}
+	
+	/**
+	 * Eazyest_Gallery_Exif::get_geodata()
+	 * Get compiled GPS data from Exif for use in Google Maps
+	 * 
+	 * @since 0.2.0 (r324)
+	 * @access public
+	 * @param int $attachment_id
+	 * @param array $exif Exif data read from file
+	 * @return string gps data like "51.64683,5.2665"
+	 */
+	public function get_geodata( $attachment_id, $exif=null ) {
+		// read exif data if none given
+		if ( ! isset( $exif ) ) {
+			$exif = $this->get_exif_data( $attachment_id );
+			if ( ! $exif )
+				return '';
+		}
+		if ( isset( $exif['gps'] ) )
+			return $exif['gps'];
+			
+		$geodata = '';
+		$gps= array();
+		if ( !empty( $exif['GPSLatitude'] ) ) {
+			$gps['latitude_hour']    = $exif['GPSLatitude'][0];
+			$gps['latitude_minute']  = $exif['GPSLatitude'][1];
+			$gps['latitude_second']  = $exif['GPSLatitude'][2];
+			$gps['longitude_hour']   = $exif['GPSLongitude'][0];
+			$gps['longitude_minute'] = $exif['GPSLongitude'][1];
+			$gps['longitude_second'] = $exif['GPSLongitude'][2];
+			
+			foreach( $gps as $key => $value ) {
+				$pos = strpos( $value, '/' );
+				if( $pos !== false ) { 
+					$temp = explode( '/',$value ); 
+					$gps[$key] = $temp[0] / $temp[1];
+				}
+			}
+			
+			$latitude = round( $gps['latitude_hour'] + ( $gps['latitude_minute'] / 60 ) + ( $gps['latitude_second'] / 3600 ), 5 );
+			$latitude = $exif['GPSLatitudeRef'] == "S" ? -1 * $latitude : $latitude;
+			
+			$longitude = round( $gps['longitude_hour'] + ( $gps['longitude_minute'] / 60 ) + ( $gps['longitude_second'] / 3600 ), 5 );
+			$longitude = ( $exif['GPSLongitudeRef'] == "W" ) ? -1 * $longitude : $longitude; 
+			
+			$geodata = $latitude . ',' . $longitude;
+		}	
+		return $geodata;		
 	}
 	
 	// exif output functions -----------------------------------------------------
@@ -345,10 +431,6 @@ class Eazyest_Gallery_Exif {
 	 * @return void
 	 */
 	function show_exif( $post_id ) {
-		$guid = get_post( $post_id )->guid;
-		$original = str_replace( eazyest_gallery()->address(), eazyest_gallery()->root(), $guid );
-		if ( ! file_exists( $original ) )
-			return;
 		
 		$imgtype           = $this->imgtype();
     $orientation       = $this->orientation();
@@ -359,7 +441,8 @@ class Eazyest_Gallery_Exif {
     $light_source      = $this->light_source();     
     $flash             = $this->flash(); 
     
-    $exif = @exif_read_data( $original, 0, true ); 
+    $exif = ezg_get_exif( $post_id );
+			 
 		if ( $exif ) { 
 	    $img_info = array ();
 	    if ( isset( $exif['FILE']['FileName'] ) ) 
@@ -614,6 +697,24 @@ class Eazyest_Gallery_Exif {
 	}
 	
 } // Eazyest_Gallery_Exif
+
+/**
+ * ezg_get_exif()
+ * Get exif data for a particular attachment.
+ * 
+ * @since 0.2.0 (r324)
+ * @param int $attachment_id
+ * @return array|bool exif data|false if no exif data.
+ */
+function ezg_get_exif( $attachment_id ) {
+	
+	$exif = eazyest_gallery_exif()->get_exif_data( $attachment_id );
+		
+	if ( empty( $exif ) )
+		return false;
+	
+	return $exif;
+}
 
 /**
  * eazyest_gallery_exif()
