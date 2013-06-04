@@ -8,7 +8,7 @@
  * @author Marcel Brinkkemper
  * @copyright 2012-2013 Brimosoft
  * @since @since 0.1.0 (r2)
- * @version 0.2.0 (r323)
+ * @version 0.2.0 (r324)
  * @access public
  */
 
@@ -1873,13 +1873,17 @@ class Eazyest_FolderBase {
 			
 		if ( ! isset( $metadata['file'] ) || $file != $metadata['file'] )
 			$metadata['file'] = $file;
-  	
+			 	
   	$orientation = 0;
 		if ( function_exists( 'exif_read_data' ) ) {
+			// run this when image has not been checked on rotation based on exif info
 			if ( ! isset( $metadata['eazyest_exif'] ) ) {
 				if ( $exif = exif_read_data( eazyest_gallery()->root() . $file ) ) {
 					$orientation = isset ( $exif['Orientation'] ) ? $exif['Orientation'] : 0;
-					if ( $orientation && apply_filters( 'eazyest_gallery_rotate_original', true ) ) {
+					// rotate original because many browser don't display the image correctly on the attachment page
+					if ( in_array( $orientation, array( 3, 6, 8 ) ) && apply_filters( 'eazyest_gallery_rotate_original', true ) ) {
+  					// action for other plugins to get image metadata before rotation clears it
+						do_action( 'eazyest_gallery_before_rotation', $attachment_id ); 
 						$image = wp_get_image_editor( eazyest_gallery()->root() . $file );
 						$image->save( eazyest_gallery()->root() . $file ); 
 					}

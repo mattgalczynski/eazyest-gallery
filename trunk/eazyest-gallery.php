@@ -23,7 +23,7 @@
  * @license http://www.gnu.org/licenses/
  * 
  * @uses TableDnD plug-in for JQuery,
- * @copyright (c) Denis Howlett
+ * @copyright (c) Denis Howlett396
  * 
  * @uses JQuery File Tree, 
  * @copyright (c) 2008, A Beautiful Site, LLC
@@ -392,8 +392,10 @@ class Eazyest_Gallery {
 		$gallery_folder = $this->gallery_folder;
   	$this->root = str_replace( '\\', '/', trailingslashit( $this->get_absolute_path( ABSPATH . $gallery_folder ) ) );
   	
-  	$http = empty( $_SERVER['HTTPS'] ) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';
-  	$this->address = trailingslashit( $this->_resolve_href( trailingslashit( $http . $_SERVER['HTTP_HOST'] ), substr( $this->root, strlen( $this->home_dir() ) ) ) );
+  	$http = empty( $_SERVER['HTTPS'] ) || 'off' == $_SERVER['HTTPS'] ? 'http://' : 'https://';  	
+    $port = ( $_SERVER["SERVER_PORT"] == '80' ) ? '' : ( ':' . $_SERVER['SERVER_PORT'] );
+    
+  	$this->address = trailingslashit( $this->_resolve_href( trailingslashit( $http . $_SERVER['HTTP_HOST'] . $port ), substr( $this->root, strlen( $this->home_dir() ) ) ) );
 	}
 	
 	/**
