@@ -219,11 +219,12 @@ class Eazyest_Slideshow {
 				";
 			} 
 			?>
-			<div data-thumb="<?php echo $this->data_image( 'thumbnail' ) ?>" data-src="<?php echo $this->data_image( $size ) ?>">
-         <?php echo $caption_div; ?> 
-      </div>
+				<div data-thumb="<?php echo $this->data_image( 'thumbnail' ) ?>" data-src="<?php echo $this->data_image( $size ) ?>">
+	         <?php echo $caption_div; ?> 
+	      </div>
 			<?php endwhile; ?>
-		</div>
+			</div>
+		</div> <!-- fluid_container -->
 		<br style="clear:both;"/>
 		<?php
 		
