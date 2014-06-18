@@ -17,7 +17,7 @@
  * @package Eazyest Gallery
  * @subpackage Main
  * @link http://brimosoft.nl/eazyest/gallery/
- * @author Marcel Brinkkemper <eazyest@brimosoft.nl>
+ * @author Marcel Brinkkemper <eazyest@brimosoft.nl>, Andredewaard
  * @copyright 2013 Marcel Brinkkemper
  * @license GNU General Public License, version 3
  * @license http://www.gnu.org/licenses/
@@ -816,3 +816,15 @@ if ( version_compare( $current_wp, '3.5', '<') ) {
 } else {
  eazyest_gallery();
 }
+
+/*--------------------------
+ * Apply tags to attachments.
+ * Added by andredewaard props to klihelp.
+ * @since 0.1.4
+ */
+
+function add_tags_to_attachments() {
+	register_taxonomy_for_object_type( 'post_tag', 'attachment' );
+}
+add_action( 'init' , 'add_tags_to_attachments' );
+
