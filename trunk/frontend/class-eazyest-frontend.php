@@ -245,11 +245,21 @@ class Eazyest_Frontend {
 	 * 
 	 * @since 0.1.0 (r131)
 	 * @uses admin_url()
+	 * $uses $buttonstring
 	 * @return array
 	 */
+	
+	
 	function localize_script() {
+		$more_thumbnail_button_text = eazyest_gallery()->more_thumbnail_button_text;
+		if(empty($more_thumbnail_button_text)) {
+			$more_thumbnail_button_text = "More thumbnails";
+		}
+		else {
+			$more_thumbnail_button_text = $more_thumbnail_button_text = eazyest_gallery()->more_thumbnail_button_text;
+		}
 		return array(
-			'moreButton'  => __( 'More thumbnails', 'eazyest-gallery' ),
+			'moreButton'  => __( "$more_thumbnail_button_text", 'eazyest-gallery' ),
 			'moreFolders' => __( 'More folders',    'eazyest-gallery' ),
 			'spinner'     => '<img src="' . eazyest_gallery()->plugin_url . 'frontend/images/ajax-loader.gif' . '" /> ',
 			'ajaxurl'     => admin_url( 'admin-ajax.php' ),
@@ -956,13 +966,21 @@ class Eazyest_Frontend {
 		} else {
 			$button_url = add_query_arg( array( 'slideshow' => 'large' ), $current_permalink );
 		}
-		$slideshow  = __( 'Slideshow', 'eazyest-gallery'  );
+		
+		$slideshowname = eazyest_gallery()->slideshow_button_text;
+		if(empty($slideshowname)) {
+			$slideshowname = "slideshow";
+		}
+		else {
+			$slideshowname = eazyest_gallery()->slideshow_button_text;
+		}
+		$slideshowtitle  = __( 'Slideshow', 'eazyest-gallery'  );
 		$thumbnails = __( 'Thumbnails', 'eazyest-gallery' );
 		
 		if ( isset( $wp_query->query_vars['slideshow'] ) )
 			$button_link = "<a class='button small' href='$current_permalink' title='$thumbnails'>$thumbnails</a>";
 		else	
-			$button_link = "<a class='button small' href='$button_url' title='$slideshow'>$slideshow</a>";
+			$button_link = "<a class='button small' href='$button_url' title='$slideshowtitle'>$slideshowname</a>";
 			
 		if ( $echo )
 			echo $button_link;
@@ -998,7 +1016,27 @@ class Eazyest_Frontend {
 		
 		$crumbs[] = '<a href="' . trailingslashit( home_url() ) . '" class="eazyest-galley-breadcrumb-home">' . __( 'Home', 'eazyest-gallery' ) . '</a>';
 		
-		$root_url  = get_post_type_archive_link( eazyest_gallery()->post_type );
+		
+		
+		/**----------------------------------
+		 * Slug of gallery page added by user
+		 * @since 0.1.3
+		 */
+		$page_slug = eazyest_gallery()->page_slug;
+		
+		/**----------------------------------
+		 * If slug is added by user use this in the breadcrumbs.
+		 * If slug is not added by user use default.
+		 */
+		if (empty($page_slug)) {
+			$root_url  = get_post_type_archive_link( eazyest_gallery()->post_type );
+		}
+		else {
+			$root = site_url();
+			$root_url = $root . '/' . $page_slug; 
+		}
+		
+		
 		$root_text = eazyest_gallery()->gallery_title();
 		$crumbs[] = '<a href="' . $root_url . '" class="eazyest-gallery-breadcrumb-root">' . $root_text . '</a>';
 		
