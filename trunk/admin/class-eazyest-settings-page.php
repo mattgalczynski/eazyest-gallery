@@ -67,7 +67,9 @@ class Eazyest_Settings_Page {
 		
 		add_action( 'eazyest_gallery_settings_section', array( $this, 'folder_settings'   ), 10 );
 		add_action( 'eazyest_gallery_settings_section', array( $this, 'image_settings'    ), 11 );
-		add_action( 'eazyest_gallery_settings_section', array( $this, 'advanced_settings' ), 12 );
+		add_action( 'eazyest_gallery_settings_section', array( $this, 'custom_text' 	  ), 12 );
+		add_action( 'eazyest_gallery_settings_section', array( $this, 'advanced_settings' ), 13 );
+
 		
 		add_action( 'admin_head',            array( $this, 'admin_style'           ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -225,6 +227,9 @@ class Eazyest_Settings_Page {
 	 * Add or change sections by adding filters: 
 	 * apply_filters( 'eazyest_gallery_settings_sections', $sections );
 	 * 
+	 * Added custom-text settings to change button text
+	 * @since 0.1.4
+	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses apply_filters()
 	 * @param string $section
@@ -247,7 +252,11 @@ class Eazyest_Settings_Page {
 			'advanced-settings' => array(
 				'title'       => __( 'Advanced Options', 'eazyest-gallery' ),
 				'description' => __( 'Options for advanced users', 'eazyest-gallery' ),
-			)				
+			),
+			'custom-text' => array(
+				'title'		  => __('Custom Text', 'eazyest-gallery' ),
+				'description' => __('Custom text for the buttons', 'eazyest-gallery'),
+			)
 		);
 		if ( eazyest_gallery()->new_instrall || ! eazyest_gallery()->right_path() )
 			$sections['main-settings']['description'] .= '<br />' . __( 'You have to select a folder on your server before you can use Eazyest Gallery', 'eazyest-gallery' );
@@ -325,9 +334,20 @@ class Eazyest_Settings_Page {
 				'title' => __( 'List name', 'eazyest-gallery' )
 			)
 		) );
+		$sections['custom-text'] = apply_filters( 'eazyest_gallery_custom_text', array (
+			'more_thumbnail_button_text' => array(
+				'title' => __('More thumbnails button text', 'eazyest-gallery' )
+			),
+			'slideshow_button_text' => array(
+				'title' => __('Slideshow button text', 'eazyest-gallery' )
+			),
+		) );
 		$sections['advanced-settings'] = apply_filters( 'eazyest_gallery_advanced_settings', array(
 			'gallery_slug' => array(
 				'title' => __( 'Gallery slug', 'eazyest-gallery' )
+			),
+			'page_slug' => array(
+				'title' => __('Page slug', 'eazyest-gallery' )
 			),
 			'viewer_level' => array(
 				'title' => __( 'Minimum viewer role', 'eazyest-gallery' )
@@ -357,7 +377,7 @@ class Eazyest_Settings_Page {
 		<h3><?php echo $section_parts['title']  ?></h3>
 		<p><?php  echo $section_parts['description'] ?></p>		
 		<?php if ( ! empty( $fields ) ) : ?>
-		<table class="form-table">
+		<table class="form-table <?php echo $section_parts['title'] ; ?> ">
 			<tbody>
 				<?php foreach( $fields as $field => $parts ) : ?>				
 				<tr>
@@ -417,6 +437,16 @@ class Eazyest_Settings_Page {
 	 */
 	function advanced_settings() {
 		$this->display_section( 'advanced-settings' );
+	}
+	
+	/**
+	 * Eazyest_Settings_Page::custom_text()
+	 * 
+	 * @since 0.1.0 (r2)
+	 * @return void
+	 */
+	function custom_text() {
+		$this->display_section( 'custom-text' );
 	}
 	
 	// Field Functions -----------------------------------------------------------
@@ -817,6 +847,64 @@ class Eazyest_Settings_Page {
 		<?php
 	}
 	
+	
+	// Custom text ------------------
+	/**
+	 * Eazyest_Settings_Page::more_thumbnail_button_text()
+	 * Output settings field markup
+	 * 
+	 * @since 0.1.4
+	 * @return void
+	 */
+	function more_thumbnail_button_text() {
+		$more_thumbnail_button_text = eazyest_gallery()->more_thumbnail_button_text;?>
+			<input type="text" id="more_thumbnail_button_text" class="regular-text code" name="eazyest-gallery[more_thumbnail_button_text]" value="<?php echo $more_thumbnail_button_text; ?>" />
+		<p class="description">
+			<?php _e( 'Custom text for the button "more thumbnails".', 'eazyest-gallery' ); ?><br />
+			<?php _e( 'Leave blank to use default.', 'eazyest-gallery' ); ?>
+		</p>
+		<?php
+	}
+	
+	
+	/**
+	 * Eazyest_Settings_Page::slideshow_button_text()
+	 * Output settings field markup
+	 * 
+	 * @since 0.1.4
+	 * @return void
+	 */
+	function slideshow_button_text() {
+		$slideshow_button_text = eazyest_gallery()->slideshow_button_text;?>
+			<input type="text" id="slideshow_button_text" class="regular-text code" name="eazyest-gallery[slideshow_button_text]" value="<?php echo $slideshow_button_text; ?>" />
+			<p class="description">
+				<?php _e( 'Custom text for the button "slideshow".', 'eazyest-gallery' ); ?><br />
+				<?php _e( 'Leave blank to use default.', 'eazyest-gallery' ); ?>
+			</p>
+			<?php
+	}
+	
+	// Advanced options ------------------
+	/**
+	 * Eazyest_Settings_Page::page_slug()
+	 * Output settings field markup
+	 * 
+	 * @since 0.1.3
+	 * @return void
+	 */
+	function page_slug() {
+		$page_slug = eazyest_gallery()->page_slug;
+		$site_url = site_url();
+		$page_slug_url = $site_url . '/' . $page_slug;
+		?>
+		<input type="text" id="page_slug" class="regular-text code" name="eazyest-gallery[page_slug]" value="<?php echo $page_slug; ?>" />
+		<p class="description">
+				<?php _e( 'Relative to your WordPress installation. This is for the breadcrumbs to work properly', 'eazyest-gallery' ); ?><br />
+				<?php printf( __( 'Your current setting links to %s', 'eazyest-gallery' ), '<code>' . $page_slug_url  . '</code>' ) ?>
+			</p>
+		<?php
+	}
+	
 	/**
 	 * Eazyest_Settings_Page::everyone()
 	 * Returns dummy role name 'Everyone'
@@ -976,7 +1064,7 @@ class Eazyest_Settings_Page {
 	
 	/**
 	 * Eazyest_Settings_Page::display()
-	 * Display the Setiings screen
+	 * Display the Settings screen
 	 * 
 	 * @since 0.1.0 (r2)
 	 * @uses settings_fields()
