@@ -1,10 +1,10 @@
 === Eazyest Gallery ===
-Contributors: macbrink
+Contributors: macbrink, andredewaard
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=22A3Y8ZUGR6PE
 Tags: media,photo,album,picture,lazyest,image,gallery,easy,exif,subfolders,widget,ftp,upload,schortcode,comment
 Tested up to: 3.5.1
 Requires at least: 3.5
-Stable tag: 0.1.3
+Stable tag: 0.1.4
 License: GPLv3
 
 Eazyest Gallery extends WordPress media featuring folders, subfolders, comments, slideshows, ftp-upload, and many more features.
@@ -21,7 +21,7 @@ Please read the [User Guide Posts](http://brimosoft.nl/category/galleries/eazyes
 = Eazyest Gallery features =
 * __Fully integrated in Admin and Media management__ 
 	
-	The plugin stores your all your folder information in the WordPress database as custom post types. This will allow you to easily find, retrieve, edit, and show your folders. You can add tags to your folders. The folders will display in tag archives. All images link to the folders as normal WordPress attachments. You can access all images in the WordPress media manager. You can even build WordPress default galleries from Eazyest Gallery images. The plugin uses the WordPress Image Editor and Media Manager. If uploading and re-sizing works in WordPress, it will work in Eazyest Gallery. The plugin includes templates for the WordPress default themes TwentyTen, TwentyEleven and TwentyTwelve. You may copy and adjust these templates to your (child) theme.
+	The plugin stores your all your folder information in the WordPress database as custom post types. This will allow you to easily find, retrieve, edit, and show your folders. You can add tags to your folders. The folders will display in tag archives. All images link to the folders as normal WordPress attachments. You can access all images in the WordPress media manager. You can even build WordPress default galleries from Eazyest Gallery images. The plugin uses the WordPress Image Editor and Media Manager. If uploading and re-sizing works in WordPress, it will work in Eazyest Gallery. The plugin includes templates for the WordPress default themes TwentyTen, TwentyEleven, TwentyTwelve and TwentyFourteen. You may copy and adjust these templates to your (child) theme.
 
 * __Unlimited number of images in unlimited number of nested folders__
 	
@@ -109,10 +109,26 @@ add_action( 'eazyest_gallery_ready', 'remove_eazyest_gallery_slideshow_button', 
 
 == Upgrade Notice ==
 
+= 0.1.4 =
+* Added tags to individual photos.
+* Added template files for TwentyFourteen theme.
+* Changed page slug for the breadcrumbs to work properly with extra option in the settings panel.
+* Added the ability to change the text of the "slideshow" and "more thumbnails" buttons in the settings panel.
+
 = 0.1.0 =
 * __0.1.0__ is stable enough
 
 == Changelog ==
+
+= 0.1.4 =
+* Added tags to individual photos.
+* Added template files for TwentyFourteen theme.
+* Changed page slug for the breadcrumbs to work properly with extra option in the settings panel.
+* Added the ability to change the text of the "slideshow" and "more thumbnails" buttons in the settings panel.
+
+= 0.1.1 =
+* Updated Camera slideshow from 1.3.3 to 1.3.4
+* Added the ability to add tags to individual photos
 
 = 0.1.0 = 
 * Bug Fix: Match new or deleted folders when folder has new parent
