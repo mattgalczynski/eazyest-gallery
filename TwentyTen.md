@@ -1,0 +1,1 @@
+More information on [WordPress.org](http://wordpress.org/extend/themes/twentyten)
